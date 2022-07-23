@@ -8,9 +8,10 @@
     android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/login_background"
     tools:context=".LoginActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,25 +23,20 @@
             android:layout_marginRight="@dimen/_25sdp"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="@dimen/_150sdp"
-                    android:layout_height="@dimen/_150sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp" />
-
-            </FrameLayout>
-
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/login"
+                />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/popsem"
-                android:text="Selamat datang Kembali"
+                android:text="Welcome Back!"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
@@ -50,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:fontFamily="@font/popmed"
-                android:text="Saya senang melihat Anda lagi. Anda dapat melanjutkan di mana Anda tinggalkan dengan masuk"
+                android:text="I'm glad to see you again. You can continue where you left off by logging in"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_7sdp" />
 
@@ -73,9 +69,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
-                    android:hint="Nama Pengguna"
+                    android:hint="Username"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_9sdp"></com.google.android.material.textfield.TextInputEditText>
+                    android:textSize="@dimen/_9sdp">
+                </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -98,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
-                    android:hint="Kata Sandi"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_9sdp">
@@ -107,6 +104,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_signinSignin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/popmed"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_10sdp"
+                app:cornerRadius="@dimen/_10sdp" />
 
 
             <TextView
@@ -115,12 +122,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/popsem"
-                android:text="atau"
+                android:text="OR"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
-
-
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -133,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
-                    android:text="Belum punya akun?  "
+                    android:text="Don't have an account yet  "
                     android:textColor="@color/black"
                     android:textSize="@dimen/_8sdp" />
 
@@ -142,8 +146,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popsem"
-                    android:text="Daftar"
-                    android:textColor="@color/purple_700"
+                    android:text="Sign up"
+                    android:textColor="@color/main"
                     android:textSize="@dimen/_8sdp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -151,7 +155,7 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>
