@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_16sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_160sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/sample_food"
+        app:shapeAppearanceOverlay="@style/roundedCorners" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/container"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_3sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:src="@drawable/ic_rating" />
+
+        <TextView
+            android:id="@+id/tv_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:fontFamily="@font/popsem"
+            android:text="4,8"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11sdp" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <ImageButton
+            android:id="@+id/btn_favorite"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/btn_favorite"
+            />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_recipe"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/popmed"
+        android:text="Duration"
+        android:textSize="@dimen/_10sdp" />
+
+    <ImageButton
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:background="@drawable/ic_love"
+        android:layout_below="@id/img_recipe"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/_7sdp"/>
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_duration"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/popsem"
+        android:text="Title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title">
+
+        <TableRow>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_profile"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@color/black"
+                app:civ_border_color="@color/main"
+                android:layout_marginRight="@dimen/_5sdp"
+                app:civ_border_width="3dp" />
+
+            <TextView
+                android:id="@+id/tv_recipe_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_recipe"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                android:text="Author"
+                android:textColor="@color/main"
+                android:textSize="@dimen/_10sdp" />
+
+        </TableRow>
+    </TableLayout>
+
+
+</RelativeLayout>
