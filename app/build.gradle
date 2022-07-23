@@ -53,4 +53,7 @@ dependencies {
 
     // Dependencies for lottie animation
     implementation "com.airbnb.android:lottie:3.7.0"
+
+    // Dependencies for volley
+    implementation 'com.android.volley:volley:1.2.1@aar'
 }
