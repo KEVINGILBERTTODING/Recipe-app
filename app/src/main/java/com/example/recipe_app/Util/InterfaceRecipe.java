@@ -13,8 +13,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface InterfaceRecipe {
+
+    // Get All Recipe
     @GET("view_recipe.php")
-    Call<List<RecipeModel>> getRecipe(
+    Call<List<RecipeModel>> getAllRecipe(
             @Query("status") Integer status
     );
     @FormUrlEncoded

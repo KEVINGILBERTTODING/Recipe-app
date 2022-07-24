@@ -18,12 +18,12 @@ import com.example.recipe_app.R;
 
 import java.util.List;
 
-public class RecipePublicAdapter extends RecyclerView.Adapter<RecipePublicAdapter.ViewHolder> {
+public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPopular.ViewHolder> {
 
     Context context;
     List<RecipeModel> recipeModels;
 
-    public RecipePublicAdapter(Context context, List<RecipeModel> recipeModels) {
+    public RecipeCategoryPopular(Context context, List<RecipeModel> recipeModels) {
         this.context = context;
         this.recipeModels = recipeModels;
     }
@@ -31,17 +31,16 @@ public class RecipePublicAdapter extends RecyclerView.Adapter<RecipePublicAdapte
 
     @NonNull
     @Override
-    public RecipePublicAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_data_recipe_all, parent, false);
+    public RecipeCategoryPopular.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_data_recipe_category, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipePublicAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeCategoryPopular.ViewHolder holder, int position) {
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
-        holder.tv_rating.setText(recipeModels.get(position).getRatings());
 
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())
@@ -68,12 +67,9 @@ public class RecipePublicAdapter extends RecyclerView.Adapter<RecipePublicAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_recipe = itemView.findViewById(R.id.img_recipe);
-            img_profile = itemView.findViewById(R.id.img_profile);
-
-            tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_duration = itemView.findViewById(R.id.tv_duration);
-            tv_title = itemView.findViewById(R.id.tv_title);
-            tv_username = itemView.findViewById(R.id.tv_recipe_username);
+            tv_title = itemView.findViewById(R.id.tv_recipe_name);
+            tv_username = itemView.findViewById(R.id.tv_username);
 
         }
 
