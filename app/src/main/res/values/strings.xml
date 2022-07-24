@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Recipe-App</string>
-    <string name="success">
-        Check ur email for a booking confirmation We’ll see u soon!
+    <string name="register">
+       I\'m glad to see you again. You can continue where you left off by logging in
     </string>
 
 </resources>
