@@ -7,7 +7,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_recipe"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_300sdp"
         android:layout_height="@dimen/_160sdp"
         android:scaleType="fitXY"
         android:src="@drawable/sample_food"

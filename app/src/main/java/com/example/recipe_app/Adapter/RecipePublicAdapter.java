@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -48,6 +49,7 @@ public class RecipePublicAdapter extends RecyclerView.Adapter<RecipePublicAdapte
                 .load(recipeModels.get(position).getImage())
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.img_recipe);
 
