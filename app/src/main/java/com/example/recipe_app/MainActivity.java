@@ -2,12 +2,15 @@ package com.example.recipe_app;
 
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,11 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipePublicAdapter;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
@@ -37,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private InterfaceRecipe interfaceRecipe;
     RecipePublicAdapter recipePublicAdapter;
     RecipeCategoryPopular recipeCategoryPopular;
+    TabLayout tabLayout;
     ImageView img_profile;
-
+    SearchView searchView;
 
 
     @Override
@@ -49,6 +55,49 @@ public class MainActivity extends AppCompatActivity {
          shimmerRecipeCategoryPopular = findViewById(R.id.recycler_recipe_category);
          tv_username = findViewById(R.id.tv_username);
          img_profile = findViewById(R.id.img_profile);
+         tabLayout = findViewById(R.id.tab_layout);
+         searchView = findViewById(R.id.search_barr);
+
+         tabLayout.addTab(tabLayout.newTab().setText("Noodle"));
+            tabLayout.addTab(tabLayout.newTab().setText("Popular"));
+            tabLayout.addTab(tabLayout.newTab().setText("Category"));
+            tabLayout.addTab(tabLayout.newTab().setText("Favorite"));
+            tabLayout.addTab(tabLayout.newTab().setText("My Recipe"));
+        tabLayout.addTab(tabLayout.newTab().setText("resep rahasia"));
+
+
+        // Disable searchview request focus
+
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+            searchView.onActionViewCollapsed();
+        }
+
+//         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//             @Override
+//             public void onTabSelected(TabLayout.Tab tab) {
+//                 if (tab.getPosition() == 0) {
+//                     shimmerRecyclerView.showShimmerAdapter();
+//                     shimmerRecipeCategoryPopular.hideShimmerAdapter();
+//                 } else {
+//                     shimmerRecipeCategoryPopular.showShimmerAdapter();
+//                     shimmerRecyclerView.hideShimmerAdapter();
+//                 }
+//             }
+
+//             @Override
+//             public void onTabUnselected(TabLayout.Tab tab) {
+//
+//             }
+//
+//             @Override
+//             public void onTabReselected(TabLayout.Tab tab) {
+//
+//             }
+//         });
+
+        Glide.with(MainActivity.this).load(BASE_URL + "photo_profile/default.png").into(img_profile);
 
 
          // Mengambil username dan user_id menggunakan sharedpreferences
@@ -167,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                             : R.layout.template_lits_data_recipe_category;
             }
         });
-        shimmerRecyclerView.showShimmer();     // to start showing shimmer
+        shimmerRecipeCategoryPopular.showShimmer();     // to start showing shimmer
 
     }
 }
