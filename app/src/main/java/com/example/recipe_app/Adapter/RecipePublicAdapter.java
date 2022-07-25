@@ -48,7 +48,8 @@ public class RecipePublicAdapter extends RecyclerView.Adapter<RecipePublicAdapte
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .dontAnimate()
+                .placeholder(R.drawable.template_img)
                 .into(holder.img_recipe);
 
 

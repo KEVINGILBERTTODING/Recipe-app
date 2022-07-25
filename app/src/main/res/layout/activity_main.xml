@@ -9,133 +9,138 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_35sdp"
-        android:orientation="vertical">
-
-        <RelativeLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_profile"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:src="@color/black"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:civ_border_color="@color/main"
-                app:civ_border_width="3dp" />
-
-            <TextView
-                android:id="@+id/tv_username"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/popsem"
-                android:text="Hi, Eve"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
-
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_below="@id/tv_username"
                 android:layout_height="wrap_content">
 
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/popsem"
-                        android:text="Find "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15sdp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/popsem"
-                        android:text="best recipes"
-                        android:textColor="@color/main"
-                        android:textSize="@dimen/_15sdp" />
-                </TableRow>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/img_profile"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:src="@color/black"
+                    app:civ_border_color="@color/main"
+                    app:civ_border_width="3dp" />
 
                 <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popsem"
-                    android:text="for cooking"
+                    android:text="Hi, Eve"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_8sdp" />
 
 
-            </TableLayout>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_username">
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/popsem"
+                            android:text="Find "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/popsem"
+                            android:text="best recipes"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_15sdp" />
+                    </TableRow>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="for cooking"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_15sdp" />
 
 
-        </RelativeLayout>
+                </TableLayout>
 
 
+            </RelativeLayout>
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_barr"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_below="@+id/tvTitle2"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_15sdp"
-            android:background="@drawable/search_bar"
-            android:focusable="false"
-            app:iconifiedByDefault="false"
-            app:queryHint="Search recipes"
-            app:theme="@style/AppSearchView" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/popsem"
-            android:text="All Recipes"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_barr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_below="@+id/tvTitle2"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@drawable/search_bar"
+                android:focusable="false"
+                android:iconifiedByDefault="false"
+                app:iconifiedByDefault="false"
+                app:queryHint="Search recipes"
+                app:theme="@style/AppSearchView" />
 
-        <com.todkars.shimmer.ShimmerRecyclerView
-            android:id="@+id/recycler_recipe_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:shimmer_recycler_item_count="1"
-            app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/popsem"
+                android:text="All Recipes"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/popsem"
-            android:text="Popular Categories"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_recipe_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="1"
+                app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
 
-        <com.todkars.shimmer.ShimmerRecyclerView
-            android:id="@+id/recycler_recipe_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:shimmer_recycler_item_count="2"
-            app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/popsem"
+                android:text="Popular Categories"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="scrollable">
+            </com.google.android.material.tabs.TabLayout>
+
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_recipe_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="1"
+                app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.core.widget.NestedScrollView>

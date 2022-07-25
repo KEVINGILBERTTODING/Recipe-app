@@ -47,7 +47,8 @@ public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPo
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(R.drawable.template_img)
+                .dontAnimate()
                 .into(holder.img_recipe);
 
 
