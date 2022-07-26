@@ -19,6 +19,21 @@ public interface InterfaceRecipe {
     Call<List<RecipeModel>> getAllRecipe(
             @Query("status") Integer status
     );
+
+    // Get Recipe By Category
+    @GET("view_recipe.php")
+    Call<List<RecipeModel>> getRecipeCategory(
+            @Query("category") String category,
+            @Query("status") Integer status
+    );
+
+    // Get Recipe By Likes
+    @GET("view_recipe.php")
+    Call<List<RecipeModel>> getRecipeTranding(
+            @Query("status") Integer status,
+            @Query("likes") Integer likes
+    );
+
     @FormUrlEncoded
     @POST("recipe/")
     Call<RecipeModel> postRecipe(@Field("user_id") String user_id,
