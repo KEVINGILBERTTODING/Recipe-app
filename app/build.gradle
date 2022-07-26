@@ -69,6 +69,7 @@ dependencies {
     // Dependencies for circleImageView
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
 
     // Dependencies for Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'

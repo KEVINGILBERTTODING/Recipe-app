@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_220sdp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_150sdp"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_10sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_160sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_120sdp"
         android:scaleType="fitXY"
         android:src="@drawable/template_img"
         app:shapeAppearanceOverlay="@style/roundedCorners" />
+
+
+
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/btn_favorite"-->
+<!--        android:layout_width="@dimen/_20sdp"-->
+<!--        android:layout_height="@dimen/_20sdp"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_gravity="right"-->
+<!--        android:layout_marginTop="@dimen/_15sdp"-->
+<!--        android:layout_marginRight="@dimen/_10sdp"-->
+<!--        android:background="@drawable/btn_favorite" />-->
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_recipe"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/popmed"
+        android:text="Duration"
+        android:textSize="@dimen/_8sdp" />
+
+<!--    <ImageButton-->
+<!--        android:layout_width="@dimen/_20sdp"-->
+<!--        android:layout_height="@dimen/_20sdp"-->
+<!--        android:layout_below="@id/img_recipe"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginTop="@dimen/_7sdp"-->
+<!--        android:background="@drawable/ic_love" />-->
+
 
 
     <TextView
@@ -60,6 +91,7 @@
 
         </TableRow>
     </TableLayout>
+
 
 
 </RelativeLayout>
