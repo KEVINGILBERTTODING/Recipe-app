@@ -22,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/img_profile"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
@@ -104,7 +103,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="All Recipes"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <com.todkars.shimmer.ShimmerRecyclerView
                 android:id="@+id/recycler_recipe_all"
@@ -122,13 +121,15 @@
                 android:fontFamily="@font/popsem"
                 android:text="Popular Categories"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabMode="scrollable">
+                app:tabMode="scrollable"
+                app:tabTextAppearance="@style/TabFont">
+
             </com.google.android.material.tabs.TabLayout>
 
 
@@ -140,6 +141,42 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:shimmer_recycler_item_count="1"
                 app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:fontFamily="@font/popsem"
+                        android:text="Trending Now"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/fire" />
+                </TableRow>
+            </TableLayout>
+
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_recipe_trending"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="1"
+                app:shimmer_recycler_layout="@layout/template_list_data_recipe_tranding" />
+
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
