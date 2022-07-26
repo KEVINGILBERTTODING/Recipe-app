@@ -7,17 +7,24 @@ $likes = $_GET['likes'];
 
 // Api untuk get recipes by category
 if (!empty($category)) {
+    $query = "SELECT r.recipe_id, r.user_id, r.title, r.description, r.category, r.duration, r.ingredients, r.steps,
+    r.note, r.upload_date, r.upload_time, r.image, r.status, r.ratings, r.likes,
+    u.username, u.photo_profile from recipe r, users u where r.user_id= u.user_id and r.status='$status' and category='$category' order by recipe_id";
 
     $query = "SELECT * FROM recipe WHERE status = '$status' AND category = '$category' order by recipe_id";
 }
 
 //Api untuk get popular recipes
 if (!empty($likes)) {
-    $query = "SELECT * FROM recipe WHERE status = '$status' AND likes > 100 order by likes desc";
+    $query = "SELECT r.recipe_id, r.user_id, r.title, r.description, r.category, r.duration, r.ingredients, r.steps,
+    r.note, r.upload_date, r.upload_time, r.image, r.status, r.ratings, r.likes,
+    u.username, u.photo_profile from recipe r, users u where r.user_id= u.user_id and r.status='$status' and likes > 50 order by likes desc";
 }
 // Api untuk get recipes by status
 if (is_null($category) && is_null($likes)) {
-    $query = "SELECT * FROM recipe where status = '$status'";
+    $query = "SELECT r.recipe_id, r.user_id, r.title, r.description, r.category, r.duration, r.ingredients, r.steps,
+r.note, r.upload_date, r.upload_time, r.image, r.status, r.ratings, r.likes,
+u.username, u.photo_profile from recipe r, users u where r.user_id= u.user_id and r.status='$status'";
 }
 // $query = "SELECT * FROM recipe WHERE status = '$status'";
 $result = mysqli_query($koneksi, $query);
