@@ -57,8 +57,6 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 .centerCrop()
                 .into(holder.img_recipe);
 
-
-
     }
 
     @Override

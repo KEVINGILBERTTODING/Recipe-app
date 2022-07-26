@@ -66,14 +66,6 @@ public class MainActivity extends AppCompatActivity {
          tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
 
-        // Disable searchview request focus
-        if (searchView != null) {
-            searchView.setQuery("", false);
-            searchView.clearFocus();
-            searchView.onActionViewCollapsed();
-        }
-
-
 
         Glide.with(MainActivity.this).load(BASE_URL + "photo_profile/default.png").into(img_profile);
 
