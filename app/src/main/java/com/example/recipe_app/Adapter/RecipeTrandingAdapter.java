@@ -53,7 +53,6 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 .placeholder(R.drawable.template_img)
                 .dontAnimate()
                 .override(1024, 768)
-                .fitCenter()
                 .centerCrop()
                 .into(holder.img_recipe);
 

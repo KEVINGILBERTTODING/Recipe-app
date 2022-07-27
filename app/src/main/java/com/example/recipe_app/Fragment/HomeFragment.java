@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment {
     TabLayout tabLayout;
     ImageView img_profile;
     SearchView searchView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         searchView = view.findViewById(R.id.search_barr);
         layoutHeader = view.findViewById(R.id.layout_header);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
         tabLayout.addTab(tabLayout.newTab().setText("Meat"));
@@ -96,6 +99,13 @@ public class HomeFragment extends Fragment {
         setShimmerAllRecipe();
         setShimmerCategoryRecipe();
         setShimmerTrendingRecipe();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItem();
+            }
+        });
 
         // Call method get recipe
         getAllRecipe();
@@ -133,10 +143,17 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-
         return view;
     }
+
+    private void refreshItem() {
+        getAllRecipe();
+        getCategory("Vegetables", 1);
+        getRecipeTranding(1,1);
+        swipeRefreshLayout.setRefreshing(false);
+
+    }
+
     private void getRecipeTranding(Integer status, Integer likes) {
         interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<List<RecipeModel>> call = interfaceRecipe.getRecipeTranding(status, likes);
@@ -153,12 +170,14 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeTrending.setLayoutManager(linearLayoutManager);
                 shimmerRecipeTrending.setAdapter(recipeTrandingAdapter);
                 shimmerRecipeTrending.setHasFixedSize(true);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
 
@@ -183,11 +202,14 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeCategoryPopular.setAdapter(recipeCategoryPopular);
                 shimmerRecipeCategoryPopular.setHasFixedSize(true);
 
+                swipeRefreshLayout.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
@@ -211,12 +233,14 @@ public class HomeFragment extends Fragment {
                 shimmerRecyclerView.setLayoutManager(linearLayoutManager);
                 shimmerRecyclerView.setAdapter(recipeAllAdapter);
                 shimmerRecyclerView.setHasFixedSize(true);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 

@@ -9,12 +9,9 @@
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_30sdp"
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img_profile"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
@@ -78,26 +75,32 @@
                 android:layout_below="@+id/tab_layout1"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:focusable="false"
                 android:background="@drawable/search_bar"
                 app:iconifiedByDefault="false"
                 app:queryHint="Search recipes"
                 app:theme="@style/AppSearchView" />
         </RelativeLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_header"
+        android:layout_marginTop="@dimen/_20sdp">
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_header"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_30sdp">
+            android:layout_below="@+id/layout_header">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -140,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:shimmer_recycler_item_count="1"
                     app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
@@ -181,9 +185,8 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-
         </androidx.core.widget.NestedScrollView>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 
