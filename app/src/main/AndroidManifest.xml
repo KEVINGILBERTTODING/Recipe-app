@@ -20,6 +20,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ShowAllRecipesActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecipeDetail"
             android:exported="false" />
         <activity

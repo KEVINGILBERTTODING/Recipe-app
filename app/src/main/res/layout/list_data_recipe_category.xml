@@ -51,11 +51,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_recipe1"
-                android:text="Eve Antoinette"
                 android:fontFamily="@font/popsem"
-                android:textSize="@dimen/_10sdp"
+                android:text="Eve Antoinette"
                 android:textAlignment="center"
-                />
+                android:textSize="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"

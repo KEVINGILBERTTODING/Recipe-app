@@ -5,14 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_margin="@dimen/_10sdp"
+    tools:context=".ShowAllRecipesActivity">
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/frame_layout_show_all_recipes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        >
-    </FrameLayout>
+        android:layout_height="wrap_content"
+
+        />
 </RelativeLayout>
