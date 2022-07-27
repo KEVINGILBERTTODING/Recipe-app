@@ -15,14 +15,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.ViewHolder> {
+public class RecipeShowAllAdapter extends RecyclerView.Adapter<RecipeShowAllAdapter.ViewHolder> {
 
     Context context;
     List<RecipeModel> recipeModels;
 
-    public RecipeAllAdapter(Context context, List<RecipeModel> recipeModels) {
+    public RecipeShowAllAdapter(Context context, List<RecipeModel> recipeModels) {
         this.context = context;
         this.recipeModels = recipeModels;
     }
@@ -30,13 +31,13 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     @NonNull
     @Override
-    public RecipeAllAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_data_recipe_all, parent, false);
+    public RecipeShowAllAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_data_show_all, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAllAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeShowAllAdapter.ViewHolder holder, int position) {
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
@@ -60,7 +61,14 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     @Override
     public int getItemCount() {
-        return recipeModels.size() > 2 ? 2 : recipeModels.size();
+        return recipeModels.size();
+    }
+
+
+    public void filterList(ArrayList<RecipeModel> filteredList) {
+
+        recipeModels = filteredList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
