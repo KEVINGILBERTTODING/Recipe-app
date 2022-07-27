@@ -5,37 +5,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.AllRecipesFragment">
+    tools:context=".Fragment.CategoryFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category" />
+
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_all_recipes"
+            android:id="@+id/search_recipes_category"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/search_bar"
             android:focusable="false"
             app:iconifiedByDefault="false"
             app:queryHint="Search recipes"
             app:theme="@style/AppSearchView" />
 
-        <com.todkars.shimmer.ShimmerRecyclerView
-            android:id="@+id/recycler_recipe_all"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:padding="@dimen/_5sdp"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TabFont">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <com.todkars.shimmer.ShimmerRecyclerView
+            android:id="@+id/recycler_recipe_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:shimmer_recycler_item_count="1"
-            app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
-
+            app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
 
 </RelativeLayout>

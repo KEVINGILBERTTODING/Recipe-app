@@ -75,8 +75,8 @@
                 android:layout_below="@+id/tab_layout1"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:focusable="false"
                 android:background="@drawable/search_bar"
+                android:focusable="false"
                 app:iconifiedByDefault="false"
                 app:queryHint="Search recipes"
                 app:theme="@style/AppSearchView" />
@@ -101,14 +101,50 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/popsem"
-                    android:text="All Recipes"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_230sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="All Recipes"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_see_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_toLeftOf="@id/btn_see_all"
+                            android:fontFamily="@font/popmed"
+                            android:gravity="right"
+                            android:text="See all"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_9sdp" />
+
+                        <ImageButton
+                            android:id="@+id/btn_see_all"
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/arrow_right" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
 
                 <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/recycler_recipe_all"
@@ -119,14 +155,49 @@
                     app:shimmer_recycler_item_count="1"
                     app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/popsem"
-                    android:text="Popular Categories"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_230sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="Popular Categories"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_all_catgories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_toLeftOf="@id/btn_see_all"
+                            android:fontFamily="@font/popmed"
+                            android:gravity="right"
+                            android:text="See all"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_9sdp" />
+
+                        <ImageButton
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/arrow_right" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
@@ -162,7 +233,7 @@
                             android:fontFamily="@font/popsem"
                             android:text="Trending Now"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_12sdp" />
 
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
