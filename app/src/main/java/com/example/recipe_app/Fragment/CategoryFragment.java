@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,6 +38,7 @@ public class CategoryFragment extends Fragment {
     private InterfaceRecipe interfaceRecipe;
     RecipeCategoryPopular recipeCategoryPopular;
     TabLayout tabLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -53,6 +56,7 @@ public class CategoryFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_category);
         searchView = view.findViewById(R.id.search_recipes_category);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
@@ -117,18 +121,31 @@ public class CategoryFragment extends Fragment {
                 shimmerRecyclerView.setAdapter(recipeCategoryPopular);
                 shimmerRecyclerView.setHasFixedSize(true);
 
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
 
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String querry) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
         });
     }
 
@@ -152,6 +169,31 @@ public class CategoryFragment extends Fragment {
         shimmerRecyclerView.showShimmer();     // to start showing shimmer
 
     }
+
+    private void filter(String newText) {
+
+        ArrayList<RecipeModel> filteredList = new ArrayList<>();
+
+        for (RecipeModel item : recipeModelList) {
+            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+
+            }
+        }
+
+
+        recipeCategoryPopular.filterList(filteredList);
+
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+        } else {
+            recipeCategoryPopular.filterList(filteredList);
+        }
+
+
+    }
+
 
 
 }

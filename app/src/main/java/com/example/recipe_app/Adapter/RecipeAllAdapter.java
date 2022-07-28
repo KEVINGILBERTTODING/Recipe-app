@@ -60,7 +60,8 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     @Override
     public int getItemCount() {
-        return recipeModels.size() > 2 ? 2 : recipeModels.size();
+        // Limit data to show in recycler view
+        return recipeModels.size() > 4 ? 4 : recipeModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

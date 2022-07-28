@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class AllRecipesFragment extends Fragment {
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
     RecipeShowAllAdapter recipeShowAllAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -52,6 +54,7 @@ public class AllRecipesFragment extends Fragment {
 
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         searchView = view.findViewById(R.id.search_all_recipes);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         setShimmer();
         getAllRecipe();
@@ -93,20 +96,18 @@ public class AllRecipesFragment extends Fragment {
                 recipeModelList = response.body();
                 recipeShowAllAdapter = new RecipeShowAllAdapter(getContext(), recipeModelList);
                 // Make it Horizontal recycler view
-
-
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
                 shimmerRecyclerView.setLayoutManager(gridLayoutManager);
                 shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
                 shimmerRecyclerView.setHasFixedSize(true);
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
 
