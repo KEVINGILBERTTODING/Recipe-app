@@ -17,6 +17,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -60,7 +62,7 @@ public class HomeFragment extends Fragment {
     ImageView img_profile;
     SearchView searchView;
     SwipeRefreshLayout swipeRefreshLayout;
-    LinearLayout lyt_see_all, lyt_see_all_category, lyt_see_all_trending;
+    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories;
 
 
 
@@ -89,8 +91,9 @@ public class HomeFragment extends Fragment {
         searchView = view.findViewById(R.id.search_barr);
         layoutHeader = view.findViewById(R.id.layout_header);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
-        lyt_see_all = (LinearLayout) view.findViewById(R.id.layout_see_all);
-        lyt_see_all_category = (LinearLayout) view.findViewById(R.id.layout_see_all_catgories);
+        btn_see_all_categories = view.findViewById(R.id.btn_see_all_categories);
+        btn_see_all_recipes = view.findViewById(R.id.btn_see_all);
+        btn_see_all_trendings = view.findViewById(R.id.btn_see_all_trending);
 
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
@@ -102,6 +105,7 @@ public class HomeFragment extends Fragment {
         // [TEST] image profile
         Glide.with(this).load(BASE_URL + "photo_profile/default.png").into(img_profile);
 
+        // set username
         tv_username.setText("Hi, "+username);
 
         // show shimmer recyclerview
@@ -109,6 +113,7 @@ public class HomeFragment extends Fragment {
         setShimmerCategoryRecipe();
         setShimmerTrendingRecipe();
 
+        // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -121,6 +126,7 @@ public class HomeFragment extends Fragment {
         getCategory("Vegetables", 1);
         getRecipeTranding(1,1);
 
+        // when tabLayout and then excute method get recipe
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -152,14 +158,20 @@ public class HomeFragment extends Fragment {
         });
 
         // button see all recipe
-        lyt_see_all.setOnClickListener(View ->{
+        btn_see_all_recipes.setOnClickListener(View ->{
             Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
             intent.putExtra("all", "all");
             startActivity(intent);
         });
-        lyt_see_all_category.setOnClickListener(View ->{
+        btn_see_all_categories.setOnClickListener(View ->{
             Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
-            intent.putExtra("kategori", "kategori");
+            intent.putExtra("categories", "categories");
+            startActivity(intent);
+        });
+
+        btn_see_all_trendings.setOnClickListener(View ->{
+            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
+            intent.putExtra("trendings", "trendings");
             startActivity(intent);
         });
 //
