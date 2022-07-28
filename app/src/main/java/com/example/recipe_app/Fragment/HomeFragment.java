@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
@@ -103,7 +104,16 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
         // [TEST] image profile
-        Glide.with(this).load(BASE_URL + "photo_profile/default.png").into(img_profile);
+        Glide.with(this)
+                .load(BASE_URL + "photo_profile/" + userid +".png")
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .fitCenter()
+                .centerCrop()
+                .override(200, 200)
+                .into(img_profile);
 
         // set username
         tv_username.setText("Hi, "+username);

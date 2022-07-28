@@ -19,9 +19,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:src="@color/black"
-                app:civ_border_color="@color/main"
-                app:civ_border_width="3dp" />
+                android:src="@color/black" />
 
             <TextView
                 android:id="@+id/tv_username"
@@ -88,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_header"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_20sdp">
 
 
         <androidx.core.widget.NestedScrollView
@@ -134,11 +132,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/_5sdp"
-                            android:fontFamily="@font/popmed"
+                            android:fontFamily="@font/popsem"
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_trending"
@@ -187,11 +185,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/_5sdp"
-                            android:fontFamily="@font/popmed"
+                            android:fontFamily="@font/popsem"
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_categories"
@@ -251,11 +249,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/_5sdp"
-                            android:fontFamily="@font/popmed"
+                            android:fontFamily="@font/popsem"
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all"
