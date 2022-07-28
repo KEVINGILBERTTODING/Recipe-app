@@ -59,10 +59,24 @@ public class AllRecipesFragment extends Fragment {
         setShimmer();
         getAllRecipe();
 
+        // when refresh swipe
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItem();
+            }
+        });
+
+
 
 
 
         return view;
+    }
+
+    private void refreshItem() {
+        getAllRecipe();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setShimmer() {

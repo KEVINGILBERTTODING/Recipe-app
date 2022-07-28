@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -21,6 +22,7 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,8 +102,63 @@ public class CategoryFragment extends Fragment {
             }
         });
 
+        // when refresh swipe
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItem();
+            }
+        });
+
+
 
         return view;
+    }
+
+    private void refreshItem() {
+        swipeRefreshLayout.setRefreshing(false);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    getCategory("Vegetables", 1);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else if (tab.getPosition() == 1) {
+                    getCategory("Meat", 1);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else if (tab.getPosition() == 2) {
+                    getCategory("Drinks", 1);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else if (tab.getPosition() == 3) {
+                    getCategory("Noodle", 1);
+                } else if (tab.getPosition() == 4) {
+                    getCategory("Others", 1);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    getCategory("Meat", 1);
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
+                }
+
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                swipeRefreshLayout.setRefreshing(false);
+
+
+            }
+
+        });
     }
 
     private void getCategory(String category, Integer status) {
@@ -115,9 +172,9 @@ public class CategoryFragment extends Fragment {
                 recipeModelList = response.body();
                 recipeCategoryPopular = new RecipeCategoryPopular(getContext(), recipeModelList);
                 // Make it Horizontal recycler view
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
 
-                shimmerRecyclerView.setLayoutManager(linearLayoutManager);
+                shimmerRecyclerView.setLayoutManager(gridLayoutManager);
                 shimmerRecyclerView.setAdapter(recipeCategoryPopular);
                 shimmerRecyclerView.setHasFixedSize(true);
 

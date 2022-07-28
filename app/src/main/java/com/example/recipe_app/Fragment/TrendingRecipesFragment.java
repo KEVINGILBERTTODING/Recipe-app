@@ -59,8 +59,22 @@ public class TrendingRecipesFragment extends Fragment {
         setShimmer();
         getRecipeTranding(1, 1);
 
+        // when refresh swipe
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItem();
+            }
+        });
+
+
 
         return view;
+    }
+
+    private void refreshItem() {
+        getRecipeTranding(1, 1);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setShimmer() {
