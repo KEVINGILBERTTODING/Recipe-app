@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
+
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
@@ -46,7 +47,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Find "
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_15sdp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -54,7 +55,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="best recipes"
                         android:textColor="@color/main"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_15sdp" />
                 </TableRow>
 
                 <TextView
@@ -63,7 +64,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="for cooking"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_15sdp" />
 
 
             </TableLayout>
@@ -73,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_below="@+id/tab_layout1"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_13sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:background="@drawable/search_bar"
                 android:focusable="false"
@@ -87,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_header"
-        android:layout_marginTop="@dimen/_20sdp">
+        android:layout_marginTop="@dimen/_10sdp">
 
 
         <androidx.core.widget.NestedScrollView
@@ -103,8 +104,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tv_trending_recipes"
@@ -126,6 +126,7 @@
                         android:id="@+id/layout_see_all_trending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_10sdp"
                         android:layout_alignParentRight="true"
                         android:orientation="horizontal">
 
@@ -156,7 +157,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:shimmer_recycler_item_count="1"
                         app:shimmer_recycler_layout="@layout/template_list_data_recipe_tranding" />
-
 
                 </RelativeLayout>
 
@@ -209,6 +209,7 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     app:tabMode="scrollable"
                     app:tabTextAppearance="@style/TabFont">
 

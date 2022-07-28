@@ -39,9 +39,11 @@ public class RecipeModel  implements Serializable {
     String ratings;
     @SerializedName("likes")
     String likes;
+    @SerializedName("photo_profile")
+    String photo_profile;
 
     public RecipeModel(String recipe_id, String user_id, String username, String title, String description, String category, String servings, String duration, String ingredients,
-                       String steps, String upload_date, String upload_time, String image, String status, String ratings, String likes) {
+                       String steps, String upload_date, String upload_time, String image, String status, String ratings, String likes, String photo_profile) {
         this.recipe_id = recipe_id;
         this.user_id = user_id;
         this.username = username;
@@ -56,6 +58,7 @@ public class RecipeModel  implements Serializable {
         this.upload_time = upload_time;
         this.image = image;
         this.likes = likes;
+        this.photo_profile = photo_profile;
 
 
     }
@@ -186,5 +189,13 @@ public class RecipeModel  implements Serializable {
 
     public void setLikes(String likes) {
         this.likes = likes;
+    }
+
+    public String getPhoto_profile() {
+        return BASE_URL + "photo_profile/" + photo_profile;
+    }
+
+    public void setPhoto_profile(String photo_profile) {
+        this.photo_profile = photo_profile;
     }
 }

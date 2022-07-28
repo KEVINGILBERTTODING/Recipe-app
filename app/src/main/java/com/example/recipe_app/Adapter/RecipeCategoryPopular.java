@@ -45,6 +45,9 @@ public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPo
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
 
+
+
+        // set image recipe
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())
                 .thumbnail(0.5f)
@@ -75,7 +78,7 @@ public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_rating, tv_duration, tv_title, tv_username;
-        ImageView img_recipe, img_profile;
+        ImageView img_recipe;
 
 
         public ViewHolder(@NonNull View itemView) {
