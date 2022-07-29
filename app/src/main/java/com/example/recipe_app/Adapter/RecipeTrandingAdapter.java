@@ -44,6 +44,20 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         holder.tv_username.setText(recipeModels.get(position).getUsername());
         holder.tv_rating.setText(recipeModels.get(position).getRatings());
 
+        // set image profile
+        Glide.with(context)
+                .load(recipeModels.get(position).getPhoto_profile())
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .centerCrop()
+                .fitCenter()
+                .placeholder(R.drawable.template_img)
+                .override(1024, 768)
+                .into(holder.img_profile);
+
+
 
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())

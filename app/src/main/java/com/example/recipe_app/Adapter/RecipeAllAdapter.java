@@ -42,6 +42,21 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         holder.tv_username.setText(recipeModels.get(position).getUsername());
         holder.tv_rating.setText(recipeModels.get(position).getRatings());
 
+        // set image profile
+        Glide.with(context)
+                .load(recipeModels.get(position).getPhoto_profile())
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .fitCenter()
+                .centerCrop()
+                .placeholder(R.drawable.template_img)
+                .override(1024, 768)
+                .into(holder.img_profile);
+
+
+        // Set recipe image
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())
                 .thumbnail(0.5f)
@@ -60,7 +75,8 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     @Override
     public int getItemCount() {
-        return recipeModels.size() > 2 ? 2 : recipeModels.size();
+        // Limit data to show in recycler view
+        return recipeModels.size() > 4 ? 4 : recipeModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

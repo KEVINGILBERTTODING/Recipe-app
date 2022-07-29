@@ -11,11 +11,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
+import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
+import com.example.recipe_app.Adapter.RecipeTrandingAdapter2;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -29,35 +29,35 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllRecipesFragment extends Fragment {
+public class TrendingRecipesFragment extends Fragment {
 
     ShimmerRecyclerView shimmerRecyclerView;
     SearchView searchView;
 
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
-    RecipeShowAllAdapter recipeShowAllAdapter;
+    RecipeTrandingAdapter2 recipeTrandingAdapter2;
     SwipeRefreshLayout swipeRefreshLayout;
 
 
 
-    public AllRecipesFragment() {
+    public TrendingRecipesFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View  view = inflater.inflate(R.layout.fragment_trending_recipes, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_all_recipes, container, false);
-
-        shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
+        shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_trendings);
         searchView = view.findViewById(R.id.search_all_recipes);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         setShimmer();
-        getAllRecipe();
+        getRecipeTranding(1, 1);
 
         // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -69,18 +69,16 @@ public class AllRecipesFragment extends Fragment {
 
 
 
-
-
         return view;
     }
 
     private void refreshItem() {
-        getAllRecipe();
+        getRecipeTranding(1, 1);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setShimmer() {
-        shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
+        shimmerRecyclerView.setAdapter(recipeTrandingAdapter2);
         shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
@@ -99,20 +97,22 @@ public class AllRecipesFragment extends Fragment {
         shimmerRecyclerView.showShimmer();     // to start showing shimmer
     }
 
-    private void getAllRecipe() {
+    private void getRecipeTranding(Integer status, Integer likes) {
         interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        Call<List<RecipeModel>> call = interfaceRecipe.getAllRecipe(1);
+        Call<List<RecipeModel>> call = interfaceRecipe.getRecipeTranding(status, likes);
         call.enqueue(new Callback<List<RecipeModel>>() {
 
 
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 recipeModelList = response.body();
-                recipeShowAllAdapter = new RecipeShowAllAdapter(getContext(), recipeModelList);
-                // Make it Horizontal recycler view
+                recipeTrandingAdapter2 = new RecipeTrandingAdapter2(getContext(), recipeModelList);
+                // Make it Vertical and have 2 grid in a row
+
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+
                 shimmerRecyclerView.setLayoutManager(gridLayoutManager);
-                shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
+                shimmerRecyclerView.setAdapter(recipeTrandingAdapter2);
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -122,7 +122,6 @@ public class AllRecipesFragment extends Fragment {
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
-
             }
 
 
@@ -154,13 +153,13 @@ public class AllRecipesFragment extends Fragment {
         }
 
 
-        recipeShowAllAdapter.filterList(filteredList);
+        recipeTrandingAdapter2.filterList(filteredList);
 
 
         if (filteredList.isEmpty()) {
             Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
         } else {
-            recipeShowAllAdapter.filterList(filteredList);
+            recipeTrandingAdapter2.filterList(filteredList);
         }
 
 

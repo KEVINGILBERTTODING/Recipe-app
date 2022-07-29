@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
+
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
@@ -17,10 +18,8 @@
                 android:layout_height="@dimen/_35sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:src="@color/black"
-                app:civ_border_color="@color/main"
-                app:civ_border_width="3dp" />
+                android:layout_marginRight="@dimen/_10sdp"
+                android:src="@color/black" />
 
             <TextView
                 android:id="@+id/tv_username"
@@ -73,10 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_below="@+id/tab_layout1"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:focusable="false"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:background="@drawable/search_bar"
+                android:focusable="false"
                 app:iconifiedByDefault="false"
                 app:queryHint="Search recipes"
                 app:theme="@style/AppSearchView" />
@@ -101,37 +100,114 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/popsem"
-                    android:text="All Recipes"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:layout_height="wrap_content">
 
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_recipe_all"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_item_count="1"
-                    app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+                    <TextView
+                        android:id="@+id/tv_trending_recipes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="Trending Recipes"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
 
-                <TextView
+                    <ImageView
+                        android:layout_width="@dimen/_16sdp"
+                        android:layout_height="@dimen/_16sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_toRightOf="@+id/tv_trending_recipes"
+                        android:src="@drawable/fire" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_all_trending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:fontFamily="@font/popsem"
+                            android:gravity="right"
+                            android:text="See all"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <ImageButton
+                            android:id="@+id/btn_see_all_trending"
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/arrow_right" />
+
+                    </LinearLayout>
+
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/recycler_recipe_trending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_30sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:shimmer_recycler_item_count="1"
+                        app:shimmer_recycler_layout="@layout/template_list_data_recipe_tranding" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/popsem"
-                    android:text="Popular Categories"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/_230sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="Popular Categories"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_all_catgories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:fontFamily="@font/popsem"
+                            android:gravity="right"
+                            android:text="See all"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <ImageButton
+                            android:id="@+id/btn_see_all_categories"
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_14sdp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/arrow_right" />
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     app:tabMode="scrollable"
                     app:tabTextAppearance="@style/TabFont">
 
@@ -148,39 +224,55 @@
                     app:shimmer_recycler_item_count="1"
                     app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
 
-                <TableLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp">
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_10sdp">
 
-                    <TableRow>
+                    <TextView
+                        android:layout_width="@dimen/_230sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="Recent Recipes"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_3sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
                             android:fontFamily="@font/popsem"
-                            android:text="Trending Now"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp" />
+                            android:gravity="right"
+                            android:text="See all"
+                            android:textColor="@color/main"
+                            android:textSize="@dimen/_10sdp" />
 
-                        <ImageView
-                            android:layout_width="@dimen/_15sdp"
-                            android:layout_height="@dimen/_15sdp"
+                        <ImageButton
+                            android:id="@+id/btn_see_all"
+                            android:layout_width="@dimen/_17sdp"
+                            android:layout_height="@dimen/_14sdp"
                             android:layout_alignParentRight="true"
-                            android:src="@drawable/fire" />
-                    </TableRow>
-                </TableLayout>
+                            android:background="@drawable/arrow_right" />
 
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_recipe_trending"
+                    android:id="@+id/recycler_recipe_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:shimmer_recycler_item_count="1"
-                    app:shimmer_recycler_layout="@layout/template_list_data_recipe_tranding" />
+                    app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

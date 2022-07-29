@@ -5,6 +5,7 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -16,23 +17,30 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
+import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
 import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.ShowAllRecipesActivity;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -55,6 +63,7 @@ public class HomeFragment extends Fragment {
     ImageView img_profile;
     SearchView searchView;
     SwipeRefreshLayout swipeRefreshLayout;
+    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories;
 
 
 
@@ -83,6 +92,10 @@ public class HomeFragment extends Fragment {
         searchView = view.findViewById(R.id.search_barr);
         layoutHeader = view.findViewById(R.id.layout_header);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        btn_see_all_categories = view.findViewById(R.id.btn_see_all_categories);
+        btn_see_all_recipes = view.findViewById(R.id.btn_see_all);
+        btn_see_all_trendings = view.findViewById(R.id.btn_see_all_trending);
+
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
         tabLayout.addTab(tabLayout.newTab().setText("Meat"));
@@ -91,8 +104,18 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
         // [TEST] image profile
-        Glide.with(this).load(BASE_URL + "photo_profile/default.png").into(img_profile);
+        Glide.with(this)
+                .load(BASE_URL + "photo_profile/" + userid +".png")
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .fitCenter()
+                .centerCrop()
+                .override(200, 200)
+                .into(img_profile);
 
+        // set username
         tv_username.setText("Hi, "+username);
 
         // show shimmer recyclerview
@@ -100,6 +123,7 @@ public class HomeFragment extends Fragment {
         setShimmerCategoryRecipe();
         setShimmerTrendingRecipe();
 
+        // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -112,6 +136,7 @@ public class HomeFragment extends Fragment {
         getCategory("Vegetables", 1);
         getRecipeTranding(1,1);
 
+        // when tabLayout and then excute method get recipe
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -142,9 +167,67 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // button see all recipe
+        btn_see_all_recipes.setOnClickListener(View ->{
+            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
+            intent.putExtra("all", "all");
+            startActivity(intent);
+        });
+        btn_see_all_categories.setOnClickListener(View ->{
+            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
+            intent.putExtra("categories", "categories");
+            startActivity(intent);
+        });
+
+        btn_see_all_trendings.setOnClickListener(View ->{
+            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
+            intent.putExtra("trendings", "trendings");
+            startActivity(intent);
+        });
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String querry) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                filter(newText);
+//                return true;
+//            }
+//        });
+
 
         return view;
     }
+
+//    // Method untuk realtime searchview
+//
+//    private void filter(String newText) {
+//
+//        ArrayList<RecipeModel> filteredList = new ArrayList<>();
+//
+//        for (RecipeModel item : recipeModelList) {
+//            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+//                filteredList.add(item);
+//
+//            }
+//        }
+//
+//
+//        RecipeShowAllAdapter.filterList(filteredList);
+//
+//
+//        if (filteredList.isEmpty()) {
+//            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+//        } else {
+//            barangAdapter.filterList(filteredList);
+//        }
+//
+//
+//    }
+
 
     private void refreshItem() {
         getAllRecipe();
