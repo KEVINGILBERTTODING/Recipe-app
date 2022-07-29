@@ -34,6 +34,7 @@ import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
 import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.SearchActivity;
 import com.example.recipe_app.ShowAllRecipesActivity;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
@@ -184,49 +185,44 @@ public class HomeFragment extends Fragment {
             intent.putExtra("trendings", "trendings");
             startActivity(intent);
         });
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String querry) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filter(newText);
-//                return true;
-//            }
-//        });
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if (newText.length() == 0) {
+                }
+                else {
+                    getInput(newText);
+                }
+
+                return false;
+            }
+        });
+
+
 
 
         return view;
     }
 
-//    // Method untuk realtime searchview
-//
-//    private void filter(String newText) {
-//
-//        ArrayList<RecipeModel> filteredList = new ArrayList<>();
-//
-//        for (RecipeModel item : recipeModelList) {
-//            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-//                filteredList.add(item);
-//
-//            }
-//        }
-//
-//
-//        RecipeShowAllAdapter.filterList(filteredList);
-//
-//
-//        if (filteredList.isEmpty()) {
-//            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-//        } else {
-//            barangAdapter.filterList(filteredList);
-//        }
-//
-//
-//    }
+    public void getInput(String searchText)
+    {
+        Intent in = new Intent(getContext(), SearchActivity.class);
+        in.putExtra("TITLE", searchText);
+        startActivity(in);
+
+  }
 
 
     private void refreshItem() {
