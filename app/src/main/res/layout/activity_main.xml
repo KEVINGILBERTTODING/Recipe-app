@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_25sdp">
+        android:layout_marginTop="@dimen/_10sdp">
 
     </FrameLayout>
 
@@ -25,9 +25,6 @@
         android:layout_alignParentBottom="true"
         android:fadeScrollbars="true"
         android:layout_marginTop="@dimen/_50sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:mbn_backgroundBottomColor="#ffffff"
         app:mbn_circleColor="@color/main"
         app:mbn_countBackgroundColor="#ff6f00"

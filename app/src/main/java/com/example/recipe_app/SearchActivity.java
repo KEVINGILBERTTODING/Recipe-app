@@ -34,7 +34,6 @@ public class SearchActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
 
         TextView tv_test = findViewById(R.id.test);
 
-        tv_test.setText(searchText);
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("TITLE");
@@ -71,18 +69,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String searchText) {
 
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String searchText) {
 
-
-
                 if (searchText.length() == 0) {
                     getAllRecipe();
                 }
-
                 filter(searchText);
 
 
@@ -99,7 +95,6 @@ public class SearchActivity extends AppCompatActivity {
         for (RecipeModel item : recipeModelList) {
             if (item.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
                 filteredList.add(item);
-
             }
         }
 
@@ -126,14 +121,14 @@ public class SearchActivity extends AppCompatActivity {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
 
                 default:
                 case ShimmerRecyclerView.LAYOUT_LIST:
                     return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
             }
         });
         shimmerRecyclerView.showShimmer();     // to start showing shimmer

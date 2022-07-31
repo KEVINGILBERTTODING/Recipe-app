@@ -1,5 +1,6 @@
 package com.example.recipe_app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -11,11 +12,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
-import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter2;
+import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -38,6 +39,7 @@ public class TrendingRecipesFragment extends Fragment {
     private InterfaceRecipe interfaceRecipe;
     RecipeTrandingAdapter2 recipeTrandingAdapter2;
     SwipeRefreshLayout swipeRefreshLayout;
+    ImageButton btn_back;
 
 
 
@@ -55,6 +57,7 @@ public class TrendingRecipesFragment extends Fragment {
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_trendings);
         searchView = view.findViewById(R.id.search_all_recipes);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        btn_back = view.findViewById(R.id.btn_back);
 
         setShimmer();
         getRecipeTranding(1, 1);
@@ -66,6 +69,15 @@ public class TrendingRecipesFragment extends Fragment {
                 refreshItem();
             }
         });
+
+        // button back listener
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+            }
+        });
+
 
 
 
@@ -84,14 +96,14 @@ public class TrendingRecipesFragment extends Fragment {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
 
                 default:
                 case ShimmerRecyclerView.LAYOUT_LIST:
                     return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
             }
         });
         shimmerRecyclerView.showShimmer();     // to start showing shimmer

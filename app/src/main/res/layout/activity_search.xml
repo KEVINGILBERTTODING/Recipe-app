@@ -28,11 +28,11 @@
                 app:theme="@style/AppSearchView" />
 
             <TextView
+                android:id="@+id/test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:id="@+id/test"
-                android:text="test"/>
+                android:text="test"
+                android:textSize="30dp" />
 
             <com.todkars.shimmer.ShimmerRecyclerView
                 android:id="@+id/recycler_recipe_all"

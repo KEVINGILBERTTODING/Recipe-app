@@ -11,16 +11,15 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,21 +28,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
-import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
-import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.SearchActivity;
-import com.example.recipe_app.ShowAllRecipesActivity;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,6 +97,7 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Drinks"));
         tabLayout.addTab(tabLayout.newTab().setText("Noodle"));
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
+
 
         // [TEST] image profile
         Glide.with(this)
@@ -170,20 +165,29 @@ public class HomeFragment extends Fragment {
 
         // button see all recipe
         btn_see_all_recipes.setOnClickListener(View ->{
-            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
-            intent.putExtra("all", "all");
-            startActivity(intent);
+
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container_home, new AllRecipesFragment());
+            layoutHeader.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            fragmentTransaction.commit();
+
         });
         btn_see_all_categories.setOnClickListener(View ->{
-            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
-            intent.putExtra("categories", "categories");
-            startActivity(intent);
+
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container_home, new CategoryFragment());
+            layoutHeader.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            fragmentTransaction.commit();
         });
 
         btn_see_all_trendings.setOnClickListener(View ->{
-            Intent intent = new Intent(getContext(), ShowAllRecipesActivity.class);
-            intent.putExtra("trendings", "trendings");
-            startActivity(intent);
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container_home, new TrendingRecipesFragment());
+            layoutHeader.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            fragmentTransaction.commit();
         });
 
 
@@ -334,14 +338,14 @@ public class HomeFragment extends Fragment {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_recent
+                            : R.layout.template_list_data_recipe_recent;
 
                 default:
                 case ShimmerRecyclerView.LAYOUT_LIST:
                     return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_1
-                            : R.layout.template_list_data_recipe_1;
+                            ? R.layout.template_list_data_recipe_recent
+                            : R.layout.template_list_data_recipe_recent;
             }
         });
         shimmerRecyclerView.showShimmer();     // to start showing shimmer
@@ -376,17 +380,19 @@ public class HomeFragment extends Fragment {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_tranding
-                            : R.layout.template_list_data_recipe_tranding;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
 
                 default:
                 case ShimmerRecyclerView.LAYOUT_LIST:
                     return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_tranding
-                            : R.layout.template_list_data_recipe_tranding;
+                            ? R.layout.template_list_data_recipe_trending
+                            : R.layout.template_list_data_recipe_trending;
             }
         });
         shimmerRecipeTrending.showShimmer();     // to start showing shimmer
 
     }
+
+
 }
