@@ -87,6 +87,7 @@
                 android:background="@drawable/search_bar"
                 android:focusable="false"
                 app:iconifiedByDefault="false"
+                app:searchIcon="@drawable/search"
                 app:queryHint="Search recipes"
                 app:theme="@style/AppSearchView" />
         </RelativeLayout>

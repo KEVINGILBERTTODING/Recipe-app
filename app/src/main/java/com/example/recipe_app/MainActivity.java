@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         bnv_Main.add(new MeowBottomNavigation.Model(2,R.drawable.search));
         bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.bookmark));
         bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
+        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
         bnv_Main.show(1,true);
         replace(new HomeFragment());
         bnv_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {

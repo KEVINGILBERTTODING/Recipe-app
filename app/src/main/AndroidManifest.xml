@@ -23,10 +23,6 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".ShowAllRecipesActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".RecipeDetail"
             android:exported="false" />
         <activity
