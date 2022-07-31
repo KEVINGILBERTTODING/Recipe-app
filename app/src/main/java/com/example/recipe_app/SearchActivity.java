@@ -8,7 +8,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.textfield.TextInputEditText;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;

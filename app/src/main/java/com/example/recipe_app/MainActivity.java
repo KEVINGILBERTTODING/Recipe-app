@@ -1,49 +1,76 @@
 package com.example.recipe_app;
 
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
-import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.recipe_app.Adapter.RecipeCategoryPopular;
-import com.example.recipe_app.Adapter.RecipeAllAdapter;
-import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.recipe_app.Fragment.AllRecipesFragment;
+import com.example.recipe_app.Fragment.CategoryFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
-import com.example.recipe_app.Model.RecipeModel;
-import com.example.recipe_app.Util.DataApi;
-import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.tabs.TabLayout;
-import com.todkars.shimmer.ShimmerRecyclerView;
+import com.example.recipe_app.Fragment.TrendingRecipesFragment;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MeowBottomNavigation bnv_Main;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bnv_Main = findViewById(R.id.bnv_Main);
 
-        // Call Home fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        bnv_Main.setScrollbarFadingEnabled(true);
 
+
+        // Added a listener to the bottom navigation bar
+        bnv_Main.add(new MeowBottomNavigation.Model(1,R.drawable.home));
+        bnv_Main.add(new MeowBottomNavigation.Model(2,R.drawable.search));
+        bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.bookmark));
+        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
+        bnv_Main.show(1,true);
+
+
+        replace(new HomeFragment());
+        bnv_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId()){
+                    case 1:
+                        replace(new HomeFragment());
+                        break;
+
+                    case 2:
+                        replace(new TrendingRecipesFragment());
+                        break;
+
+                    case 3:
+                        replace(new CategoryFragment());
+                        break;
+
+                    case 4:
+                        replace(new AllRecipesFragment());
+                        break;
+
+                }
+                return null;
+            }
+        });
+
+
+
+    }
+
+    private void replace(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container,fragment);
+        transaction.commit();
     }
 
 }
