@@ -1,5 +1,6 @@
 package com.example.recipe_app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -11,10 +12,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
+import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -41,6 +44,7 @@ public class CategoryFragment extends Fragment {
     RecipeCategoryPopular recipeCategoryPopular;
     TabLayout tabLayout;
     SwipeRefreshLayout swipeRefreshLayout;
+    ImageButton btn_back;
 
 
 
@@ -59,6 +63,7 @@ public class CategoryFragment extends Fragment {
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_category);
         searchView = view.findViewById(R.id.search_recipes_category);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        btn_back = view.findViewById(R.id.btn_back);
 
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
@@ -109,6 +114,17 @@ public class CategoryFragment extends Fragment {
                 refreshItem();
             }
         });
+
+
+
+        // button back listener
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+            }
+        });
+
 
 
 

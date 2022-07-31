@@ -1,24 +1,18 @@
-package com.example.recipe_app.Fragment;
+package com.example.recipe_app;
 
-import android.content.Intent;
-import android.os.Bundle;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
-import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.RecipeModel;
-import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -30,37 +24,38 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllRecipesFragment extends Fragment {
+public class SearchActivity extends AppCompatActivity {
 
     ShimmerRecyclerView shimmerRecyclerView;
     SearchView searchView;
-
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
     RecipeShowAllAdapter recipeShowAllAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageButton btn_back;
 
-
-
-    public AllRecipesFragment() {
-        // Required empty public constructor
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
 
-        View view = inflater.inflate(R.layout.fragment_all_recipes, container, false);
+        String searchText = getIntent().getStringExtra("TITLE");
 
-        shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
-        searchView = view.findViewById(R.id.search_all_recipes);
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        btn_back = view.findViewById(R.id.btn_back);
+        shimmerRecyclerView = findViewById(R.id.recycler_recipe_all);
+        searchView = findViewById(R.id.search_all_recipes);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
+        TextView tv_test = findViewById(R.id.test);
+
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("TITLE");
         setShimmer();
         getAllRecipe();
+        searchView.setQuery(title, false);
+        searchView.requestFocus();
+
+
 
         // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,29 +65,58 @@ public class AllRecipesFragment extends Fragment {
             }
         });
 
-        // button back listener
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
+            public boolean onQueryTextSubmit(String searchText) {
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String searchText) {
+
+                if (searchText.length() == 0) {
+                    getAllRecipe();
+                }
+                filter(searchText);
+
+
+                return true;
             }
         });
-
-
-
-
-
-        return view;
     }
+
+
+    private void filter(String searchText) {
+
+        ArrayList<RecipeModel> filteredList = new ArrayList<>();
+
+        for (RecipeModel item : recipeModelList) {
+            if (item.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+
+        recipeShowAllAdapter.filterList(filteredList);
+
+
+
+
+    }
+
+
 
     private void refreshItem() {
         getAllRecipe();
         swipeRefreshLayout.setRefreshing(false);
     }
 
+
     private void setShimmer() {
         shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
@@ -119,9 +143,9 @@ public class AllRecipesFragment extends Fragment {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 recipeModelList = response.body();
-                recipeShowAllAdapter = new RecipeShowAllAdapter(getContext(), recipeModelList);
+                recipeShowAllAdapter = new RecipeShowAllAdapter(SearchActivity.this, recipeModelList);
                 // Make it Horizontal recycler view
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(SearchActivity.this, 2);
                 shimmerRecyclerView.setLayoutManager(gridLayoutManager);
                 shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
                 shimmerRecyclerView.setHasFixedSize(true);
@@ -131,7 +155,7 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -139,42 +163,5 @@ public class AllRecipesFragment extends Fragment {
 
         });
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String querry) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return true;
-            }
-        });
     }
-
-    private void filter(String newText) {
-
-        ArrayList<RecipeModel> filteredList = new ArrayList<>();
-
-        for (RecipeModel item : recipeModelList) {
-            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
-
-            }
-        }
-
-
-        recipeShowAllAdapter.filterList(filteredList);
-
-
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            recipeShowAllAdapter.filterList(filteredList);
-        }
-
-
-    }
-
 }

@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
 
+    <FrameLayout
+        android:id="@+id/fragment_container_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
@@ -14,11 +21,14 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_profile"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_13sdp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
+
                 android:src="@color/black" />
 
             <TextView
@@ -124,8 +134,8 @@
                         android:id="@+id/layout_see_all_trending"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_10sdp"
                         android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_10sdp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -154,7 +164,7 @@
                         android:layout_marginTop="@dimen/_30sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:shimmer_recycler_item_count="1"
-                        app:shimmer_recycler_layout="@layout/template_list_data_recipe_tranding" />
+                        app:shimmer_recycler_layout="@layout/template_list_data_recipe_trending" />
 
                 </RelativeLayout>
 
@@ -279,6 +289,7 @@
 
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </RelativeLayout>
 
