@@ -1,9 +1,14 @@
 package com.example.recipe_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
@@ -18,6 +23,8 @@ import kotlin.jvm.functions.Function1;
 public class MainActivity extends AppCompatActivity {
 
     private MeowBottomNavigation bnv_Main;
+
+
 
 
     @Override
@@ -35,12 +42,11 @@ public class MainActivity extends AppCompatActivity {
         bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.bookmark));
         bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
         bnv_Main.show(1,true);
-
-
         replace(new HomeFragment());
         bnv_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
+
                 switch (model.getId()){
                     case 1:
                         replace(new HomeFragment());
@@ -63,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private void replace(Fragment fragment) {
@@ -73,4 +77,36 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    // show alert dilaog when user click back button
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new  AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setMessage("Do you want to exit?");
+        builder.setPositiveButton("Yes", new
+                DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int
+                            which) {
+                        //if user pressed "yes", then he is allowed to exit from application
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
+                        int pid = android.os.Process.myPid();
+                        android.os.Process.killProcess(pid);
+                    }
+                });
+        builder.setNegativeButton("No", new
+                DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int
+                            which) {
+                        //if user select "No", just cancel this dialog and continue with app
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }
