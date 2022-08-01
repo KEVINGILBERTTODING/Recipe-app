@@ -14,6 +14,7 @@ import android.os.Bundle;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Fragment.AllRecipesFragment;
 import com.example.recipe_app.Fragment.CategoryFragment;
+import com.example.recipe_app.Fragment.CreateRecipeFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
 import com.example.recipe_app.Fragment.TrendingRecipesFragment;
 
@@ -33,15 +34,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bnv_Main = findViewById(R.id.bnv_Main);
 
-        bnv_Main.setScrollbarFadingEnabled(true);
-
-
         // Added a listener to the bottom navigation bar
-        bnv_Main.add(new MeowBottomNavigation.Model(1,R.drawable.home));
-        bnv_Main.add(new MeowBottomNavigation.Model(2,R.drawable.search));
-        bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.bookmark));
-        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
-        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.person));
+        bnv_Main.add(new MeowBottomNavigation.Model(1,R.drawable.ic_home));
+        bnv_Main.add(new MeowBottomNavigation.Model(2,R.drawable.ic_search));
+        bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.ic_plus));
+        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.ic_save));
+        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.ic_person));
         bnv_Main.show(1,true);
         replace(new HomeFragment());
         bnv_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
@@ -54,16 +52,21 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-                        replace(new TrendingRecipesFragment());
+                        replace(new AllRecipesFragment());
                         break;
 
                     case 3:
-                        replace(new CategoryFragment());
+                        replace(new CreateRecipeFragment());
                         break;
 
                     case 4:
                         replace(new AllRecipesFragment());
                         break;
+
+                    case 5:
+                        replace(new AllRecipesFragment());
+                        break;
+
 
                 }
                 return null;

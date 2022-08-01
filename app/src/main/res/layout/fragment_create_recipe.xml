@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
     tools:context=".Fragment.CreateRecipeFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
             app:cardCornerRadius="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_20sdp">
+            android:layout_marginTop="@dimen/_10sdp">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -97,12 +97,17 @@
                 android:fontFamily="@font/popsem"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/black"/>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_height="wrap_content" >
             <RadioGroup
                 android:id="@+id/rg_category"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
 
             <RadioButton
                 android:layout_width="@dimen/_60sdp"
@@ -115,7 +120,7 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 android:textAlignment="center"
                 android:textColor="@drawable/text_color"
-                android:textSize="@dimen/_9sdp" />
+                android:textSize="@dimen/_10sdp" />
 
                 <RadioButton
                     android:layout_width="@dimen/_60sdp"
@@ -128,7 +133,7 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:textAlignment="center"
                     android:textColor="@drawable/text_color"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_10sdp" />
                 <RadioButton
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_25sdp"
@@ -140,19 +145,21 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:textAlignment="center"
                     android:textColor="@drawable/text_color"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_10sdp" />
+
                 <RadioButton
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_25sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:fontFamily="@font/popmed"
-                    android:text="Noodles"
                     android:padding="5dp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="Noodles"
                     android:textAlignment="center"
                     android:textColor="@drawable/text_color"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_10sdp" />
+
                 <RadioButton
                     android:layout_width="@dimen/_60sdp"
                     android:layout_height="@dimen/_25sdp"
@@ -164,14 +171,15 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:textAlignment="center"
                     android:textColor="@drawable/text_color"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </RadioGroup>
+            </HorizontalScrollView>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -328,7 +336,63 @@
                 android:textSize="@dimen/_10sdp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/popsem"
+                android:text="Notes"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <EditText
+                android:id="@+id/edt_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write any notes"
+                android:lines="4"
+                android:gravity="start"
+                android:minLines="4"
+                android:fontFamily="@font/popmed"
+                android:background="@drawable/border_edittext2"
+                android:textColor="@color/black"
+                android:padding="@dimen/_5sdp"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:maxLength="150"
+                android:scrollbars="vertical"
+                android:textSize="@dimen/_10sdp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_9sdp"
+            android:text="If you want to make this recipe private, you can do it by turning on the switch below."
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch_privacy"
+            android:text="Private"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            app:useMaterialThemeColors="true"
+            />
+
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save"
@@ -338,12 +402,16 @@
             android:textAllCaps="false"
             android:layout_marginTop="@dimen/_10sdp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_7sdp"
+            android:text="By creating this recipe, you agree to our Terms of Service and Privacy Policy."
+            android:layout_marginTop="@dimen/_5sdp"/>
+
 
     </LinearLayout>
-
-
-
-
 
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

@@ -11,9 +11,6 @@
         android:id="@+id/fragment_container_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-
-
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
@@ -87,7 +84,6 @@
                 android:background="@drawable/search_bar"
                 android:focusable="false"
                 app:iconifiedByDefault="false"
-                app:searchIcon="@drawable/search"
                 app:queryHint="Search recipes"
                 app:theme="@style/AppSearchView" />
         </RelativeLayout>
