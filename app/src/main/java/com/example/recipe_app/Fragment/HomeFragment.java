@@ -5,7 +5,6 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -31,7 +30,6 @@ import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
-import com.example.recipe_app.SearchActivity;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
