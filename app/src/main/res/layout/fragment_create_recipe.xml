@@ -23,6 +23,14 @@
             android:fontFamily="@font/popsem"
             android:textSize="@dimen/_15sdp"
             android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/tv_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create recipe"
+            android:fontFamily="@font/popsem"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -35,6 +43,7 @@
                 android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_recipe"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -44,10 +53,10 @@
                     android:id="@+id/btn_image_picker"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    android:background="@drawable/ic_image_picker"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"/>
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/ic_image_picker" />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -284,7 +293,7 @@
                 android:textSize="@dimen/_12sdp" />
 
             <EditText
-                android:id="@+id/edt_inredients"
+                android:id="@+id/edt_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Write ingredients"
