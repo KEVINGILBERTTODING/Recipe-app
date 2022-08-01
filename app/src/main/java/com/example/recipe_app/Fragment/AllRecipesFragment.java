@@ -59,6 +59,16 @@ public class AllRecipesFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         btn_back = view.findViewById(R.id.btn_back);
 
+        // catch data from searchbar
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String title = bundle.getString("searchText");
+            searchView.setQuery(title, false);
+        }
+
+        searchView.requestFocus();
+
         setShimmer();
         getAllRecipe();
 

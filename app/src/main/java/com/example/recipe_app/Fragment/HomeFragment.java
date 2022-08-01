@@ -222,9 +222,18 @@ public class HomeFragment extends Fragment {
 
     public void getInput(String searchText)
     {
-        Intent in = new Intent(getContext(), SearchActivity.class);
-        in.putExtra("TITLE", searchText);
-        startActivity(in);
+
+        // send data to new fragment
+
+        Fragment fragment = new AllRecipesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("searchText", searchText);
+        fragment.setArguments(bundle);
+        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_home, fragment, "AllRecipesFragment");
+        layoutHeader.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
+        fragmentTransaction.commit();
 
   }
 
