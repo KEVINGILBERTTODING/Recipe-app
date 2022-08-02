@@ -15,7 +15,6 @@ try {
 }
 
 date_default_timezone_set('Asia/Jakarta');
-$recipe_id = $_POST['recipe_id'];
 $user_id = $_POST['user_id'];
 $title = $_POST['title'];
 $description = $_POST['description'];
@@ -28,8 +27,7 @@ $note = $_POST['note'];
 $upload_date = date("Y-m-d");
 $upload_time = date("H:i:s");
 $status = $_POST['status'];
-$ratings = $_POST['ratings'];
-$likes = $_POST['likes'];
+$image = $_POST['image'];
 
 
 class emp
@@ -37,33 +35,27 @@ class emp
 }
 
 
-$nama_file = $recipe_id . ".png";
+$nama_file = $user_id . "-" . $title . "-" . $upload_date . ".png";
 
 $path = "recipe_images/" . $nama_file;
 
+$actualpath = "http://192.168.11.92/android/recipe_images/$path";
 
-
-$msql = "INSERT INTO recipe (user_id, title, description, category, servings, duration, ingredients, steps, note, upload_date, upload_time, image, status, ratings, likes, qrcode_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$msql = "INSERT INTO recipe (user_id, title, description, category, servings, duration, ingredients, steps, note, upload_date, upload_time, image, status, qrcode_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stat = $conn->prepare($msql);
-$res = $stat->execute([$user_id, $title, $description, $category, $servings, $duration, $ingredients, $steps, $note, $upload_date, $upload_time, $nama_file, $status, $ratings, $likes, $nama_file]);
+$res = $stat->execute([$user_id, $title, $description, $category, $servings, $duration, $ingredients, $steps, $note, $upload_date, $upload_time, $nama_file, $status, $nama_file]);
+
 
 require_once('phpqrcode/qrlib.php');
-$nama = $recipe_id;
-$namafile = $nama . '.png';
+$namafile =  $user_id . "-" . $title . "-" . $upload_date .  "-" . ".png";
 $tempDir = 'qrcode_recipe/';
 $pngAbsoluteFilePath = $tempDir . $namafile;
-$content = $nama;
+$content = $namafile;
 $urlRelativeFilePath = $pngAbsoluteFilePath;
 if (!file_exists($pngAbsoluteFilePath)) {
     QRcode::png($content, $pngAbsoluteFilePath);
 }
 
-// if ($res) {
-//   $data =['']
-//     echo json_encode($data);
-// } else {
-//     echo json_encode(['error' => $stat->errorCode()]);
-// }
 
 if ($res) {
     file_put_contents($path, base64_decode($image));
