@@ -80,6 +80,8 @@ public class CreateRecipeFragment extends Fragment {
     public static final int progress_bar_type = 0;
     private ProgressDialog pd;
 
+    String imageString;
+
 
 
 
@@ -135,9 +137,63 @@ public class CreateRecipeFragment extends Fragment {
 
         btn_save.setOnClickListener(View -> {
 
-            // validasi saat image produk null
+            // gettext from edittext
+            recipe_name = recipeName.getText().toString();
+            description_ = description.getText().toString();
+            serves_ = serves.getText().toString();
+            duration_ = duration.getText().toString();
+            ingredients_ = ingredients.getText().toString();
+            steps_ = steps.getText().toString();
+            notes_ = notes.getText().toString();
 
-            createRecipe();
+            // if switch private is checked, status = 1
+
+            if (switch_private.isChecked()) {
+                status = "2"; // meaning private
+            } else {
+                status = "1"; // meaning public
+            }
+
+            // Validate data
+
+            // if bitmap == null, then show toast
+            if (bitmap == null) {
+                Toast.makeText(getContext(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+            }
+
+            // if field is empty, then show toast
+            if (recipe_name.isEmpty() || description_.isEmpty() || serves_.isEmpty() || duration_.isEmpty() || ingredients_.isEmpty() || steps_.isEmpty()) {
+
+                Toast.makeText(getContext(), "Field cannot empty", Toast.LENGTH_SHORT).show();
+            }
+
+            else {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                 imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+
+                // Function for get selected radio button from radio group
+                int checkedButtonId = rgCategory.getCheckedRadioButtonId();
+
+                RadioButton checkedButton = (RadioButton) getView().findViewById(checkedButtonId);
+
+                category_ = checkedButton.getText().toString();
+
+
+
+                    pd.setMessage("Saving...");
+                    pd.show();
+                    pd.setCancelable(false);
+                    pd.setCanceledOnTouchOutside(false);
+                    pd.setProgressStyle(progress_bar_type);
+
+                    // Mengirim data ke server
+                    createRecipe(recipe_name, description_, serves_, duration_, ingredients_, steps_, notes_, category_, status);
+
+            }
+
 
         });
 
@@ -148,42 +204,9 @@ public class CreateRecipeFragment extends Fragment {
         return view;
     }
 
-    private  void createRecipe() {
+    private  void createRecipe( String recipe_name, String description_, String serves_, String duration_, String ingredients_, String steps_, String notes_, String category_, String status) {
 
 
-        pd.setMessage("Sending data...");
-        pd.setCancelable(false);
-        pd.show();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
-
-        // gettext from edittext
-        recipe_name = recipeName.getText().toString();
-        description_ = description.getText().toString();
-        serves_ = serves.getText().toString();
-        duration_ = duration.getText().toString();
-        ingredients_ = ingredients.getText().toString();
-        steps_ = steps.getText().toString();
-        notes_ = notes.getText().toString();
-
-        // if switch private is checked, status = 1
-
-        if (switch_private.isChecked()) {
-            status = "2"; // meaning private
-        } else {
-            status = "1"; // meaning public
-        }
-
-        // Function for get selected radio button from radio group
-
-        int checkedButtonId = rgCategory.getCheckedRadioButtonId();
-
-        RadioButton checkedButton = (RadioButton) getView().findViewById(checkedButtonId);
-
-        category_ = checkedButton.getText().toString();
 
         // Sending data to server
 
@@ -194,6 +217,7 @@ public class CreateRecipeFragment extends Fragment {
             public void onResponse(retrofit2.Call<RecipeModel> call, retrofit2.Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     pd.dismiss();
+
                     Toast.makeText(getContext(), "Berhasil menambahkan resep", Toast.LENGTH_SHORT).show();
 //                    recipeModelList = response.body();
 //                    Gson gson = new GsonBuilder().create();

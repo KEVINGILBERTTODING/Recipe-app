@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         bnv_Main.add(new MeowBottomNavigation.Model(2,R.drawable.ic_search));
         bnv_Main.add(new MeowBottomNavigation.Model(3,R.drawable.ic_plus));
         bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.ic_save));
-        bnv_Main.add(new MeowBottomNavigation.Model(4,R.drawable.ic_person));
+        bnv_Main.add(new MeowBottomNavigation.Model(5,R.drawable.ic_person));
         bnv_Main.show(1,true);
         replace(new HomeFragment());
         bnv_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
