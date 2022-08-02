@@ -35,9 +35,8 @@ public interface InterfaceRecipe {
     );
 
     @FormUrlEncoded
-    @POST("recipe/")
-    Call<RecipeModel> postRecipe(@Field("user_id") String user_id,
-                                 @Field("username") String username,
+    @POST("post_recipe.php")
+    Call<RecipeModel> createRecipe(@Field("user_id") String user_id,
                                  @Field("title") String title,
                                  @Field("description") String description,
                                  @Field("category") String category,
@@ -45,12 +44,9 @@ public interface InterfaceRecipe {
                                  @Field("duration") String duration,
                                  @Field("ingredients") String ingredients,
                                  @Field("steps") String steps,
-                                 @Field("upload_date") String upload_date,
-                                 @Field("upload_time") String upload_time,
                                  @Field("image") String image,
                                  @Field("status") String status,
-                                 @Field("ratings") String ratings,
-                                 @Field("likes") String likes);
+                                 @Field("note") String notes);
     @DELETE("recipe/")
     Call<RecipeModel> deleteRecipe(@Query("recipe_id") String recipe_id);
 }

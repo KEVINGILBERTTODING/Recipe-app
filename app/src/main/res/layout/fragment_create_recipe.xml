@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="@dimen/_10sdp"
+    tools:context=".Fragment.CreateRecipeFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create recipe"
+            android:fontFamily="@font/popsem"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/tv_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create recipe"
+            android:fontFamily="@font/popsem"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            app:cardCornerRadius="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_recipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/template_img" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_image_picker"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/ic_image_picker" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <EditText
+            android:id="@+id/edt_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Recipe name"
+            android:fontFamily="@font/popmed"
+            android:background="@drawable/border_edittext"
+            android:textColor="@color/black"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:maxLength="150"
+            android:textSize="@dimen/_10sdp"/>
+
+        <EditText
+            android:id="@+id/edt_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write a description"
+            android:lines="4"
+            android:maxLines="6"
+            android:gravity="start"
+            android:minLines="4"
+            android:fontFamily="@font/popmed"
+            android:background="@drawable/border_edittext2"
+            android:textColor="@color/black"
+            android:padding="@dimen/_5sdp"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:maxLength="150"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/_10sdp"/>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:fontFamily="@font/popsem"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/black"/>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_height="wrap_content" >
+            <RadioGroup
+                android:id="@+id/rg_category"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+            <RadioButton
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:background="@drawable/radio_selector"
+                android:button="@android:color/transparent"
+                android:fontFamily="@font/popmed"
+                android:text="Vegetables"
+                android:padding="5dp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textColor="@drawable/text_color"
+                android:textSize="@dimen/_10sdp" />
+
+                <RadioButton
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:fontFamily="@font/popmed"
+                    android:text="Meat"
+                    android:padding="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="@dimen/_10sdp" />
+                <RadioButton
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:fontFamily="@font/popmed"
+                    android:text="Drinks"
+                    android:padding="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="@dimen/_10sdp" />
+
+                <RadioButton
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:fontFamily="@font/popmed"
+                    android:padding="5dp"
+                    android:text="Noodles"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="@dimen/_10sdp" />
+
+                <RadioButton
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:fontFamily="@font/popmed"
+                    android:text="Other"
+                    android:padding="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:textAlignment="center"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="@dimen/_10sdp" />
+            </RadioGroup>
+            </HorizontalScrollView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_serves" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:fontFamily="@font/popsem"
+                    android:text="Serves"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <EditText
+                android:id="@+id/edt_serves"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/border_edittext2"
+                android:fontFamily="@font/popmed"
+                android:gravity="center"
+                android:hint="0"
+                android:inputType="number"
+                android:maxLength="5"
+                android:padding="@dimen/_5sdp"
+                android:textSize="@dimen/_10sdp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@drawable/ic_duration" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:fontFamily="@font/popsem"
+                    android:text="Cook time"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <EditText
+                android:id="@+id/edt_duration"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/border_edittext2"
+                android:fontFamily="@font/popmed"
+                android:gravity="center"
+                android:hint="0"
+                android:inputType="number"
+                android:maxLength="5"
+                android:padding="@dimen/_5sdp"
+                android:textSize="@dimen/_10sdp" />
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/popsem"
+                android:text="Ingredients"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <EditText
+                android:id="@+id/edt_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write ingredients"
+                android:lines="4"
+                android:gravity="start"
+                android:minLines="10"
+                android:fontFamily="@font/popmed"
+                android:background="@drawable/border_edittext2"
+                android:textColor="@color/black"
+                android:padding="@dimen/_5sdp"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:maxLength="150"
+                android:scrollbars="vertical"
+                android:textSize="@dimen/_10sdp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/popsem"
+                android:text="How to make"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <EditText
+                android:id="@+id/edt_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write steps"
+                android:lines="4"
+                android:gravity="start"
+                android:minLines="10"
+                android:fontFamily="@font/popmed"
+                android:background="@drawable/border_edittext2"
+                android:textColor="@color/black"
+                android:padding="@dimen/_5sdp"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:maxLength="150"
+                android:scrollbars="vertical"
+                android:textSize="@dimen/_10sdp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/popsem"
+                android:text="Notes"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <EditText
+                android:id="@+id/edt_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write any notes"
+                android:lines="4"
+                android:gravity="start"
+                android:minLines="4"
+                android:fontFamily="@font/popmed"
+                android:background="@drawable/border_edittext2"
+                android:textColor="@color/black"
+                android:padding="@dimen/_5sdp"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:maxLength="150"
+                android:scrollbars="vertical"
+                android:textSize="@dimen/_10sdp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_9sdp"
+            android:text="If you want to make this recipe private, you can do it by turning on the switch below."
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch_privacy"
+            android:text="Private"
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            app:useMaterialThemeColors="true"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:fontFamily="@font/popsem"
+            android:textSize="@dimen/_12sdp"
+            app:cornerRadius="@dimen/_8sdp"
+            android:textAllCaps="false"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_7sdp"
+            android:text="By creating this recipe, you agree to our Terms of Service and Privacy Policy."
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

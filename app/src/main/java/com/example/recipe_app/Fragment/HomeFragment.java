@@ -5,7 +5,6 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -31,7 +30,6 @@ import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
-import com.example.recipe_app.SearchActivity;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
@@ -222,9 +220,18 @@ public class HomeFragment extends Fragment {
 
     public void getInput(String searchText)
     {
-        Intent in = new Intent(getContext(), SearchActivity.class);
-        in.putExtra("TITLE", searchText);
-        startActivity(in);
+
+        // send data to new fragment
+
+        Fragment fragment = new AllRecipesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("searchText", searchText);
+        fragment.setArguments(bundle);
+        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_home, fragment, "AllRecipesFragment");
+        layoutHeader.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
+        fragmentTransaction.commit();
 
   }
 
