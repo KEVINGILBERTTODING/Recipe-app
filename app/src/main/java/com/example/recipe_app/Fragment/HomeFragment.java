@@ -166,8 +166,6 @@ public class HomeFragment extends Fragment {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.fragment_container, new AllRecipesFragment());
-//            layoutHeader.setVisibility(View.GONE);
-//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
 
         });
@@ -175,16 +173,12 @@ public class HomeFragment extends Fragment {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.fragment_container, new CategoryFragment());
-//            layoutHeader.setVisibility(View.GONE);
-//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
         });
 
         btn_see_all_trendings.setOnClickListener(View ->{
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
             fragmentTransaction.replace(R.id.fragment_container, new TrendingRecipesFragment());
-//            layoutHeader.setVisibility(View.GONE);
-//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
         });
 
@@ -229,9 +223,7 @@ public class HomeFragment extends Fragment {
         fragment.setArguments(bundle);
         final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
         fragmentTransaction.replace(R.id.fragment_container, fragment, "AllRecipesFragment");
-        layoutHeader.setVisibility(View.GONE);
-        swipeRefreshLayout.setVisibility(View.GONE);
-        fragmentTransaction.commit();
+
 
   }
 
