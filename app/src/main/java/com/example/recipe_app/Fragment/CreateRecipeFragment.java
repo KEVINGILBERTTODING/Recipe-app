@@ -174,7 +174,6 @@ public class CreateRecipeFragment extends Fragment {
                 category_ = checkedButton.getText().toString();
 
 
-
                     pd.setMessage("Saving...");
                     pd.show();
                     pd.setCancelable(false);
@@ -248,6 +247,7 @@ public class CreateRecipeFragment extends Fragment {
                 }
             }
         });
+
 
 
 
