@@ -66,23 +66,7 @@ public class DetailRecipeFragment extends Fragment {
         btnSteps = view.findViewById(R.id.btn_steps);
         tvNotes = view.findViewById(R.id.tv_notes);
 
-//        bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
-//        bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
-//        bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
-//        bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
-//        bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
-//        bundle.putString("category", recipeModels.get(getAdapterPosition()).getCategory());
-//        bundle.putString("servings", recipeModels.get(getAdapterPosition()).getServings());
-//        bundle.putString("duration", recipeModels.get(getAdapterPosition()).getDuration());
-//        bundle.putString("ingredients", recipeModels.get(getAdapterPosition()).getIngredients());
-//        bundle.putString("steps", recipeModels.get(getAdapterPosition()).getSteps());
-//        bundle.putString("upload_date", recipeModels.get(getAdapterPosition()).getUpload_date());
-//        bundle.putString("upload_time", recipeModels.get(getAdapterPosition()).getUpload_time());
-//        bundle.putString("image", recipeModels.get(getAdapterPosition()).getImage());
-//        bundle.putString("status", recipeModels.get(getAdapterPosition()).getStatus());
-//        bundle.putString("ratings", recipeModels.get(getAdapterPosition()).getRatings());
-//        bundle.putString("likes", recipeModels.get(getAdapterPosition()).getLikes());
-//        bundle.putString("photo_profile", recipeModels.get(getAdapterPosition()).getPhoto_profile());
+        // Get data from bundle
 
         recipeName = getArguments().getString("title");
         recipeIngredients = getArguments().getString("ingredients");
@@ -139,6 +123,28 @@ public class DetailRecipeFragment extends Fragment {
 
 
             }
+        });
+
+        // Show ingredients
+
+        btnIngredients.setOnClickListener(View -> {
+            tvRecipeSteps.setVisibility(View.GONE);
+            tvRecipeIngredients.setVisibility(View.VISIBLE);
+            btnSteps.setBackgroundColor(getResources().getColor(R.color.white));
+            btnSteps.setTextColor(getResources().getColor(R.color.main));
+            btnIngredients.setBackgroundColor(getResources().getColor(R.color.main));
+            btnIngredients.setTextColor(getResources().getColor(R.color.white));
+        });
+
+        // Show steps
+
+        btnSteps.setOnClickListener(View -> {
+            tvRecipeIngredients.setVisibility(View.GONE);
+            tvRecipeSteps.setVisibility(View.VISIBLE);
+            btnIngredients.setBackgroundColor(getResources().getColor(R.color.white));
+            btnSteps.setBackgroundColor(getResources().getColor(R.color.main));
+            btnSteps.setTextColor(getResources().getColor(R.color.white));
+            btnIngredients.setTextColor(getResources().getColor(R.color.main));
         });
 
 
