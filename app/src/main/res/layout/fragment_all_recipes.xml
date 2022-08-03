@@ -49,10 +49,11 @@
                     android:id="@+id/search_all_recipes"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/search_bar"
                     app:iconifiedByDefault="false"
                     app:queryHint="Search recipes"
-                    app:theme="@style/AppSearchView"/>
+                    app:theme="@style/AppSearchView" />
 
                 <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/recycler_recipe_all"
