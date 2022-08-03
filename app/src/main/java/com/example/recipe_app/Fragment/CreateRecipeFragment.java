@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -187,6 +189,65 @@ public class CreateRecipeFragment extends Fragment {
 
         });
 
+        // Set bullet point when enter new line in edittext ingredients
+
+        ingredients.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable e) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter)
+            {
+                if (lengthAfter > lengthBefore) {
+                    if (text.toString().length() == 1) {
+                        text = "• " + text;
+                        ingredients.setText(text);
+                        ingredients.setSelection(ingredients.getText().length());
+                    }
+                    if (text.toString().endsWith("\n")) {
+                        text = text.toString().replace("\n", "\n• ");
+                        text = text.toString().replace("• •", "•");
+                        ingredients.setText(text);
+                        ingredients.setSelection(ingredients.getText().length());
+                    }
+                }
+            }
+        });
+
+        // Set bullet point when enter new line in edittext steps
+
+        steps.addTextChangedListener(new TextWatcher(){
+            @Override
+            public void afterTextChanged(Editable e) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter)
+            {
+                if (lengthAfter > lengthBefore) {
+                    if (text.toString().length() == 1) {
+                        text = "• " + text;
+                        steps.setText(text);
+                        steps.setSelection(steps.getText().length());
+                    }
+                    if (text.toString().endsWith("\n")) {
+                        text = text.toString().replace("\n", "\n• ");
+                        text = text.toString().replace("• •", "•");
+                        steps.setText(text);
+                        steps.setSelection(steps.getText().length());
+                    }
+                }
+            }
+        });
 
 
 

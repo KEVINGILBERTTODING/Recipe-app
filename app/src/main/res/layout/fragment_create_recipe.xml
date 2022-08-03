@@ -67,7 +67,7 @@
             android:padding="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:maxLength="150"
-            android:textSize="@dimen/_10sdp"/>
+            android:textSize="@dimen/_12sdp"/>
 
         <EditText
             android:id="@+id/edt_description"
@@ -83,10 +83,10 @@
             android:textColor="@color/black"
             android:padding="@dimen/_5sdp"
             android:inputType="textMultiLine"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_12sdp"
             android:maxLength="150"
             android:scrollbars="vertical"
-            android:textSize="@dimen/_10sdp"/>
+            android:textSize="@dimen/_12sdp"/>
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="Category"
                 android:fontFamily="@font/popsem"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_13sdp"
                 android:textColor="@color/black"/>
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -204,7 +204,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="Serves"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -222,7 +222,7 @@
                 android:inputType="number"
                 android:maxLength="5"
                 android:padding="@dimen/_5sdp"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_12sdp" />
 
         </RelativeLayout>
 
@@ -250,25 +250,22 @@
                     android:fontFamily="@font/popsem"
                     android:text="Cook time"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <EditText
                 android:id="@+id/edt_duration"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_120sdp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:background="@drawable/border_edittext2"
                 android:fontFamily="@font/popmed"
-                android:gravity="center"
-                android:hint="0"
-                android:inputType="number"
-                android:maxLength="5"
+                android:hint="How long?"
                 android:padding="@dimen/_5sdp"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_12sdp" />
 
         </RelativeLayout>
 
@@ -285,7 +282,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="Ingredients"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <EditText
                 android:id="@+id/edt_ingredients"
@@ -301,9 +298,8 @@
                 android:padding="@dimen/_5sdp"
                 android:inputType="textMultiLine"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:maxLength="150"
                 android:scrollbars="vertical"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_12sdp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -319,7 +315,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="How to make"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <EditText
                 android:id="@+id/edt_steps"
@@ -335,9 +331,8 @@
                 android:padding="@dimen/_5sdp"
                 android:inputType="textMultiLine"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:maxLength="150"
                 android:scrollbars="vertical"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_12sdp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -353,7 +348,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="Notes"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_13sdp" />
 
             <EditText
                 android:id="@+id/edt_notes"
@@ -371,7 +366,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:maxLength="150"
                 android:scrollbars="vertical"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_12sdp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
