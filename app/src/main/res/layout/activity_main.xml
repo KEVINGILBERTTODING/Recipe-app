@@ -10,10 +10,7 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_height="wrap_content">
 
     </FrameLayout>
 

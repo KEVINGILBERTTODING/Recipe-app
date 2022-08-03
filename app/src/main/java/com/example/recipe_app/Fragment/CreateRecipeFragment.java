@@ -56,8 +56,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreateRecipeFragment extends Fragment {
 
-    EditText recipeName, description, serves, duration, ingredients, steps,
-            notes;
+    EditText recipeName, description, serves, duration, ingredients, steps, notes;
     ImageButton btn_image_picker;
     Button btn_save;
     SwitchMaterial switch_private;
@@ -66,8 +65,6 @@ public class CreateRecipeFragment extends Fragment {
     String recipe_name, description_, serves_, duration_, ingredients_, steps_, notes_, category_,
             username, userid, status;
 
-    private List<RecipeModel> recipeModelList;
-    private InterfaceRecipe interfaceRecipe;
 
     ImageView img_recipe;
 
@@ -83,9 +80,6 @@ public class CreateRecipeFragment extends Fragment {
     String imageString;
 
 
-
-
-
     public CreateRecipeFragment() {
         // Required empty public constructor
     }
@@ -97,7 +91,7 @@ public class CreateRecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_create_recipe, container, false);
 
-        // Mengambil data menggunakan shared preferences
+
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
         username = sharedPreferences.getString(TAG_USERNAME, null);
@@ -115,10 +109,6 @@ public class CreateRecipeFragment extends Fragment {
         switch_private = view.findViewById(R.id.switch_privacy);
         rgCategory = view.findViewById(R.id.rg_category);
         img_recipe = view.findViewById(R.id.img_recipe);
-
-        if (bitmap ==  null) {
-            Toast.makeText(getContext(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
-        }
 
         pd = new ProgressDialog(getContext());
         mGalery = new GalleryPhoto(getContext());
@@ -236,7 +226,6 @@ public class CreateRecipeFragment extends Fragment {
             @Override
             public void onFailure(retrofit2.Call<RecipeModel> call, Throwable t) {
                 pd.dismiss();
-                Log.d("onFailure", t.toString());
                 Log.d("onFailure", t.getMessage());
                 Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
             }
@@ -255,7 +244,7 @@ public class CreateRecipeFragment extends Fragment {
                 startActivityForResult(galleryIntent, TAG_GALLERY);
             }
             else {
-                Toast.makeText(getContext(), "Tidak ada akses gallery", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Permission Denied", Snackbar.LENGTH_LONG).show();
             }
             return;
         }
@@ -277,12 +266,10 @@ public class CreateRecipeFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 img_recipe.setImageBitmap(bitmap);
 
-                Toast.makeText(getContext(), "Berhasil load image", Toast.LENGTH_SHORT).show();
-
-//                Snackbar.make(findViewById(android.R.id.content), "Berhasil memuat gambar", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Gagal load image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
 
 //                Snackbar.make(findViewById(android.R.id.content), "Something Wrong", Snackbar.LENGTH_SHORT).show();
             }catch (IOException e){

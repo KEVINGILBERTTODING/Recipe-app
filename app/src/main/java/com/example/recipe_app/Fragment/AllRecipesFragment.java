@@ -85,6 +85,7 @@ public class AllRecipesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), MainActivity.class));
+
             }
         });
 

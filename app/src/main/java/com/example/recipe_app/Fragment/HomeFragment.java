@@ -164,27 +164,27 @@ public class HomeFragment extends Fragment {
         // button see all recipe
         btn_see_all_recipes.setOnClickListener(View ->{
 
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container_home, new AllRecipesFragment());
-            layoutHeader.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
+            fragmentTransaction.replace(R.id.fragment_container, new AllRecipesFragment());
+//            layoutHeader.setVisibility(View.GONE);
+//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
 
         });
         btn_see_all_categories.setOnClickListener(View ->{
 
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container_home, new CategoryFragment());
-            layoutHeader.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
+            fragmentTransaction.replace(R.id.fragment_container, new CategoryFragment());
+//            layoutHeader.setVisibility(View.GONE);
+//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
         });
 
         btn_see_all_trendings.setOnClickListener(View ->{
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container_home, new TrendingRecipesFragment());
-            layoutHeader.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
+            fragmentTransaction.replace(R.id.fragment_container, new TrendingRecipesFragment());
+//            layoutHeader.setVisibility(View.GONE);
+//            swipeRefreshLayout.setVisibility(View.GONE);
             fragmentTransaction.commit();
         });
 
@@ -227,8 +227,8 @@ public class HomeFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("searchText", searchText);
         fragment.setArguments(bundle);
-        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_home, fragment, "AllRecipesFragment");
+        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
+        fragmentTransaction.replace(R.id.fragment_container, fragment, "AllRecipesFragment");
         layoutHeader.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
         fragmentTransaction.commit();
