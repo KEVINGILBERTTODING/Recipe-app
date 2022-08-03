@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_60sdp"
+    android:layout_marginTop="@dimen/_10sdp"
     tools:context=".Fragment.HomeFragment">
 
-    <FrameLayout
-        android:id="@+id/fragment_container_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
         <RelativeLayout
             android:id="@+id/layout_header"
             android:layout_width="match_parent"

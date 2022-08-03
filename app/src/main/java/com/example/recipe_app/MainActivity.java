@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -82,41 +83,51 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    // show alert dilaog when user click back button
-
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new  AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setMessage("Do you want to exit?");
-        builder.setPositiveButton("Yes", new
-                DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int
-                            which) {
-                        //if user pressed "yes", then he is allowed to exit from application
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        startActivity(intent);
-                        int pid = android.os.Process.myPid();
-                        android.os.Process.killProcess(pid);
-                    }
-                });
-        builder.setNegativeButton("No", new
-                DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int
-                            which) {
-                        //if user select "No", just cancel this dialog and continue with app
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+    //    // show alert dilaog when user click back button
+//
+//    @Override
+//    public void onBackPressed() {
+//        AlertDialog.Builder builder = new  AlertDialog.Builder(this);
+//        builder.setCancelable(false);
+//        builder.setMessage("Do you want to exit?");
+//        builder.setPositiveButton("Yes", new
+//                DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int
+//                            which) {
+//                        //if user pressed "yes", then he is allowed to exit from application
+//                        Intent intent = new Intent(Intent.ACTION_MAIN);
+//                        intent.addCategory(Intent.CATEGORY_HOME);
+//                        startActivity(intent);
+//                        int pid = android.os.Process.myPid();
+//                        android.os.Process.killProcess(pid);
+//                    }
+//                });
+//        builder.setNegativeButton("No", new
+//                DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int
+//                            which) {
+//                        //if user select "No", just cancel this dialog and continue with app
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 }

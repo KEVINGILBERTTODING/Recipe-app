@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_60sdp"
+    android:layout_marginTop="@dimen/_10sdp"
     tools:context=".Fragment.CreateRecipeFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -17,14 +20,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create recipe"
-            android:fontFamily="@font/popsem"
-            android:textSize="@dimen/_15sdp"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/tv_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create recipe"
@@ -385,7 +380,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/popmed"
-            android:textSize="@dimen/_9sdp"
+            android:textSize="@dimen/_8sdp"
             android:text="If you want to make this recipe private, you can do it by turning on the switch below."
             android:layout_marginTop="@dimen/_5sdp"/>
 
