@@ -1,7 +1,6 @@
 package com.example.recipe_app.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
-import com.example.recipe_app.Fragment.HomeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
-import com.example.recipe_app.RecipeDetail;
 
 import java.util.ArrayList;
 import java.util.List;
