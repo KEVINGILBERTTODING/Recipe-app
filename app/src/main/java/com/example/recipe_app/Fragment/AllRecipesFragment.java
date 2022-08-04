@@ -110,14 +110,14 @@ public class AllRecipesFragment extends Fragment {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
+                            ? R.layout.template_data_show_all
+                            : R.layout.template_data_show_all;
 
                 default:
                 case ShimmerRecyclerView.LAYOUT_LIST:
                     return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
+                            ? R.layout.template_data_show_all
+                            : R.layout.template_data_show_all;
             }
         });
         shimmerRecyclerView.showShimmer();     // to start showing shimmer
