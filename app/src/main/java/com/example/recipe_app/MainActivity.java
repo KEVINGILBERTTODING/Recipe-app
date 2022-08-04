@@ -93,41 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //    // show alert dilaog when user click back button
-//
-//    @Override
-//    public void onBackPressed() {
-//        AlertDialog.Builder builder = new  AlertDialog.Builder(this);
-//        builder.setCancelable(false);
-//        builder.setMessage("Do you want to exit?");
-//        builder.setPositiveButton("Yes", new
-//                DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int
-//                            which) {
-//                        //if user pressed "yes", then he is allowed to exit from application
-//                        Intent intent = new Intent(Intent.ACTION_MAIN);
-//                        intent.addCategory(Intent.CATEGORY_HOME);
-//                        startActivity(intent);
-//                        int pid = android.os.Process.myPid();
-//                        android.os.Process.killProcess(pid);
-//                    }
-//                });
-//        builder.setNegativeButton("No", new
-//                DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int
-//                            which) {
-//                        //if user select "No", just cancel this dialog and continue with app
-//                        dialog.cancel();
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
+
+
+
 }
