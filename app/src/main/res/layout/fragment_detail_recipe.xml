@@ -73,6 +73,7 @@
         android:background="@drawable/container_detailrecipe">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_det_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_12sdp"
@@ -310,9 +311,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/popmed"
-                        android:visibility="gone"
                         android:text="the steps will be here"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_notes"
@@ -323,12 +324,118 @@
                         android:text="the notes will be here"
                         android:textSize="@dimen/_10sdp" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/gray" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp">
+
+                        <ImageView
+                            android:id="@+id/iv_comment"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:src="@drawable/ic_comment" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_toRightOf="@+id/iv_comment"
+                            android:fontFamily="@font/popsem"
+                            android:text="Comments"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_see_all_commments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:fontFamily="@font/popsem"
+                                android:gravity="right"
+                                android:text="View all"
+                                android:textColor="@color/main"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <ImageButton
+                                android:id="@+id/btn_see_all_trending"
+                                android:layout_width="@dimen/_17sdp"
+                                android:layout_height="@dimen/_14sdp"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/arrow_right" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp" />
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:background="@color/white">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_myProfile"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:src="@color/black"
+            android:layout_marginLeft="@dimen/_12sdp"
+            app:civ_border_color="@color/main"
+            app:civ_border_width="2dp" />
+
+        <EditText
+            android:id="@+id/et_comment"
+            android:layout_width="@dimen/_210sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:layout_toRightOf="@id/iv_myProfile"
+            android:background="@drawable/container_comment"
+            android:fontFamily="@font/popmed"
+            android:hint="write a comment..."
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:background="@drawable/ic_send"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/et_comment"/>
+
+
 
     </RelativeLayout>
 
