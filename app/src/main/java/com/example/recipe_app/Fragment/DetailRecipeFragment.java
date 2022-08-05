@@ -66,6 +66,8 @@ public class DetailRecipeFragment extends Fragment  {
     private List<CommentModel> commentModelsList;
     InterfaceComment interfaceComment;
     CommentAdapter commentAdapter;
+    NestedScrollView nestedScrollView;
+    RelativeLayout relativeLayout;
 
     // Constructor
     public DetailRecipeFragment() {
@@ -105,6 +107,8 @@ public class DetailRecipeFragment extends Fragment  {
         recyclerView = view.findViewById(R.id.recycler_comment);
         btnSend = view.findViewById(R.id.btn_send);
         et_comment = view.findViewById(R.id.et_comment);
+        nestedScrollView = view.findViewById(R.id.scroll_det_recipe);
+        relativeLayout = view.findViewById(R.id.rl_comment);
 
         // Get data from bundle
 
@@ -198,6 +202,16 @@ public class DetailRecipeFragment extends Fragment  {
                 postComment(useridx, recipe_id, et_comment.getText().toString());
             }
         });
+
+        if (nestedScrollView != null) {
+            nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                if (scrollY > oldScrollY) {
+                    relativeLayout.setVisibility(View.GONE);
+                } else {
+                    relativeLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }
 
 
         return view;
