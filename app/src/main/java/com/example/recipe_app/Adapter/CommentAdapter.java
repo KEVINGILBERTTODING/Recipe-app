@@ -1,30 +1,61 @@
 package com.example.recipe_app.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceComment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+
+    String username, userid;
+
 
     List<CommentModel> commentModelsList;
     Context context;
+    CommentAdapter commentAdapter;
 
     public CommentAdapter(Context context, List<CommentModel> commentModelsList) {
         this.commentModelsList = commentModelsList;
         this.context = context;
+
+        // Mengambil username dan user_id menggunakan sharedpreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+        username = sharedPreferences.getString(TAG_USERNAME, null);
+        userid = sharedPreferences.getString("user_id", null);
     }
 
     @NonNull
@@ -42,6 +73,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_comment.setText(commentModelsList.get(position).getComment());
         holder.tv_date.setText(commentModelsList.get(position).getComment_date());
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
+        String comment = commentModelsList.get(position).getComment();
+
 
         Glide.with(context)
                 .load(commentModelsList.get(position).getPhoto_profile())
@@ -55,6 +88,41 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .override(200, 200)
                 .into(holder.img_profile);
 
+
+        // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
+        if (holder.tv_username.getText().toString().equals(username)) {
+            holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //Create popup menu
+                    PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END);
+                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.mnu_delete_comment:
+                                    deleteComment(commentModelsList.get(position).getComment_id());
+                                    getComment(commentModelsList.get(position).getRecipe_id());
+                                    break;
+                                case R.id.mnu_edit_comment:
+//                                    editComment(commentModelsList.get(position).getComment_id());
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+
+                    popupMenu.show();
+
+                    return false;
+                }
+            });
+        }
+
+
+
     }
 
     @Override
@@ -65,6 +133,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_profile;
         TextView tv_username, tv_comment, tv_date, tv_time;
+        RelativeLayout list_comment;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -77,8 +146,65 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_comment = itemView.findViewById(R.id.tv_comment);
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_time = itemView.findViewById(R.id.tv_time);
+            list_comment = itemView.findViewById(R.id.list_comments);
+
+
 
         }
+    }
+
+    // Get comment
+    public void getComment(String recipe_id) {
+
+        DataApi.getClient().create(InterfaceComment.class).getComment(recipe_id).enqueue(new Callback<List<CommentModel>>() {
+            @Override
+            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
+                if (response.isSuccessful()) {
+                    commentModelsList = response.body();
+                    commentAdapter = new CommentAdapter(context, commentModelsList);
+                    commentAdapter.notifyDataSetChanged();
+                    notifyDataSetChanged();
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
+                        .show();
+
+
+            }
+        });
+
+    }
+
+    public void deleteComment(String comment_id) {
+
+        DataApi.getClient().create(InterfaceComment.class).deleteComment(comment_id).enqueue(new Callback<CommentModel>() {
+            @Override
+            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                if (response.isSuccessful()) {
+
+                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
+                            .show();
+
+                }
+
+                else {
+                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentModel> call, Throwable t) {
+                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 }
 

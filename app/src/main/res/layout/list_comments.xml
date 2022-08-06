@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/list_comments"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -23,17 +24,18 @@
             android:id="@+id/cv_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardUseCompatPadding="true"
+            android:layout_toRightOf="@id/iv_profile"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardElevation="@null"
-            android:layout_toRightOf="@id/iv_profile">
+            app:cardUseCompatPadding="true">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E8E7E7"
-                android:padding="@dimen/_5sdp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp">
+
                 <TextView
                     android:id="@+id/tv_username"
                     android:layout_width="match_parent"
@@ -51,11 +53,10 @@
                     android:layout_below="@+id/tv_username"
                     android:layout_toRightOf="@id/iv_profile"
                     android:fontFamily="@font/popmed"
-                    android:textColor="@color/black"
                     android:text="cmmment will be here"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_9sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 
         </androidx.cardview.widget.CardView>
