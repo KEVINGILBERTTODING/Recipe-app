@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 public class CommentModel implements Serializable {
 
+    @SerializedName("comment_id")
+    String comment_id;
     @SerializedName("user_id")
     String user_id;
     @SerializedName("recipe_id")
@@ -23,10 +25,10 @@ public class CommentModel implements Serializable {
     @SerializedName("username")
     String username;
 
-    public CommentModel(String user_id, String recipe_id, String comment, String comment_date,
+    public CommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
                         String comment_time, String photo_profile, String username) {
 
-
+        this.comment_id = comment_id;
         this.user_id = user_id;
         this.recipe_id = recipe_id;
         this.comment = comment;
@@ -36,6 +38,14 @@ public class CommentModel implements Serializable {
         this.comment_date = comment_date;
 
 
+    }
+
+    public String getComment_id() {
+        return comment_id;
+    }
+
+    public void setComment_id(String comment_id) {
+        this.comment_id = comment_id;
     }
 
     public String getUser_id() {

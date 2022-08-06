@@ -23,8 +23,10 @@ public interface InterfaceComment {
                                      @Field("comment") String comment);
 
 
+    @FormUrlEncoded
+    @POST("delete_comment.php")
+    Call<CommentModel> deleteComment(@Field("comment_id") String comment_id);
 
 
-    @DELETE("comment/")
-    Call<CommentModel> deleteComment(@Query("comment_id") String comment_id);
+
 }

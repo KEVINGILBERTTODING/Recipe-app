@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/mnu_delete_comment"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Delete" />
+    <item
+        android:id="@+id/mnu_edit_comment"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="Edit" />
+
+<!--    <item-->
+<!--        android:id="@+id/navigation_drawer_item3"-->
+<!--        android:icon="@android:drawable/ic_menu_share"-->
+<!--        android:title="Item 3"/>-->
+</menu>
