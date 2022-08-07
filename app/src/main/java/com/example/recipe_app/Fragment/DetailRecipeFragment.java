@@ -32,10 +32,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Model.CommentModel;
+import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
+import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -51,9 +53,11 @@ public class DetailRecipeFragment extends Fragment  {
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvRating, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes;
-    ImageView ivRecipeImage, ivProfile;
+    ImageView ivRecipeImage, ivProfile, ivMyProfile;
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend;
+    private List<ProfileModel> profileModels;
+    InterfaceProfile interfaceProfile;
 
     EditText et_comment;
 
@@ -68,6 +72,8 @@ public class DetailRecipeFragment extends Fragment  {
     CommentAdapter commentAdapter;
     NestedScrollView nestedScrollView;
     RelativeLayout relativeLayout;
+
+    private List<RecipeModel> recipeModels;
 
     // Constructor
     public DetailRecipeFragment() {
@@ -109,6 +115,7 @@ public class DetailRecipeFragment extends Fragment  {
         et_comment = view.findViewById(R.id.et_comment);
         nestedScrollView = view.findViewById(R.id.scroll_det_recipe);
         relativeLayout = view.findViewById(R.id.rl_comment);
+        ivMyProfile = view.findViewById(R.id.iv_myProfile);
 
         // Get data from bundle
 
@@ -129,6 +136,9 @@ public class DetailRecipeFragment extends Fragment  {
         photoProfile = getArguments().getString("photo_profile");
         recipeNOtes = getArguments().getString("notes");
 
+
+
+
         tvRecipeName.setText(recipeName);
         tvRecipeIngredients.setText(recipeIngredients);
         tvRecipeSteps.setText(recipeSteps);
@@ -143,14 +153,8 @@ public class DetailRecipeFragment extends Fragment  {
         tvNotes.setText(recipeNOtes);
 
 
-        // Load image profile
-        Glide.with(getContext())
-                .load(photoProfile)
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .skipMemoryCache(true)
-                .override(100, 100)
-                .into(ivProfile);
+        // load photo profile
+        getPhotoProfile(useridx);
 
         // Load image recipe
         Glide.with(getContext())
@@ -159,6 +163,16 @@ public class DetailRecipeFragment extends Fragment  {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(true)
                 .into(ivRecipeImage);
+
+
+        // load photo profile user
+        Glide.with(getContext())
+                .load(photoProfile)
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .skipMemoryCache(true)
+                .override(100, 100)
+                .into(ivMyProfile);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +183,8 @@ public class DetailRecipeFragment extends Fragment  {
 
             }
         });
+
+
 
         // Show ingredients
 
@@ -269,6 +285,31 @@ public class DetailRecipeFragment extends Fragment  {
             }
 
         });
+    }
+
+
+    // get load photo profile
+    public void getPhotoProfile(String user_id) {
+       DataApi.getClient().create(InterfaceProfile.class).getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
+           @Override
+           public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+               if (response.isSuccessful()) {
+                   profileModels = response.body();
+                   photoProfile = profileModels.get(0).getPhoto_profile();
+                   Glide.with(getContext())
+                           .load(photoProfile)
+                           .dontAnimate()
+                           .diskCacheStrategy(DiskCacheStrategy.ALL)
+                           .skipMemoryCache(true)
+                           .into(ivMyProfile);
+               }
+           }
+
+           @Override
+           public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+           }
+       });
     }
 
 
