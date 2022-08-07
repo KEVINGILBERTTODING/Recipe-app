@@ -220,7 +220,7 @@
                     android:layout_marginTop="@dimen/_8sdp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_profile"
+                        android:id="@+id/iv_profile_recipe"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_alignParentLeft="true"
@@ -233,7 +233,7 @@
                         android:id="@+id/tv_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/iv_profile"
+                        android:layout_toRightOf="@id/iv_profile_recipe"
                         android:fontFamily="@font/popsem"
                         android:text="Username"
                         android:textColor="@color/black"
@@ -244,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_username"
-                        android:layout_toRightOf="@id/iv_profile"
+                        android:layout_toRightOf="@id/iv_profile_recipe"
                         android:fontFamily="@font/popmed"
                         android:text="email"
                         android:textSize="@dimen/_8sdp" />

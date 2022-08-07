@@ -105,7 +105,7 @@ public class DetailRecipeFragment extends Fragment  {
         tvDate = view.findViewById(R.id.tv_date);
         tvTime = view.findViewById(R.id.tv_time);
         ivRecipeImage = view.findViewById(R.id.img_recipe);
-        ivProfile = view.findViewById(R.id.iv_profile);
+        ivProfile = view.findViewById(R.id.iv_profile_recipe);
         btnBack = view.findViewById(R.id.btn_back);
         btnIngredients = view.findViewById(R.id.btn_ingredients);
         btnSteps = view.findViewById(R.id.btn_steps);
@@ -152,9 +152,6 @@ public class DetailRecipeFragment extends Fragment  {
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
 
-        Toast.makeText(getContext(), photoProfile, Toast.LENGTH_LONG).show();
-
-
         // load photo profile
         getPhotoProfile(useridx);
 
@@ -174,7 +171,7 @@ public class DetailRecipeFragment extends Fragment  {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(true)
                 .override(100, 100)
-                .into(ivMyProfile);
+                .into(ivProfile);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
