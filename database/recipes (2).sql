@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 05, 2022 at 12:29 AM
+-- Generation Time: Aug 08, 2022 at 12:04 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -36,6 +36,22 @@ CREATE TABLE `comments` (
   `comment_time` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`comment_id`, `recipe_id`, `user_id`, `comment`, `comment_date`, `comment_time`) VALUES
+(51, 10, 2, 'sdd', '2022-08-06', '04:35:58'),
+(52, 10, 2, 'halooo gaess', '2022-08-06', '04:36:14'),
+(53, 10, 2, 'test woiii', '2022-08-06', '04:48:43'),
+(54, 10, 2, 'hahah', '2022-08-08', '04:45:31'),
+(55, 10, 2, '🥰🥰', '2022-08-06', '05:42:54'),
+(73, 8, 4, 'this is the newst comment', '2022-08-06', '12:39:53'),
+(82, 6, 4, 'test', '2022-08-07', '08:20:34'),
+(94, 1, 4, 'kok keasinan yaa', '2022-08-07', '21:05:39'),
+(95, 7, 2, '😋😍', '2022-08-07', '21:14:55'),
+(96, 7, 2, '😎😍', '2022-08-07', '21:16:43');
+
 -- --------------------------------------------------------
 
 --
@@ -43,7 +59,7 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `favorites` (
-  `id` int(6) NOT NULL,
+  `save_id` int(6) NOT NULL,
   `user_id` int(6) NOT NULL,
   `recipe_id` int(10) NOT NULL,
   `datetime` varchar(80) NOT NULL
@@ -105,18 +121,16 @@ CREATE TABLE `users` (
   `date` varchar(80) NOT NULL,
   `time` varchar(80) NOT NULL,
   `photo_profile` varchar(255) NOT NULL DEFAULT 'default.png',
-  `biography` text NOT NULL,
-  `job` varchar(255) NOT NULL,
-  `gender` varchar(80) NOT NULL
+  `biography` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `date`, `time`, `photo_profile`, `biography`, `job`, `gender`) VALUES
-(2, 'Eve Ichwan', 'eve@gmail.com', '38adbdb825dbf4601a6fc697515c88c4', '23-07-2022', '15:16:23', '2.png', '', '', ''),
-(4, 'kevin toding', 'gwareshop@gmail.com', 'ddcc77b15e9ff9a3c2a6f60344df9062', '23-07-2022', '15:20:03', 'default.png', '', '', '');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `date`, `time`, `photo_profile`, `biography`) VALUES
+(2, 'Eve Ichwan', 'eve@gmail.com', '38adbdb825dbf4601a6fc697515c88c4', '23-07-2022', '15:16:23', '2.png', ''),
+(4, 'kevin toding', 'gwareshop@gmail.com', 'ddcc77b15e9ff9a3c2a6f60344df9062', '23-07-2022', '15:20:03', 'default.png', '');
 
 --
 -- Indexes for dumped tables
@@ -127,6 +141,12 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `date`, `time`,
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`comment_id`);
+
+--
+-- Indexes for table `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`save_id`);
 
 --
 -- Indexes for table `recipe`
@@ -148,7 +168,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `comment_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+
+--
+-- AUTO_INCREMENT for table `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `save_id` int(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `recipe`
