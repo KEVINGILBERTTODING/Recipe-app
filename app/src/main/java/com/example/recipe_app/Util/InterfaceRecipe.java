@@ -34,6 +34,12 @@ public interface InterfaceRecipe {
             @Query("likes") Integer likes
     );
 
+    // Get Recipe By Likes
+    @GET("get_my_recipe.php")
+    Call<List<RecipeModel>> getMyRecipe(
+            @Query("user_id") String user_id
+    );
+
     @FormUrlEncoded
     @POST("post_recipe.php")
     Call<RecipeModel> createRecipe(@Field("user_id") String user_id,
