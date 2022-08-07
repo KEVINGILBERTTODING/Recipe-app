@@ -114,8 +114,7 @@
                 android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/ic_calendar"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"
-                />
+                android:layout_gravity="center_horizontal"/>
 
             <TextView
                 android:id="@+id/tv_date"
