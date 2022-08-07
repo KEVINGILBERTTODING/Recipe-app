@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.MyProfileFrgament">
+    tools:context=".Fragment.MyProfileFragment">
 
     <LinearLayout
         android:id="@+id/app_bar"
@@ -60,7 +60,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            app:civ_border_width="2dp"
+            app:civ_border_width="@dimen/_3sdp"
             app:civ_border_color="@color/main"
             android:src="@color/black" />
         <TextView
@@ -100,8 +100,6 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
-
-
 
         </LinearLayout>
 
@@ -166,6 +164,14 @@
             app:tabTextAppearance="@style/TabFont">
 
         </com.google.android.material.tabs.TabLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:id="@+id/recycler_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
 
     </LinearLayout>

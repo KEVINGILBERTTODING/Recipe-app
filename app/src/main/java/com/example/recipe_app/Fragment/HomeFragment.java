@@ -413,6 +413,7 @@ public class HomeFragment extends Fragment {
                     Glide.with(getContext()).load(profileModel.getPhoto_profile()).into(img_profile);
                 }
             }
+
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
@@ -420,23 +421,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-//        interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-//        Call<ProfileModel> call = interfaceProfile.getProfile(user_id);
-//        call.enqueue(new Callback<ProfileModel>() {
-//            @Override
-//            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-//                profileModel = response.body();
-//                Glide.with(getContext())
-//                        .load(profileModel
-//                                .getPhoto_profile()).into(img_profile);
-//            }
-//            @Override
-//            public void onFailure(Call<ProfileModel> call, Throwable t) {
-//                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
-
 
 }

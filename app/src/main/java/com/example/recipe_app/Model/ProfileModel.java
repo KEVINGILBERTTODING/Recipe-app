@@ -18,13 +18,20 @@ public class ProfileModel implements Serializable {
     String email;
     @SerializedName("biography")
     String biography;
+    @SerializedName("date")
+    String date;
+    @SerializedName("time")
+    String time;
 
-    public ProfileModel(String user_id, String username, String photo_profile, String email, String biography) {
+    public ProfileModel(String user_id, String username, String photo_profile, String email, String biography,
+                        String date, String time) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
         this.email = email;
         this.biography = biography;
+        this.date = date;
+        this.time = time;
     }
 
     public String getUser_id() {
@@ -65,5 +72,21 @@ public class ProfileModel implements Serializable {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
