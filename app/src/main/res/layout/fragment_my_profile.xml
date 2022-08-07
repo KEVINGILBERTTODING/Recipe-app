@@ -60,7 +60,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            app:civ_border_width="3dp"
+            app:civ_border_width="@dimen/_3sdp"
             app:civ_border_color="@color/main"
             android:src="@color/black" />
         <TextView
@@ -100,8 +100,6 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
-
-
 
         </LinearLayout>
 
@@ -168,7 +166,8 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:id="@+id/recycler_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -152,6 +152,8 @@ public class DetailRecipeFragment extends Fragment  {
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
 
+        Toast.makeText(getContext(), photoProfile, Toast.LENGTH_LONG).show();
+
 
         // load photo profile
         getPhotoProfile(useridx);

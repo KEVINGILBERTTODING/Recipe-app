@@ -11,7 +11,7 @@ import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Fragment.AllRecipesFragment;
 import com.example.recipe_app.Fragment.CreateRecipeFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
-import com.example.recipe_app.Fragment.MyProfileFrgament;
+import com.example.recipe_app.Fragment.MyProfileFragment;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 5:
-                        replace(new MyProfileFrgament());
+                        replace(new MyProfileFragment());
                         break;
 
 

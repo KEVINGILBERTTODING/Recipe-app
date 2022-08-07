@@ -92,7 +92,6 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             super(itemView);
             img_recipe = itemView.findViewById(R.id.img_recipe);
             img_profile = itemView.findViewById(R.id.img_profile);
-
             tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_duration = itemView.findViewById(R.id.tv_duration);
             tv_title = itemView.findViewById(R.id.tv_title);
