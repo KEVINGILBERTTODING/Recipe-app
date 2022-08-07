@@ -28,9 +28,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
+import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -48,6 +50,9 @@ public class HomeFragment extends Fragment {
     ShimmerRecyclerView shimmerRecyclerView, shimmerRecipeCategoryPopular, shimmerRecipeTrending;
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
+
+    private List<ProfileModel> profileModelList;
+    InterfaceProfile interfaceProfile;
     RecipeAllAdapter recipeAllAdapter;
     RelativeLayout layoutHeader;
     RecipeCategoryPopular recipeCategoryPopular;
@@ -206,6 +211,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // call method get profile image
+        getProfileImage(userid);
+
 
 
 
@@ -225,7 +233,7 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.replace(R.id.fragment_container, fragment, "AllRecipesFragment");
 
 
-  }
+    }
 
 
     private void refreshItem() {
@@ -391,6 +399,43 @@ public class HomeFragment extends Fragment {
         });
         shimmerRecipeTrending.showShimmer();     // to start showing shimmer
 
+    }
+
+    // get profile image
+    private void getProfileImage(String user_id) {
+        DataApi.getClient().create(InterfaceProfile.class).getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                profileModelList = response.body();
+                if (profileModelList.size() > 0) {
+                    ProfileModel profileModel;
+                    profileModel = profileModelList.get(0);
+                    Glide.with(getContext()).load(profileModel.getPhoto_profile()).into(img_profile);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+//        interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+//        Call<ProfileModel> call = interfaceProfile.getProfile(user_id);
+//        call.enqueue(new Callback<ProfileModel>() {
+//            @Override
+//            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+//                profileModel = response.body();
+//                Glide.with(getContext())
+//                        .load(profileModel
+//                                .getPhoto_profile()).into(img_profile);
+//            }
+//            @Override
+//            public void onFailure(Call<ProfileModel> call, Throwable t) {
+//                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
 
