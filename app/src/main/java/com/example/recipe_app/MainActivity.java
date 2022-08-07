@@ -12,6 +12,7 @@ import com.example.recipe_app.Fragment.AllRecipesFragment;
 import com.example.recipe_app.Fragment.CreateRecipeFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
+import com.example.recipe_app.Fragment.SavedRecipeFragment;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 4:
-                        replace(new AllRecipesFragment());
+                        replace(new SavedRecipeFragment());
                         break;
 
                     case 5:

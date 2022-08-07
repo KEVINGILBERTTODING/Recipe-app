@@ -27,6 +27,13 @@ public interface InterfaceRecipe {
             @Query("status") Integer status
     );
 
+    // get saved recipe
+
+    @GET("get_saved_recipe.php")
+    Call<List<RecipeModel>> getSavedRecipe(
+            @Query("user_id") String user_id
+    );
+
     // Get Recipe By Likes
     @GET("view_recipe.php")
     Call<List<RecipeModel>> getRecipeTranding(
