@@ -14,15 +14,26 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface InterfaceComment {
+
+    // Method for get comment
     @GET("get_comment.php")
     Call<List<CommentModel>> getComment(@Query("recipe_id") String recipe_id);
+
+    // method for add comment
     @FormUrlEncoded
     @POST("post_comment.php")
     Call<CommentModel> createComment(@Field("user_id") String user_id,
                                      @Field("recipe_id") String recipe_id,
                                      @Field("comment") String comment);
 
+    // method for edit comment
+    @FormUrlEncoded
+    @POST("edit_comment.php")
+    Call<CommentModel> editComment(@Field("comment_id") String comment_id,
+                                     @Field("comment") String comment);
 
+
+    // method for delete comment
     @FormUrlEncoded
     @POST("delete_comment.php")
     Call<CommentModel> deleteComment(@Field("comment_id") String comment_id);

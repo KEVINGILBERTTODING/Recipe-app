@@ -8,12 +8,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -22,11 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -74,6 +80,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_date.setText(commentModelsList.get(position).getComment_date());
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
         String comment = commentModelsList.get(position).getComment();
+        String user_id = commentModelsList.get(position).getUser_id();
 
 
         Glide.with(context)
@@ -90,7 +97,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
         // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
-        if (holder.tv_username.getText().toString().equals(username)) {
+        if (user_id.equals(userid)) {
+
+            // Change text color if user_id == user_id comment
+            holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
             holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -107,7 +117,27 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                     getComment(commentModelsList.get(position).getRecipe_id());
                                     break;
                                 case R.id.mnu_edit_comment:
-//                                    editComment(commentModelsList.get(position).getComment_id());
+
+                                    Dialog dialog = new Dialog(context);
+                                    dialog.setContentView(R.layout.dialog_edit_comment);
+                                    dialog.setTitle("Edit Comment");
+                                    dialog.show();
+                                    final EditText et_comment = dialog.findViewById(R.id.et_comment);
+                                    final Button btn_edit = dialog.findViewById(R.id.btn_edit);
+//                                    final ImageButton btn_cancel = dialog.findViewById(R.id.btn_cancel);
+                                    et_comment.setText(commentModelsList.get(position).getComment());
+                                    btn_edit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            getComment(commentModelsList.get(position).getRecipe_id());
+                                            editComment(commentModelsList.get(position).getComment_id(), et_comment.getText().toString());
+
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+
+
                                     break;
                             }
                             return false;
@@ -188,6 +218,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
                 if (response.isSuccessful()) {
 
+
+                    commentAdapter = new CommentAdapter(context, commentModelsList);
+                    commentAdapter.notifyDataSetChanged();
+                    notifyDataSetChanged();
+
+
                     Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
                             .show();
 
@@ -199,6 +235,36 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 }
             }
 
+            @Override
+            public void onFailure(Call<CommentModel> call, Throwable t) {
+                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        });
+    }
+
+    private void editComment(String comment_id, String comment) {
+        DataApi.getClient().create(InterfaceComment.class).editComment(comment_id, comment).enqueue(new Callback<CommentModel>() {
+            @Override
+            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                if (response.isSuccessful()) {
+
+                    // response langsung di refresh
+                    commentAdapter = new CommentAdapter(context, commentModelsList);
+                    commentAdapter.notifyDataSetChanged();
+                    notifyDataSetChanged();
+
+
+                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment edited", Snackbar.LENGTH_SHORT)
+                            .show();
+
+                }
+
+                else {
+                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            }
             @Override
             public void onFailure(Call<CommentModel> call, Throwable t) {
                 Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)

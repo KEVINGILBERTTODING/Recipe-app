@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:id="@+id/rl_comment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp"
+    >
+
+
+
+    <EditText
+        android:id="@+id/et_comment"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_myProfile"
+        android:fontFamily="@font/popmed"
+        android:hint="write a comment..."
+        android:padding="@dimen/_5sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        app:cornerRadius="@dimen/_10sdp"
+        android:layout_centerInParent="true"
+        android:textAllCaps="false"
+        android:layout_toRightOf="@id/et_comment"/>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

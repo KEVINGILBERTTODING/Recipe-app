@@ -409,9 +409,9 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/_12sdp"
             android:layout_marginRight="@dimen/_12sdp"
             android:src="@color/black"
-            android:layout_marginLeft="@dimen/_12sdp"
             app:civ_border_color="@color/main"
             app:civ_border_width="2dp" />
 
