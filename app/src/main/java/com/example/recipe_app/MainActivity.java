@@ -1,24 +1,17 @@
 package com.example.recipe_app;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Fragment.AllRecipesFragment;
-import com.example.recipe_app.Fragment.CategoryFragment;
 import com.example.recipe_app.Fragment.CreateRecipeFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
-import com.example.recipe_app.Fragment.TrendingRecipesFragment;
+import com.example.recipe_app.Fragment.MyProfileFrgament;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -66,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 5:
-                        replace(new AllRecipesFragment());
+                        replace(new MyProfileFrgament());
                         break;
 
 
