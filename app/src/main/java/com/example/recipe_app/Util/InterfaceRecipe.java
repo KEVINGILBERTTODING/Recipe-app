@@ -47,6 +47,16 @@ public interface InterfaceRecipe {
             @Query("user_id") String user_id
     );
 
+    // delete recipe from saved recipe
+    @FormUrlEncoded
+    @POST("delete_saved_recipe.php")
+    Call<RecipeModel> deleteSavedRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id
+    );
+
+
+    // post recipe
     @FormUrlEncoded
     @POST("post_recipe.php")
     Call<RecipeModel> createRecipe(@Field("user_id") String user_id,

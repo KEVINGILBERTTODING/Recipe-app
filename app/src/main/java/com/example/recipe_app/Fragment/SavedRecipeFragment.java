@@ -116,6 +116,7 @@ public class SavedRecipeFragment extends Fragment {
                 rv_saved_recipe.setHasFixedSize(true);
 
 
+
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
