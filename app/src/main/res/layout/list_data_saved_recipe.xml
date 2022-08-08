@@ -2,7 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/btn_more"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_more" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_recipe"
@@ -10,6 +18,7 @@
         android:layout_height="@dimen/_180sdp"
         android:scaleType="fitXY"
         android:src="@drawable/sample_food"
+        android:layout_below="@+id/btn_more"
         app:shapeAppearanceOverlay="@style/roundedCorners" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -17,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
+        android:layout_below="@id/btn_more"
         android:background="@drawable/container"
         android:gravity="center"
         android:orientation="horizontal"
@@ -51,6 +61,7 @@
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginRight="@dimen/_10sdp"
+        android:layout_below="@+id/btn_more"
         android:background="@drawable/btn_favorite" />
 
     <TextView
