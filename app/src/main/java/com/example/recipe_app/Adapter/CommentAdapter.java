@@ -112,9 +112,39 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
+
+
                                 case R.id.mnu_delete_comment:
-                                    deleteComment(commentModelsList.get(position).getComment_id());
-                                    getComment(commentModelsList.get(position).getRecipe_id());
+                                    DataApi.getClient().create(InterfaceComment.class).deleteComment(commentModelsList.get(position).getComment_id()).enqueue(new Callback<CommentModel>() {
+                                        @Override
+                                        public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                            if (response.isSuccessful()) {
+
+
+                                                commentModelsList.remove(position);
+                                                notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, commentModelsList.size());
+
+
+
+                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
+                                                        .show();
+
+                                            }
+
+                                            else {
+                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
+                                                        .show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<CommentModel> call, Throwable t) {
+                                            Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    });
+
                                     break;
                                 case R.id.mnu_edit_comment:
 
@@ -124,13 +154,48 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                     dialog.show();
                                     final EditText et_comment = dialog.findViewById(R.id.et_comment);
                                     final Button btn_edit = dialog.findViewById(R.id.btn_edit);
-//                                    final ImageButton btn_cancel = dialog.findViewById(R.id.btn_cancel);
+
                                     et_comment.setText(commentModelsList.get(position).getComment());
+
+
+                                    // saat menu edit di pilih
                                     btn_edit.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            getComment(commentModelsList.get(position).getRecipe_id());
-                                            editComment(commentModelsList.get(position).getComment_id(), et_comment.getText().toString());
+
+                                            DataApi.getClient().create(InterfaceComment.class)
+                                                    .editComment(commentModelsList.get(position).getComment_id(), et_comment.getText().toString())
+                                                    .enqueue(new Callback<CommentModel>() {
+                                                @Override
+                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                                    if (response.isSuccessful()) {
+
+                                                        // response langsung di refresh
+                                                        commentModelsList.get(position).setComment(et_comment.getText().toString());
+                                                        notifyItemChanged(position);
+                                                        notifyItemRangeChanged(position, commentModelsList.size());
+
+                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment edited", Snackbar.LENGTH_SHORT)
+                                                                .show();
+
+                                                    }
+
+                                                    else {
+                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
+                                                                .show();
+                                                    }
+                                                }
+                                                @Override
+                                                public void onFailure(Call<CommentModel> call, Throwable t) {
+                                                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
+                                                            .show();
+                                                }
+                                            });
+
+
+
+
+
 
                                             dialog.dismiss();
                                         }
@@ -183,95 +248,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
     }
 
-    // Get comment
-    public void getComment(String recipe_id) {
 
-        DataApi.getClient().create(InterfaceComment.class).getComment(recipe_id).enqueue(new Callback<List<CommentModel>>() {
-            @Override
-            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
-                if (response.isSuccessful()) {
-                    commentModelsList = response.body();
-                    commentAdapter = new CommentAdapter(context, commentModelsList);
-                    commentAdapter.notifyDataSetChanged();
-                    notifyDataSetChanged();
-
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                        .show();
-
-
-            }
-        });
-
-    }
-
-    public void deleteComment(String comment_id) {
-
-        DataApi.getClient().create(InterfaceComment.class).deleteComment(comment_id).enqueue(new Callback<CommentModel>() {
-            @Override
-            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                if (response.isSuccessful()) {
-
-
-                    commentAdapter = new CommentAdapter(context, commentModelsList);
-                    commentAdapter.notifyDataSetChanged();
-                    notifyDataSetChanged();
-
-
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
-                            .show();
-
-                }
-
-                else {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CommentModel> call, Throwable t) {
-                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
-
-    private void editComment(String comment_id, String comment) {
-        DataApi.getClient().create(InterfaceComment.class).editComment(comment_id, comment).enqueue(new Callback<CommentModel>() {
-            @Override
-            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                if (response.isSuccessful()) {
-
-                    // response langsung di refresh
-                    commentAdapter = new CommentAdapter(context, commentModelsList);
-                    commentAdapter.notifyDataSetChanged();
-                    notifyDataSetChanged();
-
-
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment edited", Snackbar.LENGTH_SHORT)
-                            .show();
-
-                }
-
-                else {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                            .show();
-                }
-            }
-            @Override
-            public void onFailure(Call<CommentModel> call, Throwable t) {
-                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
 }
 
 
