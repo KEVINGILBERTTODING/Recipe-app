@@ -16,7 +16,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.ViewHolder> {
 
@@ -79,6 +81,14 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
     public int getItemCount() {
         return recipeModels.size();
     }
+
+    public void filterList(ArrayList<RecipeModel> filteredList) {
+
+        recipeModels = filteredList;
+        notifyDataSetChanged();
+    }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv_recipe, iv_profile;
