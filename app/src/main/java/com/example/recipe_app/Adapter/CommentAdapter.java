@@ -192,11 +192,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                                 }
                                             });
 
-
-
-
-
-
                                             dialog.dismiss();
                                         }
                                     });
