@@ -81,6 +81,7 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 android:background="@drawable/search_bar"
                 android:focusable="false"
+                android:visibility="gone"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@color/transparent"
                 app:queryHint="Search recipes"

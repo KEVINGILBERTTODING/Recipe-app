@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.SavedRecipeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -131,9 +136,6 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
 
 
-//                                deleteRecipe(recipeModels.get(position).getRecipe_id(), userid);
-//                                notifyItemRemoved(position);
-
                                 break;
 
                         }
@@ -147,6 +149,37 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             });
 
 
+        holder.iv_recipe.setOnClickListener(view -> {
+            Fragment fragment= new DetailRecipeFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_id", recipeModels.get(position).getRecipe_id());
+            bundle.putString("user_id", recipeModels.get(position).getUser_id());
+            bundle.putString("username", recipeModels.get(position).getUsername());
+            bundle.putString("title", recipeModels.get(position).getTitle());
+            bundle.putString("description", recipeModels.get(position).getDescription());
+            bundle.putString("category", recipeModels.get(position).getCategory());
+            bundle.putString("servings", recipeModels.get(position).getServings());
+            bundle.putString("duration", recipeModels.get(position).getDuration());
+            bundle.putString("ingredients", recipeModels.get(position).getIngredients());
+            bundle.putString("steps", recipeModels.get(position).getSteps());
+            bundle.putString("upload_date", recipeModels.get(position).getUpload_date());
+            bundle.putString("upload_time", recipeModels.get(position).getUpload_time());
+            bundle.putString("image", recipeModels.get(position).getImage());
+            bundle.putString("status", recipeModels.get(position).getStatus());
+            bundle.putString("ratings", recipeModels.get(position).getRatings());
+            bundle.putString("likes", recipeModels.get(position).getLikes());
+            bundle.putString("photo_profile", recipeModels.get(position).getPhoto_profile());
+            bundle.putString("email", recipeModels.get(position).getEmail());
+            fragment.setArguments(bundle);
+            // get Fragment
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+        });
     }
 
     @Override
@@ -184,29 +217,5 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
     }
 
-    private void deleteRecipe(String recipe_id, String user_id) {
 
-        DataApi.getClient().create(InterfaceRecipe.class).deleteSavedRecipe(recipe_id, user_id).enqueue(new retrofit2.Callback<RecipeModel>() {
-            @Override
-            public void onResponse(retrofit2.Call<RecipeModel> call, retrofit2.Response<RecipeModel> response) {
-                if (response.isSuccessful()) {
-
-
-
-
-                    notifyDataSetChanged();
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT)
-                            .show();
-
-
-                }
-            }
-            @Override
-            public void onFailure(retrofit2.Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Failed to delete recipe", Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
-
-    }
 }
