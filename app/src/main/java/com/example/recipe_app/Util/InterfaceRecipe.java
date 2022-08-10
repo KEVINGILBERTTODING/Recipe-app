@@ -59,7 +59,7 @@ public interface InterfaceRecipe {
     );
 
 
-    // delete recipe from saved recipe
+    // check if recipe is saved
     @FormUrlEncoded
     @POST("check_save_recipe.php")
     Call<RecipeModel> checkSaveRecipe(
@@ -67,7 +67,7 @@ public interface InterfaceRecipe {
             @Field("recipe_id") String recipe_id
     );
 
-    // delete recipe from saved recipe
+    // save recipe
     @FormUrlEncoded
     @POST("save_saved_recipe.php")
     Call<RecipeModel> saveSavedRecipe(
