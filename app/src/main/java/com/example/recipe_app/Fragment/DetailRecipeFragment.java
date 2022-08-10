@@ -7,17 +7,18 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.ButtonBarLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
+import android.os.Handler;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,9 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -40,10 +41,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -51,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRecipeFragment extends Fragment  {
+public class DetailRecipeFragment extends Fragment implements GestureDetector.OnDoubleTapListener, View.OnClickListener {
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvRating, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes;
@@ -60,6 +58,7 @@ public class DetailRecipeFragment extends Fragment  {
     ImageButton btnBack, btnSend, btnFav;
     private List<ProfileModel> profileModels;
     InterfaceProfile interfaceProfile;
+    LottieAnimationView anim_love, save_anim;
 
     EditText et_comment;
 
@@ -81,6 +80,7 @@ public class DetailRecipeFragment extends Fragment  {
     public DetailRecipeFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -119,6 +119,8 @@ public class DetailRecipeFragment extends Fragment  {
         relativeLayout = view.findViewById(R.id.rl_comment);
         ivMyProfile = view.findViewById(R.id.iv_myProfile);
         btnFav = view.findViewById(R.id.btn_fav);
+        anim_love = view.findViewById(R.id.love_anim);
+        save_anim = view.findViewById(R.id.saved_anim);
 
         // Get data from bundle
 
@@ -206,6 +208,52 @@ public class DetailRecipeFragment extends Fragment  {
 
         });
 
+        ivRecipeImage.setOnTouchListener(new View.OnTouchListener() {
+
+            GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
+
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    if (anim_love.getVisibility() == View.GONE) {
+                        anim_love.setVisibility(View.VISIBLE);
+                        save_anim.playAnimation();
+//                        ani.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                anim_love.setVisibility(View.GONE);
+                            }
+                        }, 2 * 1000); // For 2 seconds
+                    }
+                    else {
+                        anim_love.setVisibility(View.GONE);
+                    }
+
+                       return super.onDoubleTap(e);
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    Toast.makeText(getContext(), "long tapp", Toast.LENGTH_SHORT).show();
+                    super.onLongPress(e);
+                }
+
+                @Override
+                public boolean onDown(MotionEvent e) {
+                    return true;
+                }
+            });
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
+
+
+
+
+
 
 
         // Show ingredients
@@ -254,6 +302,7 @@ public class DetailRecipeFragment extends Fragment  {
         // check apakah recipe sudah ada di simpan atau belum
         checkSavedRecipe(useridx, recipe_id);
 
+        // saat button save di klik
         btnFav.setOnClickListener(View -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (btnFav.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_favorite).getConstantState()) {
@@ -264,7 +313,20 @@ public class DetailRecipeFragment extends Fragment  {
 
             //jika di klik maka akan menyimpan resep
             else {
-                saveRecipe(recipe_id, useridx);
+
+                if (save_anim.getVisibility() == View.GONE) {
+                    save_anim.setVisibility(View.VISIBLE);
+                    save_anim.playAnimation();
+                    saveRecipe(recipe_id, useridx);
+                    btnFav.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            save_anim.setVisibility(View.GONE);
+                        }
+                    }, 2 * 1000); // For 2 seconds
+                }
+
                 btnFav.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
             }
 
@@ -417,8 +479,26 @@ public class DetailRecipeFragment extends Fragment  {
     }
 
 
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent motionEvent) {
 
 
+        return false;
+    }
 
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
 }
 

@@ -441,6 +441,30 @@
 
     </RelativeLayout>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/love_anim"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        app:lottie_loop="false"
+        android:layout_centerInParent="true"
+        app:lottie_rawRes="@raw/love"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/saved_anim"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_110sdp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        app:lottie_loop="false"
+        android:layout_centerInParent="true"
+        app:lottie_rawRes="@raw/saved"/>
+
+
+
 
 
 
