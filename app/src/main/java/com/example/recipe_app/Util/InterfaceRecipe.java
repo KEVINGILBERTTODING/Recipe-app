@@ -27,6 +27,9 @@ public interface InterfaceRecipe {
             @Query("status") Integer status
     );
 
+
+
+
     // get saved recipe
 
     @GET("get_saved_recipe.php")
@@ -51,6 +54,23 @@ public interface InterfaceRecipe {
     @FormUrlEncoded
     @POST("delete_saved_recipe.php")
     Call<RecipeModel> deleteSavedRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id
+    );
+
+
+    // delete recipe from saved recipe
+    @FormUrlEncoded
+    @POST("check_save_recipe.php")
+    Call<RecipeModel> checkSaveRecipe(
+            @Field("user_id") String user_id,
+            @Field("recipe_id") String recipe_id
+    );
+
+    // delete recipe from saved recipe
+    @FormUrlEncoded
+    @POST("save_saved_recipe.php")
+    Call<RecipeModel> saveSavedRecipe(
             @Field("recipe_id") String recipe_id,
             @Field("user_id") String user_id
     );

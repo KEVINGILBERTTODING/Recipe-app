@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.SavedRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -179,6 +180,19 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                     .addToBackStack(null)
                     .commit();
 
+        });
+
+        holder.tv_username.setOnClickListener(view -> {
+
+            Fragment fragment= new ShowProfileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", recipeModels.get(position).getUser_id());
+            fragment.setArguments(bundle);
+            // get Fragment
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 

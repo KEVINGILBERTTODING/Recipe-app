@@ -11,6 +11,7 @@ import androidx.appcompat.widget.ButtonBarLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,6 +39,7 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -55,7 +57,7 @@ public class DetailRecipeFragment extends Fragment  {
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes;
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend;
+    ImageButton btnBack, btnSend, btnFav;
     private List<ProfileModel> profileModels;
     InterfaceProfile interfaceProfile;
 
@@ -116,6 +118,7 @@ public class DetailRecipeFragment extends Fragment  {
         nestedScrollView = view.findViewById(R.id.scroll_det_recipe);
         relativeLayout = view.findViewById(R.id.rl_comment);
         ivMyProfile = view.findViewById(R.id.iv_myProfile);
+        btnFav = view.findViewById(R.id.btn_fav);
 
         // Get data from bundle
 
@@ -152,7 +155,7 @@ public class DetailRecipeFragment extends Fragment  {
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
 
-        // load photo profile
+        // load photo profile in comment
         getPhotoProfile(useridx);
 
         // Load image recipe
@@ -173,6 +176,7 @@ public class DetailRecipeFragment extends Fragment  {
                 .override(100, 100)
                 .into(ivProfile);
 
+        // if btn back is click
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +185,24 @@ public class DetailRecipeFragment extends Fragment  {
 
 
             }
+        });
+
+        tvUsername.setOnClickListener(View -> {
+
+            Fragment fragment = new ShowProfileFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", user_id);
+            fragment.setArguments(bundle);
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+
+
         });
 
 
@@ -227,6 +249,29 @@ public class DetailRecipeFragment extends Fragment  {
                 }
             });
         }
+
+        checkSavedRecipe(useridx, recipe_id);
+
+
+//        // if btn fav is click
+//        btnFav.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (btnFav.getText().toString().equals("Favorite")) {
+//                    btnFav.setText("Unfavorite");
+//                    btnFav.setBackgroundColor(getResources().getColor(R.color.main));
+//                    btnFav.setTextColor(getResources().getColor(R.color.white));
+//                    addFavorite(useridx, recipe_id);
+//                } else {
+//                    btnFav.setText("Favorite");
+//                    btnFav.setBackgroundColor(getResources().getColor(R.color.white));
+//                    btnFav.setTextColor(getResources().getColor(R.color.main));
+//                    removeFavorite(useridx, recipe_id);
+//                }
+//            }
+//        });
+
+//        checkSavedRecipe(useridx, recipe_id);
 
 
         return view;
@@ -310,6 +355,34 @@ public class DetailRecipeFragment extends Fragment  {
            }
        });
     }
+
+
+
+    // method for if recipe is saved
+    private void checkSavedRecipe(String userid, String recipeid) {
+       InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<List<RecipeModel>> call = interfaceRecipe.getSavedRecipe(userid);
+        call.enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        if (response.body().get(i).getRecipe_id().equals(recipeid)) {
+                            btnFav.setBackground(getResources().getDrawable(R.drawable.btn_favorite));
+                        }
+
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
 
 }

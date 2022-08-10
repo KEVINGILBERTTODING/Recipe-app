@@ -56,12 +56,13 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ImageButton
+            android:id="@+id/btn_fav"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="right"
             android:layout_alignParentRight="true"
+            android:layout_gravity="right"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/btn_favorite" />
+            android:background="@drawable/btn_favorite_netral" />
     </RelativeLayout>
 
 
