@@ -187,6 +187,7 @@ public class DetailRecipeFragment extends Fragment  {
             }
         });
 
+        // jika username di klik maka akan ke profile
         tvUsername.setOnClickListener(View -> {
 
             Fragment fragment = new ShowProfileFragment();
@@ -250,28 +251,25 @@ public class DetailRecipeFragment extends Fragment  {
             });
         }
 
+        // check apakah recipe sudah ada di simpan atau belum
         checkSavedRecipe(useridx, recipe_id);
 
+        btnFav.setOnClickListener(View -> {
+            // jika di unklik maka akan menghapus resep yang sudah di save
+            if (btnFav.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_favorite).getConstantState()) {
 
-//        // if btn fav is click
-//        btnFav.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (btnFav.getText().toString().equals("Favorite")) {
-//                    btnFav.setText("Unfavorite");
-//                    btnFav.setBackgroundColor(getResources().getColor(R.color.main));
-//                    btnFav.setTextColor(getResources().getColor(R.color.white));
-//                    addFavorite(useridx, recipe_id);
-//                } else {
-//                    btnFav.setText("Favorite");
-//                    btnFav.setBackgroundColor(getResources().getColor(R.color.white));
-//                    btnFav.setTextColor(getResources().getColor(R.color.main));
-//                    removeFavorite(useridx, recipe_id);
-//                }
-//            }
-//        });
+                deleteSavedRecipe(recipe_id, useridx);
+                btnFav.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite_netral));
+            }
 
-//        checkSavedRecipe(useridx, recipe_id);
+            //jika di klik maka akan menyimpan resep
+            else {
+                saveRecipe(recipe_id, useridx);
+                btnFav.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
+            }
+
+        });
+
 
 
         return view;
@@ -377,6 +375,43 @@ public class DetailRecipeFragment extends Fragment  {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    // method for save recipe
+    private void saveRecipe(String recipeid, String userid) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<RecipeModel> call = interfaceRecipe.saveSavedRecipe(recipeid, userid);
+        call.enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(getView(), "Recipe saved", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+//    // method for delete recipe
+    private void deleteSavedRecipe(String recipe_id, String useridx ) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<RecipeModel> call = interfaceRecipe.deleteSavedRecipe(recipe_id, useridx);
+        call.enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(getView(), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
