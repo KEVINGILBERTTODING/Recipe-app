@@ -45,9 +45,12 @@ public class RecipeModel  implements Serializable {
     String note;
     @SerializedName("email")
     String email;
+    @SerializedName("code")
+    String success;
 
     public RecipeModel(String recipe_id, String user_id, String username, String title, String description, String category, String servings, String duration, String ingredients,
-                       String steps, String upload_date, String upload_time, String image, String status, String ratings, String likes, String photo_profile, String note, String email) {
+                       String steps, String upload_date, String upload_time, String image, String status,
+                       String ratings, String likes, String photo_profile, String note, String email, String success) {
         this.recipe_id = recipe_id;
         this.user_id = user_id;
         this.username = username;
@@ -67,6 +70,7 @@ public class RecipeModel  implements Serializable {
         this.photo_profile = photo_profile;
         this.note = note;
         this.email = email;
+        this.success = success;
 
 
 
@@ -222,5 +226,13 @@ public class RecipeModel  implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(String success) {
+        this.success = success;
     }
 }

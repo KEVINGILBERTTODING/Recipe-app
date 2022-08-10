@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -19,13 +18,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.MyRecipeAdapter;
-import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
-import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -38,14 +34,11 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class MyProfileFragment extends Fragment {
-    String username, userid, user_idx;
+public class ShowProfileFragment extends Fragment {
+    String user_id;
     ImageView iv_profile;
-    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_back;
-    ImageButton btnBack;
+    TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
@@ -53,25 +46,23 @@ public class MyProfileFragment extends Fragment {
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
+    ImageButton btnBack;
 
     TabLayout tabLayout;
 
-    public MyProfileFragment() {
+
+
+    public ShowProfileFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_my_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_show_profile, container, false);
 
-        // Mengambil username dan user_id menggunakan sharedpreferences
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
-        username = sharedPreferences.getString(TAG_USERNAME, null);
-        userid = sharedPreferences.getString("user_id", null);
 
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
@@ -81,15 +72,16 @@ public class MyProfileFragment extends Fragment {
         tv_time = view.findViewById(R.id.tv_time);
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
+        btnBack = view.findViewById(R.id.btn_back);
 
-
-
+        // mengambil data dari adapter menggunakan bundle
+        user_id = getArguments().getString("user_id");
 
         // Mengambil data profile dari API
-        getProfile(userid);
+        getProfile(user_id);
 
         // mengambil data recipe dari API
-        getRecipe(userid);
+        getRecipe(user_id);
 
 
         // create tablayout
@@ -100,9 +92,9 @@ public class MyProfileFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    getRecipe(userid);
+                    getRecipe(user_id);
                 } else if (tab.getPosition() == 1) {
-//                    getRecipe(userid);
+//                    getRecipe(user_id);
                 }
             }
 
@@ -116,7 +108,13 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
-        getRecipe(userid);
+        getRecipe(user_id);
+
+        btnBack.setOnClickListener(view1 -> {
+            FragmentManager fm = getFragmentManager();
+            fm.popBackStack();
+        });
+
 
 
         return view;
@@ -126,7 +124,7 @@ public class MyProfileFragment extends Fragment {
 
     //get profile
     private void getProfile(String user_id) {
-        DataApi.getClient().create(InterfaceProfile.class).getProfile(userid).enqueue(new retrofit2.Callback<List<ProfileModel>>() {
+        DataApi.getClient().create(InterfaceProfile.class).getProfile(user_id).enqueue(new retrofit2.Callback<List<ProfileModel>>() {
             @Override
             public void onResponse(Call<List<ProfileModel>> call, retrofit2.Response<List<ProfileModel>> response) {
                 profileModelList = response.body();

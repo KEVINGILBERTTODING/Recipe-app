@@ -20,7 +20,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_13sdp"
-                app:civ_border_width="2dp"
+                app:civ_border_width="@dimen/_2sdp"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
 
