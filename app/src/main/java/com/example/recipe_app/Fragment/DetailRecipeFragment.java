@@ -214,15 +214,20 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
 
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-
-
-                    anim_love.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            anim_love.setVisibility(View.GONE);
-                        }
-                    },3 * 1000); // For 10 seconds
+                    if (anim_love.getVisibility() == View.GONE) {
+                        anim_love.setVisibility(View.VISIBLE);
+                        save_anim.playAnimation();
+//                        ani.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                anim_love.setVisibility(View.GONE);
+                            }
+                        }, 2 * 1000); // For 2 seconds
+                    }
+                    else {
+                        anim_love.setVisibility(View.GONE);
+                    }
 
                        return super.onDoubleTap(e);
                 }
@@ -322,7 +327,6 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
                     }, 2 * 1000); // For 2 seconds
                 }
 
-                saveRecipe(recipe_id, useridx);
                 btnFav.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
             }
 
