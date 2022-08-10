@@ -96,7 +96,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
 
 
-        // if recipe is favorite than set botton fav
+        // check apa user sudah save atau belum
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<List<RecipeModel>> call = interfaceRecipe.getSavedRecipe(userid);
         call.enqueue(new Callback<List<RecipeModel>>() {
@@ -117,17 +117,6 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 Snackbar.make(holder.itemView, "Something went wrong", Snackbar.LENGTH_SHORT).show();
             }
         });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -154,6 +143,22 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_username = itemView.findViewById(R.id.tv_recipe_username);
             btn_save = itemView.findViewById(R.id.btn_favorite);
+
+
+            // saat button save di klik
+            btn_save.setOnClickListener(view -> {
+                // jika di unklik maka akan menghapus resep yang sudah di save
+                if (btn_save.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.btn_favorite).getConstantState()) {
+                    deleteSavedRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
+                    btn_save.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite_netral));
+                }
+
+                //jika di klik maka akan menyimpan resep
+                else {
+                    saveRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
+                    btn_save.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite));
+                }
+            });
 
 
 
@@ -196,12 +201,36 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         }
     }
 
+    //method to save recipe
+
     private void saveRecipe(String recipe_id, String user_id) {
         DataApi.getClient().create(InterfaceRecipe.class).saveSavedRecipe(recipe_id, user_id).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe saved", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void deleteSavedRecipe(String recipeid, String useridd) {
+        DataApi.getClient().create(InterfaceRecipe.class).deleteSavedRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
                 }
             }
             @Override
