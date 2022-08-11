@@ -34,6 +34,8 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ShowProfileFragment extends Fragment {
     String user_id;
@@ -49,7 +51,6 @@ public class ShowProfileFragment extends Fragment {
     ImageButton btnBack;
 
     TabLayout tabLayout;
-
 
 
     public ShowProfileFragment() {
@@ -94,7 +95,7 @@ public class ShowProfileFragment extends Fragment {
                 if (tab.getPosition() == 0) {
                     getRecipe(user_id);
                 } else if (tab.getPosition() == 1) {
-//                    getRecipe(user_id);
+                    getLikeRecipe(user_id);
                 }
             }
 
@@ -102,6 +103,7 @@ public class ShowProfileFragment extends Fragment {
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
@@ -116,10 +118,8 @@ public class ShowProfileFragment extends Fragment {
         });
 
 
-
         return view;
     }
-
 
 
     //get profile
@@ -172,11 +172,36 @@ public class ShowProfileFragment extends Fragment {
 
 
             }
+
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
 
             }
+        });
+    }
+
+    private void getLikeRecipe(String user_id) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<List<RecipeModel>> call = interfaceRecipe.getMyLikeRecipe(user_id);
+        call.enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                recipeModelList = response.body();
+                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                rv_recipe.setLayoutManager(gridLayoutManager);
+                rv_recipe.setAdapter(myRecipeAdapter);
+                rv_recipe.setHasFixedSize(true);
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+            }
+
+
         });
     }
 }
