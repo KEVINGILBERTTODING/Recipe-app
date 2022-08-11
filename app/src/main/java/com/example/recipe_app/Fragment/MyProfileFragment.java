@@ -102,7 +102,7 @@ public class MyProfileFragment extends Fragment {
                 if (tab.getPosition() == 0) {
                     getRecipe(userid);
                 } else if (tab.getPosition() == 1) {
-//                    getRecipe(userid);
+                    getLikeRecipe(userid);
                 }
             }
 
@@ -162,6 +162,29 @@ public class MyProfileFragment extends Fragment {
     private void getRecipe(String user_id) {
 
         DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
+                recipeModelList = response.body();
+                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                rv_recipe.setLayoutManager(gridLayoutManager);
+                rv_recipe.setAdapter(myRecipeAdapter);
+                rv_recipe.setHasFixedSize(true);
+
+
+            }
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void getLikeRecipe(String user_id) {
+
+        DataApi.getClient().create(InterfaceRecipe.class).getMyLikeRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
                 recipeModelList = response.body();

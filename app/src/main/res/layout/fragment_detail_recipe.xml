@@ -66,12 +66,16 @@
     </RelativeLayout>
 
 
+
+
     <RelativeLayout
+        android:id="@+id/container_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/iv_recipe"
         android:layout_marginTop="@dimen/_minus33sdp"
         android:background="@drawable/container_detailrecipe">
+
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_det_recipe"
@@ -450,7 +454,7 @@
         android:visibility="gone"
         app:lottie_loop="false"
         android:layout_centerInParent="true"
-        app:lottie_rawRes="@raw/love"/>
+        app:lottie_rawRes="@raw/love_animate3"/>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/saved_anim"
@@ -464,7 +468,15 @@
         app:lottie_rawRes="@raw/saved"/>
 
 
-
+    <ImageButton
+        android:id="@+id/btn_like"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_below="@+id/iv_recipe"
+        android:layout_marginTop="@dimen/_minus55sdp"
+        android:background="@drawable/btn_like"/>
 
 
 

@@ -28,12 +28,16 @@ public interface InterfaceRecipe {
     );
 
 
-
-
-    // get saved recipe
+    // get if recipe is saved
 
     @GET("get_saved_recipe.php")
     Call<List<RecipeModel>> getSavedRecipe(
+            @Query("user_id") String user_id
+    );
+
+    // get if recipe is like
+    @GET("get_liked_recipe.php")
+    Call<List<RecipeModel>> getLikeRecipe(
             @Query("user_id") String user_id
     );
 
@@ -44,9 +48,15 @@ public interface InterfaceRecipe {
             @Query("likes") Integer likes
     );
 
-    // Get Recipe By Likes
+    // Get my SAVE recipe
     @GET("get_my_recipe.php")
     Call<List<RecipeModel>> getMyRecipe(
+            @Query("user_id") String user_id
+    );
+
+    // Get my LIKE recipe
+    @GET("get_liked_recipe.php")
+    Call<List<RecipeModel>> getMyLikeRecipe(
             @Query("user_id") String user_id
     );
 
@@ -59,18 +69,27 @@ public interface InterfaceRecipe {
     );
 
 
-    // check if recipe is saved
+    // delete recipe from liked recipe
     @FormUrlEncoded
-    @POST("check_save_recipe.php")
-    Call<RecipeModel> checkSaveRecipe(
-            @Field("user_id") String user_id,
-            @Field("recipe_id") String recipe_id
+    @POST("delete_like_recipe.php")
+    Call<RecipeModel> deleteLikedRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id
     );
 
-    // save recipe
+
+
+    // save saved recipe
     @FormUrlEncoded
     @POST("save_saved_recipe.php")
     Call<RecipeModel> saveSavedRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id
+    );
+
+    @FormUrlEncoded
+    @POST("save_like_recipe.php")
+    Call<RecipeModel> saveLikeRecipe(
             @Field("recipe_id") String recipe_id,
             @Field("user_id") String user_id
     );
@@ -90,6 +109,8 @@ public interface InterfaceRecipe {
                                  @Field("image") String image,
                                  @Field("status") String status,
                                  @Field("note") String notes);
-    @DELETE("recipe/")
-    Call<RecipeModel> deleteRecipe(@Query("recipe_id") String recipe_id);
+   @FormUrlEncoded
+    @POST("count_like_recipe.php")
+    Call<RecipeModel> countLikeRecipe(@Field("recipe_id") String recipe_id,
+                                      @Field("code") Integer code);
 }
