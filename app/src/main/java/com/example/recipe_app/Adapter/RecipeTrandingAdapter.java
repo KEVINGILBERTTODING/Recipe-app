@@ -125,7 +125,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         });
 
 
-        // check apa user sudah save atau belum
+        // check apa user sudah like atau belum
 
         interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<List<RecipeModel>> call2 = interfaceRecipe.getLikeRecipe(userid);
@@ -180,7 +180,8 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
 
                 // menambah jumlah likes jika button di like
-                holder.tv_like.setText(recipeModels.get(position).getLikes());
+                // mengurangi jumlah likes jika button di unlike
+                holder.tv_like.setText(String.valueOf(like));
             }
         });
 
