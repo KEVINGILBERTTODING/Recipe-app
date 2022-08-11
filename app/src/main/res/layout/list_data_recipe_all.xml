@@ -13,35 +13,35 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:src="@drawable/sample_food"
     app:shapeAppearanceOverlay="@style/roundedCorners" />
 
-<androidx.appcompat.widget.LinearLayoutCompat
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/_10sdp"
-    android:layout_marginTop="@dimen/_15sdp"
-    android:background="@drawable/container"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="@dimen/_3sdp">
-
-    <ImageView
-        android:layout_width="@dimen/_15sdp"
-        android:layout_height="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_2sdp"
-        android:src="@drawable/ic_rating" />
-
-    <TextView
-        android:id="@+id/tv_rating"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_1sdp"
-        android:fontFamily="@font/popsem"
-        android:text="4,8"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_11sdp" />
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/container"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_3sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:src="@drawable/ic_loved" />
+
+        <TextView
+            android:id="@+id/tv_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:fontFamily="@font/popsem"
+            android:text="4,8"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11sdp" />
 
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <ImageButton
@@ -64,13 +64,14 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:text="Duration"
     android:textSize="@dimen/_10sdp" />
 
-<ImageButton
-    android:layout_width="@dimen/_20sdp"
-    android:layout_height="@dimen/_20sdp"
-    android:background="@drawable/ic_love"
-    android:layout_below="@id/img_recipe"
-    android:layout_alignParentRight="true"
-    android:layout_marginTop="@dimen/_7sdp"/>
+    <ImageButton
+        android:id="@+id/btn_like"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_below="@id/img_recipe"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:background="@drawable/ic_love" />
 
 
 <TextView

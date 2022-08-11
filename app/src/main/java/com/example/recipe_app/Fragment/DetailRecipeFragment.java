@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,13 +50,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRecipeFragment extends Fragment implements GestureDetector.OnDoubleTapListener, View.OnClickListener {
+public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener{
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvRating, tvDuration,
-            tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes;
+            tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend, btnFav;
+    ImageButton btnBack, btnSend, btnFav, btnLike;
     private List<ProfileModel> profileModels;
     InterfaceProfile interfaceProfile;
     LottieAnimationView anim_love, save_anim;
@@ -98,7 +99,6 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
         tvRecipeName = view.findViewById(R.id.tv_recipe_name);
         tvRecipeIngredients = view.findViewById(R.id.tv_ingredients);
         tvRecipeSteps = view.findViewById(R.id.tv_steps);
-        tvRating = view.findViewById(R.id.tv_rating);
         tvDuration = view.findViewById(R.id.tv_duration);
         tvServings = view.findViewById(R.id.tv_servings);
         tvDescription = view.findViewById(R.id.tv_description);
@@ -121,6 +121,7 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
         btnFav = view.findViewById(R.id.btn_fav);
         anim_love = view.findViewById(R.id.love_anim);
         save_anim = view.findViewById(R.id.saved_anim);
+        btnLike = view.findViewById(R.id.btn_like);
 
         // Get data from bundle
 
@@ -147,7 +148,6 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
         tvRecipeName.setText(recipeName);
         tvRecipeIngredients.setText(recipeIngredients);
         tvRecipeSteps.setText(recipeSteps);
-        tvRating.setText(recipeRating);
         tvDuration.setText(recipeDuration);
         tvServings.setText(recipeServings);
         tvDescription.setText(recipeDescription);
@@ -217,7 +217,8 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
                     if (anim_love.getVisibility() == View.GONE) {
                         anim_love.setVisibility(View.VISIBLE);
                         save_anim.playAnimation();
-//                        ani.setBackground(getContext().getResources().getDrawable(R.drawable.btn_favorite));
+                        btnLike.setBackgroundResource(R.drawable.btn_liked);
+                        likedRecipe(recipe_id, useridx);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -302,6 +303,9 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
         // check apakah recipe sudah ada di simpan atau belum
         checkSavedRecipe(useridx, recipe_id);
 
+        // check apakah recipe sudah ada di like atau belum
+        checkLikedRecipe(useridx, recipe_id);
+
         // saat button save di klik
         btnFav.setOnClickListener(View -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
@@ -331,6 +335,33 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
             }
 
         });
+
+        // saat button like di klik
+        btnLike.setOnClickListener(View -> {
+            // jika di unklik maka akan menghapus resep yang sudah di save
+            if (btnLike.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_liked).getConstantState()) {
+                deleteLikeRecipe(recipe_id, useridx);
+                countLike(recipe_id, 2);
+                btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_like));
+            }
+
+            //jika di klik maka akan like resep
+            else {
+                likedRecipe(recipe_id, useridx);
+
+                // method untuk mengambil data like recipe
+                countLike(recipe_id, 1);
+                btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
+
+                    anim_love.setVisibility(View.VISIBLE);
+                    anim_love.playAnimation();
+
+
+                btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
+            }
+
+        });
+
 
 
 
@@ -478,6 +509,101 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
         });
     }
 
+    // method for if recipe is saved
+    private void checkLikedRecipe(String userid, String recipeid) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<List<RecipeModel>> call = interfaceRecipe.getLikeRecipe(userid);
+        call.enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        if (response.body().get(i).getRecipe_id().equals(recipeid)) {
+                           btnLike.setBackground(getResources().getDrawable(R.drawable.btn_liked));
+                        }
+
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // method untuk like recipe
+
+    private void likedRecipe(String recipeid, String useridd) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.saveLikeRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(getView(), "Recipe liked", Snackbar.LENGTH_SHORT).show();
+
+                }
+                else {
+                   Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+               Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // method untu delete like recipe
+
+    private void deleteLikeRecipe(String recipeid, String userid) {
+
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.deleteLikedRecipe(recipeid, userid).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                   Snackbar.make(getView(), "Recipe unliked", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                   Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void countLike(String recipe_id, Integer code) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+
+                }
+                else {
+                   Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+               Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+    }
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
@@ -486,19 +612,12 @@ public class DetailRecipeFragment extends Fragment implements GestureDetector.On
 
     @Override
     public boolean onDoubleTap(MotionEvent motionEvent) {
-
-
         return false;
     }
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent motionEvent) {
         return false;
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }
 

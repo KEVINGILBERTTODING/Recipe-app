@@ -24,10 +24,10 @@
         android:padding="@dimen/_3sdp">
 
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:src="@drawable/ic_rating" />
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:src="@drawable/ic_loved" />
 
         <TextView
             android:id="@+id/tv_like"
@@ -35,10 +35,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_1sdp"
             android:fontFamily="@font/popsem"
-            android:text="4,8"
+            android:text="20"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/_11sdp" />
+            android:textSize="@dimen/_9sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
