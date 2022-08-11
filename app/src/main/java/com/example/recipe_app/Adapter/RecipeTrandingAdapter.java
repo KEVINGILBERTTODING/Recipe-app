@@ -65,7 +65,9 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
-        holder.tv_rating.setText(recipeModels.get(position).getRatings());
+        holder.tv_like.setText(recipeModels.get(position).getLikes());
+        Integer like = Integer.parseInt(recipeModels.get(position).getLikes());
+
         String recipe_idd = recipeModels.get(position).getRecipe_id();
 
         // set image profile
@@ -149,6 +151,39 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             }
         });
 
+        // saat button like di klik
+
+        holder.btnLike.setOnClickListener(view -> {
+            // jika di unklik maka akan menghapus resep yang sudah di save
+            if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
+                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid);
+
+                // memanggil method untuk mengurangi likes jika button unlike
+                countLike(recipeModels.get(position).getRecipe_id(), 2);
+
+                // mengubah background button menjadi belum di unlike
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+
+                // mengurangi jumlah likes jika button di unlike
+                holder.tv_like.setText(String.valueOf(like - 1));
+
+            }
+
+            //jika di klik maka akan menyimpan resep
+            else {
+                likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
+
+                // memanggil method untuk menambah likes jika button di like
+                countLike(recipeModels.get(position).getRecipe_id(), 1);
+
+                // mengubah background button jika di like
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+
+                // menambah jumlah likes jika button di like
+                holder.tv_like.setText(recipeModels.get(position).getLikes());
+            }
+        });
+
 
 
 
@@ -160,7 +195,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_rating, tv_duration, tv_title, tv_username;
+        TextView tv_like, tv_duration, tv_title, tv_username;
         ImageView img_recipe, img_profile;
         ImageButton btn_save, btnLike;
 
@@ -169,7 +204,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             super(itemView);
             img_recipe = itemView.findViewById(R.id.img_recipe);
             img_profile = itemView.findViewById(R.id.img_profile);
-            tv_rating = itemView.findViewById(R.id.tv_rating);
+            tv_like= itemView.findViewById(R.id.tv_like);
             tv_duration = itemView.findViewById(R.id.tv_duration);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_username = itemView.findViewById(R.id.tv_recipe_username);
@@ -192,21 +227,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 }
             });
 
-            // saat button like di klik
 
-            btnLike.setOnClickListener(view -> {
-                // jika di unklik maka akan menghapus resep yang sudah di save
-                if (btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
-                   deleteLikeRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
-                    btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
-                }
-
-                //jika di klik maka akan menyimpan resep
-                else {
-                    likedRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
-                    btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
-                }
-            });
 
 
 
@@ -275,7 +296,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unsave", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
                     Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
@@ -318,7 +339,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unlike", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
                     Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
@@ -330,7 +351,28 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             }
         });
 
+    }
 
+    private void countLike(String recipe_id, Integer code) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 

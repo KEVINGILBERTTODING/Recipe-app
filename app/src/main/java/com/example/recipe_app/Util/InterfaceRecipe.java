@@ -109,6 +109,8 @@ public interface InterfaceRecipe {
                                  @Field("image") String image,
                                  @Field("status") String status,
                                  @Field("note") String notes);
-    @DELETE("recipe/")
-    Call<RecipeModel> deleteRecipe(@Query("recipe_id") String recipe_id);
+   @FormUrlEncoded
+    @POST("count_like_recipe.php")
+    Call<RecipeModel> countLikeRecipe(@Field("recipe_id") String recipe_id,
+                                      @Field("code") Integer code);
 }
