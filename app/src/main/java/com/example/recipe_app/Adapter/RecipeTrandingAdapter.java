@@ -165,7 +165,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
                 // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(like - 1));
+                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) - 1));
 
             }
 
@@ -181,7 +181,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
                 // menambah jumlah likes jika button di like
                 // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(like));
+                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
             }
         });
 
