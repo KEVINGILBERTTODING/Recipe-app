@@ -458,6 +458,18 @@
         app:lottie_rawRes="@raw/love_animate3"/>
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/disslike"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        android:visibility="gone"
+        app:lottie_loop="false"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/disslike2"/>
+
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/saved_anim"
         android:layout_width="@dimen/_110sdp"
         android:layout_height="@dimen/_110sdp"
