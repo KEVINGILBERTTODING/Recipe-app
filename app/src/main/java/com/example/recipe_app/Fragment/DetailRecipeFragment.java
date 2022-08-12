@@ -52,14 +52,13 @@ import retrofit2.Response;
 
 public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener{
 
-    TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvRating, tvDuration,
+    TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
 
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike;
     private List<ProfileModel> profileModels;
-    InterfaceProfile interfaceProfile;
     LottieAnimationView anim_love, save_anim, disslike_anim;
 
     EditText et_comment;
@@ -73,7 +72,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     RecyclerView recyclerView;
     private List<CommentModel> commentModelsList;
-    InterfaceComment interfaceComment;
     CommentAdapter commentAdapter;
     NestedScrollView nestedScrollView;
     RelativeLayout relativeLayout;
@@ -164,7 +162,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvNotes.setText(recipeNOtes);
         tvLikes.setText(totalLikes);
 
-        Integer totalLikesS = Integer.parseInt(totalLikes);
 
         // load photo profile in comment
         getPhotoProfile(useridx);
@@ -217,6 +214,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         });
 
+        // if recipe image double tap
         ivRecipeImage.setOnTouchListener(new View.OnTouchListener() {
 
             GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
@@ -225,11 +223,17 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 public boolean onDoubleTap(MotionEvent e) {
 
                     if (btnLike.getBackground().getConstantState() == getResources().getDrawable(R.drawable.btn_like).getConstantState()) {
+
+                        // menyimpan informasi like recipe ke database
                         likedRecipe(recipe_id, useridx);
+
+                        // menambah jumlah like pada di database
                         countLike(recipe_id, 1);
                         btnLike.setBackgroundResource(R.drawable.btn_liked);
                         anim_love.setVisibility(View.VISIBLE);
                         anim_love.playAnimation();
+
+                        // menambah jumlah like di view
                         tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
 
 
@@ -238,7 +242,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                         disslike_anim.setVisibility(View.VISIBLE);
                         disslike_anim.playAnimation();
+
+                        // mengurangi jumlah like di database
                         countLike(recipe_id, 2);
+
+                        // mengurangi jumlah like di view
                         tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) - 1));
                         btnLike.setBackgroundResource(R.drawable.btn_like);
 
@@ -268,10 +276,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 return true;
             }
         });
-
-
-
-
 
 
 
