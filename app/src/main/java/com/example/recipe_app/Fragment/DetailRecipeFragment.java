@@ -55,17 +55,20 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvRating, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
+
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike;
     private List<ProfileModel> profileModels;
     InterfaceProfile interfaceProfile;
-    LottieAnimationView anim_love, save_anim;
+    LottieAnimationView anim_love, save_anim, disslike_anim;
 
     EditText et_comment;
 
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
-            photoRecipe, recipeNOtes, usernamex, useridx;
+            photoRecipe, recipeNOtes, usernamex, useridx, totalLikes;
+
+
 
 
     RecyclerView recyclerView;
@@ -122,6 +125,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         anim_love = view.findViewById(R.id.love_anim);
         save_anim = view.findViewById(R.id.saved_anim);
         btnLike = view.findViewById(R.id.btn_like);
+        tvLikes = view.findViewById(R.id.tv_likes);
+        disslike_anim = view.findViewById(R.id.disslike);
 
         // Get data from bundle
 
@@ -141,6 +146,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         photoRecipe = getArguments().getString("image");
         photoProfile = getArguments().getString("photo_profile");
         recipeNOtes = getArguments().getString("notes");
+        totalLikes = getArguments().getString("likes");
 
 
 
@@ -156,6 +162,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvDate.setText(recipeDate);
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
+        tvLikes.setText(totalLikes);
+
+        Integer totalLikesS = Integer.parseInt(totalLikes);
 
         // load photo profile in comment
         getPhotoProfile(useridx);
@@ -214,29 +223,38 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    if (anim_love.getVisibility() == View.GONE) {
-                        anim_love.setVisibility(View.VISIBLE);
-                        save_anim.playAnimation();
-                        btnLike.setBackgroundResource(R.drawable.btn_liked);
+
+                    if (btnLike.getBackground().getConstantState() == getResources().getDrawable(R.drawable.btn_like).getConstantState()) {
                         likedRecipe(recipe_id, useridx);
+                        countLike(recipe_id, 1);
+                        btnLike.setBackgroundResource(R.drawable.btn_liked);
+                        anim_love.setVisibility(View.VISIBLE);
+                        anim_love.playAnimation();
+                        tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
+
+
+                    }
+                    else {
+
+                        disslike_anim.setVisibility(View.VISIBLE);
+                        disslike_anim.playAnimation();
+                        countLike(recipe_id, 2);
+                        tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) - 1));
+                        btnLike.setBackgroundResource(R.drawable.btn_like);
+
+                        // set duration animation
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                anim_love.setVisibility(View.GONE);
+                                disslike_anim.setVisibility(View.GONE);
                             }
-                        }, 2 * 1000); // For 2 seconds
-                    }
-                    else {
-                        anim_love.setVisibility(View.GONE);
+                        }, 1500);
+
+                        deleteLikeRecipe(recipe_id, useridx);
+
                     }
 
                        return super.onDoubleTap(e);
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    Toast.makeText(getContext(), "long tapp", Toast.LENGTH_SHORT).show();
-                    super.onLongPress(e);
                 }
 
                 @Override
@@ -342,6 +360,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             if (btnLike.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_liked).getConstantState()) {
                 deleteLikeRecipe(recipe_id, useridx);
                 countLike(recipe_id, 2);
+                tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) - 1));
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_like));
             }
 
@@ -355,6 +374,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                     anim_love.setVisibility(View.VISIBLE);
                     anim_love.playAnimation();
+
+                tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
 
 
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
