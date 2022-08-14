@@ -212,7 +212,7 @@
                         android:id="@+id/img_servings"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/ic_serves" />
+                        android:src="@drawable/serves" />
 
                     <TextView
                         android:id="@+id/tv_servings"
@@ -362,15 +362,15 @@
 
                         <ImageView
                             android:id="@+id/iv_comment"
-                            android:layout_width="@dimen/_25sdp"
-                            android:layout_height="@dimen/_25sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:src="@drawable/ic_comment" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/iv_comment"
                             android:fontFamily="@font/popsem"
                             android:text="Comments"
