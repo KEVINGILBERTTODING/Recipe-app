@@ -94,22 +94,55 @@ public interface InterfaceRecipe {
             @Field("user_id") String user_id
     );
 
+    // edit image recipe
+    @FormUrlEncoded
+    @POST("update_image_recipe.php")
+    Call<RecipeModel> updateImageRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id,
+            @Field("image") String image,
+            @Field("title") String recipeName
+    );
+
+    // delete recipe
+    @FormUrlEncoded
+    @POST("delete_recipe.php")
+    Call<RecipeModel> deleteRecipe(
+            @Field("recipe_id") String recipe_id
+    );
+
+    // update recipe
+    @FormUrlEncoded
+    @POST("update_recipe.php")
+    Call<RecipeModel> updateRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("title") String title,
+            @Field("description") String description,
+            @Field("category") String category,
+            @Field("servings") String servings,
+            @Field("duration") String duration,
+            @Field("ingredients") String ingredients,
+            @Field("steps") String steps,
+            @Field("status") String status,
+            @Field("note") String notes);
+
+
 
     // post recipe
     @FormUrlEncoded
     @POST("post_recipe.php")
     Call<RecipeModel> createRecipe(@Field("user_id") String user_id,
-                                 @Field("title") String title,
-                                 @Field("description") String description,
-                                 @Field("category") String category,
-                                 @Field("servings") String servings,
-                                 @Field("duration") String duration,
-                                 @Field("ingredients") String ingredients,
-                                 @Field("steps") String steps,
-                                 @Field("image") String image,
-                                 @Field("status") String status,
-                                 @Field("note") String notes);
-   @FormUrlEncoded
+                                   @Field("title") String title,
+                                   @Field("description") String description,
+                                   @Field("category") String category,
+                                   @Field("servings") String servings,
+                                   @Field("duration") String duration,
+                                   @Field("ingredients") String ingredients,
+                                   @Field("steps") String steps,
+                                   @Field("image") String image,
+                                   @Field("status") String status,
+                                   @Field("note") String notes);
+    @FormUrlEncoded
     @POST("count_like_recipe.php")
     Call<RecipeModel> countLikeRecipe(@Field("recipe_id") String recipe_id,
                                       @Field("code") Integer code);
