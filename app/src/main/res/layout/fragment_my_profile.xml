@@ -31,8 +31,9 @@
                 android:id="@+id/btn_more"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:background="@drawable/ic_more"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/ic_more"
+                android:backgroundTint="@color/black"
 
                 />
 
@@ -43,30 +44,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_below="@+id/app_bar"
         android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/app_bar">
+        android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
-            app:civ_border_width="@dimen/_3sdp"
+            android:src="@color/black"
             app:civ_border_color="@color/main"
-            android:src="@color/black" />
+            app:civ_border_width="@dimen/_3sdp" />
+
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_13sdp"
-            android:fontFamily="@font/popsem"
-            android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_gravity="center_horizontal"
-            android:scrollbarSize="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_toRightOf="@+id/btn_back"
-            android:text="Username"/>
+            android:fontFamily="@font/popsem"
+            android:scrollbarSize="@dimen/_12sdp"
+            android:text="Username"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,22 +76,22 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/ic_mail"
-                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_gravity="center_horizontal"
-                />
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/ic_mail" />
 
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
                 android:text="Email"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
 
@@ -104,43 +106,44 @@
             <ImageView
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/ic_calendar"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"/>
+                android:src="@drawable/ic_calendar" />
 
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
                 android:text="Date"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
-                android:layout_marginRight="@dimen/_5sdp"
                 android:textSize="@dimen/_8sdp" />
 
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
                 android:text="Time"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
 
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_biography"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_toRightOf="@+id/btn_back"
             android:fontFamily="@font/popmed"
             android:text="Biography"
-            android:layout_marginTop="@dimen/_5sdp"
             android:textSize="@dimen/_11sdp" />
 
         <com.google.android.material.tabs.TabLayout
@@ -148,22 +151,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            app:tabMaxWidth="0dp"
             app:tabGravity="fill"
-            app:tabMode="fixed"
             app:tabIndicatorFullWidth="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/TabFont">
 
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:id="@+id/recycler_recipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
 
     </LinearLayout>

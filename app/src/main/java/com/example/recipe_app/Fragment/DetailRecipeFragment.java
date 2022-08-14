@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -57,15 +59,16 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
 
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend, btnFav, btnLike;
+    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore;
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
+    ProgressDialog pd;
 
     EditText et_comment;
 
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
-            photoRecipe, recipeNOtes, usernamex, useridx, totalLikes;
+            photoRecipe, recipeNOtes, usernamex, useridx, totalLikes, recipeStatus, recipeCategory;
 
 
 
@@ -125,6 +128,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         btnLike = view.findViewById(R.id.btn_like);
         tvLikes = view.findViewById(R.id.tv_likes);
         disslike_anim = view.findViewById(R.id.disslike);
+        btnMore = view.findViewById(R.id.btn_more);
 
         // Get data from bundle
 
@@ -145,8 +149,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         photoProfile = getArguments().getString("photo_profile");
         recipeNOtes = getArguments().getString("notes");
         totalLikes = getArguments().getString("likes");
-
-
+        recipeStatus = getArguments().getString("status");
+        recipeCategory = getArguments().getString("category");
 
 
         tvRecipeName.setText(recipeName);
@@ -161,6 +165,69 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
         tvLikes.setText(totalLikes);
+
+        pd = new ProgressDialog(getContext());
+
+
+        // jika user id sama dengan user id maka akan muncul button edit dan delete
+        if (useridx.equals(user_id)) {
+            btnMore.setVisibility(View.VISIBLE);
+        } else {
+            btnMore.setVisibility(View.GONE);
+        }
+
+
+        // saat btn more di klik
+
+        btnMore.setOnClickListener(View -> {
+            // membuat dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Pilih opsi");
+            builder.setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
+                switch (which) {
+                    case 0:
+                        // edit recipe
+
+                        Fragment fragment = new EditMyRecipeFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("recipe_id", recipe_id);
+                        bundle.putString("title", recipeName);
+                        bundle.putString("ingredients", recipeIngredients);
+                        bundle.putString("steps", recipeSteps);
+                        bundle.putString("ratings", recipeRating);
+                        bundle.putString("duration", recipeDuration);
+                        bundle.putString("servings", recipeServings);
+                        bundle.putString("description", recipeDescription);
+                        bundle.putString("username", recipeUsername);
+                        bundle.putString("email", recipeEmail);
+                        bundle.putString("upload_date", recipeDate);
+                        bundle.putString("upload_time", recipeTime);
+                        bundle.putString("image", photoRecipe);
+                        bundle.putString("photo_profile", photoProfile);
+                        bundle.putString("notes", recipeNOtes);
+                        bundle.putString("likes", totalLikes);
+                        bundle.putString("status", recipeStatus);
+                        bundle.putString("category", recipeCategory);
+                        fragment.setArguments(bundle);
+
+                        ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit();
+
+
+
+                        break;
+                    case 1:
+                        // delete
+                        pd.setMessage("Deleting...");
+                        pd.show();
+                        deleteRecipe(recipe_id);
+                        break;
+                }
+            });
+            builder.show();
+        });
 
 
         // load photo profile in comment
@@ -619,6 +686,34 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    // method untuk menghapus recipe
+
+    private void deleteRecipe(String recipe_id) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.deleteRecipe(recipe_id).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()){
+                    pd.dismiss();
+                    FragmentManager fm = getFragmentManager();
+                    fm.popBackStack();
+                    Snackbar.make(getView(), "Successfully delete recipe", Snackbar.LENGTH_LONG).show();
+                    fm.popBackStack();
+                } else {
+                    pd.dismiss();
+                    Snackbar.make(getView(), "Delete recipe failed", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_LONG).show();
 
             }
         });

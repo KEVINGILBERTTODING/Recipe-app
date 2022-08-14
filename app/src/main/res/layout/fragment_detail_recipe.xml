@@ -37,8 +37,8 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@drawable/ic_back_white" />
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:fontFamily="@font/popmed"
-                android:layout_marginTop="@dimen/_2sdp"
+                android:gravity="center_vertical"
                 android:text="Back"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
@@ -55,14 +55,34 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <ImageButton
-            android:id="@+id/btn_fav"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="right"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/btn_favorite_netral" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_fav"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@drawable/btn_favorite_netral" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_more"
+                />
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
 
@@ -122,7 +142,7 @@
                             android:id="@+id/tv_likes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/popmed"
+                            android:fontFamily="@font/popsem"
                             android:text="total likes"
                             android:textColor="@color/main"
                             android:textSize="@dimen/_10sdp" />
