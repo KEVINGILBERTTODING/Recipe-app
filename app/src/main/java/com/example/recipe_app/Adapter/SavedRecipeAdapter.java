@@ -172,6 +172,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             bundle.putString("likes", recipeModels.get(position).getLikes());
             bundle.putString("photo_profile", recipeModels.get(position).getPhoto_profile());
             bundle.putString("email", recipeModels.get(position).getEmail());
+            bundle.putString("notes", recipeModels.get(position).getNote());
             fragment.setArguments(bundle);
             // get Fragment
 

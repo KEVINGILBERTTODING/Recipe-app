@@ -42,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -70,6 +72,7 @@ public class EditMyRecipeFragment extends Fragment {
     ImageView img_recipe, img_recipe2;
     RadioButton rb_vegetable, rb_meat, rb_noodle, rb_drink, rb_other;
     LottieAnimationView add_animation;
+    Dialog dialog;
 
 
 
@@ -163,16 +166,30 @@ public class EditMyRecipeFragment extends Fragment {
             }
         });
 
+        // load image recipe
+        Glide. with(getContext())
+                .load(photoRecipe)
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .placeholder(R.drawable.template_img)
+                .override(1024, 768)
+                .fitCenter()
+                .centerCrop()
+                .into(img_recipe);
+
         btn_image_picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(getContext());
+                 dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.edit_image_recipe);
                 img_recipe2 = dialog.findViewById(R.id.img_recipe);
                 add_animation = dialog.findViewById(R.id.add_anim);
                 final Button btnEdit = dialog.findViewById(R.id.btn_update);
 
                 img_recipe2.setOnClickListener(view -> {
+
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     } else {
@@ -350,6 +367,7 @@ public class EditMyRecipeFragment extends Fragment {
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()){
                     pd.dismiss();
+                    dialog.dismiss();
                     Toast.makeText(getContext(), "Upload image success", Toast.LENGTH_SHORT).show();
                     img_recipe.setImageBitmap(bitmap);
                 } else {
@@ -380,6 +398,7 @@ public class EditMyRecipeFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 img_recipe2.setImageBitmap(bitmap);
                 add_animation.cancelAnimation();
+                add_animation.setVisibility(View.GONE);
                 Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -407,11 +426,6 @@ public class EditMyRecipeFragment extends Fragment {
 
                     Snackbar.make(getView(), "Successfully update recipe", Snackbar.LENGTH_LONG).show();
                     fm.popBackStack();
-
-
-
-
-
 
                 } else {
                     pd.dismiss();

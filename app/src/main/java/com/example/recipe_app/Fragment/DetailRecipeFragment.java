@@ -176,13 +176,17 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             btnMore.setVisibility(View.GONE);
         }
 
+        Toast.makeText(getContext(), recipeNOtes, Toast.LENGTH_LONG).show();
+
+
+
 
         // saat btn more di klik
 
         btnMore.setOnClickListener(View -> {
             // membuat dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Pilih opsi");
+            builder.setTitle("Choose an action");
             builder.setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
                 switch (which) {
                     case 0:
@@ -233,12 +237,17 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         // load photo profile in comment
         getPhotoProfile(useridx);
 
-        // Load image recipe
-        Glide.with(getContext())
+        // load image recipe
+        Glide. with(getContext())
                 .load(photoRecipe)
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(0.5f)
                 .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .placeholder(R.drawable.template_img)
+                .override(1024, 768)
+                .fitCenter()
+                .centerCrop()
                 .into(ivRecipeImage);
 
 

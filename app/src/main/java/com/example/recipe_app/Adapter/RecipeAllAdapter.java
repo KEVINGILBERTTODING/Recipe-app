@@ -246,6 +246,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 bundle.putString("likes", recipeModels.get(getAdapterPosition()).getLikes());
                 bundle.putString("photo_profile", recipeModels.get(getAdapterPosition()).getPhoto_profile());
                 bundle.putString("email", recipeModels.get(getAdapterPosition()).getEmail());
+                bundle.putString("notes", recipeModels.get(getAdapterPosition()).getNote());
                 fragment.setArguments(bundle);
 
                 // get Fragment
