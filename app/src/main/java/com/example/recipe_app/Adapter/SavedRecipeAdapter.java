@@ -38,12 +38,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.ViewHolder> {
 
     String userid;
 
     private List<RecipeModel> recipeModels;
     Context context;
+    InterfaceRecipe interfaceRecipe;
 
 
     // Buat constructor
@@ -98,6 +103,68 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         holder.tv_recipe_name.setText(recipeModels.get(position).getTitle());
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
+
+
+        // check apa user sudah like atau belum
+
+        interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        Call<List<RecipeModel>> call2 = interfaceRecipe.getLikeRecipe(userid);
+        call2.enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()) {
+                    for (int i = 0; i < response.body().size(); i++) {
+
+                        // jika response terdapat recipe id maka akan dicocokan dengan
+                        // recipe id yang ada di list recipe model
+                        if (response.body().get(i).getRecipe_id().equals(recipeModels.get(position).getRecipe_id())) {
+
+                            // akan mengubah backgorund button telah di save
+                            holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Snackbar.make(holder.itemView, "Something went wrong", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        // saat button like di klik
+
+        holder.btnLike.setOnClickListener(view -> {
+            // jika di unklik maka akan menghapus resep yang sudah di save
+            if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
+                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid);
+
+                // memanggil method untuk mengurangi likes jika button unlike
+                countLike(recipeModels.get(position).getRecipe_id(), 2);
+
+                // mengubah background button menjadi belum di unlike
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+
+                // mengurangi jumlah likes jika button di unlike
+                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) - 1));
+
+            }
+
+            //jika di klik maka akan menyimpan resep
+            else {
+                likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
+
+                // memanggil method untuk menambah likes jika button di like
+                countLike(recipeModels.get(position).getRecipe_id(), 1);
+
+                // mengubah background button jika di like
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+
+                // menambah jumlah likes jika button di like
+                // mengurangi jumlah likes jika button di unlike
+                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
+            }
+        });
+
 
         holder.btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +280,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_recipe, iv_profile;
         ImageButton btnSaved, btnLike, btn_more;
-        TextView tv_duration, tv_username, tv_recipe_name;
+        TextView tv_duration, tv_username, tv_recipe_name, tv_like;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -227,10 +294,79 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             tv_username = itemView.findViewById(R.id.tv_recipe_username);
             tv_recipe_name = itemView.findViewById(R.id.tv_title);
             btn_more = itemView.findViewById(R.id.btn_more);
+            tv_like = itemView.findViewById(R.id.tv_like);
         }
 
 
     }
+
+    // method untuk like recipe
+
+    private void likedRecipe(String recipeid, String useridd) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.saveLikeRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe liked", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // method untu delete like recipe
+
+    private void deleteLikeRecipe(String recipeid, String userid) {
+
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.deleteLikedRecipe(recipeid, userid).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unlike", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void countLike(String recipe_id, Integer code) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.isSuccessful()) {
+
+                }
+                else {
+                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
 
 
 }

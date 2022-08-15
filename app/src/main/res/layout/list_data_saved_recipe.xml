@@ -25,9 +25,9 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_more"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:layout_below="@id/btn_more"
         android:background="@drawable/container"
         android:gravity="center"
         android:orientation="horizontal"
@@ -36,19 +36,19 @@
         <ImageView
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:src="@drawable/ic_rating" />
+            android:layout_marginRight="@dimen/_5sdp"
+            android:src="@drawable/ic_loved" />
 
         <TextView
-            android:id="@+id/tv_rating"
+            android:id="@+id/tv_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_1sdp"
             android:fontFamily="@font/popsem"
-            android:text="4,8"
+            android:text="20"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/_11sdp" />
+            android:textSize="@dimen/_12sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -58,11 +58,11 @@
         android:id="@+id/btn_favorite"
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
+        android:layout_below="@+id/btn_more"
         android:layout_alignParentRight="true"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_below="@+id/btn_more"
         android:background="@drawable/btn_favorite" />
 
     <TextView
