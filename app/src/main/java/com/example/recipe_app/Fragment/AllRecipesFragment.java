@@ -22,6 +22,7 @@ import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.snackbar.Snackbar;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ public class AllRecipesFragment extends Fragment {
     private InterfaceRecipe interfaceRecipe;
     RecipeShowAllAdapter recipeShowAllAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageButton btn_back;
 
 
 
@@ -58,7 +58,6 @@ public class AllRecipesFragment extends Fragment {
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         searchView = view.findViewById(R.id.search_all_recipes);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        btn_back = view.findViewById(R.id.btn_back);
 
         // catch data from searchbar
 
@@ -81,15 +80,6 @@ public class AllRecipesFragment extends Fragment {
             }
         });
 
-        // button back listener
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                fm.popBackStack();
-
-            }
-        });
 
 
 
@@ -144,7 +134,9 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(getView(), "No conection", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+                snackbar.setBackgroundTint(getResources().getColor(R.color.main));
                 swipeRefreshLayout.setRefreshing(false);
 
             }
