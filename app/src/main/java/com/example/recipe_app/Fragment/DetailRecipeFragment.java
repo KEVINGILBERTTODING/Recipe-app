@@ -176,7 +176,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             btnMore.setVisibility(View.GONE);
         }
 
-        Toast.makeText(getContext(), recipeNOtes, Toast.LENGTH_LONG).show();
 
 
 
