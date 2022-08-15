@@ -1,0 +1,102 @@
+package com.example.recipe_app.Fragment;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.example.recipe_app.Model.ProfileModel;
+import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceProfile;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class CreateNewPasswordFragment extends Fragment {
+    TextInputEditText txtPassword, txtPasswordConf;
+    TextInputLayout tilPassword, tilPasswordConf;
+    String usernamex, useridx;
+    Button btnUpdate;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_create_new_password, container, false);
+
+        // Mengambil username dan user_id menggunakan sharedpreferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+        usernamex = sharedPreferences.getString(TAG_USERNAME, null);
+        useridx = sharedPreferences.getString("user_id", null);
+
+
+        tilPassword = view.findViewById(R.id.til_new_pass);
+        tilPasswordConf = view.findViewById(R.id.til_pass_conf);
+        txtPassword = view.findViewById(R.id.ti_new_pass);
+        txtPasswordConf = view.findViewById(R.id.ti_pass_conf);
+        btnUpdate = view.findViewById(R.id.btn_update_password);
+
+
+        btnUpdate.setOnClickListener(view1 ->  {
+
+            if (txtPassword.getText().toString().equals(txtPasswordConf.getText().toString())){
+                updatePassword(useridx, txtPassword.getText().toString());
+
+            } else if (txtPassword.getText().toString().isEmpty() || txtPasswordConf.getText().toString().isEmpty()){
+                Toast.makeText(getContext(), "field cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+
+            else{
+                Toast.makeText(getContext(), "Password is not same", Toast.LENGTH_SHORT).show();
+
+                tilPasswordConf.setError("Password is not same");
+            }
+
+
+        });
+
+
+        return view;
+    }
+
+    // Method untuk update password
+    private void updatePassword(String user_id, String password){
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.updatePassword(user_id, password).enqueue(new Callback<ProfileModel>() {
+            @Override
+            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                ProfileModel profileModel = response.body();
+                if (profileModel.getStatus().equals("success")){
+                    // Jika berhasil update password
+                    Toast.makeText(getContext(), "Password is updated", Toast.LENGTH_SHORT).show();
+                }else{
+                    // Jika gagal update password
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileModel> call, Throwable t) {
+                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+    }
+}

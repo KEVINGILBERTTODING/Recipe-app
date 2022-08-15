@@ -98,6 +98,7 @@
             android:layout_marginTop="@dimen/_20sdp"/>
 
         <RelativeLayout
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_height="wrap_content">
@@ -111,10 +112,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"
                 android:layout_toRightOf="@id/iv_email"
-                android:textSize="@dimen/_10sdp"
-                android:fontFamily="@font/popmed"/>
+                android:fontFamily="@font/popmed"
+                android:text="Email"
+                android:textSize="@dimen/_10sdp" />
 
             <ImageView
                 android:layout_width="@dimen/_15sdp"
@@ -127,6 +128,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/update_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
