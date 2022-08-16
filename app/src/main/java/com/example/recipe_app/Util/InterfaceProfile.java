@@ -36,6 +36,13 @@ public interface InterfaceProfile {
             @Field("password") String password
     );
 
+    @FormUrlEncoded
+    @POST("update_email.php")
+    Call<ProfileModel>updateEmail(
+            @Field("user_id") String user_id,
+            @Field("email") String email
+    );
+
 
 
 }

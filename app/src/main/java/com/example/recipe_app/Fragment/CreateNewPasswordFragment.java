@@ -59,12 +59,12 @@ public class CreateNewPasswordFragment extends Fragment {
 
             } else if (txtPassword.getText().toString().isEmpty() || txtPasswordConf.getText().toString().isEmpty()){
                 Toast.makeText(getContext(), "field cannot be empty", Toast.LENGTH_SHORT).show();
-            }
+            } else if(txtPassword.length() < 6){
+                Toast.makeText(getContext(), "password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(getContext(), "password doesn't match", Toast.LENGTH_SHORT).show();
 
-            else{
-                Toast.makeText(getContext(), "Password is not same", Toast.LENGTH_SHORT).show();
-
-                tilPasswordConf.setError("Password is not same");
+                tilPasswordConf.setError("password doesn't match");
             }
 
 
@@ -93,7 +93,7 @@ public class CreateNewPasswordFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
 
 
             }

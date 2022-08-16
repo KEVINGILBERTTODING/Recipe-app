@@ -39,6 +39,11 @@ public class SettingFragment extends Fragment {
 
         updt_email.setOnClickListener(view1 ->  {
 
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new UpdateEmailFragment());
+            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null);
+
 
         });
 

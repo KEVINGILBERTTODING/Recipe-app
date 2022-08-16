@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.recipe_app.Model.ProfileModel;
@@ -40,6 +41,7 @@ public class UpdatePassword extends Fragment {
     TextInputEditText txtPasswordUpdate;
     List<ProfileModel> profileModels;
     String usernamex, useridx;
+    ImageButton btnBack;
 
 
 
@@ -60,6 +62,7 @@ public class UpdatePassword extends Fragment {
         btnUpdate = view.findViewById(R.id.btn_update_password);
         txtPassword = view.findViewById(R.id.til_old_pass);
         txtPasswordUpdate = view.findViewById(R.id.ti_old_password);
+        btnBack = view.findViewById(R.id.btnBack);
 
         btnUpdate.setOnClickListener(view1 -> {
             String password = txtPasswordUpdate.getText().toString();
@@ -71,6 +74,11 @@ public class UpdatePassword extends Fragment {
 
 
             }
+        });
+
+        btnBack.setOnClickListener(view1 -> {
+            FragmentManager fm = getFragmentManager();
+            fm.popBackStack();
         });
 
 
