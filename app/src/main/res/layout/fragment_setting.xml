@@ -10,11 +10,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="vertical">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -29,11 +34,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Settings"
                     android:layout_toRightOf="@+id/btnBack"
                     android:fontFamily="@font/popsem"
+                    android:text="Settings"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </RelativeLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -54,60 +59,63 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_profile"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_toRightOf="@id/iv_profile"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Username"
                     android:fontFamily="@font/popsem"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/black"/>
+                    android:text="Username"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
                 <TextView
                     android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email"
                     android:fontFamily="@font/popmed"
-                    android:textSize="@dimen/_9sdp"
-                    android:textColor="@color/black"/>
+                    android:text="Email"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edit"
-                    android:fontFamily="@font/popmed"
-                    android:textSize="@dimen/_10sdp"
-                    android:textAllCaps="false"
                     android:backgroundTint="@color/gray"
-                    android:textColor="@color/black"/>
+                    android:fontFamily="@font/popmed"
+                    android:text="Edit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
             </LinearLayout>
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account"
+            android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/popsem"
-            android:textSize="@dimen/_12sdp"
+            android:text="Account"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_20sdp"/>
+            android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
             <ImageView
                 android:id="@+id/iv_email"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_email_blck"/>
+                android:src="@drawable/ic_email_blck" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -132,20 +140,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
+
             <ImageView
                 android:id="@+id/iv_password"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_password"/>
+                android:src="@drawable/ic_password" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Password"
                 android:layout_toRightOf="@id/iv_password"
-                android:textSize="@dimen/_10sdp"
-                android:fontFamily="@font/popmed"/>
+                android:fontFamily="@font/popmed"
+                android:text="Password"
+                android:textSize="@dimen/_10sdp" />
 
             <ImageView
                 android:layout_width="@dimen/_15sdp"
@@ -160,22 +169,24 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="System"
+            android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/popsem"
-            android:textSize="@dimen/_12sdp"
+            android:text="System"
             android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_20sdp"/>
+            android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
+            android:id="@+id/rl_contact_us"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp">
+
             <ImageView
                 android:id="@+id/iv_contactus"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_contactus"/>
+                android:src="@drawable/ic_contactus" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -199,12 +210,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
+
             <ImageView
                 android:id="@+id/iv_about"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_aboutus"/>
+                android:src="@drawable/ic_aboutus" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -228,12 +240,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
+
             <ImageView
                 android:id="@+id/iv_version"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_version"/>
+                android:src="@drawable/ic_version" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -257,12 +270,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
+
             <ImageView
                 android:id="@+id/iv_logout"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_logout"/>
+                android:src="@drawable/ic_logout" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -281,7 +295,6 @@
                 android:src="@drawable/ic_right" />
 
         </RelativeLayout>
-
 
 
     </LinearLayout>

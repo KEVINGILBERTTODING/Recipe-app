@@ -10,24 +10,24 @@
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/_15sdp"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/btnBack"
+                android:id="@+id/btn_back"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:background="@drawable/ic_back"/>
+                android:background="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
-                android:layout_toRightOf="@+id/btnBack"
+                android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popsem"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"/>
@@ -47,14 +47,14 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/love_anim"
-                android:layout_width="@dimen/_280sdp"
-                android:layout_height="@dimen/_280sdp"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="@dimen/_220sdp"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
-                app:lottie_rawRes="@raw/update_pass"/>
+                app:lottie_rawRes="@raw/email"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -90,16 +90,15 @@
                 app:boxCornerRadiusBottomStart="@dimen/_10sdp"
                 app:boxCornerRadiusTopEnd="@dimen/_10sdp"
                 app:boxCornerRadiusTopStart="@dimen/_10sdp"
-                app:passwordToggleEnabled="true"
-                app:startIconDrawable="@drawable/lock">
+                app:startIconDrawable="@drawable/usericon">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ti_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
-                    android:hint="Password"
-                    android:inputType="textPassword"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_9sdp">
 

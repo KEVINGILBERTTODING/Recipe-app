@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         til_user.setErrorEnabled(true);
                         til_user.setError("Masukan Nama Pengguna");
                     }
-                    if(ti_pass.getText().length() < 8) {
+                    if(ti_pass.getText().length() < 6) {
                         til_pass.setErrorEnabled(true);
                         til_pass.setError("Password berisi minimal 8 karakter");
                     }
