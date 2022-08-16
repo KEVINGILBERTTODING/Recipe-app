@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class MyProfileFragment extends Fragment {
     String username, userid, user_idx;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_back;
-    ImageButton btnBack;
+    ImageButton btnSetting;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
@@ -81,6 +82,14 @@ public class MyProfileFragment extends Fragment {
         tv_time = view.findViewById(R.id.tv_time);
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
+        btnSetting = view.findViewById(R.id.btn_setting);
+
+        btnSetting.setOnClickListener(view1 -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new SettingFragment());
+            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null);
+        });
 
 
 

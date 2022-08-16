@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.MyProfileFragment">
 
-    <LinearLayout
+    <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:background="@color/white"
@@ -15,31 +15,31 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            >
+            android:layout_margin="@dimen/_10sdp">
 
             <TextView
                 android:id="@+id/tv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:fontFamily="@font/popsem"
                 android:text="Profile"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15sdp" />
 
             <ImageButton
-                android:id="@+id/btn_more"
+                android:id="@+id/btn_setting"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_more"
+                android:background="@drawable/ic_setting"
                 android:backgroundTint="@color/black"
 
                 />
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
