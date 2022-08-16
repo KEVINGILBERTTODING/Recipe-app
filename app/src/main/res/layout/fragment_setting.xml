@@ -56,6 +56,8 @@
                 app:civ_border_color="@color/main"
                 app:civ_border_width="@dimen/_3sdp" />
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,16 +84,14 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_9sdp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEdit"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/gray"
+                    android:layout_below="@id/iv_profile"
                     android:fontFamily="@font/popmed"
-                    android:text="Edit"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
+                    android:text="Change Profile Picture"
+                    android:textSize="@dimen/_9sdp" />
+
             </LinearLayout>
         </RelativeLayout>
 
@@ -126,8 +126,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -157,8 +157,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -197,8 +197,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -207,6 +207,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_about_us"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
@@ -227,8 +228,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -237,6 +238,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
@@ -257,8 +259,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -288,8 +290,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"

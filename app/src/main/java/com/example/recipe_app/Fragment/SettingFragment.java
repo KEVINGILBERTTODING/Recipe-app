@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,7 +41,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -69,6 +70,11 @@ public class SettingFragment extends Fragment {
         tv_email = view.findViewById(R.id.tv_email);
         contactUs = view.findViewById(R.id.rl_contact_us);
         logout = view.findViewById(R.id.rl_logout);
+        appVersion = view.findViewById(R.id.rl_version);
+        aboutUs = view.findViewById(R.id.rl_about_us);
+
+
+        // memamnggil method untuk load profile
         getProfile(userid);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +86,7 @@ public class SettingFragment extends Fragment {
         });
 
 
-
+        // Saat menu update password di klik
         updte_pass.setOnClickListener(view1 ->  {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, new UpdatePassword());
@@ -89,6 +95,7 @@ public class SettingFragment extends Fragment {
 
         });
 
+        // Saat menu update email di klik
         updt_email.setOnClickListener(view1 ->  {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -99,12 +106,36 @@ public class SettingFragment extends Fragment {
 
         });
 
+        // Saat menu contact us di klik
         contactUs.setOnClickListener(view1 -> {
             Dialog dialog = new Dialog(getContext());
 //            dialog.setContentView(R.layout.contact_us);
         });
 
+        // Saat menu app version di klik
+        appVersion.setOnClickListener(view1->{
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.layout_app_version);
+            final Button btnOk= dialog.findViewById(R.id.btnOk);
+            btnOk.setOnClickListener(view2 -> {
+                dialog.dismiss();
+            });
+            dialog.show();
 
+        });
+
+        // Saat menu about us di klik
+        aboutUs.setOnClickListener(view1 -> {
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.layout_about_us);
+            final Button btnOk= dialog.findViewById(R.id.btnOk);
+            btnOk.setOnClickListener(view2 -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        });
+
+        // Saat button logout di klik
         logout.setOnClickListener(view1 -> {
 
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
