@@ -64,6 +64,7 @@ public class UpdatePassword extends Fragment {
         txtPasswordUpdate = view.findViewById(R.id.ti_old_password);
         btnBack = view.findViewById(R.id.btnBack);
 
+
         btnUpdate.setOnClickListener(view1 -> {
             String password = txtPasswordUpdate.getText().toString();
             if (password.isEmpty()){
@@ -94,7 +95,6 @@ public class UpdatePassword extends Fragment {
          @Override
          public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
              if (response.body().getStatus().equals("success")){
-                 Toast.makeText(getContext(), "Password is correct", Toast.LENGTH_SHORT).show();
                  FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, new CreateNewPasswordFragment());

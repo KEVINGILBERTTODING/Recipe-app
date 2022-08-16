@@ -8,13 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.recipe_app.LoginActivity;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -31,6 +34,7 @@ public class CreateNewPasswordFragment extends Fragment {
     TextInputLayout tilPassword, tilPasswordConf;
     String usernamex, useridx;
     Button btnUpdate;
+    ImageButton btnBack;
 
 
     @Override
@@ -50,6 +54,15 @@ public class CreateNewPasswordFragment extends Fragment {
         txtPassword = view.findViewById(R.id.ti_new_pass);
         txtPasswordConf = view.findViewById(R.id.ti_pass_conf);
         btnUpdate = view.findViewById(R.id.btn_update_password);
+        btnBack = view.findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
+            }
+        });
 
 
         btnUpdate.setOnClickListener(view1 ->  {
@@ -59,11 +72,10 @@ public class CreateNewPasswordFragment extends Fragment {
 
             } else if (txtPassword.getText().toString().isEmpty() || txtPasswordConf.getText().toString().isEmpty()){
                 Toast.makeText(getContext(), "field cannot be empty", Toast.LENGTH_SHORT).show();
-            } else if(txtPassword.length() < 6){
+            } else if(txtPassword.length() < 6 || txtPasswordConf.length() < 6){
                 Toast.makeText(getContext(), "password must be at least 6 characters", Toast.LENGTH_SHORT).show();
             } else{
                 Toast.makeText(getContext(), "password doesn't match", Toast.LENGTH_SHORT).show();
-
                 tilPasswordConf.setError("password doesn't match");
             }
 
@@ -82,8 +94,15 @@ public class CreateNewPasswordFragment extends Fragment {
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 ProfileModel profileModel = response.body();
                 if (profileModel.getStatus().equals("success")){
-                    // Jika berhasil update password
                     Toast.makeText(getContext(), "Password is updated", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    editor.commit();
+                    startActivity(new android.content.Intent(getContext(), LoginActivity.class));
+                    getActivity().finish();
                 }else{
                     // Jika gagal update password
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();

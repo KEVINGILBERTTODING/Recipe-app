@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.recipe_app.Model.ProfileModel;
@@ -36,6 +37,7 @@ public class UpdateEmailFragment extends Fragment {
     TextInputLayout til_email, til_password;
     TextInputEditText txt_email, txt_password;
     Button btnUpdate;
+    ImageButton btnBack;
 
 
     @Override
@@ -53,6 +55,16 @@ public class UpdateEmailFragment extends Fragment {
         txt_email = view.findViewById(R.id.ti_email);
         txt_password = view.findViewById(R.id.ti_pass);
         btnUpdate = view.findViewById(R.id.btn_update_email);
+        btnBack = view.findViewById(R.id.btn_back);
+
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
 
         // validasi form tidak boleh kosong
 
@@ -64,6 +76,7 @@ public class UpdateEmailFragment extends Fragment {
             }
 
         });
+
 
 
 
