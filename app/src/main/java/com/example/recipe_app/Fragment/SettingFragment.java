@@ -5,6 +5,7 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -22,10 +23,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.LoginActivity;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs;
+    RelativeLayout updte_pass, updt_email, contactUs, logout;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -65,6 +68,7 @@ public class SettingFragment extends Fragment {
         tv_username= view.findViewById(R.id.tv_username);
         tv_email = view.findViewById(R.id.tv_email);
         contactUs = view.findViewById(R.id.rl_contact_us);
+        logout = view.findViewById(R.id.rl_logout);
         getProfile(userid);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +101,29 @@ public class SettingFragment extends Fragment {
 
         contactUs.setOnClickListener(view1 -> {
             Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.contact_us);
+//            dialog.setContentView(R.layout.contact_us);
+        });
+
+
+        logout.setOnClickListener(view1 -> {
+
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+            builder.setTitle("Logout");
+            builder.setMessage("Are you sure you want to logout?");
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE).edit();
+                editor.clear();
+                editor.apply();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                getActivity().finish();
+            });
+            builder.setNegativeButton("No", (dialog, which) -> {
+                dialog.dismiss();
+            });
+            builder.show();
+
+
+
         });
 
         return view;
