@@ -40,6 +40,16 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
+                <TextView
+                    android:id="@+id/tv_apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popsem"
+                    android:text="Apply"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
             </RelativeLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -85,6 +95,7 @@
                     android:textSize="@dimen/_9sdp" />
 
                 <TextView
+                    android:id="@+id/tv_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/iv_profile"
