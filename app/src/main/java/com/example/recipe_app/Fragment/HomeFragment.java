@@ -102,17 +102,17 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
 
-        // [TEST] image profile
-        Glide.with(this)
-                .load(BASE_URL + "photo_profile/" + userid +".png")
-                .thumbnail(0.5f)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .dontAnimate()
-                .fitCenter()
-                .centerCrop()
-                .override(200, 200)
-                .into(img_profile);
+//        // [TEST] image profile
+//        Glide.with(this)
+//                .load(BASE_URL + "photo_profile/" + userid +".png")
+//                .thumbnail(0.5f)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .dontAnimate()
+//                .fitCenter()
+//                .centerCrop()
+//                .override(200, 200)
+//                .into(img_profile);
 
         // set username
         tv_username.setText("Hi, "+username);
@@ -410,7 +410,16 @@ public class HomeFragment extends Fragment {
                 if (profileModelList.size() > 0) {
                     ProfileModel profileModel;
                     profileModel = profileModelList.get(0);
-                    Glide.with(getContext()).load(profileModel.getPhoto_profile()).into(img_profile);
+                    Glide.with(getContext())
+                            .load(profileModel.getPhoto_profile())
+                            .thumbnail(0.5f)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .dontAnimate()
+                            .fitCenter()
+                            .centerCrop()
+                            .override(200, 200)
+                            .into(img_profile);
                 }
             }
 
