@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,17 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.zxing.Result;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScannerFragment extends Fragment {
 
@@ -43,7 +53,7 @@ public class ScannerFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                        getRecipeScanner(result.getText());
                     }
                 });
             }
@@ -81,5 +91,58 @@ public class ScannerFragment extends Fragment {
         mCodeScanner.releaseResources();
         super.onPause();
 
+    }
+
+    // method untuk mencari recipe scanner
+
+    private void getRecipeScanner(String recipe_id) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipeScanner(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                RecipeModel recipeModel = response.body().get(0);
+                if (recipeModel.getRecipe_id().equals(recipe_id)) {
+                    Toast.makeText(getActivity(), "Recipe Found", Toast.LENGTH_SHORT).show();
+                    Fragment fragment = new DetailRecipeFragment();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                    bundle.putString("user_id", recipeModel.getUser_id());
+                    bundle.putString("username", recipeModel.getUsername());
+                    bundle.putString("title", recipeModel.getTitle());
+                    bundle.putString("description", recipeModel.getDescription());
+                    bundle.putString("category", recipeModel.getCategory());
+                    bundle.putString("servings", recipeModel.getServings());
+                    bundle.putString("duration", recipeModel.getDuration());
+                    bundle.putString("ingredients", recipeModel.getIngredients());
+                    bundle.putString("steps", recipeModel.getSteps());
+                    bundle.putString("upload_date", recipeModel.getUpload_date());
+                    bundle.putString("upload_time", recipeModel.getUpload_time());
+                    bundle.putString("image", recipeModel.getImage());
+                    bundle.putString("status", recipeModel.getStatus());
+                    bundle.putString("ratings", recipeModel.getRatings());
+                    bundle.putString("likes", recipeModel.getLikes());
+                    bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                    bundle.putString("email", recipeModel.getEmail());
+                    bundle.putString("notes", recipeModel.getNote());
+
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                    fragmentTransaction.commit();
+                    fragmentTransaction.addToBackStack(null);
+
+
+                } else {
+                    Toast.makeText(getActivity(), "Recipe Not Found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }
