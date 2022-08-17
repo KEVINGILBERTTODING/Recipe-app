@@ -40,15 +40,33 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search_all_recipes"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:background="@drawable/search_bar"
-                    app:iconifiedByDefault="false"
-                    app:queryHint="Search recipes"
-                    app:theme="@style/AppSearchView" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/search_all_recipes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_35sdp"
+                        android:background="@drawable/search_bar"
+                        app:iconifiedByDefault="false"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        app:queryHint="Search recipes"
+                        app:theme="@style/AppSearchView" />
+
+                    <ImageButton
+                        android:id="@+id/btn_scan"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@id/search_all_recipes"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_qrcode"
+                        android:backgroundTint="@color/black" />
+
+
+                </RelativeLayout>
+
 
                 <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/recycler_recipe_all"

@@ -1,18 +1,28 @@
 package com.example.recipe_app.Fragment;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,9 +41,14 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,8 +62,11 @@ public class SettingFragment extends Fragment {
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
     String username, userid;
-    TextView tv_username, tv_email;
-
+    TextView tv_username, tv_email, tvPhoto, tvApply;
+    private final int TAG_GALLERY = 2222;
+    Bitmap bitmap;
+    public static final int progress_bar_type = 0;
+    ProgressDialog progressDialog;
 
 
 
@@ -72,6 +91,10 @@ public class SettingFragment extends Fragment {
         logout = view.findViewById(R.id.rl_logout);
         appVersion = view.findViewById(R.id.rl_version);
         aboutUs = view.findViewById(R.id.rl_about_us);
+        tvPhoto = view.findViewById(R.id.tv_photo);
+        tvApply = view.findViewById(R.id.tv_apply);
+
+        progressDialog = new ProgressDialog(getContext());
 
 
         // memamnggil method untuk load profile
@@ -83,6 +106,41 @@ public class SettingFragment extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 fm.popBackStack();
             }
+        });
+        Toast.makeText(getContext(), userid, Toast.LENGTH_SHORT).show();
+
+        // saat button appply di klik
+
+        tvApply.setOnClickListener(view1 -> {
+            if (bitmap != null) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure want to change your profile picture?");
+                builder.setPositiveButton("Yes", (dialog, which) -> {
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.show();
+                    progressDialog.setCancelable(false);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    byte[] imgByte = byteArrayOutputStream.toByteArray();
+                    String imgString = Base64.encodeToString(imgByte, Base64.DEFAULT);
+
+                    updateProfile(userid, imgString);
+
+
+
+                });
+                builder.setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+
+                builder.show();
+
+            } else {
+                Toast.makeText(getContext(), "Please select image", Toast.LENGTH_SHORT).show();
+            }
+
+
         });
 
 
@@ -103,6 +161,17 @@ public class SettingFragment extends Fragment {
             fragmentTransaction.commit();
             fragmentTransaction.addToBackStack(null);
 
+
+        });
+
+        iv_profile.setOnClickListener(view1 -> {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, TAG_GALLERY);
+
+            }
 
         });
 
@@ -161,17 +230,17 @@ public class SettingFragment extends Fragment {
     }
 
     // method untuk load photo profile
-   private void getProfile(String user_id) {
-       InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-       interfaceProfile.getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
-           @Override
-           public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+    private void getProfile(String user_id) {
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 profileModelList = response.body();
                 if (profileModelList.size() > 0) {
 
                     tv_username.setText(profileModelList.get(0).getUsername());
                     tv_email.setText(profileModelList.get(0).getEmail());
-                     Glide.with(getActivity())
+                    Glide.with(getActivity())
                             .load(profileModelList.get(0).getPhoto_profile())
                             .thumbnail(0.5f)
                             .skipMemoryCache(true)
@@ -183,12 +252,61 @@ public class SettingFragment extends Fragment {
                             .override(1024, 768)
                             .into(iv_profile);
                 }
-           }
+            }
 
-           @Override
-           public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
 
-           }
-       });
+            }
+        });
+    }
+
+    // method untuk mengirim phoot ke server
+    private void updateProfile(String user_id, String image) {
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.updateImageProfile(user_id, image).enqueue(new Callback<ProfileModel>() {
+            @Override
+            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                ProfileModel profileModel = response.body();
+
+                if(profileModel.getStatus().equals("success")){
+
+                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileModel> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Gagal", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode ==  RESULT_OK && requestCode == TAG_GALLERY && data != null && data.getData() != null){
+
+            Uri uri_path = data.getData();
+
+            try {
+
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
+                iv_profile.setImageBitmap(bitmap);
+                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

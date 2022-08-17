@@ -88,6 +88,13 @@ dependencies {
     // Dependencies for lottie animation
     implementation "com.airbnb.android:lottie:3.7.0"
 
+    // Dependencies for qrcode generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
+    // Dependencies for scanner
+    implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+
+
 
 
 

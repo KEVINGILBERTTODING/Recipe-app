@@ -43,6 +43,14 @@ public interface InterfaceProfile {
             @Field("email") String email
     );
 
+    // method untuk mengubah photo profile
+    @FormUrlEncoded
+    @POST("update_image_profile.php")
+    Call<ProfileModel>updateImageProfile(
+            @Field("user_id") String user_id,
+            @Field("image") String image
+    );
+
 
 
 }

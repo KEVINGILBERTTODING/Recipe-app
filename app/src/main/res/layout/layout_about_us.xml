@@ -33,11 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_8sdp"
         android:fontFamily="@font/popmed"
         android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_5sdp"
         android:text="@string/about_us"
-        android:textSize="@dimen/_9sdp" />
+        android:textSize="@dimen/_8sdp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnOk"

@@ -146,4 +146,11 @@ public interface InterfaceRecipe {
     @POST("count_like_recipe.php")
     Call<RecipeModel> countLikeRecipe(@Field("recipe_id") String recipe_id,
                                       @Field("code") Integer code);
+
+
+    // Get Recipe By Scanner
+    @GET("get_recipe_scanner.php")
+    Call<List<RecipeModel>> getRecipeScanner(
+            @Query("recipe_id") String recipe_id
+    );
 }
