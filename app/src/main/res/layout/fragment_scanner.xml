@@ -3,12 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.ScannerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/scanner_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:frameColor="@color/main"
+        app:frameCornersSize="@dimen/_20sdp"
+        app:frameCornersRadius="@dimen/_60sdp"
+        app:frameThickness="@dimen/_5sdp"
+        app:frameCornersCapRounded="true"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
