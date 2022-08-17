@@ -5,6 +5,7 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -59,7 +61,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
 
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore;
+    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode;
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
@@ -129,6 +131,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvLikes = view.findViewById(R.id.tv_likes);
         disslike_anim = view.findViewById(R.id.disslike);
         btnMore = view.findViewById(R.id.btn_more);
+        btnQrcode = view.findViewById(R.id.btn_qrcode);
 
         // Get data from bundle
 
@@ -175,6 +178,21 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         } else {
             btnMore.setVisibility(View.GONE);
         }
+
+        // saat btn qrcode diklik
+        btnQrcode.setOnClickListener(view1 -> {
+
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            QrcodeFragment qrcodeFragment = new QrcodeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_id", recipe_id);
+            qrcodeFragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.fragment_container, qrcodeFragment);
+
+            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null);
+        });
 
 
 

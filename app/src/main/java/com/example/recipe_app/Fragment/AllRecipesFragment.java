@@ -42,6 +42,8 @@ public class AllRecipesFragment extends Fragment {
     RecipeShowAllAdapter recipeShowAllAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    ImageButton btn_scan;
+
 
 
     public AllRecipesFragment() {
@@ -58,6 +60,7 @@ public class AllRecipesFragment extends Fragment {
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         searchView = view.findViewById(R.id.search_all_recipes);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        btn_scan = view.findViewById(R.id.btn_scan);
 
         // catch data from searchbar
 
