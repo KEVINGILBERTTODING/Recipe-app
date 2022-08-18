@@ -107,7 +107,6 @@ public class SettingFragment extends Fragment {
                 fm.popBackStack();
             }
         });
-        Toast.makeText(getContext(), userid, Toast.LENGTH_SHORT).show();
 
         // saat button appply di klik
 

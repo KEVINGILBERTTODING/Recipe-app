@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ public class QrcodeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_qrcode, container, false);
 
         iv_qrcode = view.findViewById(R.id.iv_qrcode);
-        btnBack = view.findViewById(R.id.btnBack);
+        btnBack = view.findViewById(R.id.btn_back);
         tv_recipe_name = view.findViewById(R.id.tv_recipe_name);
         tv_username = view.findViewById(R.id.tv_username);
         iv_recipe_image = view.findViewById(R.id.iv_recipe);
@@ -68,6 +69,11 @@ public class QrcodeFragment extends Fragment {
 
         tv_recipe_name.setText(recipe_name);
         tv_username.setText(username);
+
+        btnBack.setOnClickListener(view1 -> {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.popBackStack();
+        });
 
 
         // Generate qrcode automatic by recipe_id

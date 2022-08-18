@@ -25,14 +25,6 @@
                     android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/ic_back" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="QR Code"
-                    android:fontFamily="@font/popmed"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
             </RelativeLayout>
 
 
@@ -47,11 +39,7 @@
         android:orientation="vertical"
         android:padding="@dimen/_20sdp">
 
-        <ImageView
-            android:id="@+id/iv_qrcode"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"
-            android:layout_centerInParent="true" />
+
 
 
     </RelativeLayout>
@@ -68,6 +56,7 @@
         app:civ_border_width="@dimen/_3sdp" />
 
     <LinearLayout
+        android:id="@+id/layout_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_recipe"
@@ -85,7 +74,7 @@
             android:fontFamily="@font/popsem"
             android:text="Recipe Name"
             android:textColor="@color/black"
-            android:textSize="@dimen/_11sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -112,7 +101,15 @@
             android:textSize="@dimen/_9sdp" />
 
 
+        <ImageView
+            android:id="@+id/iv_qrcode"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"/>
+
+
     </LinearLayout>
+
+
 
 
 </RelativeLayout>
