@@ -186,6 +186,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             QrcodeFragment qrcodeFragment = new QrcodeFragment();
             Bundle bundle = new Bundle();
             bundle.putString("recipe_id", recipe_id);
+            bundle.putString("recipe_name", recipeName);
+            bundle.putString("recipe_image", photoRecipe);
+            bundle.putString("username", recipeUsername);
             qrcodeFragment.setArguments(bundle);
 
             fragmentTransaction.replace(R.id.fragment_container, qrcodeFragment);
@@ -266,7 +269,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 .fitCenter()
                 .centerCrop()
                 .into(ivRecipeImage);
-
 
         // load photo profile user
         Glide.with(getContext())
