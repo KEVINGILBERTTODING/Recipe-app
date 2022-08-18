@@ -1,19 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main"
     tools:context=".Fragment.ScannerFragment">
 
-    <com.budiyev.android.codescanner.CodeScannerView
-        android:id="@+id/scanner_view"
-        android:layout_width="match_parent"
-        app:frameColor="@color/main"
-        app:frameCornersSize="@dimen/_20sdp"
-        app:frameCornersRadius="@dimen/_60sdp"
-        app:frameThickness="@dimen/_5sdp"
-        app:frameCornersCapRounded="true"
-        android:layout_height="match_parent"/>
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_115sdp"
+        android:background="@drawable/container_scanner"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/container_scanner"
+            app:frameColor="@color/main"
+            app:frameCornersCapRounded="true"
+            app:frameCornersRadius="@dimen/_80sdp"
+            app:frameCornersSize="@dimen/_20sdp"
+            app:frameSize="0.8"
+
+            app:frameThickness="@dimen/_5sdp"
+            app:maskColor="@color/white" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/scanner_bar"
+            android:layout_width="@dimen/_230sdp"
+            android:layout_height="@dimen/_230sdp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/bar_scanner3" />
+
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/popsem"
+            android:text="QR Code Scanner"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_1"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:fontFamily="@font/popmed"
+            android:text="Please QR code inside the frame"
+            android:textSize="@dimen/_10sdp" />
+
+
+    </RelativeLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animate_hide"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_centerHorizontal="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animate_hiding" />
+
+
+</RelativeLayout>

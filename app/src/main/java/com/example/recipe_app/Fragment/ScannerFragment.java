@@ -2,6 +2,7 @@ package com.example.recipe_app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -14,6 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -36,6 +39,8 @@ public class ScannerFragment extends Fragment {
 
 
     private CodeScanner mCodeScanner;
+    private Button btn_show;
+    private TextView tv_result;
 
 
 
@@ -102,34 +107,53 @@ public class ScannerFragment extends Fragment {
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 RecipeModel recipeModel = response.body().get(0);
                 if (recipeModel.getRecipe_id().equals(recipe_id)) {
-                    Toast.makeText(getActivity(), "Recipe Found", Toast.LENGTH_SHORT).show();
-                    Fragment fragment = new DetailRecipeFragment();
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("recipe_id", recipeModel.getRecipe_id());
-                    bundle.putString("user_id", recipeModel.getUser_id());
-                    bundle.putString("username", recipeModel.getUsername());
-                    bundle.putString("title", recipeModel.getTitle());
-                    bundle.putString("description", recipeModel.getDescription());
-                    bundle.putString("category", recipeModel.getCategory());
-                    bundle.putString("servings", recipeModel.getServings());
-                    bundle.putString("duration", recipeModel.getDuration());
-                    bundle.putString("ingredients", recipeModel.getIngredients());
-                    bundle.putString("steps", recipeModel.getSteps());
-                    bundle.putString("upload_date", recipeModel.getUpload_date());
-                    bundle.putString("upload_time", recipeModel.getUpload_time());
-                    bundle.putString("image", recipeModel.getImage());
-                    bundle.putString("status", recipeModel.getStatus());
-                    bundle.putString("ratings", recipeModel.getRatings());
-                    bundle.putString("likes", recipeModel.getLikes());
-                    bundle.putString("photo_profile", recipeModel.getPhoto_profile());
-                    bundle.putString("email", recipeModel.getEmail());
-                    bundle.putString("notes", recipeModel.getNote());
 
-                    fragment.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.fragment_container, fragment);
-                    fragmentTransaction.commit();
-                    fragmentTransaction.addToBackStack(null);
+                    Toast.makeText(getContext(), "Recipe found", Toast.LENGTH_SHORT).show();
+
+                    Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.layout_success_scann);
+                    tv_result = dialog.findViewById(R.id.tv_result);
+                    btn_show = dialog.findViewById(R.id.btn_show);
+
+
+
+                    tv_result.setText(recipeModel.getTitle());
+
+                    btn_show.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            Fragment fragment = new DetailRecipeFragment();
+                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                            bundle.putString("user_id", recipeModel.getUser_id());
+                            bundle.putString("username", recipeModel.getUsername());
+                            bundle.putString("title", recipeModel.getTitle());
+                            bundle.putString("description", recipeModel.getDescription());
+                            bundle.putString("category", recipeModel.getCategory());
+                            bundle.putString("servings", recipeModel.getServings());
+                            bundle.putString("duration", recipeModel.getDuration());
+                            bundle.putString("ingredients", recipeModel.getIngredients());
+                            bundle.putString("steps", recipeModel.getSteps());
+                            bundle.putString("upload_date", recipeModel.getUpload_date());
+                            bundle.putString("upload_time", recipeModel.getUpload_time());
+                            bundle.putString("image", recipeModel.getImage());
+                            bundle.putString("status", recipeModel.getStatus());
+                            bundle.putString("ratings", recipeModel.getRatings());
+                            bundle.putString("likes", recipeModel.getLikes());
+                            bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                            bundle.putString("email", recipeModel.getEmail());
+                            bundle.putString("notes", recipeModel.getNote());
+
+                            fragment.setArguments(bundle);
+                            fragmentTransaction.replace(R.id.fragment_container, fragment);
+                            fragmentTransaction.commit();
+                            fragmentTransaction.addToBackStack(null);
+                        }
+                    });
+                    dialog.show();
+
 
 
                 } else {
