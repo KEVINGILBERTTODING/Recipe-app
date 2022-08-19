@@ -299,6 +299,7 @@ public class SettingFragment extends Fragment {
 
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 iv_profile.setImageBitmap(bitmap);
+                tvApply.setVisibility(View.VISIBLE);
                 Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
