@@ -142,6 +142,14 @@ public class SettingFragment extends Fragment {
 
         });
 
+        // saat button contact us di klik
+        contactUs.setOnClickListener(view1 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new ReportProblemFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
 
         // Saat menu update password di klik
         updte_pass.setOnClickListener(view1 ->  {
@@ -174,11 +182,6 @@ public class SettingFragment extends Fragment {
 
         });
 
-        // Saat menu contact us di klik
-        contactUs.setOnClickListener(view1 -> {
-            Dialog dialog = new Dialog(getContext());
-//            dialog.setContentView(R.layout.contact_us);
-        });
 
         // Saat menu app version di klik
         appVersion.setOnClickListener(view1->{
