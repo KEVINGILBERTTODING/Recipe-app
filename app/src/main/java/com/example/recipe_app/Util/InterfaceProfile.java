@@ -51,6 +51,14 @@ public interface InterfaceProfile {
             @Field("image") String image
     );
 
+    // Method untuk send report bug
+    @FormUrlEncoded
+    @POST("report_bug.php")
+    Call<ProfileModel>reportBug(
+            @Field("user_id") String user_id,
+            @Field("chat") String chat,
+            @Field("image") String image
+    );
 
 
 }
