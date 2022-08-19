@@ -8,6 +8,17 @@
     android:background="@color/main"
     tools:context=".Fragment.ScannerFragment">
 
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/ic_back"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
