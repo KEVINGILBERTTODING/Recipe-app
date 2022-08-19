@@ -23,6 +23,7 @@ import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -43,7 +44,7 @@ public class AllRecipesFragment extends Fragment {
     RecipeShowAllAdapter recipeShowAllAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    ImageButton btn_scan;
+    FloatingActionButton btn_scan;
 
 
 

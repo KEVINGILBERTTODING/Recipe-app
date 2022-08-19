@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class ScannerFragment extends Fragment {
     private CodeScanner mCodeScanner;
     private Button btn_show;
     private TextView tv_result;
+    private ImageButton btn_back;
 
 
 
@@ -50,6 +53,11 @@ public class ScannerFragment extends Fragment {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
         CodeScannerView scannerView = view.findViewById(R.id.scanner_view);
+
+
+
+        btn_back = view.findViewById(R.id.btn_back);
+
         final Activity activity = getActivity();
         mCodeScanner = new CodeScanner(getContext(), scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -71,6 +79,12 @@ public class ScannerFragment extends Fragment {
             public void onClick(View v) {
                 mCodeScanner.startPreview();
             }
+        });
+
+
+        btn_back.setOnClickListener(view1 -> {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.popBackStack();
         });
 
 
