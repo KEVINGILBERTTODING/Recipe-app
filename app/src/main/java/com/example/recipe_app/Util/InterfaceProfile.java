@@ -60,5 +60,12 @@ public interface InterfaceProfile {
             @Field("image") String image
     );
 
+    @FormUrlEncoded
+    @POST("update_bio.php")
+    Call<ProfileModel> updateBio(
+            @Field("user_id") String user_id,
+            @Field("bio") String bio
+    );
+
 
 }

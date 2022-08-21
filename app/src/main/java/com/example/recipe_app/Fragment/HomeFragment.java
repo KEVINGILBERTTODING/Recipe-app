@@ -46,7 +46,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     String username, userid;
-    TextView tv_username, txt_userid;
+    TextView tv_username;
     ShimmerRecyclerView shimmerRecyclerView, shimmerRecipeCategoryPopular, shimmerRecipeTrending;
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
@@ -101,19 +101,6 @@ public class HomeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Noodle"));
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
-
-//        // [TEST] image profile
-//        Glide.with(this)
-//                .load(BASE_URL + "photo_profile/" + userid +".png")
-//                .thumbnail(0.5f)
-//                .skipMemoryCache(true)
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                .dontAnimate()
-//                .fitCenter()
-//                .centerCrop()
-//                .override(200, 200)
-//                .into(img_profile);
-
         // set username
         tv_username.setText("Hi, "+username);
 
@@ -121,6 +108,18 @@ public class HomeFragment extends Fragment {
         setShimmerAllRecipe();
         setShimmerCategoryRecipe();
         setShimmerTrendingRecipe();
+
+        // saat image profile di klik
+        img_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                MyProfileFragment profileFragment = new MyProfileFragment();
+                fragmentTransaction.replace(R.id.fragment_container, profileFragment);
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            }
+        });
 
         // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
