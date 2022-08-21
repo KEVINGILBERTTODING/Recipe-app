@@ -13,6 +13,31 @@
         android:src="@drawable/sample_food"
         app:shapeAppearanceOverlay="@style/roundedCorners" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/love_anim"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:lottie_autoPlay="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:lottie_loop="false"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/love_animate3"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/disslike_anim"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:lottie_autoPlay="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:lottie_loop="false"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/disslike2"/>
+
+
+
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
@@ -164,12 +166,21 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 // mengubah background button menjadi belum di unlike
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
+                // menampilkan disslike animation
+                holder.disslikeAnimation.setVisibility(View.VISIBLE);
+                holder.disslikeAnimation.playAnimation();
+
+                new Handler().postDelayed(() -> {
+                    holder.disslikeAnimation.setVisibility(View.GONE);
+                    holder.disslikeAnimation.cancelAnimation();
+                }, 1500);
+
                 // mengurangi jumlah likes jika button di unlike
                 holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) - 1));
 
             }
 
-            //jika di klik maka akan menyimpan resep
+            //jika di klik maka akan menambah total like
             else {
                 likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
 
@@ -179,8 +190,11 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 // mengubah background button jika di like
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
 
+                // menampilkan like animation
+                holder.likeAnimation.setVisibility(View.VISIBLE);
+                holder.likeAnimation.playAnimation();
+
                 // menambah jumlah likes jika button di like
-                // mengurangi jumlah likes jika button di unlike
                 holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
             }
         });
@@ -199,6 +213,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         TextView tv_like, tv_duration, tv_title, tv_username;
         ImageView img_recipe, img_profile;
         ImageButton btn_save, btnLike;
+        LottieAnimationView likeAnimation, disslikeAnimation;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -211,6 +226,8 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             tv_username = itemView.findViewById(R.id.tv_recipe_username);
             btn_save = itemView.findViewById(R.id.btn_favorite);
             btnLike = itemView.findViewById(R.id.btn_like);
+            likeAnimation = itemView.findViewById(R.id.love_anim);
+            disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
 
 
             // saat button save di klik
