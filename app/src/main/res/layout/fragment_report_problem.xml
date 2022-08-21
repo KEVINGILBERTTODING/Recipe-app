@@ -66,7 +66,6 @@
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_20sdp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/report_animate" />
@@ -80,8 +79,8 @@
                 android:gravity="start"
                 android:hint="What went wrong?"
                 android:inputType="textMultiLine"
-                android:maxLength="10"
                 android:minLines="5"
+                android:maxLines="10"
                 android:padding="@dimen/_3sdp"
                 android:textSize="@dimen/_10sdp" />
 

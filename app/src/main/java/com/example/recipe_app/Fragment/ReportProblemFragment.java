@@ -102,7 +102,8 @@ public class ReportProblemFragment extends Fragment {
             if (bitmap == null) {
                 Snackbar.make(getView(), "Please select image", Snackbar.LENGTH_SHORT).show();
             } else if (edt_report.getText().toString().isEmpty()) {
-                Snackbar.make(getView(), "Please fill in the field", Snackbar.LENGTH_SHORT).show();
+                edt_report.setError("Please fill this field");
+                Snackbar.make(getView(), "Please fill this field", Snackbar.LENGTH_SHORT).show();
             } else {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

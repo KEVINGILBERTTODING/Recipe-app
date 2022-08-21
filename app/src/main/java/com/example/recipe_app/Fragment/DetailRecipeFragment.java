@@ -61,7 +61,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     ImageView ivRecipeImage, ivProfile, ivMyProfile;
 
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode;
+    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2;
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
@@ -71,6 +71,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
             photoRecipe, recipeNOtes, usernamex, useridx, totalLikes, recipeStatus, recipeCategory;
+
+    Dialog reportform;
 
 
 
@@ -132,6 +134,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         disslike_anim = view.findViewById(R.id.disslike);
         btnMore = view.findViewById(R.id.btn_more);
         btnQrcode = view.findViewById(R.id.btn_qrcode);
+        btnMore2 = view.findViewById(R.id.btn_more2);
 
         // Get data from bundle
 
@@ -170,14 +173,47 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvLikes.setText(totalLikes);
 
         pd = new ProgressDialog(getContext());
+        reportform = new Dialog(getContext());
 
 
         // jika user id sama dengan user id maka akan muncul button edit dan delete
         if (useridx.equals(user_id)) {
             btnMore.setVisibility(View.VISIBLE);
+            btnMore2.setVisibility(View.GONE);
         } else {
             btnMore.setVisibility(View.GONE);
+            btnMore2.setVisibility(View.VISIBLE);
         }
+
+        btnMore2.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Report recipe");
+            builder.setItems(new CharSequence[]{"Report"}, (dialog, which) -> {
+                switch (which) {
+                    case 0:
+                        reportform.setContentView(R.layout.layout_report_reccipe);
+                        final EditText et_report = reportform.findViewById(R.id.edt_report);
+                        final Button btn_report = reportform.findViewById(R.id.btnReport);
+                        btn_report.setOnClickListener(view2 -> {
+                            if (et_report.getText().toString().isEmpty()){
+                                Toast.makeText(getContext(), "Field cannot empty", Toast.LENGTH_SHORT).show();
+                            } else {
+                                reportRecipe(recipe_id, useridx, et_report.getText().toString());
+                            }
+                        });
+                        reportform.setCancelable(true);
+                        reportform.show();
+
+
+                        break;
+                }
+
+
+            });
+
+            builder.show();
+
+        });
 
         // saat btn qrcode diklik
         btnQrcode.setOnClickListener(view1 -> {
@@ -244,9 +280,22 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         break;
                     case 1:
                         // delete
-                        pd.setMessage("Deleting...");
-                        pd.show();
-                        deleteRecipe(recipe_id);
+                        MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(getContext());
+                        builder1.setTitle("Delete Recipe");
+                        builder1.setMessage("Are you sure want to delete this recipe?");
+                        builder1.setPositiveButton("Yes", (dialogInterface, i) -> {
+                            // delete recipe
+                            pd.setMessage("Deleting...");
+                            pd.show();
+                            deleteRecipe(recipe_id);
+                        });
+                        builder1.setNegativeButton("No", (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                        });
+
+                        builder1.show();
+
+
                         break;
                 }
             });
@@ -742,6 +791,28 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    // method untuk report recipe
+    private void reportRecipe(String user_id, String recipe_id, String report) {
+        InterfaceRecipe ifr = DataApi.getClient().create(InterfaceRecipe.class);
+        ifr.reportRecipe(user_id, recipe_id, report).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                if (response.body().getMessage().equals("success")) {
+                    Snackbar.make(getView(), "Recipe reported", Snackbar.LENGTH_LONG).show();
+                    reportform.dismiss();
+                } else {
+                    Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
 
             }
         });
