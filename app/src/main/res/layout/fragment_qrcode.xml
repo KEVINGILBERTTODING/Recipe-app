@@ -40,8 +40,6 @@
         android:padding="@dimen/_20sdp">
 
 
-
-
     </RelativeLayout>
 
 
@@ -56,7 +54,7 @@
         app:civ_border_width="@dimen/_3sdp" />
 
     <LinearLayout
-        android:id="@+id/layout_username"
+        android:id="@+id/layout_qqrcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_recipe"
@@ -109,7 +107,21 @@
 
     </LinearLayout>
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_qqrcode"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/popmed"
+        android:text="Scan QR Code"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_10sdp"
+        app:cornerRadius="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_centerHorizontal="true"
+        app:icon="@drawable/ic_qrcode" />
 
 
 </RelativeLayout>

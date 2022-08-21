@@ -125,6 +125,7 @@ public class SettingFragment extends Fragment {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                     byte[] imgByte = byteArrayOutputStream.toByteArray();
                     String imgString = Base64.encodeToString(imgByte, Base64.DEFAULT);
+                    tvApply.setVisibility(View.GONE);
 
                     updateProfile(userid, imgString);
 
@@ -204,12 +205,24 @@ public class SettingFragment extends Fragment {
 
         });
 
+
+        tvPhoto.setOnClickListener(view1 -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAG_GALLERY);
+        });
+
+
         iv_profile.setOnClickListener(view1 -> {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             } else {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, TAG_GALLERY);
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), TAG_GALLERY);
 
             }
 

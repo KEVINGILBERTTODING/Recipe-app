@@ -45,11 +45,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:fontFamily="@font/popsem"
+                    android:fontFamily="@font/popmed"
                     android:text="Apply"
                     android:visibility="gone"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textColor="@color/main"
+                    android:textSize="@dimen/_11sdp" />
 
             </RelativeLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
