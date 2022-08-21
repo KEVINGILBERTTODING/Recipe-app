@@ -40,8 +40,6 @@
         android:padding="@dimen/_20sdp">
 
 
-
-
     </RelativeLayout>
 
 
@@ -124,10 +122,6 @@
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
         app:icon="@drawable/ic_qrcode" />
-
-
-
-
 
 
 </RelativeLayout>
