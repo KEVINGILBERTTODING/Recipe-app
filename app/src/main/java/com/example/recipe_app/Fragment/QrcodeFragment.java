@@ -5,11 +5,13 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class QrcodeFragment extends Fragment {
     ImageButton btnBack;
     TextView tv_recipe_name, tv_username;
     ImageView iv_recipe_image;
+    Button btnScan;
 
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
@@ -42,6 +45,7 @@ public class QrcodeFragment extends Fragment {
         tv_recipe_name = view.findViewById(R.id.tv_recipe_name);
         tv_username = view.findViewById(R.id.tv_username);
         iv_recipe_image = view.findViewById(R.id.iv_recipe);
+        btnScan = view.findViewById(R.id.btn_scan);
 
 
 
@@ -87,6 +91,13 @@ public class QrcodeFragment extends Fragment {
         }
         
         setScreenBright();
+
+        btnScan.setOnClickListener(view1 -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, new ScannerFragment());
+            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null);
+        });
 
         return view;
     }
