@@ -153,4 +153,13 @@ public interface InterfaceRecipe {
     Call<List<RecipeModel>> getRecipeScanner(
             @Query("recipe_id") String recipe_id
     );
+
+    // method untuk report recipe
+    @FormUrlEncoded
+    @POST("report_recipe.php")
+    Call<RecipeModel> reportRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id,
+            @Field("report") String reason
+    );
 }

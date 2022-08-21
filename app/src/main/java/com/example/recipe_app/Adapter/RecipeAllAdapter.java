@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
@@ -151,12 +153,22 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 // mengubah background button menjadi belum di unlike
                 holder.btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
+                // menampilkan disslike animation
+                holder.disslikeAnimation.setVisibility(View.VISIBLE);
+                holder.disslikeAnimation.playAnimation();
+
+                new Handler().postDelayed(() -> {
+                    holder.disslikeAnimation.setVisibility(View.GONE);
+                    holder.disslikeAnimation.cancelAnimation();
+                }, 1500);
+
+
                 // mengurangi jumlah likes jika button di unlike
                 holder.tv_like.setText(String.valueOf(like - 1));
 
             }
 
-            //jika di klik maka akan menyimpan resep
+            //jika di klik maka akan menambah total like
             else {
                 likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
 
@@ -166,9 +178,12 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 // mengubah background button jika di like
                 holder.btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
 
+                // menampilkan like animation
+                holder.likeAnimation.setVisibility(View.VISIBLE);
+                holder.likeAnimation.playAnimation();
+
                 // menambah jumlah likes jika button di like
-                // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(like));
+                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
             }
         });
 
@@ -188,6 +203,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         TextView tv_like, tv_duration, tv_title, tv_username;
         ImageView img_recipe, img_profile;
         ImageButton btnFavorite, btnLikes;
+        LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -200,6 +216,9 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             btnFavorite = itemView.findViewById(R.id.btn_favorite);
             btnLikes = itemView.findViewById(R.id.btn_like);
             tv_like = itemView.findViewById(R.id.tv_likes);
+            likeAnimation = itemView.findViewById(R.id.love_anim);
+            disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
+            savedAnimation = itemView.findViewById(R.id.saved_anim);
 
 
             // saat button save di klik
@@ -212,8 +231,22 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
                 //jika di klik maka akan menyimpan resep
                 else {
-                    saveRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
-                    btnFavorite.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite));
+
+                    // show save animation
+                    if (savedAnimation.getVisibility() == View.GONE) {
+                        savedAnimation.setVisibility(View.VISIBLE);
+                        savedAnimation.playAnimation();
+                        saveRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
+                        btnFavorite.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                savedAnimation.setVisibility(View.GONE);
+                            }
+                        }, 2 * 1000); // For 2 seconds
+                    }
+
+
                 }
             });
 

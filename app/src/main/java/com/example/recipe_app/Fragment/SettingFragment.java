@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,7 +58,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -93,6 +94,7 @@ public class SettingFragment extends Fragment {
         aboutUs = view.findViewById(R.id.rl_about_us);
         tvPhoto = view.findViewById(R.id.tv_photo);
         tvApply = view.findViewById(R.id.tv_apply);
+        addBio = view.findViewById(R.id.add_bio);
 
         progressDialog = new ProgressDialog(getContext());
 
@@ -140,6 +142,37 @@ public class SettingFragment extends Fragment {
             }
 
 
+        });
+
+        //saat menu biography di klik
+        addBio.setOnClickListener(View -> {
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.layout_add_bio);
+            Button btnSave = dialog.findViewById(R.id.btnSave);
+            EditText edtBio = dialog.findViewById(R.id.edt_bio);
+            btnSave.setOnClickListener(view1 -> {
+
+                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                interfaceProfile.updateBio(userid, edtBio.getText().toString()).enqueue(new Callback<ProfileModel>() {
+                    @Override
+                    public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                        if (response.body().getStatus().equals("success")) {
+                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileModel> call, Throwable t) {
+                        Snackbar.make(getView(), "No connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            });
+            dialog.show();
         });
 
         // saat button contact us di klik

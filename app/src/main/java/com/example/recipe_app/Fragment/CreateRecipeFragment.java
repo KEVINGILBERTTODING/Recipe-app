@@ -7,6 +7,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.DataApi.BASE_URL;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -266,18 +268,29 @@ public class CreateRecipeFragment extends Fragment {
                         imageString, status, notes_).enqueue(new retrofit2.Callback<RecipeModel>() {
             @Override
             public void onResponse(retrofit2.Call<RecipeModel> call, retrofit2.Response<RecipeModel> response) {
+
                 if (response.isSuccessful()) {
                     pd.dismiss();
 
-                    Toast.makeText(getContext(), "Berhasil menambahkan resep", Toast.LENGTH_SHORT).show();
-//                    recipeModelList = response.body();
-//                    Gson gson = new GsonBuilder().create();
-//                    String json = gson.toJson(recipeModelList);
-//                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreferences.edit();
-//                    editor.putString(TAG_RESPONSE, json);
-//                    editor.apply();
-//                    getActivity().finish();
+
+                    // show dialog success
+                    Dialog dialog = new Dialog(getContext());
+                    dialog.setContentView(R.layout.layout_success_create);
+
+                    Button btn_ok = dialog.findViewById(R.id.btn_ok);
+                    btn_ok.setOnClickListener(view -> {
+                        Fragment fragment = new HomeFragment();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_container, fragment);
+                        ft.commit();
+                        dialog.setCancelable(false);
+                        dialog.dismiss();
+
+
+
+                    });
+                    dialog.show();
+
                 } else {
                     pd.dismiss();
                     Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
