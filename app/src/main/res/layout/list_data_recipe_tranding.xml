@@ -35,6 +35,17 @@
         android:layout_centerHorizontal="true"
         app:lottie_rawRes="@raw/disslike2"/>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/saved_anim"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:lottie_autoPlay="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:lottie_loop="false"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/saved"/>
+
 
 
 

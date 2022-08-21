@@ -213,7 +213,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         TextView tv_like, tv_duration, tv_title, tv_username;
         ImageView img_recipe, img_profile;
         ImageButton btn_save, btnLike;
-        LottieAnimationView likeAnimation, disslikeAnimation;
+        LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -228,6 +228,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             btnLike = itemView.findViewById(R.id.btn_like);
             likeAnimation = itemView.findViewById(R.id.love_anim);
             disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
+            savedAnimation = itemView.findViewById(R.id.saved_anim);
 
 
             // saat button save di klik
@@ -240,8 +241,23 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
                 //jika di klik maka akan menyimpan resep
                 else {
-                    saveRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
-                    btn_save.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite));
+
+                    // show save animation
+                    if (savedAnimation.getVisibility() == View.GONE) {
+                        savedAnimation.setVisibility(View.VISIBLE);
+                        savedAnimation.playAnimation();
+                        saveRecipe(recipeModels.get(getAdapterPosition()).getRecipe_id(), userid);
+                        btn_save.setBackground(context.getResources().getDrawable(R.drawable.btn_favorite));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                savedAnimation.setVisibility(View.GONE);
+                            }
+                        }, 2 * 1000); // For 2 seconds
+                    }
+
+
+
                 }
             });
 
