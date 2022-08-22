@@ -5,31 +5,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splashscreen"
+    android:background="@color/main"
     tools:context=".SplashScreen">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="@dimen/_30sdp"
+        android:id="@+id/animationView"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_220sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_60sdp"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading_bar" />
+        app:lottie_rawRes="@raw/ic_splash" />
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/laodingBar"
-        style="@style/AVLoadingIndicatorView.Small"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/_170sdp"
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/animationView"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/popsem"
+        android:text="Kandean"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv1"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/popmed"
+        android:text="Experience the new taste"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_30sdp"
-        android:visibility="gone"
-        app:indicatorColor="@color/white"
-        app:indicatorName="" />
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:fontFamily="@font/popmed"
+            android:text="App version"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:fontFamily="@font/popmed"
+            android:text="v1.1.0"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_7sdp" />
+
+
+    </LinearLayout>
+
+
+
+
+
 
 
 </RelativeLayout>
