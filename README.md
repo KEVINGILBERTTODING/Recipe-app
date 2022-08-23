@@ -44,9 +44,28 @@ There are several features that make this application different from other recip
 
 </ul>
 
-<h3>Release history</h3>
+<h2>Release history 🐾</h2>
 <ul>
-<li><h4>v1.1.0</h4>
+<li><h3>v1.1.0</h3>
+August 23, 2022
+
+<h6>What's new? 🦄</h6>
+<ul>
+
+
+<li>Modern and attractive interface</li>
+<li>Of course users can save their favorite food recipes and can share public or private privacy</li>
+<li>Qr Code Generator</li>
+<li>Scan QR Code to find the recipe</li>
+<li>User can love recipe</li>
+<li>User can save other recipe</li>
+<li>User can change their photo profile</li>
+<li>Comment feature</li>
+<li>Report recipe</li>
+<li>Reset password and create new one</li>
+<li>Reset email</li>
+<li>etc.</li>
+</ul>
 
 
 
