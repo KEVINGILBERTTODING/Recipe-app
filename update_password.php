@@ -6,7 +6,7 @@ class usr
 }
 
 $user_id = $_POST['user_id'];
-$password = md5($_POST['password']);
+$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 
 $query = "UPDATE users SET password = '$password' WHERE user_id = '$user_id'";

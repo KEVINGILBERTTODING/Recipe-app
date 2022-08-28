@@ -1,38 +1,48 @@
 <?php
-include_once "connection.php";
+
+include 'connection.php';
+
 class usr
 {
 }
 
-$username = $_POST["username"];
-$password = md5($_POST["password"]);
 
-if ((empty($username)) || (empty($password))) {
-    $response = new usr();
-    $response->success = 0;
-    $response->message = "Column cannot be empty";
-    die(json_encode($response));
-}
+$password =  $_POST['password'];
+$username = $_POST['username'];
 
-$query = mysqli_query($koneksi, "SELECT * FROM users WHERE username='$username' AND password='$password'");
 
-$row = mysqli_fetch_array($query);
 
-if (!empty($row)) {
-    $response = new usr();
-    $response->success = 1;
-    $response->message = "Welcome back " . $row['username'];
-    $response->username = $row['username'];
-    $response->email = $row['email'];
-    $response->role = $row['role'];
-    $response->active = $row['active'];
-    $response->user_id = $row['user_id'];
-    die(json_encode($response));
-} else if (!empty($row2)) {
-    $response = new usr();
-    $response->success = 0;
-    $response->message = "Password wrong";
-    die(json_encode($response));
+
+
+$query = "select * from users where username = '$username'";
+
+
+$result = mysqli_query($koneksi, $query);
+
+$arraydata = array();
+
+
+if ($line = mysqli_fetch_assoc($result)) {
+    $arraydata[] = $line;
+    $password_hash = $arraydata[0]['password'];
+
+    if (password_verify($password, $password_hash)) {
+        $response = new usr();
+        $response->success = 1;
+        $response->message = "Welcome back " . $arraydata[0]['username'];
+        $response->username = $arraydata[0]['username'];
+        $response->email = $arraydata[0]['email'];
+        $response->role = $arraydata[0]['role'];
+        $response->active = $arraydata[0]['active'];
+        $response->user_id = $arraydata[0]['user_id'];
+
+        die(json_encode($response));
+    } else {
+        $response = new usr();
+        $response->success = 0;
+        $response->message = "Password wrong";
+        die(json_encode($response));
+    }
 } else {
     $response = new usr();
     $response->success = 0;
