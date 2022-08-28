@@ -22,7 +22,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.recipe_app.Admin.DashboardActivity;
 import com.example.recipe_app.Util.AppController;
+import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.ServerAPI;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -56,9 +59,12 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
     Boolean session = false;
+    Boolean sessionAdmin = false;
     String username;
+    Integer role;
     public static final String my_shared_preferences = "my_shared_preferences";
     public static final String session_status = "session_status";
+    public static final String session_admin = "session_admin";
 
 
     @Override
@@ -85,11 +91,20 @@ public class LoginActivity extends AppCompatActivity {
         // Cek session login jika TRUE maka langsung buka MainActivity
         sharedpreferences = getSharedPreferences(my_shared_preferences,Context.MODE_PRIVATE);
         session = sharedpreferences.getBoolean(session_status, false);
+        sessionAdmin = sharedpreferences.getBoolean(session_admin, false);
         username = sharedpreferences.getString(TAG_USERNAME,null);
 
 
         if (session) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra(TAG_USERNAME, username);
+            startActivity(intent);
+            finish();
+        }
+
+
+        if (sessionAdmin) {
+            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
             intent.putExtra(TAG_USERNAME, username);
             startActivity(intent);
             finish();
@@ -172,23 +187,45 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     success = jObj.getInt(TAG_SUCCESS);
+                    role = jObj.getInt("role");
+
                     // Check for error node in json
                     if (success == 1) {
-                        String username = jObj.getString(TAG_USERNAME);
-                        String user_id = jObj.getString("user_id");
-                        Log.e("Berhasil Masuk!", jObj.toString());
-                        Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
-                        // menyimpan login ke session
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putBoolean(session_status,true);
-                        editor.putString(TAG_USERNAME, username);
-                        editor.putString("user_id", user_id);
-                        editor.commit();
-                        // Memanggil main activity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra(TAG_USERNAME, username);
-                        startActivity(intent);
-                        finish();
+
+
+                        if (role == 1){
+                            String username = jObj.getString(TAG_USERNAME);
+                            String user_id = jObj.getString("user_id");
+
+                            Log.e("Berhasil Masuk!", jObj.toString());
+                            Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(session_admin, true);
+                            editor.putString(TAG_USERNAME, username);
+                            editor.putString("user_id", user_id);
+                            editor.commit();
+                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            intent.putExtra(TAG_USERNAME, username);
+                            startActivity(intent);
+                            finish();
+
+                        }else {
+                            String username = jObj.getString(TAG_USERNAME);
+                            String user_id = jObj.getString("user_id");
+                            Log.e("Berhasil Masuk!", jObj.toString());
+                            Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                            // menyimpan login ke session
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putBoolean(session_status, true);
+                            editor.putString(TAG_USERNAME, username);
+                            editor.putString("user_id", user_id);
+                            editor.commit();
+                            // Memanggil main activity
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(TAG_USERNAME, username);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                     }

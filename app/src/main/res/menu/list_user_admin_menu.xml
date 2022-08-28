@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mnu_show"
+        android:icon="@drawable/ic_show"
+        android:title="Show account"
+
+        />
+
+    <item
+        android:id="@+id/mnu_disable"
+        android:title="Disable account"
+        android:icon="@drawable/ic_disable"
+
+        />
+
+
+
+</menu>
