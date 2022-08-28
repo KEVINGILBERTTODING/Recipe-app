@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,13 +33,14 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowProfileFragment extends Fragment {
+public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String user_id;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
@@ -48,6 +51,7 @@ public class ShowProfileFragment extends Fragment {
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
+    public static ArrayList<RecipeModel> mItems = new ArrayList<>();
     ImageButton btnBack;
 
     TabLayout tabLayout;
@@ -169,6 +173,8 @@ public class ShowProfileFragment extends Fragment {
                 rv_recipe.setLayoutManager(gridLayoutManager);
                 rv_recipe.setAdapter(myRecipeAdapter);
                 rv_recipe.setHasFixedSize(true);
+                myRecipeAdapter.notifyDataSetChanged();
+                myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
 
 
             }
@@ -204,4 +210,90 @@ public class ShowProfileFragment extends Fragment {
 
         });
     }
+
+
+    @Override
+    public void onRecipeClick(View view, int position) {
+        if (getArguments().getString("admin") != null) {
+            RecipeModel recipeModel = recipeModelList.get(position);
+            switch (view.getId()) {
+
+
+                case R.id.iv_recipe:
+                    Fragment fragment = new DetailRecipeFragment();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                    bundle.putString("user_id", recipeModel.getUser_id());
+                    bundle.putString("username", recipeModel.getUsername());
+                    bundle.putString("title", recipeModel.getTitle());
+                    bundle.putString("description", recipeModel.getDescription());
+                    bundle.putString("category", recipeModel.getCategory());
+                    bundle.putString("servings", recipeModel.getServings());
+                    bundle.putString("duration", recipeModel.getDuration());
+                    bundle.putString("ingredients", recipeModel.getIngredients());
+                    bundle.putString("steps", recipeModel.getSteps());
+                    bundle.putString("upload_date", recipeModel.getUpload_date());
+                    bundle.putString("upload_time", recipeModel.getUpload_time());
+                    bundle.putString("image", recipeModel.getImage());
+                    bundle.putString("status", recipeModel.getStatus());
+                    bundle.putString("ratings", recipeModel.getRatings());
+                    bundle.putString("likes", recipeModel.getLikes());
+                    bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                    bundle.putString("email", recipeModel.getEmail());
+                    bundle.putString("notes", recipeModel.getNote());
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_admin, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    break;
+            }
+
+        }
+        else{
+
+            switch (view.getId()) {
+
+
+
+                case R.id.iv_recipe:
+                    Fragment fragment = new DetailRecipeFragment();
+                    RecipeModel recipeModels = recipeModelList.get(position);
+
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("recipe_id", recipeModels.getRecipe_id());
+                    bundle.putString("user_id", recipeModels.getUser_id());
+                    bundle.putString("username", recipeModels.getUsername());
+                    bundle.putString("title", recipeModels.getTitle());
+                    bundle.putString("description", recipeModels.getDescription());
+                    bundle.putString("category", recipeModels.getCategory());
+                    bundle.putString("servings", recipeModels.getServings());
+                    bundle.putString("duration", recipeModels.getDuration());
+                    bundle.putString("ingredients", recipeModels.getIngredients());
+                    bundle.putString("steps", recipeModels.getSteps());
+                    bundle.putString("upload_date", recipeModels.getUpload_date());
+                    bundle.putString("upload_time", recipeModels.getUpload_time());
+                    bundle.putString("image", recipeModels.getImage());
+                    bundle.putString("status", recipeModels.getStatus());
+                    bundle.putString("ratings", recipeModels.getRatings());
+                    bundle.putString("likes", recipeModels.getLikes());
+                    bundle.putString("photo_profile", recipeModels.getPhoto_profile());
+                    bundle.putString("email", recipeModels.getEmail());
+                    bundle.putString("notes", recipeModels.getNote());
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    break;
+            }
+
+
+        }
+    }
+
 }

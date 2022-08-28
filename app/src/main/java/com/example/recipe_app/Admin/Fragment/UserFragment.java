@@ -21,6 +21,7 @@ import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -151,6 +152,7 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
+                Snackbar.make(getView(), "No connection", Snackbar.LENGTH_SHORT).show();
 
             }
         });

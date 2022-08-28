@@ -42,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyProfileFragment extends Fragment {
+public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String username, userid, user_idx;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_back;
@@ -62,12 +62,11 @@ public class MyProfileFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_my_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
@@ -90,8 +89,6 @@ public class MyProfileFragment extends Fragment {
             fragmentTransaction.commit();
             fragmentTransaction.addToBackStack(null);
         });
-
-
 
 
         // Mengambil data profile dari API
@@ -119,6 +116,7 @@ public class MyProfileFragment extends Fragment {
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
@@ -130,7 +128,6 @@ public class MyProfileFragment extends Fragment {
 
         return view;
     }
-
 
 
     //get profile
@@ -180,9 +177,11 @@ public class MyProfileFragment extends Fragment {
                 rv_recipe.setLayoutManager(gridLayoutManager);
                 rv_recipe.setAdapter(myRecipeAdapter);
                 rv_recipe.setHasFixedSize(true);
+                myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
 
 
             }
+
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
@@ -203,14 +202,56 @@ public class MyProfileFragment extends Fragment {
                 rv_recipe.setLayoutManager(gridLayoutManager);
                 rv_recipe.setAdapter(myRecipeAdapter);
                 rv_recipe.setHasFixedSize(true);
+                myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
 
 
             }
+
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
 
             }
         });
+    }
+
+    @Override
+    public void onRecipeClick(View view, int position) {
+
+        RecipeModel recipeModel = recipeModelList.get(position);
+        switch (view.getId()) {
+            case R.id.iv_recipe:
+                Fragment fragment = new DetailRecipeFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                bundle.putString("user_id", recipeModel.getUser_id());
+                bundle.putString("username", recipeModel.getUsername());
+                bundle.putString("title", recipeModel.getTitle());
+                bundle.putString("description", recipeModel.getDescription());
+                bundle.putString("category", recipeModel.getCategory());
+                bundle.putString("servings", recipeModel.getServings());
+                bundle.putString("duration", recipeModel.getDuration());
+                bundle.putString("ingredients", recipeModel.getIngredients());
+                bundle.putString("steps", recipeModel.getSteps());
+                bundle.putString("upload_date", recipeModel.getUpload_date());
+                bundle.putString("upload_time", recipeModel.getUpload_time());
+                bundle.putString("image", recipeModel.getImage());
+                bundle.putString("status", recipeModel.getStatus());
+                bundle.putString("ratings", recipeModel.getRatings());
+                bundle.putString("likes", recipeModel.getLikes());
+                bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                bundle.putString("email", recipeModel.getEmail());
+                bundle.putString("notes", recipeModel.getNote());
+                fragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+                break;
+        }
+
     }
 }
