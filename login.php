@@ -17,6 +17,7 @@ if ((empty($username)) || (empty($password))) {
 $query = mysqli_query($koneksi, "SELECT * FROM users WHERE username='$username' AND password='$password'");
 
 $row = mysqli_fetch_array($query);
+
 if (!empty($row)) {
     $response = new usr();
     $response->success = 1;
@@ -24,6 +25,7 @@ if (!empty($row)) {
     $response->username = $row['username'];
     $response->email = $row['email'];
     $response->role = $row['role'];
+    $response->active = $row['active'];
     $response->user_id = $row['user_id'];
     die(json_encode($response));
 } else if (!empty($row2)) {
