@@ -21,16 +21,19 @@ public class AdminModel implements Serializable {
     @SerializedName("time")
     String time;
     @SerializedName("message")
-    String status;
-    @SerializedName("status")
     String message;
+    @SerializedName("status")
+    String status;
     @SerializedName("count")
     String jumlah;
     @SerializedName("role")
     String role;
+    @SerializedName("active")
+    Integer active;
 
     public AdminModel (String user_id, String username, String photo_profile, String email, String biography,
-                        String date, String time, String status, String message, String jumlah, String role) {
+                        String date, String time, String status, String message, String jumlah, String role,
+                       Integer active) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
@@ -42,6 +45,7 @@ public class AdminModel implements Serializable {
         this.message = message;
         this.jumlah = jumlah;
         this.role = role;
+        this.active = active;
     }
 
     public String getUser_id() {
@@ -126,5 +130,17 @@ public class AdminModel implements Serializable {
 
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 }

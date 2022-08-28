@@ -24,7 +24,7 @@
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/img_profile"
+                    android:id="@+id/iv_profile"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_alignParentLeft="true"
@@ -39,26 +39,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_toRightOf="@id/img_profile"
+                    android:layout_toRightOf="@id/iv_profile"
                     android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/tv_greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popmed"
+                        android:layout_marginTop="@dimen/_14sdp"
+                        android:text="Email"
+                        android:textSize="@dimen/_9sdp" />
 
                     <TextView
                         android:id="@+id/tv_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
                         android:fontFamily="@font/popsem"
                         android:text="Username"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
-                    <TextView
-                        android:id="@+id/tv_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/popmed"
-                        android:text="Email"
-                        android:textSize="@dimen/_9sdp" />
+
 
                 </LinearLayout>
 

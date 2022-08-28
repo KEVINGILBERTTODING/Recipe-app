@@ -67,11 +67,23 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TabFont">
+
+        </com.google.android.material.tabs.TabLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv1"
+            android:layout_below="@+id/tab_layout"
             android:layout_marginTop="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

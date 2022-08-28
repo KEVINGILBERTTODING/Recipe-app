@@ -21,6 +21,7 @@ import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class UserFragment extends Fragment {
     ImageButton btnBack;
 
     SearchView searchView;
+    TabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +48,7 @@ public class UserFragment extends Fragment {
         rv_user = view.findViewById(R.id.rv_user);
         btnBack = view.findViewById(R.id.btn_back);
         searchView = view.findViewById(R.id.search_barr);
+        tabLayout = view.findViewById(R.id.tab_layout);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +61,36 @@ public class UserFragment extends Fragment {
         });
 
         // call method get data
-        getAllUser();
+        getAllUser(1);
+
+        // add tab lst user activate and deactivate
+        tabLayout.addTab(tabLayout.newTab().setText("Activate"));
+        tabLayout.addTab(tabLayout.newTab().setText("Deactivate"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    getAllUser(1);
+                }
+                if (tab.getPosition() == 1) {
+                    getAllUser(0);
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
 
         // search user
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -102,9 +134,9 @@ public class UserFragment extends Fragment {
 
 
     // method for get all user data
-    private void getAllUser() {
+    private void getAllUser(Integer active) {
         InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
-        interfaceAdmin.countUsers().enqueue(new Callback<List<AdminModel>>() {
+        interfaceAdmin.getAllUser(active).enqueue(new Callback<List<AdminModel>>() {
             @Override
             public void onResponse(Call<List<AdminModel>> call, Response<List<AdminModel>> response) {
                 if (response.isSuccessful()){
