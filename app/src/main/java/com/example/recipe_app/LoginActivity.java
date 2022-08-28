@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     Boolean session = false;
     Boolean sessionAdmin = false;
     String username;
-    Integer role;
+    Integer role, active;
     public static final String my_shared_preferences = "my_shared_preferences";
     public static final String session_status = "session_status";
     public static final String session_admin = "session_admin";
@@ -188,9 +188,16 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     success = jObj.getInt(TAG_SUCCESS);
                     role = jObj.getInt("role");
+                    active = jObj.getInt("active");
+
+                    // apakah user di block atau tidak
+                    if (active == 0){
+                            Toast.makeText(getApplicationContext(), "Your account was blocked", Toast.LENGTH_SHORT).show();
+                    }
 
                     // Check for error node in json
-                    if (success == 1) {
+                    else if (success == 1) {
+
 
 
                         if (role == 1){
