@@ -81,7 +81,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     Dialog reportForm;
     Bitmap bitmap;
     ProgressDialog pd;
-    EditText et_report;
+    EditText et_report, et_title;
     String image, userid;
     private final int TAG_GALLERY = 200;
 
@@ -149,6 +149,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                         rlImagePicker = reportForm.findViewById(R.id.rl_image_picker);
                         ivReport = reportForm.findViewById(R.id.iv_report);
                         et_report = reportForm.findViewById(R.id.edt_report);
+                        et_title = reportForm.findViewById(R.id.edt_title);
 
 
                         btnReport = reportForm.findViewById(R.id.btnReport);
@@ -190,7 +191,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                                 pd.setCancelable(false);
                                 pd.setCanceledOnTouchOutside(false);
 
-                                reportUser(user_id, userid, et_report.getText().toString(), image);
+                                reportUser(userid, user_id, et_report.getText().toString(), image, et_title.getText().toString());
 
                             }
 
@@ -419,15 +420,17 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     }
 
     // method for send data report user to server
-    private void reportUser(String user_id, String user_id_report, String report, String image) {
-        InterfaceRecipe ir = DataApi.getClient().create(InterfaceRecipe.class);
-        ir.reportUser(user_id, user_id_report, report, image).enqueue(new Callback<RecipeModel>() {
+    private void reportUser(String user_id, String user_id_report, String report, String image, String title) {
+        InterfaceProfile ip = DataApi.getClient().create(InterfaceProfile.class);
+        ip.reportUser(user_id, user_id_report, report, image, title).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 RecipeModel recipeModel = response.body();
                 if (recipeModel.getStatus().equals("1")) {
                     Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
+                    reportForm.dismiss();
+
                 }
                 else {
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();

@@ -43,6 +43,22 @@
                 android:textSize="@dimen/_11sdp" />
 
             <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/popmed"
+                android:gravity="start"
+                android:hint="Title"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="2"
+                android:padding="@dimen/_5sdp"
+                android:textSize="@dimen/_9sdp" />
+
+            <EditText
                 android:id="@+id/edt_report"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

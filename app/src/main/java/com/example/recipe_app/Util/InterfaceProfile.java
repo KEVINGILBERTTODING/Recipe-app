@@ -74,5 +74,16 @@ public interface InterfaceProfile {
          @Field("password") String password
  );
 
+ @FormUrlEncoded
+ @POST("report_user.php")
+ Call<RecipeModel> reportUser(
+         @Field("user_id") String user_id,
+         @Field("user_id_report") String user_id_report,
+         @Field("report") String report,
+         @Field("image") String image,
+         @Field("title") String title
+
+ );
+
 
 }
