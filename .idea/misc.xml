@@ -23,6 +23,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/drawable/radio_select.xml" value="0.157" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/drawable/radio_selector.xml" value="0.157" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/drawable/search_bar.xml" value="0.146" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/drawable/shape_edit.xml" value="0.1305" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/drawable/text_color.xml" value="0.157" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/activity_dashboard.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/activity_login.xml" value="0.1890295358649789" />
@@ -64,6 +65,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_contact_us.xml" value="0.19017094017094016" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_qrcode.xml" value="0.19017094017094016" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_report_reccipe.xml" value="0.17863247863247864" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_report_user.xml" value="0.152" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_success_create.xml" value="0.19017094017094016" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/layout_success_scann.xml" value="0.19017094017094016" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_comments.xml" value="0.264" />

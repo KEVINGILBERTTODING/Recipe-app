@@ -1,23 +1,42 @@
 package com.example.recipe_app.Fragment;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +52,9 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +64,7 @@ import retrofit2.Response;
 
 public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String user_id;
-    ImageView iv_profile;
+    ImageView iv_profile, ivReport;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
 
     List<ProfileModel> profileModelList;
@@ -52,7 +74,16 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
     public static ArrayList<RecipeModel> mItems = new ArrayList<>();
-    ImageButton btnBack;
+    ImageButton btnBack, btnMore;
+    Button btnReport;
+    LinearLayout lrImagePicker;
+    RelativeLayout rlImagePicker;
+    Dialog reportForm;
+    Bitmap bitmap;
+    ProgressDialog pd;
+    EditText et_report;
+    String image, userid;
+    private final int TAG_GALLERY = 200;
 
     TabLayout tabLayout;
 
@@ -68,6 +99,11 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_show_profile, container, false);
 
+        // Mengambil username dan user_id menggunakan sharedpreferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+
+        userid = sharedPreferences.getString("user_id", null);
+
 
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
@@ -78,6 +114,11 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnBack = view.findViewById(R.id.btn_back);
+        btnMore = view.findViewById(R.id.btn_more);
+
+
+        reportForm = new Dialog(getContext());
+        pd = new ProgressDialog(getContext());
 
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
@@ -87,6 +128,87 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
         // mengambil data recipe dari API
         getRecipe(user_id);
+
+        // jika user id sama dengan user id profile makka btnmore dihilangkan
+        if (user_id.equals(userid)) {
+            btnMore.setVisibility(View.GONE);
+        } else{
+            btnMore.setVisibility(View.VISIBLE);
+        }
+
+        // show dialog saat klik button more
+        btnMore.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Report user");
+            builder.setItems(new CharSequence[] {"Report user"}, (dialog, which)->{
+                switch (which){
+                    case 0:
+                        reportForm.setContentView(R.layout.layout_report_user);
+                        reportForm.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        lrImagePicker = reportForm.findViewById(R.id.lr_image_picker);
+                        rlImagePicker = reportForm.findViewById(R.id.rl_image_picker);
+                        ivReport = reportForm.findViewById(R.id.iv_report);
+                        et_report = reportForm.findViewById(R.id.edt_report);
+
+
+                        btnReport = reportForm.findViewById(R.id.btnReport);
+                        lrImagePicker.setOnClickListener(view2 -> {
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, TAG_GALLERY);
+
+                            }
+                        });
+
+                        rlImagePicker.setOnClickListener(view3 -> {
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, TAG_GALLERY);
+
+                            }
+                        });
+
+                        btnReport.setOnClickListener(view2 -> {
+
+                            // validasi button dan edittext
+                            if (bitmap == null) {
+                                Toast.makeText(getContext(), "Please select image first", Toast.LENGTH_SHORT).show();
+                            } else if (et_report.getText().toString().isEmpty()) {
+                                Toast.makeText(getContext(), "Please fill report", Toast.LENGTH_SHORT).show();
+                                et_report.setError("Please fill report");
+                            } else {
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                                byte[] bytes = byteArrayOutputStream.toByteArray();
+                                image = Base64.encodeToString(bytes, Base64.DEFAULT);
+                                pd.setMessage("Please wait...");
+                                pd.show();
+                                pd.setCancelable(false);
+                                pd.setCanceledOnTouchOutside(false);
+
+                                reportUser(user_id, userid, et_report.getText().toString(), image);
+
+                            }
+
+                        });
+
+
+
+
+
+                        reportForm.show();
+                        break;
+                }
+
+            }) ;
+
+            builder.show();
+
+        });
 
 
         // create tablayout
@@ -293,6 +415,62 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             }
 
 
+        }
+    }
+
+    // method for send data report user to server
+    private void reportUser(String user_id, String user_id_report, String report, String image) {
+        InterfaceRecipe ir = DataApi.getClient().create(InterfaceRecipe.class);
+        ir.reportUser(user_id, user_id_report, report, image).enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                RecipeModel recipeModel = response.body();
+                if (recipeModel.getStatus().equals("1")) {
+                    Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }
+                else {
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: ", t.getCause());
+                pd.dismiss();
+
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode ==  RESULT_OK && requestCode == TAG_GALLERY && data != null && data.getData() != null){
+
+            Uri uri_path = data.getData();
+
+            try {
+
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
+                ivReport.setImageBitmap(bitmap);
+                rlImagePicker.setVisibility(View.VISIBLE);
+                lrImagePicker.setVisibility(View.GONE);
+
+                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+
+            }catch (IOException e){
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         }
     }
 
