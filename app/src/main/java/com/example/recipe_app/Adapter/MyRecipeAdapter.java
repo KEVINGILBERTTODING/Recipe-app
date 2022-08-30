@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.MyProfileFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 
@@ -24,6 +26,7 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
 
     List<RecipeModel> recipeModels;
     Context context;
+    private OnRecipeListener onRecipeListener;
 
 
     public MyRecipeAdapter(Context context, List<RecipeModel> recipeModels) {
@@ -64,6 +67,22 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
         return recipeModels.size();
     }
 
+    public void setOnRecipeListener(MyProfileFragment myProfileFragment) {
+        this.onRecipeListener = myProfileFragment;
+
+    }
+
+    public void setOnRecipeListener(ShowProfileFragment showProfileFragment) {
+        this.onRecipeListener = showProfileFragment;
+    }
+
+
+
+    public interface OnRecipeListener {
+        void onRecipeClick(View view,  int position);
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView img_recipe;
@@ -73,47 +92,71 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
             super(itemView);
 
             img_recipe = itemView.findViewById(R.id.iv_recipe);
+
+
+
+            //Jika igin long click
+//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View v) {
+//                    onRecipeListener.onRecipeClick(getAdapterPosition());
+//                    return false;
+//                }
+//            });
+
+            // sekali klik
             itemView.setOnClickListener(this);
+            img_recipe.setOnClickListener(this);
+
+
         }
 
         @Override
         public void onClick(View view) {
+            if (onRecipeListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    onRecipeListener.onRecipeClick(view, position);
+                }
+            }
+
+
             // get position of item clicked
-            Fragment fragment = new DetailRecipeFragment();
-
-            // Send data to detailrecipe fragment
-
-            Bundle bundle = new Bundle();
-            bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
-            bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
-            bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
-            bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
-            bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
-            bundle.putString("category", recipeModels.get(getAdapterPosition()).getCategory());
-            bundle.putString("servings", recipeModels.get(getAdapterPosition()).getServings());
-            bundle.putString("duration", recipeModels.get(getAdapterPosition()).getDuration());
-            bundle.putString("ingredients", recipeModels.get(getAdapterPosition()).getIngredients());
-            bundle.putString("steps", recipeModels.get(getAdapterPosition()).getSteps());
-            bundle.putString("upload_date", recipeModels.get(getAdapterPosition()).getUpload_date());
-            bundle.putString("upload_time", recipeModels.get(getAdapterPosition()).getUpload_time());
-            bundle.putString("image", recipeModels.get(getAdapterPosition()).getImage());
-            bundle.putString("status", recipeModels.get(getAdapterPosition()).getStatus());
-            bundle.putString("ratings", recipeModels.get(getAdapterPosition()).getRatings());
-            bundle.putString("likes", recipeModels.get(getAdapterPosition()).getLikes());
-            bundle.putString("photo_profile", recipeModels.get(getAdapterPosition()).getPhoto_profile());
-            bundle.putString("email", recipeModels.get(getAdapterPosition()).getEmail());
-            bundle.putString("notes", recipeModels.get(getAdapterPosition()).getNote());
-            fragment.setArguments(bundle);
-
-            // get Fragment
-
-            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-
-
-
+//            Fragment fragment = new DetailRecipeFragment();
+//
+//            // Send data to detailrecipe fragment
+//
+//            Bundle bundle = new Bundle();
+//            bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
+//            bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
+//            bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
+//            bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
+//            bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
+//            bundle.putString("category", recipeModels.get(getAdapterPosition()).getCategory());
+//            bundle.putString("servings", recipeModels.get(getAdapterPosition()).getServings());
+//            bundle.putString("duration", recipeModels.get(getAdapterPosition()).getDuration());
+//            bundle.putString("ingredients", recipeModels.get(getAdapterPosition()).getIngredients());
+//            bundle.putString("steps", recipeModels.get(getAdapterPosition()).getSteps());
+//            bundle.putString("upload_date", recipeModels.get(getAdapterPosition()).getUpload_date());
+//            bundle.putString("upload_time", recipeModels.get(getAdapterPosition()).getUpload_time());
+//            bundle.putString("image", recipeModels.get(getAdapterPosition()).getImage());
+//            bundle.putString("status", recipeModels.get(getAdapterPosition()).getStatus());
+//            bundle.putString("ratings", recipeModels.get(getAdapterPosition()).getRatings());
+//            bundle.putString("likes", recipeModels.get(getAdapterPosition()).getLikes());
+//            bundle.putString("photo_profile", recipeModels.get(getAdapterPosition()).getPhoto_profile());
+//            bundle.putString("email", recipeModels.get(getAdapterPosition()).getEmail());
+//            bundle.putString("notes", recipeModels.get(getAdapterPosition()).getNote());
+//            fragment.setArguments(bundle);
+//
+//            // get Fragment
+//
+//            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_container, fragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//
+//
+//
         }
 
     }

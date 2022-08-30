@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/_10sdp"
+    tools:context=".Admin.Fragment.DetailUserReport">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_back"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/popsem"
+                    android:text="Detail User Report"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_delete" />
+
+            </RelativeLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:src="@color/black"
+                app:civ_border_color="@color/main"
+                app:civ_border_width="@dimen/_2sdp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_1"
+                android:layout_toRightOf="@id/img_profile"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_username1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/img_profile"
+                    android:fontFamily="@font/popmed"
+                    android:text="Username"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/img_profile"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/popmed"
+                    android:text="Username"
+                    android:textSize="@dimen/_7sdp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/popmed"
+                android:text="Date"
+                android:textSize="@dimen/_7sdp" />
+
+            <TextView
+                android:id="@+id/tv_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_1"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/img_profile"
+                android:fontFamily="@font/popmed"
+                android:text="Report"
+                android:textSize="@dimen/_6sdp" />
+
+
+            <TextView
+                android:id="@+id/tv_username2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_1"
+                android:layout_toRightOf="@+id/img_profile"
+                android:fontFamily="@font/popmed"
+                android:text="Username"
+                android:textColor="#FD0000"
+                android:textSize="@dimen/_9sdp" />
+
+
+        </RelativeLayout>
+
+
+        <TextView
+
+            android:id="@+id/tv_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title: "
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_7sdp"
+            android:fontFamily="@font/popmed"/>
+
+        <TextView
+
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/popmed"/>
+
+        <ImageView
+            android:id="@+id/iv_report"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="@dimen/_300sdp"/>
+
+
+
+        <TextView
+
+            android:id="@+id/tv_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason: "
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_7sdp"
+            android:fontFamily="@font/popmed"/>
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Report"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_9sdp"
+            android:fontFamily="@font/popmed"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accept"
+                app:cornerRadius="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/blue"
+                android:textSize="@dimen/_9sdp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_rejected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rejected"
+                app:cornerRadius="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                app:backgroundTint="#F4152F"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_9sdp"/>
+
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

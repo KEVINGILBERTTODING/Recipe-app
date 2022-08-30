@@ -54,8 +54,6 @@ public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingA
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate()
-                .fitCenter()
-                .centerCrop()
                 .placeholder(R.drawable.template_img)
                 .override(1024, 768)
                 .into(holder.img_profile);

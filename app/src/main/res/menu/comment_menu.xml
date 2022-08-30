@@ -11,8 +11,4 @@
         android:icon="@android:drawable/ic_dialog_info"
         android:title="Edit" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_drawer_item3"-->
-<!--        android:icon="@android:drawable/ic_menu_share"-->
-<!--        android:title="Item 3"/>-->
 </menu>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".Admin.Fragment.FullScreenImageReport">
+
+
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/img_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:background="@drawable/ic_back"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Image Report"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/popmed"
+                android:textSize="@dimen/_11sdp"/>
+
+
+        </RelativeLayout>
+
+
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
+
+</RelativeLayout>

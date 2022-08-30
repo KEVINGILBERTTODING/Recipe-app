@@ -1,13 +1,11 @@
-package com.example.recipe_app.Model;
-
-import static com.example.recipe_app.Util.DataApi.BASE_URL;
+package com.example.recipe_app.Admin.Model;
 
 import com.example.recipe_app.Util.ServerAPI;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ProfileModel implements Serializable {
+public class AdminModel implements Serializable {
     @SerializedName("user_id")
     String user_id;
     @SerializedName("username")
@@ -23,12 +21,19 @@ public class ProfileModel implements Serializable {
     @SerializedName("time")
     String time;
     @SerializedName("message")
-    String status;
-    @SerializedName("status")
     String message;
+    @SerializedName("status")
+    String status;
+    @SerializedName("count")
+    String jumlah;
+    @SerializedName("role")
+    String role;
+    @SerializedName("active")
+    Integer active;
 
-    public ProfileModel(String user_id, String username, String photo_profile, String email, String biography,
-                        String date, String time, String status, String message) {
+    public AdminModel (String user_id, String username, String photo_profile, String email, String biography,
+                        String date, String time, String status, String message, String jumlah, String role,
+                       Integer active) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
@@ -38,6 +43,9 @@ public class ProfileModel implements Serializable {
         this.time = time;
         this.status = status;
         this.message = message;
+        this.jumlah = jumlah;
+        this.role = role;
+        this.active = active;
     }
 
     public String getUser_id() {
@@ -110,5 +118,29 @@ public class ProfileModel implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(String jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 }

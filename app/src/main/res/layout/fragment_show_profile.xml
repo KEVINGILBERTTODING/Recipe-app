@@ -20,8 +20,8 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@drawable/ic_back" />
 
@@ -31,9 +31,20 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
+                android:layout_centerInParent="true"
                 android:text="Back"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp" />
+                android:textSize="@dimen/_11sdp" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_more_vertical" />
+
+
 
 
         </RelativeLayout>
