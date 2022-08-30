@@ -111,6 +111,7 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
         public void onClick(View view) {
             Fragment fragment = new DetailUserReport();
             Bundle bundle = new Bundle();
+            bundle.putString("report_id", userReportModelList.get(getAdapterPosition()).getReport_id());
             bundle.putString("user_id1", userReportModelList.get(getAdapterPosition()).getUser_id());
             bundle.putString("user_id2", userReportModelList.get(getAdapterPosition()).getUser_id_report());
             bundle.putString("username1", userReportModelList.get(getAdapterPosition()).getUsername1());

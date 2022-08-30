@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class UserReportModel implements Serializable {
+    @SerializedName("report_id")
+    String report_id;
     @SerializedName("user_id")
     String user_id;
     @SerializedName("username1")
@@ -37,7 +39,7 @@ public class UserReportModel implements Serializable {
 
     public UserReportModel(String user_id, String username1, String photo_profile1, String email1, String username2,
                            String photo_profile2, String email2, String report, String date, String time,
-                           String image, String status, String user_id_report, String title) {
+                           String image, String status, String user_id_report, String title, String report_id) {
         this.user_id = user_id;
         this.username1 = username1;
         this.photo_profile1 = photo_profile1;
@@ -51,6 +53,8 @@ public class UserReportModel implements Serializable {
         this.image = image;
         this.status = status;
         this.user_id_report = user_id_report;
+        this.title = title;
+        this.report_id = report_id;
     }
 
 
@@ -164,5 +168,13 @@ public class UserReportModel implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(String report_id) {
+        this.report_id = report_id;
     }
 }

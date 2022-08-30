@@ -37,15 +37,25 @@ public interface InterfaceAdmin {
             @Field("user_id") String user_id
     );
 
+    // enable user
     @FormUrlEncoded
     @POST("admin/enable_user.php")
     Call<AdminModel> enableUser(
             @Field("user_id") String user_id
     );
 
+    // get all report user
+
     @GET("admin/get_report_user.php")
     Call<List<UserReportModel>> getAllReport(
             @Query("status") Integer status
+    );
+
+    // delete reeport user
+    @FormUrlEncoded
+    @POST("admin/delete_report.php")
+    Call<UserReportModel> deleteUserReport(
+            @Field("report_id") String report_id
     );
 
 

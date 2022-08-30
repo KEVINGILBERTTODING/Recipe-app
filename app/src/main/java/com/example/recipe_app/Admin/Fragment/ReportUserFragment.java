@@ -106,6 +106,7 @@ public class ReportUserFragment extends Fragment {
                         rv_user.setLayoutManager(linearLayoutManager);
                         rv_user.setAdapter(reportUserAdapter);
                         rv_user.setHasFixedSize(true);
+                        reportUserAdapter.notifyDataSetChanged();
 
 
 
@@ -117,6 +118,7 @@ public class ReportUserFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -58,8 +58,11 @@
 
 
 
+
+
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -72,16 +75,38 @@
                 app:civ_border_color="@color/main"
                 app:civ_border_width="@dimen/_2sdp" />
 
-            <TextView
-                android:id="@+id/tv_username1"
-                android:layout_toRightOf="@+id/img_profile"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/popmed"
-                android:textSize="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:textColor="@color/black"
-                android:text="Username"/>
+                android:id="@+id/layout_1"
+                android:layout_toRightOf="@id/img_profile"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_username1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/img_profile"
+                    android:fontFamily="@font/popmed"
+                    android:text="Username"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/img_profile"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/popmed"
+                    android:text="Username"
+                    android:textSize="@dimen/_7sdp" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_date"
@@ -90,18 +115,18 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/popmed"
-                android:textSize="@dimen/_10sdp"
-                android:text="Date"/>
+                android:text="Date"
+                android:textSize="@dimen/_7sdp" />
 
             <TextView
                 android:id="@+id/tv_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_username1"
+                android:layout_below="@+id/layout_1"
                 android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/img_profile"
                 android:fontFamily="@font/popmed"
-                android:text="Report by"
+                android:text="Report"
                 android:textSize="@dimen/_6sdp" />
 
 
@@ -109,10 +134,11 @@
                 android:id="@+id/tv_username2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_1"
                 android:layout_toRightOf="@+id/img_profile"
                 android:fontFamily="@font/popmed"
-                android:layout_below="@id/tv_1"
                 android:text="Username"
+                android:textColor="#FD0000"
                 android:textSize="@dimen/_9sdp" />
 
 
@@ -121,35 +147,56 @@
 
         <TextView
 
+            android:id="@+id/tv_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title: "
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_7sdp"
+            android:fontFamily="@font/popmed"/>
+
+        <TextView
+
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_10sdp"
             android:textColor="@color/black"
             android:fontFamily="@font/popmed"/>
 
         <ImageView
             android:id="@+id/iv_report"
             android:layout_width="@dimen/_300sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_height="@dimen/_300sdp"/>
+
 
 
         <TextView
 
+            android:id="@+id/tv_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason: "
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_7sdp"
+            android:fontFamily="@font/popmed"/>
+
+        <TextView
             android:id="@+id/tv_report"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Report"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_9sdp"
             android:fontFamily="@font/popmed"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal">
 
