@@ -3,6 +3,7 @@ package com.example.recipe_app.Admin.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,10 @@ public class FullScreenImageReport extends Fragment {
         img_report = root.findViewById(R.id.img_report);
         btn_back = root.findViewById(R.id.btnBack);
 
+        // get data from bundle
         image = getArguments().getString("image");
+
+        // load image using GLIDE
         Glide.with(getContext())
                 .load(image)
                 .skipMemoryCache(true)
@@ -39,6 +43,11 @@ public class FullScreenImageReport extends Fragment {
                 .dontAnimate()
                 .placeholder(R.drawable.template_img)
                 .into(img_report);
+
+        btn_back.setOnClickListener(view -> {
+            FragmentManager fm = getFragmentManager();
+            fm.popBackStack();
+        });
 
         return root;
     }

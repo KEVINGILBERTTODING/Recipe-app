@@ -73,7 +73,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv1"
             android:layout_marginTop="@dimen/_5sdp"
-            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/TabFont">
 
         </com.google.android.material.tabs.TabLayout>

@@ -58,6 +58,13 @@ public interface InterfaceAdmin {
             @Field("report_id") String report_id
     );
 
+    @FormUrlEncoded
+    @POST("admin/action_report.php")
+    Call<UserReportModel> actionReportUser(
+            @Field("report_id") String report_id,
+            @Field("status") Integer status
+    );
+
 
 
 

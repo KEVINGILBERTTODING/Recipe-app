@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class ReportUserFragment extends Fragment {
     SearchView searchView;
     List<UserReportModel> userReportModelList;
     TextView tvNoReport;
+    ImageButton btnBack;
 
 
 
@@ -48,6 +51,12 @@ public class ReportUserFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         searchView = view.findViewById(R.id.search_bar);
         tvNoReport = view.findViewById(R.id.tv_no_report);
+        btnBack = view.findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(view1 -> {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.popBackStack();
+        });
 
 
         getAllReport(1);
@@ -60,13 +69,18 @@ public class ReportUserFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                //get all report
                 if (tab.getPosition() == 0) {
                     getAllReport(1);
                 }
+
+                // get accepted report
                 else if  (tab.getPosition() == 1) {
                     getAllReport(2);
                 }
 
+                // get rejcted report
                 else if(tab.getPosition() == 2) {
                     getAllReport(0);
                 }
@@ -110,14 +124,12 @@ public class ReportUserFragment extends Fragment {
                         tvNoReport.setVisibility(View.GONE);
 
                         if (userReportModelList.size() == 0) {
-                            Toast.makeText(getContext(), "No Report", Toast.LENGTH_SHORT).show();
                             tvNoReport.setVisibility(View.VISIBLE);
                         }
 
 
                     } else {
                         Toast.makeText(getContext(), "Failed t load data", Toast.LENGTH_SHORT).show();
-
 
                     }
                 

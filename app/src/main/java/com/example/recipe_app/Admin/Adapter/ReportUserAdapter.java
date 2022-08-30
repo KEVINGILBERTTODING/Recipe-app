@@ -118,6 +118,7 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
             bundle.putString("time", userReportModelList.get(getAdapterPosition()).getTime());
             bundle.putString("email1", userReportModelList.get(getAdapterPosition()).getEmail1());
             bundle.putString("email2", userReportModelList.get(getAdapterPosition()).getEmail2());
+            bundle.putString("status", userReportModelList.get(getAdapterPosition()).getStatus());
             fragment.setArguments(bundle);
 
             FragmentTransaction fragmentTransaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
