@@ -94,7 +94,12 @@ dependencies {
     // Dependencies for scanner
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
+    // scalable image view
+//    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
 
 

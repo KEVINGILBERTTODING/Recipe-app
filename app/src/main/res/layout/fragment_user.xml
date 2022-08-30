@@ -65,7 +65,7 @@
             android:fontFamily="@font/popsem"
             android:text="List of users"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

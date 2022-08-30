@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -41,8 +42,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    CardView card_user;
-    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting;
+    CardView card_user, rl_report_user;
+    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user;
 
     String username, userid;
     ImageView iv_profile;
@@ -65,6 +66,8 @@ public class DashboardFragment extends Fragment {
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
         tv_greeting = view.findViewById(R.id.tv_greeting);
+        rl_report_user = view.findViewById(R.id.rl_report_user);
+        tv_total_report_user = view.findViewById(R.id.tv_report_user);
 
 
         // set greeting
@@ -91,6 +94,9 @@ public class DashboardFragment extends Fragment {
         // get admin info
         getAdminInfo();
 
+        // count all report
+        countAllReport();
+
 
         tv_dashboard.setOnClickListener(view1 -> {
             Toast.makeText(getContext(), "Dashboard", Toast.LENGTH_SHORT).show();
@@ -105,6 +111,15 @@ public class DashboardFragment extends Fragment {
                 fragmentTransaction.commit();
                 fragmentTransaction.addToBackStack(null);
             }
+        });
+
+        // menu report user is clicked
+        rl_report_user.setOnClickListener(view1 -> {
+            FragmentTransaction fragmentTransaction =getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_admin, new ReportUserFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         });
 
 
@@ -170,6 +185,30 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
                 Snackbar.make(getView(), "No connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    // count total report recipe
+    private void countAllReport(){
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.getAllReport(1).enqueue(new Callback<List<UserReportModel>>() {
+            @Override
+            public void onResponse(Call<List<UserReportModel>> call, Response<List<UserReportModel>> response) {
+                List<UserReportModel> userReportModelList = response.body();
+                if (response.isSuccessful()) {
+                  
+                    tv_total_report_user.setText(userReportModelList.size() + " Report");
+                } else{
+                    Toast.makeText(getContext(), "gagalll", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "NO CONNECTION", Toast.LENGTH_SHORT).show();
 
             }
         });

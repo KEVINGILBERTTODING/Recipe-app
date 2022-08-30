@@ -1,6 +1,7 @@
 package com.example.recipe_app.Admin.Interface;
 
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.UserReportModel;
 
 import java.util.List;
 
@@ -41,6 +42,13 @@ public interface InterfaceAdmin {
     Call<AdminModel> enableUser(
             @Field("user_id") String user_id
     );
+
+    @GET("admin/get_report_user.php")
+    Call<List<UserReportModel>> getAllReport(
+            @Query("status") Integer status
+    );
+
+
 
 
 }
