@@ -34,8 +34,6 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
 
     Context  context;
     List<UserReportModel> userReportModelList;
-    ReportUserFragment reportUserFragment;
-
 
     // Constructor
     public ReportUserAdapter(Context context, List<UserReportModel> userReportModelList) {
@@ -77,11 +75,6 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
 
 
 
-    public void filterList(ArrayList<UserReportModel> filteredList) {
-
-        userReportModelList = filteredList;
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {

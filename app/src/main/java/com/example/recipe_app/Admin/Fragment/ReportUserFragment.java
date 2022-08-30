@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Admin.Adapter.ReportUserAdapter;
@@ -34,6 +35,7 @@ public class ReportUserFragment extends Fragment {
     TabLayout tabLayout;
     SearchView searchView;
     List<UserReportModel> userReportModelList;
+    TextView tvNoReport;
 
 
 
@@ -45,13 +47,14 @@ public class ReportUserFragment extends Fragment {
         rv_user = view.findViewById(R.id.rv_user);
         tabLayout = view.findViewById(R.id.tab_layout);
         searchView = view.findViewById(R.id.search_bar);
+        tvNoReport = view.findViewById(R.id.tv_no_report);
+
 
         getAllReport(1);
 
-
-
         tabLayout.addTab(tabLayout.newTab().setText("Reported User"));
-        tabLayout.addTab(tabLayout.newTab().setText("Read Report"));
+        tabLayout.addTab(tabLayout.newTab().setText("Accepted"));
+        tabLayout.addTab(tabLayout.newTab().setText("Rejected"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -60,9 +63,14 @@ public class ReportUserFragment extends Fragment {
                 if (tab.getPosition() == 0) {
                     getAllReport(1);
                 }
-                if (tab.getPosition() == 1) {
+                else if  (tab.getPosition() == 1) {
+                    getAllReport(2);
+                }
+
+                else if(tab.getPosition() == 2) {
                     getAllReport(0);
                 }
+
 
             }
 
@@ -80,13 +88,6 @@ public class ReportUserFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
         return view;
     }
 
@@ -98,21 +99,28 @@ public class ReportUserFragment extends Fragment {
         interfaceAdmin.getAllReport(status).enqueue(new Callback<List<UserReportModel>>() {
             @Override
             public void onResponse(Call<List<UserReportModel>> call, Response<List<UserReportModel>> response) {
-                if (response.isSuccessful()) {
-                    List<UserReportModel> userReportModelList = response.body();
-                    if (userReportModelList.size() > 0) {
+               
+
+                    if (response.isSuccessful()) {
+                        List<UserReportModel> userReportModelList = response.body();
                         reportUserAdapter = new ReportUserAdapter(getContext(), userReportModelList);
                         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
                         rv_user.setLayoutManager(linearLayoutManager);
                         rv_user.setAdapter(reportUserAdapter);
-                        rv_user.setHasFixedSize(true);
-                        reportUserAdapter.notifyDataSetChanged();
+                        tvNoReport.setVisibility(View.GONE);
+
+                        if (userReportModelList.size() == 0) {
+                            Toast.makeText(getContext(), "No Report", Toast.LENGTH_SHORT).show();
+                            tvNoReport.setVisibility(View.VISIBLE);
+                        }
 
 
+                    } else {
+                        Toast.makeText(getContext(), "Failed t load data", Toast.LENGTH_SHORT).show();
 
 
                     }
-                }
+                
 
             }
 
