@@ -166,5 +166,11 @@ public interface InterfaceRecipe {
             @Field("report") String reason
     );
 
+    // get recipe by recipe_id
+    @GET("get_recipe.php")
+    Call<List<RecipeModel>> getRecipe(
+            @Query("recipe_id") String recipe_id
+    );
+
 
 }

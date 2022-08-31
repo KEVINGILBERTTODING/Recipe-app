@@ -74,6 +74,14 @@ public interface InterfaceAdmin {
     );
 
 
+    // delete recipe report
+    @FormUrlEncoded
+    @POST("admin/report_recipe/delete_report.php")
+    Call<RecipeReportmodel> deleteRecipeReport(
+            @Field("report_id") String report_id
+    );
+
+
 
 
 

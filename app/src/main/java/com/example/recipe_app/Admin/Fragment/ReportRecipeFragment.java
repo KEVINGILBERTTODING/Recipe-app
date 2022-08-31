@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +20,11 @@ import android.widget.Toast;
 import com.example.recipe_app.Admin.Adapter.ReportRecipeAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
+import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
@@ -139,4 +143,6 @@ public class ReportRecipeFragment extends Fragment {
             }
         });
     }
+
+
 }

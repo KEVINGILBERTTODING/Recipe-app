@@ -90,7 +90,6 @@
                         android:layout_toRightOf="@+id/img_profile"
                         android:fontFamily="@font/popmed"
                         android:text="Username"
-                        android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 
@@ -123,23 +122,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_1"
-                    android:layout_centerInParent="true"
                     android:layout_toRightOf="@+id/img_profile"
                     android:fontFamily="@font/popmed"
                     android:text="Report"
                     android:textSize="@dimen/_6sdp" />
 
 
-                <TextView
-                    android:id="@+id/tv_recipe_name"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_show"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_1"
                     android:layout_toRightOf="@+id/img_profile"
+                    android:backgroundTint="@color/main"
                     android:fontFamily="@font/popmed"
-                    android:text="Recipe name"
-                    android:textColor="#FD0000"
-                    android:textSize="@dimen/_9sdp" />
+                    android:text="Show recipe"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_7sdp" />
 
 
             </RelativeLayout>

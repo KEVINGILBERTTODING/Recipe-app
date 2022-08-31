@@ -107,7 +107,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     NestedScrollView nestedScrollView;
     RelativeLayout relativeLayout;
 
-    private List<RecipeModel> recipeModels;
+    private List<RecipeModel> recipeModelList;
 
     // Constructor
     public DetailRecipeFragment() {
@@ -181,6 +181,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         totalLikes = getArguments().getString("likes");
         recipeStatus = getArguments().getString("status");
         recipeCategory = getArguments().getString("category");
+
 
 
         tvRecipeName.setText(recipeName);
@@ -301,9 +302,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             fragmentTransaction.commit();
             fragmentTransaction.addToBackStack(null);
         });
-
-
-
 
 
         // saat btn more di klik
@@ -792,7 +790,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
     }
 
-    // method untu delete like recipe
+    // method untuk delete like recipe
 
     private void deleteLikeRecipe(String recipeid, String userid) {
 
@@ -815,6 +813,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     }
 
+    // count like
     private void countLike(String recipe_id, Integer code) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
@@ -893,6 +892,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             }
         });
     }
+
+
 
 
     @Override
