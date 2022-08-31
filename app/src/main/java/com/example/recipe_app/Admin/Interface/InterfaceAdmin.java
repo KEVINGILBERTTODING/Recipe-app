@@ -1,6 +1,7 @@
 package com.example.recipe_app.Admin.Interface;
 
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 
 import java.util.List;
@@ -58,12 +59,20 @@ public interface InterfaceAdmin {
             @Field("report_id") String report_id
     );
 
+    // action user report
     @FormUrlEncoded
     @POST("admin/action_report.php")
     Call<UserReportModel> actionReportUser(
             @Field("report_id") String report_id,
             @Field("status") Integer status
     );
+
+    // geta all report recipe
+    @GET("admin/report_recipe/get_all_report.php")
+    Call<List<RecipeReportmodel>> getAllReportRecipe(
+            @Query("status") Integer status
+    );
+
 
 
 

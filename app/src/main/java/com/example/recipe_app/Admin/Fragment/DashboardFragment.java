@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
@@ -42,8 +43,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    CardView card_user, rl_report_user;
-    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user;
+    CardView card_user, rl_report_user, rl_report_recipe;
+    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe;
 
     String username, userid;
     ImageView iv_profile;
@@ -68,6 +69,8 @@ public class DashboardFragment extends Fragment {
         tv_greeting = view.findViewById(R.id.tv_greeting);
         rl_report_user = view.findViewById(R.id.rl_report_user);
         tv_total_report_user = view.findViewById(R.id.tv_report_user);
+        rl_report_recipe = view.findViewById(R.id.rl_report_recipe);
+        tv_total_report_recipe = view.findViewById(R.id.tv_report_recipe);
 
 
         // set greeting
@@ -94,8 +97,11 @@ public class DashboardFragment extends Fragment {
         // get admin info
         getAdminInfo();
 
-        // count all report
+        // count all report user
         countAllReport();
+
+        // count all report recipe
+        countReportRecipe();
 
 
         tv_dashboard.setOnClickListener(view1 -> {
@@ -209,6 +215,29 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "NO CONNECTION", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // count total report recipe
+    private void countReportRecipe(){
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.getAllReportRecipe(1).enqueue(new Callback<List<RecipeReportmodel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeReportmodel>> call, Response<List<RecipeReportmodel>> response) {
+                List<RecipeReportmodel> recipeReportmodelList = response.body();
+                if (recipeReportmodelList.get(0).getSucces().equals("1")) {
+                    tv_total_report_recipe.setText(recipeReportmodelList.size() + " Report");
+
+                } else{
+                    Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
 
             }
         });

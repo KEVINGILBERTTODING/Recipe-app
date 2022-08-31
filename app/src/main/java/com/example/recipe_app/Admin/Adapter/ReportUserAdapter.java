@@ -76,11 +76,16 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
 
 
 
+
     @Override
     public int getItemCount() {
         return userReportModelList.size();
     }
 
+    public void filterList(ArrayList<UserReportModel> filteredList) {
+        userReportModelList = filteredList;
+        notifyDataSetChanged();
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
