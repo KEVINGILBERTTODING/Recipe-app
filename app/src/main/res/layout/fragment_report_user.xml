@@ -83,16 +83,14 @@
 
         </com.google.android.material.tabs.TabLayout>
 
+
         <TextView
             android:id="@+id/tv_no_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Reported User"
             android:fontFamily="@font/popmed"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/_10sdp"
-            android:layout_centerHorizontal="true"/>
-
+            android:text="No Reported User"
+            android:textSize="@dimen/_10sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user"
