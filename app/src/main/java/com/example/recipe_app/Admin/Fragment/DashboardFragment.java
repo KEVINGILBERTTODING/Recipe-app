@@ -170,7 +170,6 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "no connection", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -206,7 +205,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
-                Snackbar.make(getView(), "No connection", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
 
             }
         });
@@ -230,7 +229,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "NO CONNECTION", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -243,7 +242,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onResponse(Call<List<RecipeReportmodel>> call, Response<List<RecipeReportmodel>> response) {
                 List<RecipeReportmodel> recipeReportmodelList = response.body();
-                if (recipeReportmodelList.get(0).getSucces().equals("1")) {
+                if (response.isSuccessful()) {
                     tv_total_report_recipe.setText(recipeReportmodelList.size() + " Report");
 
                 } else{
@@ -253,7 +252,8 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
+
 
             }
         });

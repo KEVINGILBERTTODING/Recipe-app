@@ -23,6 +23,7 @@ import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -121,10 +122,6 @@ public class ReportUserFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     // get all report
     private void getAllReport(Integer status){
@@ -147,7 +144,7 @@ public class ReportUserFragment extends Fragment {
 
 
                     } else {
-                        Toast.makeText(getContext(), "Failed t load data", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
 
                     }
                 
@@ -156,7 +153,8 @@ public class ReportUserFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
+
 
             }
         });

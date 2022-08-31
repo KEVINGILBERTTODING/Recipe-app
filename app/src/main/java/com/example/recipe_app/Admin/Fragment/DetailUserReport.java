@@ -92,6 +92,9 @@ public class DetailUserReport extends Fragment {
                 .centerCrop()
                 .into(imgReport);
 
+
+
+
        // load tv_username1
         tv_username1.setText(username1);
 

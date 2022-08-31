@@ -1,6 +1,7 @@
 package com.example.recipe_app.Admin.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
+import com.example.recipe_app.Admin.Fragment.ReportRecipeFragment;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.R;
 
@@ -82,6 +88,26 @@ public class ReportRecipeAdapter extends RecyclerView.Adapter<ReportRecipeAdapte
 
         @Override
         public void onClick(View view) {
+            Fragment fragment =  new DetailRecipeReport();
+            Bundle bundle  = new Bundle();
+            bundle.putString("report_id", recipeReportmodelList.get(getAdapterPosition()).getReport_id());
+            bundle.putString("recipe_id", recipeReportmodelList.get(getAdapterPosition()).getRecipe_id());
+            bundle.putString("user_id", recipeReportmodelList.get(getAdapterPosition()).getUser_id());
+            bundle.putString("title", recipeReportmodelList.get(getAdapterPosition()).getTitle());
+            bundle.putString("report", recipeReportmodelList.get(getAdapterPosition()).getReport());
+            bundle.putString("image", recipeReportmodelList.get(getAdapterPosition()).getImage());
+            bundle.putString("date", recipeReportmodelList.get(getAdapterPosition()).getDate());
+            bundle.putString("time", recipeReportmodelList.get(getAdapterPosition()).getTitle());
+            bundle.putString("status", recipeReportmodelList.get(getAdapterPosition()).getStatus());
+            bundle.putString("username", recipeReportmodelList.get(getAdapterPosition()).getUsername());
+            bundle.putString("photo_profile", recipeReportmodelList.get(getAdapterPosition()).getPhoto_profile());
+            bundle.putString("email", recipeReportmodelList.get(getAdapterPosition()).getEmail());
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
 
         }
     }

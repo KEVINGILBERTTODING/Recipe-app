@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
@@ -110,7 +112,7 @@ public class ReportRecipeFragment extends Fragment {
             public void onResponse(Call<List<RecipeReportmodel>> call, Response<List<RecipeReportmodel>> response) {
                 recipeReportmodelList = response.body();
 
-                if (recipeReportmodelList.get(0).getSucces().equals("1")) {
+                if (recipeReportmodelList.size() > 0) {
                     reportRecipeAdapter = new ReportRecipeAdapter(getContext(), recipeReportmodelList);
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     rv_recipe.setAdapter(reportRecipeAdapter);
@@ -118,19 +120,21 @@ public class ReportRecipeFragment extends Fragment {
                     rv_recipe.setHasFixedSize(true);
                     tv_no_data.setVisibility(View.GONE);
                     rv_recipe.setVisibility(View.VISIBLE);
+
                     
-                } else {
+                } else  {
                     rv_recipe.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
-                    Toast.makeText(getContext() , "GAGAGLLLLL", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
                 rv_recipe.setVisibility(View.GONE);
                 tv_no_data.setVisibility(View.VISIBLE);
+
 
             }
         });
