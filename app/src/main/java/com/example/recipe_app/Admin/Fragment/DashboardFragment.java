@@ -8,8 +8,11 @@ import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -128,6 +131,14 @@ public class DashboardFragment extends Fragment {
 
         });
 
+        // menu report recipe
+        rl_report_recipe.setOnClickListener(view1 ->{
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
 
 
 
@@ -135,6 +146,10 @@ public class DashboardFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     // method untuk menghitung total user
     private void countUser() {

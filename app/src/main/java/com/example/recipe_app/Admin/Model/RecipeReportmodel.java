@@ -1,5 +1,6 @@
 package com.example.recipe_app.Admin.Model;
 
+import com.example.recipe_app.Util.DataApi;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -83,7 +84,7 @@ public class RecipeReportmodel implements Serializable {
     }
 
     public String getPhoto_profile() {
-        return photo_profile;
+        return DataApi.BASE_URL + "photo_profile/" + photo_profile;
     }
 
     public void setPhoto_profile(String photo_profile) {
@@ -139,7 +140,7 @@ public class RecipeReportmodel implements Serializable {
     }
 
     public String getImage() {
-        return image;
+        return DataApi.BASE_URL + "img_report_recipe/" +  image;
     }
 
     public String getSucces() {

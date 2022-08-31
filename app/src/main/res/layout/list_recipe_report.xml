@@ -9,22 +9,18 @@
     android:layout_height="wrap_content">
 
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp"
-        >
-
+        android:padding="@dimen/_5sdp">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:src="@color/black"
             app:civ_border_color="@color/main"
@@ -34,10 +30,10 @@
         <LinearLayout
             android:id="@+id/lr_username"
             android:layout_width="match_parent"
-            android:layout_toLeftOf="@+id/tv_date"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/_10sdp"
+            android:layout_toLeftOf="@+id/tv_date"
             android:layout_toRightOf="@+id/iv_user"
             android:orientation="vertical">
 
@@ -72,9 +68,6 @@
             android:maxLength="40"
             android:text="Date"
             android:textSize="@dimen/_7sdp" />
-
-
-
 
 
     </RelativeLayout>
