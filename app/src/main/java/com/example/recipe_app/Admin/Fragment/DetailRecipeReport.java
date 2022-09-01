@@ -121,6 +121,17 @@ public class DetailRecipeReport extends Fragment {
 
         });
 
+        // if status
+        if (status.equals("0")) {
+            btnReject.setVisibility(View.GONE);
+            btnAccept.setVisibility(View.GONE);
+            btnAccept.setText("Accepted");
+        } else if (status.equals("2")) {
+            btnUnBlock.setVisibility(View.VISIBLE);
+            btnAccept.setVisibility(View.GONE);
+        }
+
+
         // button show clicked
         btnShow.setOnClickListener(view -> {
             InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
@@ -213,6 +224,105 @@ public class DetailRecipeReport extends Fragment {
         });
 
 
+        // if button accpeted is clicked
+        btnAccept.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to accept this report?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportRecipe(reportId, 2).enqueue(new Callback<RecipeReportmodel>() {
+                    @Override
+                    public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
+                        RecipeReportmodel recipeReportmodel = response.body();
+                        if (recipeReportmodel.getStatus().equals("1")) {
+                           actionRecipe(recipeId, "0");
+
+                        } else {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+
+        // if button rejected is clicked
+        btnReject.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to reject this report?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportRecipe(reportId, 0).enqueue(new Callback<RecipeReportmodel>() {
+                    @Override
+                    public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
+                        RecipeReportmodel userReportModel = response.body();
+                        if (userReportModel.getStatus().equals("1")) {
+                            Toast.makeText(getContext(),
+                                    "Report rejected successfully", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
+                            ft.commit();
+
+                        } else  {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
+                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+
+        // btn unbocked
+        btnUnBlock.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to activated this recipe?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportRecipe(reportId, 1).enqueue(new Callback<RecipeReportmodel>() {
+                    @Override
+                    public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
+                        RecipeReportmodel userReportModel = response.body();
+                        if (userReportModel.getStatus().equals("1")) {
+                            actionRecipe(recipeId, "1");
+
+                        } else  {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
+                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+
+
+
 
 
 
@@ -221,8 +331,30 @@ public class DetailRecipeReport extends Fragment {
 
     }
 
-    // get recipe by recipe_id
-    private void getRecipe(String recipe_id) {
+    // disable recipe
+    private void actionRecipe(String recipe_id, String status) {
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.actionRecipe(recipe_id, status).enqueue(new Callback<RecipeReportmodel>() {
+            @Override
+            public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
+                RecipeReportmodel recipeReportmodel = response.body();
+                if (recipeReportmodel.getStatus().equals("1")) {
+                    Toast.makeText(getContext(), "Report accepted successfully", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_admin, new ReportRecipeFragment());
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
 
+            }
+
+            @Override
+            public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
+
 }

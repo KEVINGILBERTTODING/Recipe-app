@@ -81,6 +81,22 @@ public interface InterfaceAdmin {
             @Field("report_id") String report_id
     );
 
+    // action report recipe
+
+    @FormUrlEncoded
+    @POST("admin/report_recipe/action_report.php")
+    Call<RecipeReportmodel> actionReportRecipe(
+            @Field("report_id") String report_id,
+            @Field("status") Integer status
+    );
+
+    @FormUrlEncoded
+    @POST("admin/report_recipe/action_recipe.php")
+    Call<RecipeReportmodel> actionRecipe(
+            @Field("recipe_id") String recipe_id,
+            @Field("status") String status
+    );
+
 
 
 
