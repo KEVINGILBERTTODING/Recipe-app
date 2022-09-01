@@ -9,29 +9,41 @@ class emp
 
 
 date_default_timezone_set('Asia/Jakarta');
-
+$image = $_POST['image'];
 $user_id = $_POST['user_id'];
 $report = $_POST['report'];
+$title = $_POST['title'];
 $recipe_id = $_POST['recipe_id'];
 
+
+// get max id from database
+$get_max_id = "SELECT MAX(report_id) FROM report_recipe";
+$result = mysqli_query($koneksi, $get_max_id);
+$row = mysqli_fetch_array($result);
+$id = $row[0] + 1;
 
 
 $upload_date = date("Y-m-d");
 $upload_time = date("H:i:s");
 
-$query = "INSERT INTO report_recipe (user_id, report, recipe_id, date, time)    
-VALUES (? , ? , ? , ? , ?)";
-$stmt = $koneksi->prepare($query);
-$stmt->bind_param("sssss", $user_id, $report, $recipe_id, $upload_date, $upload_time);
+$nama_file = $user_id . "-" . $upload_date . "-" . $id . ".png";
 
-if ($stmt->execute()) {
+$path = "img_report_recipe/" . $nama_file;
+
+$query = "INSERT INTO report_recipe (user_id, recipe_id, report, date, time, image, title) 
+VALUES ('$user_id', '$recipe_id', '$report', '$upload_date', '$upload_time','$nama_file', '$title')";
+$result = mysqli_query($koneksi, $query);
+
+
+if ($result) {
+    file_put_contents($path, base64_decode($image));
     $response = new emp();
-    $response->success = 1;
+    $response->status = 1;
     $response->message = "success";
     die(json_encode($response));
 } else {
     $response = new emp();
-    $response->success = 0;
+    $response->status = 0;
     $response->message = "Error while uploading";
     die(json_encode($response));
 }
