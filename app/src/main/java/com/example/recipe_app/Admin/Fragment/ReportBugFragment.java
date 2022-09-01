@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class ReportBugFragment extends Fragment {
     TextView tv_no_report;
     SearchView searchView;
     List<BugReportModel> bugReportModelList;
+    ImageButton btnBack;
 
 
     @Override
@@ -50,6 +53,12 @@ public class ReportBugFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_no_report = root.findViewById(R.id.tv_no_report);
         searchView = root.findViewById(R.id.search_bar);
+        btnBack = root.findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(view -> {
+            FragmentManager fm = getFragmentManager();
+            fm.popBackStack();
+        });
 
         tabLayout.addTab(tabLayout.newTab().setText("Bug Reported"));
         tabLayout.addTab(tabLayout.newTab().setText("In Progress"));
@@ -96,12 +105,43 @@ public class ReportBugFragment extends Fragment {
 
         getAllReport(1);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+
 
 
 
         return root;
     }
 
+    private void filter(String newText) {
+        ArrayList<BugReportModel> filteredList = new ArrayList<>();
+
+
+        for (BugReportModel item : bugReportModelList) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        reportBugAdapter.filterList(filteredList);
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+        } else {
+            reportBugAdapter.filterList(filteredList);
+        }
+    }
 
 
     // get all report bug
@@ -110,7 +150,7 @@ public class ReportBugFragment extends Fragment {
         interfaceAdmin.getAllBugReport(status).enqueue(new Callback<List<BugReportModel>>() {
             @Override
             public void onResponse(Call<List<BugReportModel>> call, Response<List<BugReportModel>> response) {
-                List<BugReportModel> bugReportModelList = response.body();
+                bugReportModelList = response.body();
                 if (bugReportModelList.size() != 0) {
                     reportBugAdapter = new ReportBugAdapter(getContext(), bugReportModelList);
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

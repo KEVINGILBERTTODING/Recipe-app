@@ -55,7 +55,6 @@ public class DashboardFragment extends Fragment {
     String username, userid;
     ImageView iv_profile;
     Calendar calendar;
-    TabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +69,6 @@ public class DashboardFragment extends Fragment {
 
         card_user = view.findViewById(R.id.rl_users);
         tv_total_users = view.findViewById(R.id.tv_total_users);
-//        tv_dashboard = view.findViewById(R.id.tv_dashboard);
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
         tv_greeting = view.findViewById(R.id.tv_greeting);
@@ -80,13 +78,6 @@ public class DashboardFragment extends Fragment {
         tv_total_report_recipe = view.findViewById(R.id.tv_report_recipe);
         tv_total_bug_report = view.findViewById(R.id.tv_report_bug);
         rl_report_bug = view.findViewById(R.id.rl_report_bug);
-        tabLayout = view.findViewById(R.id.tab_layout);
-
-        tabLayout.addTab(tabLayout.newTab().setText("Overview"));
-        tabLayout.addTab(tabLayout.newTab().setText("Layanan"));
-        tabLayout.addTab(tabLayout.newTab().setText("Konsultasi"));
-        tabLayout.addTab(tabLayout.newTab().setText("Asuransi"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
         // set greeting

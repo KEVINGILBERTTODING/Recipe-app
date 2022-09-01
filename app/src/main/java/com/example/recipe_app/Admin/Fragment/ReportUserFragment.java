@@ -40,6 +40,7 @@ public class ReportUserFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     TabLayout tabLayout;
     SearchView searchView;
+    
 
     TextView tvNoReport;
 
@@ -104,9 +105,38 @@ public class ReportUserFragment extends Fragment {
 
             }
         });
+        
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
 
 
         return view;
+    }
+
+    private void filter(String newText) {
+        ArrayList<UserReportModel> filteredList = new ArrayList<>();
+        for (UserReportModel item : userReportModelList) {
+            if (item.getUsername1().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        reportUserAdapter.filterList(filteredList);
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+        } else {
+            reportUserAdapter.filterList(filteredList);
+        }
     }
 
 
@@ -119,7 +149,7 @@ public class ReportUserFragment extends Fragment {
 
 
                     if (response.isSuccessful()) {
-                        List<UserReportModel> userReportModelList = response.body();
+                        userReportModelList = response.body();
                         reportUserAdapter = new ReportUserAdapter(getContext(), userReportModelList);
                         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
                         rv_user.setLayoutManager(linearLayoutManager);

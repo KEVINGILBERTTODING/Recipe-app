@@ -65,16 +65,16 @@ public class ReportRecipeAdapter extends RecyclerView.Adapter<ReportRecipeAdapte
 
     }
 
-    public void filterList(ArrayList<RecipeReportmodel> filteredList) {
-
-        recipeReportmodelList = filteredList;
-        notifyDataSetChanged();
-    }
 
 
     @Override
     public int getItemCount() {
         return recipeReportmodelList.size();
+    }
+
+    public void filterList(ArrayList<RecipeReportmodel> filteredList) {
+        recipeReportmodelList = filteredList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

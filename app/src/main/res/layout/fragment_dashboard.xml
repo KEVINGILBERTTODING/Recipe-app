@@ -50,7 +50,7 @@
                         android:fontFamily="@font/popmed"
                         android:layout_marginTop="@dimen/_14sdp"
                         android:text="Greeting"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_9sdp" />
 
                     <TextView
                         android:id="@+id/tv_username"
@@ -59,7 +59,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Username"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_11sdp" />
 
 
 
@@ -68,27 +68,16 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+
+            <TextView
+                android:id="@+id/tv_dashboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv1"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:tabGravity="fill"
-                app:tabIndicatorFullWidth="true"
-                app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
-                app:tabTextAppearance="@style/TabFont"/>
-
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_dashboard"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="@dimen/_30sdp"-->
-<!--                android:fontFamily="@font/popsem"-->
-<!--                android:text="Dashboard"-->
-<!--                android:textSize="@dimen/_15sdp" />-->
+                android:fontFamily="@font/popsem"
+                android:text="Overview"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textSize="@dimen/_10sdp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/rl_users"

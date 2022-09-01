@@ -21,6 +21,7 @@ import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.ViewHolder> {
@@ -66,6 +67,11 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
     @Override
     public int getItemCount() {
         return  bugReportModelList.size();
+    }
+
+    public void filterList(ArrayList<BugReportModel> filteredList) {
+        bugReportModelList = filteredList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{

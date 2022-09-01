@@ -110,12 +110,12 @@ public class ReportRecipeFragment extends Fragment {
             }
         });
 
-        // search report by username
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 filter(newText);
@@ -126,7 +126,24 @@ public class ReportRecipeFragment extends Fragment {
 
 
 
+
         return root;
+    }
+
+    private void filter(String newText) {
+        ArrayList<RecipeReportmodel> filteredList = new ArrayList<>();
+        for (RecipeReportmodel item : recipeReportmodelList) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        reportRecipeAdapter.filterList(filteredList);
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+        } else {
+           reportRecipeAdapter.filterList(filteredList);
+        }
     }
 
     // get all report
@@ -164,33 +181,6 @@ public class ReportRecipeFragment extends Fragment {
             }
         });
     }
-
-    // method search
-    private void filter(String newText) {
-
-        ArrayList<RecipeReportmodel> filteredList = new ArrayList<>();
-
-
-        for (RecipeReportmodel item : recipeReportmodelList) {
-
-            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
-            }
-        }
-
-
-        reportRecipeAdapter.filterList(filteredList);
-
-
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            reportRecipeAdapter.filterList(filteredList);
-        }
-
-
-    }
-
 
 
 }
