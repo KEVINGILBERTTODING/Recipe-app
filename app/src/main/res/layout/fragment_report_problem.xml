@@ -17,12 +17,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:background="@drawable/ic_back"/>
+                android:background="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,15 +33,9 @@
                 android:fontFamily="@font/popsem"
                 android:text="Report a problem"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
-            <ImageButton
-                android:id="@+id/btn_send"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:background="@drawable/ic_send" />
+
 
 
         </RelativeLayout>
@@ -61,14 +56,29 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/love_anim"
-                android:layout_width="@dimen/_200sdp"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/report_animate" />
+
+            <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/popmed"
+                android:gravity="start"
+                android:hint="Title"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:maxLines="3"
+                android:padding="@dimen/_3sdp"
+                android:textSize="@dimen/_10sdp" />
+
 
             <EditText
                 android:id="@+id/edt_report"
@@ -79,46 +89,96 @@
                 android:gravity="start"
                 android:hint="What went wrong?"
                 android:inputType="textMultiLine"
-                android:minLines="5"
+                android:minLines="4"
                 android:maxLines="10"
                 android:padding="@dimen/_3sdp"
                 android:textSize="@dimen/_10sdp" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp">
+                android:id="@+id/rl_image_picker"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp">
+
 
                 <ImageView
-                    android:id="@+id/img_report"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
+                    android:id="@+id/iv_report"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp" />
 
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/add_image"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
+                <RelativeLayout
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/add_animate" />
+                    android:background="@drawable/shape_edit" />
 
-                <TextView
-                    android:id="@+id/tv_select_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/add_image"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/popmed"
-                    android:text="Select image from gallery"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_8sdp" />
-
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_edit" />
 
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                android:text="To help us keep our community safe, please tell us why you are reporting this recipe."
+                android:textColor="@color/black"
+                android:textSize="@dimen/_7sdp">
+
+            </TextView>
+
+            <LinearLayout
+                android:id="@+id/lr_image_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/ic_image" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popmed"
+                    android:text="Select image"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp">
+
+                </TextView>
+
+
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/gray" />
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_report"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Report"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_10sdp"
+                app:cornerRadius="@dimen/_8sdp" />
+
 
 
         </LinearLayout>

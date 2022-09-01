@@ -25,9 +25,12 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,12 +50,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReportProblemFragment extends Fragment {
-    ImageButton btnBack, btnSend;
-    ImageView imgReport;
-    TextView tv_select_image;
-    LottieAnimationView addAnim;
-    EditText edt_report;
+    ImageButton btnBack;
+    ImageView iv_report;
+    EditText edt_report, edt_title;
     String userid, image;
+    Button btnSend;
+    LinearLayout lr_image_picker;
+    RelativeLayout rl_image_picker;
 
     private final int TAG_GALLERY = 2222;
     Bitmap bitmap;
@@ -75,10 +79,11 @@ public class ReportProblemFragment extends Fragment {
 
         btnBack = view.findViewById(R.id.btn_back);
         btnSend = view.findViewById(R.id.btn_send);
-        imgReport = view.findViewById(R.id.img_report);
-        tv_select_image = view.findViewById(R.id.tv_select_image);
-        addAnim = view.findViewById(R.id.add_image);
+        iv_report = view.findViewById(R.id.iv_report);
         edt_report = view.findViewById(R.id.edt_report);
+        lr_image_picker = view.findViewById(R.id.lr_image_picker);
+        edt_title = view.findViewById(R.id.edt_title);
+        rl_image_picker = view.findViewById(R.id.rl_image_picker);
 
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
@@ -86,7 +91,17 @@ public class ReportProblemFragment extends Fragment {
         });
 
 
-        imgReport.setOnClickListener(view1 -> {
+        lr_image_picker.setOnClickListener(view1 -> {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, TAG_GALLERY);
+
+            }
+        });
+
+        rl_image_picker.setOnClickListener(view1 -> {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             } else {
@@ -101,8 +116,9 @@ public class ReportProblemFragment extends Fragment {
 
             if (bitmap == null) {
                 Snackbar.make(getView(), "Please select image", Snackbar.LENGTH_SHORT).show();
-            } else if (edt_report.getText().toString().isEmpty()) {
+            } else if (edt_report.getText().toString().isEmpty() || edt_title.getText().toString().isEmpty()) {
                 edt_report.setError("Please fill this field");
+                edt_title.setError("Please fill this field");
                 Snackbar.make(getView(), "Please fill this field", Snackbar.LENGTH_SHORT).show();
             } else {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -137,10 +153,10 @@ public class ReportProblemFragment extends Fragment {
             try {
 
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
-                imgReport.setImageBitmap(bitmap);
-                addAnim.setVisibility(View.GONE);
-                tv_select_image.setVisibility(View.GONE);
+                iv_report.setImageBitmap(bitmap);
                 progressDialog.dismiss();
+                lr_image_picker.setVisibility(View.GONE);
+                rl_image_picker.setVisibility(View.VISIBLE);
                 Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -156,7 +172,7 @@ public class ReportProblemFragment extends Fragment {
     // Method untuk mengirim report bug ke servr
     private void sendReport() {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-        interfaceProfile.reportBug(userid, edt_report.getText().toString(), image).enqueue(new Callback<ProfileModel>() {
+        interfaceProfile.reportBug(userid, edt_report.getText().toString(), edt_title.getText().toString(), image).enqueue(new Callback<ProfileModel>() {
             @Override
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
 
@@ -164,9 +180,6 @@ public class ReportProblemFragment extends Fragment {
                     progressDialog.dismiss();
                     Snackbar.make(getView(), "Successfully send report", Snackbar.LENGTH_LONG).show();
                     edt_report.setText("");
-                    addAnim.setVisibility(View.VISIBLE);
-                    tv_select_image.setVisibility(View.VISIBLE);
-                    imgReport.setBackground(getContext().getResources().getDrawable(R.color.white));
 
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.popBackStack();

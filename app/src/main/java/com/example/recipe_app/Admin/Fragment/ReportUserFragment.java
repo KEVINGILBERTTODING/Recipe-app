@@ -35,13 +35,14 @@ import retrofit2.Response;
 
 public class ReportUserFragment extends Fragment {
     RecyclerView rv_user;
+    List<UserReportModel> userReportModelList;
     ReportUserAdapter reportUserAdapter;
     LinearLayoutManager linearLayoutManager;
     TabLayout tabLayout;
     SearchView searchView;
-    List<UserReportModel> userReportModelList;
+
     TextView tvNoReport;
-    ArrayList<UserReportModel> filteredList = new ArrayList<>();
+
 
     ImageButton btnBack;
 
@@ -104,20 +105,6 @@ public class ReportUserFragment extends Fragment {
             }
         });
 
-        // search report by username
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return false;
-            }
-        });
-
-
 
         return view;
     }
@@ -129,7 +116,7 @@ public class ReportUserFragment extends Fragment {
         interfaceAdmin.getAllReport(status).enqueue(new Callback<List<UserReportModel>>() {
             @Override
             public void onResponse(Call<List<UserReportModel>> call, Response<List<UserReportModel>> response) {
-               
+
 
                     if (response.isSuccessful()) {
                         List<UserReportModel> userReportModelList = response.body();
@@ -137,6 +124,7 @@ public class ReportUserFragment extends Fragment {
                         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
                         rv_user.setLayoutManager(linearLayoutManager);
                         rv_user.setAdapter(reportUserAdapter);
+                        rv_user.setHasFixedSize(true);
                         tvNoReport.setVisibility(View.GONE);
                         if (userReportModelList.size() == 0) {
                             tvNoReport.setVisibility(View.VISIBLE);
@@ -164,30 +152,6 @@ public class ReportUserFragment extends Fragment {
 
     }
 
-
-    // method search
-    private void filter(String newText) {
-
-
-        for (UserReportModel item : userReportModelList) {
-
-            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
-            }
-        }
-
-
-        reportUserAdapter.filterList(filteredList);
-
-
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            reportUserAdapter.filterList(filteredList);
-        }
-
-
-    }
 
 
 }

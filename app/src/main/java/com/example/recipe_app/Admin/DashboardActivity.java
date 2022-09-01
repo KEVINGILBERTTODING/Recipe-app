@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.recipe_app.Admin.Fragment.DashboardFragment;
@@ -58,6 +59,8 @@ public class DashboardActivity extends AppCompatActivity {
                 return null;
             }
         });
+
+
     }
 
     private void replace(Fragment fragment) {

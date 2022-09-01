@@ -57,6 +57,7 @@ public interface InterfaceProfile {
  Call<ProfileModel>reportBug(
          @Field("user_id") String user_id,
          @Field("chat") String chat,
+         @Field("title") String title,
          @Field("image") String image
  );
 

@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 public class DetailRecipeReport extends Fragment {
 
-    TextView tv_username, tv_date, tv_title, tv_report;
+    TextView tv_username, tv_date, tv_title, tv_report, tv_time;
     ImageView img_profile, imgReport;
     ImageButton btnBack, btnDelete;
     Button btnAccept, btnReject, btnUnBlock, btnShow;
@@ -59,6 +59,7 @@ public class DetailRecipeReport extends Fragment {
         tv_report = root.findViewById(R.id.tv_report);
         img_profile = root.findViewById(R.id.img_profile);
         btnBack = root.findViewById(R.id.btn_back);
+        tv_time = root.findViewById(R.id.tv_time);
         btnDelete = root.findViewById(R.id.btn_delete);
         btnAccept = root.findViewById(R.id.btn_accept);
         btnReject = root.findViewById(R.id.btn_rejected);
@@ -88,6 +89,7 @@ public class DetailRecipeReport extends Fragment {
         tv_date.setText(date);
         tv_title.setText(title);
         tv_report.setText(report);
+        tv_time.setText(time);
 
 
         // load photo profile
@@ -259,7 +261,7 @@ public class DetailRecipeReport extends Fragment {
         // if button rejected is clicked
         btnReject.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Accept Report");
+            builder.setTitle("Reject Report");
             builder.setMessage("Are you sure you want to reject this report?");
             builder.setPositiveButton("Yes", (dialogInterface, i) -> {
                 InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);

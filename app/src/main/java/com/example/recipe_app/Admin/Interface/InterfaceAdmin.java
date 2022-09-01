@@ -1,6 +1,7 @@
 package com.example.recipe_app.Admin.Interface;
 
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 
@@ -94,6 +95,27 @@ public interface InterfaceAdmin {
     @POST("admin/report_recipe/action_recipe.php")
     Call<RecipeReportmodel> actionRecipe(
             @Field("recipe_id") String recipe_id,
+            @Field("status") String status
+    );
+
+    // get all report bug
+    @GET("admin/report_bug/get_all_report.php")
+    Call<List<BugReportModel>> getAllBugReport(
+            @Query("status") Integer status
+    );
+
+    // delete bug report
+    @FormUrlEncoded
+    @POST("admin/report_bug/delete_report.php")
+    Call<BugReportModel> deleteBugReport(
+            @Field("report_id") String report_id
+    );
+
+    // action bug report
+    @FormUrlEncoded
+    @POST("admin/report_bug/action_report.php")
+    Call<BugReportModel> actionBugReport(
+            @Field("report_id") String report_id,
             @Field("status") String status
     );
 

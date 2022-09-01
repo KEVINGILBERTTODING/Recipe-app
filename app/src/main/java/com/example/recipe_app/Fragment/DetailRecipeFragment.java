@@ -265,8 +265,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                 pd.setCanceledOnTouchOutside(false);
                                 reportRecipe(recipe_id, useridx, et_title.getText().toString(), image, et_report.getText().toString());
 
-//                                reportUser(userid, user_id, et_report.getText().toString(), image, et_title.getText().toString());
-
                             }
 
                         });

@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.AdminModel;
+import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -36,6 +37,7 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
 
 import java.util.Calendar;
@@ -46,12 +48,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    CardView card_user, rl_report_user, rl_report_recipe;
-    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe;
+    CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug;
+    TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe,
+                tv_total_bug_report;
 
     String username, userid;
     ImageView iv_profile;
     Calendar calendar;
+    TabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +70,7 @@ public class DashboardFragment extends Fragment {
 
         card_user = view.findViewById(R.id.rl_users);
         tv_total_users = view.findViewById(R.id.tv_total_users);
-        tv_dashboard = view.findViewById(R.id.tv_dashboard);
+//        tv_dashboard = view.findViewById(R.id.tv_dashboard);
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
         tv_greeting = view.findViewById(R.id.tv_greeting);
@@ -74,6 +78,15 @@ public class DashboardFragment extends Fragment {
         tv_total_report_user = view.findViewById(R.id.tv_report_user);
         rl_report_recipe = view.findViewById(R.id.rl_report_recipe);
         tv_total_report_recipe = view.findViewById(R.id.tv_report_recipe);
+        tv_total_bug_report = view.findViewById(R.id.tv_report_bug);
+        rl_report_bug = view.findViewById(R.id.rl_report_bug);
+        tabLayout = view.findViewById(R.id.tab_layout);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Overview"));
+        tabLayout.addTab(tabLayout.newTab().setText("Layanan"));
+        tabLayout.addTab(tabLayout.newTab().setText("Konsultasi"));
+        tabLayout.addTab(tabLayout.newTab().setText("Asuransi"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
         // set greeting
@@ -89,7 +102,7 @@ public class DashboardFragment extends Fragment {
             tv_greeting.setText("Good evening 👋");
 
         } else if (time_of_day >= 18 && time_of_day < 24) {
-            tv_greeting.setText("Good night 👋");
+            tv_greeting.setText("Good night 🌖");
 
         }
 
@@ -106,10 +119,10 @@ public class DashboardFragment extends Fragment {
         // count all report recipe
         countReportRecipe();
 
+        // count total bug report
+        countBugReport();
 
-        tv_dashboard.setOnClickListener(view1 -> {
-            Toast.makeText(getContext(), "Dashboard", Toast.LENGTH_SHORT).show();
-        });
+
 
         // Card user is clicked
         card_user.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +150,14 @@ public class DashboardFragment extends Fragment {
             ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
             ft.addToBackStack(null);
             ft.commit();
+        });
+
+        rl_report_bug.setOnClickListener(view1 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, new ReportBugFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+
         });
 
 
@@ -221,9 +242,9 @@ public class DashboardFragment extends Fragment {
                 List<UserReportModel> userReportModelList = response.body();
                 if (response.isSuccessful()) {
                   
-                    tv_total_report_user.setText(userReportModelList.size() + " Report");
+                    tv_total_report_user.setText(userReportModelList.size() + " Account Report");
                 } else{
-                    Toast.makeText(getContext(), "gagalll", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -243,7 +264,7 @@ public class DashboardFragment extends Fragment {
             public void onResponse(Call<List<RecipeReportmodel>> call, Response<List<RecipeReportmodel>> response) {
                 List<RecipeReportmodel> recipeReportmodelList = response.body();
                 if (response.isSuccessful()) {
-                    tv_total_report_recipe.setText(recipeReportmodelList.size() + " Report");
+                    tv_total_report_recipe.setText(recipeReportmodelList.size() + " Recipe Report");
 
                 } else{
                     Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
@@ -254,6 +275,28 @@ public class DashboardFragment extends Fragment {
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
 
+
+            }
+        });
+    }
+
+    // count total bug report
+    private void countBugReport() {
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.getAllBugReport(1).enqueue(new Callback<List<BugReportModel>>() {
+            @Override
+            public void onResponse(Call<List<BugReportModel>> call, Response<List<BugReportModel>> response) {
+                List<BugReportModel> bugReportModelList = response.body();
+                if (bugReportModelList.size() != 0) {
+                    tv_total_bug_report.setText(bugReportModelList.size() + " Bug Report");
+
+                } else {
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BugReportModel>> call, Throwable t) {
 
             }
         });

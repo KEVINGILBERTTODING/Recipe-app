@@ -74,6 +74,10 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
     }
 
 
+    public void filterList(ArrayList<UserReportModel> filteredList) {
+        userReportModelList = filteredList;
+        notifyDataSetChanged();
+    }
 
 
 
@@ -82,10 +86,6 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
         return userReportModelList.size();
     }
 
-    public void filterList(ArrayList<UserReportModel> filteredList) {
-        userReportModelList = filteredList;
-        notifyDataSetChanged();
-    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {

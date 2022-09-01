@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/wave"
-    tools:context=".Admin.Fragment.ReportUserFragment">
+    android:layout_height="match_parent"
+    android:background="@color/main"
+    tools:context=".Admin.Fragment.ReportBugFragment">
 
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -37,11 +37,26 @@
         </RelativeLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@+id/appbar"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/search_bar"
+        android:focusable="false"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@color/transparent"
+        app:queryHint="Search user"
+        app:theme="@style/AppSearchView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar"
+        android:layout_below="@id/search_bar"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/container_user"
         android:padding="@dimen/_10sdp">
 
@@ -50,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/popsem"
-            android:text="Reported User"
+            android:text="Reported Bug"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
 
@@ -74,14 +89,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/popmed"
-            android:text="No Reported User"
-            android:visibility="gone"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:text="No Reported Recipe"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/tab_layout"
+            android:layout_below="@id/tab_layout"
+            android:visibility="gone"
             android:textSize="@dimen/_10sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_user"
+            android:id="@+id/rv_bug"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tab_layout"
@@ -89,9 +105,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </RelativeLayout>
-
-
-
 
 
 </RelativeLayout>
