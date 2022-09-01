@@ -2,6 +2,7 @@ package com.example.recipe_app.Admin.Fragment;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,13 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Admin.Adapter.ReportRecipeAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
+import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -30,6 +31,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,7 +45,11 @@ public class ReportRecipeFragment extends Fragment {
     ReportRecipeAdapter reportRecipeAdapter;
     TabLayout tabLayout;
     LinearLayoutManager linearLayoutManager;
+    SearchView searchView;
     TextView tv_no_data;
+
+
+
 
 
 
@@ -56,6 +62,7 @@ public class ReportRecipeFragment extends Fragment {
         rv_recipe = root.findViewById(R.id.rv_recipe);
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_no_data = root.findViewById(R.id.tv_no_report);
+        searchView = root.findViewById(R.id.search_bar);
 
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
@@ -103,6 +110,20 @@ public class ReportRecipeFragment extends Fragment {
             }
         });
 
+        // search report by username
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
+
+
 
 
         return root;
@@ -143,6 +164,33 @@ public class ReportRecipeFragment extends Fragment {
             }
         });
     }
+
+    // method search
+    private void filter(String newText) {
+
+        ArrayList<RecipeReportmodel> filteredList = new ArrayList<>();
+
+
+        for (RecipeReportmodel item : recipeReportmodelList) {
+
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+
+        reportRecipeAdapter.filterList(filteredList);
+
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+        } else {
+            reportRecipeAdapter.filterList(filteredList);
+        }
+
+
+    }
+
 
 
 }

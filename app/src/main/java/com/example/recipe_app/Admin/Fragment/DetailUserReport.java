@@ -232,7 +232,7 @@ public class DetailUserReport extends Fragment {
         btnReject.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Accept Report");
-            builder.setMessage("Are you sure you want to accept this report?");
+            builder.setMessage("Are you sure you want to reject this report?");
             builder.setPositiveButton("Yes", (dialogInterface, i) -> {
                 InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
                 interfaceAdmin.actionReportUser(report_id, 0).enqueue(new Callback<UserReportModel>() {

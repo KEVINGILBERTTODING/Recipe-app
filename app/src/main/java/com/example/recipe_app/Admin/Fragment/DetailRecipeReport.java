@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class DetailRecipeReport extends Fragment {
     ImageButton btnBack, btnDelete;
     Button btnAccept, btnReject, btnUnBlock, btnShow;
 
+
     String userId, username, recipeId, status, time, date, report, image, imgProfile, email,
             title, reportId;
 
@@ -63,7 +65,6 @@ public class DetailRecipeReport extends Fragment {
         btnUnBlock = root.findViewById(R.id.btn_unblock);
         imgReport = root.findViewById(R.id.iv_report);
         btnShow = root.findViewById(R.id.btn_show);
-
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.popBackStack();

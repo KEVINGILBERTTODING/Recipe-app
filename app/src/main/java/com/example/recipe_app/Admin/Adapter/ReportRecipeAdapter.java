@@ -18,9 +18,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Admin.Fragment.ReportRecipeFragment;
+import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportRecipeAdapter extends RecyclerView.Adapter<ReportRecipeAdapter.ViewHolder> {
@@ -62,6 +64,13 @@ public class ReportRecipeAdapter extends RecyclerView.Adapter<ReportRecipeAdapte
                 .into(holder.iv_profile);
 
     }
+
+    public void filterList(ArrayList<RecipeReportmodel> filteredList) {
+
+        recipeReportmodelList = filteredList;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
