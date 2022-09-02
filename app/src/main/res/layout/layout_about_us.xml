@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         app:cardCornerRadius="@dimen/_20sdp"
         android:layout_height="wrap_content">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:padding="@dimen/_20sdp"
+            android:orientation="vertical"
             android:layout_height="wrap_content">
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_150sdp"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/about_us" />
@@ -46,6 +48,20 @@
                 android:gravity="center_horizontal"
                 android:textSize="@dimen/_8sdp" />
 
+            <EditText
+                android:id="@+id/edt_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:textAlignment="textStart"
+                android:hint="About us"
+                android:maxLines="6"
+                android:fontFamily="@font/popmed"
+                android:lines="3"
+                android:textSize="@dimen/_8sdp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOk"
                 android:layout_width="match_parent"
@@ -57,7 +73,7 @@
                 android:textSize="@dimen/_12sdp"
                 app:cornerRadius="@dimen/_8sdp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
 

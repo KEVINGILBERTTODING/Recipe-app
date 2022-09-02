@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.recipe_app.Admin.Fragment.AdminProfileFragment;
 import com.example.recipe_app.Admin.Fragment.DashboardFragment;
 import com.example.recipe_app.Fragment.AllRecipesFragment;
 import com.example.recipe_app.Fragment.CreateRecipeFragment;
@@ -51,7 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
 
                     case 3:
-//                        replace(new MyProfileFragment());
+                        replace(new AdminProfileFragment());
                         break;
 
 

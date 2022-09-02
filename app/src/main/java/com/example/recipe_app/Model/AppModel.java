@@ -11,11 +11,14 @@ public class AppModel implements Serializable {
     String abut_us;
     @SerializedName("app_version")
     String app_version;
+    @SerializedName("success")
+    Integer success;
 
-    public AppModel (String id, String about_us, String app_version) {
+    public AppModel (String id, String about_us, String app_version, Integer success) {
         this.id = id;
         this.abut_us = about_us;
         this.app_version = app_version;
+        this.success = success;
     }
 
     public String getId() {
@@ -40,5 +43,13 @@ public class AppModel implements Serializable {
 
     public void setApp_version(String app_version) {
         this.app_version = app_version;
+    }
+
+    public Integer getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Integer success) {
+        this.success = success;
     }
 }

@@ -124,6 +124,20 @@ public interface InterfaceAdmin {
     @GET("view_about.php")
     Call<List<AppModel>> viewAbout();
 
+    // update about_us and app version
+    @FormUrlEncoded
+    @POST("admin/update_about.php")
+    Call<AppModel> updateAboutUs(
+            @Field("about_us") String about_us
+    );
+
+    // update app version
+    @FormUrlEncoded
+    @POST("admin/update_app_version.php")
+    Call<AppModel> updateAppVersion(
+            @Field("app_version") String app_version
+    );
+
 
 
 

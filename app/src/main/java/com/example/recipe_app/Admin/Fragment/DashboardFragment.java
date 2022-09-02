@@ -97,6 +97,12 @@ public class DashboardFragment extends Fragment {
 
         }
 
+        iv_profile.setOnClickListener(view1 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, new AdminProfileFragment());
+            ft.commit();
+        });
+
 
         // count users
         countUser();
