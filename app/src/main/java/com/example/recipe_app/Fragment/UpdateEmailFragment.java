@@ -114,7 +114,7 @@ public class UpdateEmailFragment extends Fragment {
         interfaceProfile.checkOldPassword(user_id, password).enqueue(new Callback<ProfileModel>() {
             @Override
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                if (response.body().getStatus().equals("success")){
+                if (response.body().getSuccess().equals("1")){
 
                     updateEmail(useridx, txt_email.getText().toString());
 
