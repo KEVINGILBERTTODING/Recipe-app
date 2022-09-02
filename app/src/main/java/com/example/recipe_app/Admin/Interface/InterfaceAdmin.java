@@ -4,6 +4,7 @@ import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
+import com.example.recipe_app.Model.AppModel;
 
 import java.util.List;
 
@@ -118,6 +119,10 @@ public interface InterfaceAdmin {
             @Field("report_id") String report_id,
             @Field("status") String status
     );
+
+    // get app version
+    @GET("view_about.php")
+    Call<List<AppModel>> viewAbout();
 
 
 

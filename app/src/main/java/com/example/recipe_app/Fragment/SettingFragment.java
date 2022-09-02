@@ -36,7 +36,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.LoginActivity;
+import com.example.recipe_app.Model.AppModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -233,7 +235,28 @@ public class SettingFragment extends Fragment {
         appVersion.setOnClickListener(view1->{
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.layout_app_version);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
+            final TextView tv_app_version = dialog.findViewById(R.id.tv_version);
+
+            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+            interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
+                @Override
+                public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
+                    List<AppModel> appModelList = response.body();
+                    if (appModelList.size() > 0 ) {
+                        tv_app_version.setText(appModelList.get(0).getApp_version());
+                    } else {
+                        Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<AppModel>> call, Throwable t) {
+
+                }
+            });
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });
@@ -245,7 +268,30 @@ public class SettingFragment extends Fragment {
         aboutUs.setOnClickListener(view1 -> {
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.layout_about_us);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
+            final TextView tv_about_us = dialog.findViewById(R.id.tv_about_us);
+
+            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+            interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
+                @Override
+                public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
+                    List<AppModel> appModelList = response.body();
+                    if (appModelList.size() > 0) {
+                        tv_about_us.setText(appModelList.get(0).getAbut_us());
+                    } else {
+                        Toast.makeText(getContext(), "Failed load about", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<AppModel>> call, Throwable t) {
+
+                }
+            });
+                    
+                    
+                    
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });
