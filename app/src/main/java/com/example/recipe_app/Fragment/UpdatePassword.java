@@ -94,7 +94,8 @@ public class UpdatePassword extends Fragment {
      interfaceProfile.checkOldPassword(user_id, password).enqueue(new Callback<ProfileModel>() {
          @Override
          public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-             if (response.body().getStatus().equals("success")){
+             ProfileModel profileModel = response.body();
+             if (profileModel.getSuccess().equals("1")){
                  FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, new CreateNewPasswordFragment());
