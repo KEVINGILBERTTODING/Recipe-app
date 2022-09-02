@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="@dimen/_20sdp"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:padding="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_gravity="center"
+                android:layout_height="@dimen/_120sdp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/username_animation" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/animation_view"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/popmed"
+                android:gravity="center_horizontal"
+                android:text="Update Username"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp" />
+
+            <EditText
+                android:id="@+id/edt_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:hint="Username"
+                android:textAlignment="textStart"
+                android:fontFamily="@font/popmed"
+                android:maxLines="1"
+                android:layout_gravity="start"
+                android:textSize="@dimen/_10sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_version"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Update"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_8sdp" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

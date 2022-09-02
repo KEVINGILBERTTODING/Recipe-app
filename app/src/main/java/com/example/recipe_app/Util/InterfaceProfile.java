@@ -86,5 +86,13 @@ public interface InterfaceProfile {
 
  );
 
+ // update username
+ @FormUrlEncoded
+ @POST("update_username.php")
+ Call<ProfileModel> updateUsername(
+         @Field("user_id") String user_id,
+         @Field("username") String username
+ );
+
 
 }

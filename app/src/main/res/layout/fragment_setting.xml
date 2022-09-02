@@ -61,8 +61,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_centerVertical="true"
                 android:src="@color/black"
                 app:civ_border_color="@color/main"
                 app:civ_border_width="@dimen/_3sdp" />
@@ -83,7 +84,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="Username"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/tv_email"
@@ -92,7 +93,7 @@
                     android:fontFamily="@font/popmed"
                     android:text="Email"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_8sdp" />
 
                 <TextView
                     android:id="@+id/tv_photo"
@@ -101,7 +102,7 @@
                     android:layout_below="@id/iv_profile"
                     android:fontFamily="@font/popmed"
                     android:text="Change Profile Picture"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_7sdp" />
 
             </LinearLayout>
         </RelativeLayout>
