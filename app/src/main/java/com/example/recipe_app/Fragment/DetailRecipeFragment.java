@@ -407,17 +407,42 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         // jika username di klik maka akan ke profile
         tvUsername.setOnClickListener(View -> {
 
-            Fragment fragment = new ShowProfileFragment();
 
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", user_id);
-            fragment.setArguments(bundle);
+            if (getArguments().getString("admin") != null) {
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
+                Fragment fragment = new ShowProfileFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                bundle.putString("admin", "admin");
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_admin, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+
+            } else {
+
+
+                Fragment fragment = new ShowProfileFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+
+
+            }
+
 
 
 

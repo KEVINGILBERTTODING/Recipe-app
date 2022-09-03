@@ -365,6 +365,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     bundle.putString("photo_profile", recipeModel.getPhoto_profile());
                     bundle.putString("email", recipeModel.getEmail());
                     bundle.putString("notes", recipeModel.getNote());
+                    bundle.putString("admin", getArguments().getString("admin"));
                     fragment.setArguments(bundle);
 
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
