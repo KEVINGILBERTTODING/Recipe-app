@@ -39,6 +39,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Fragment.UpdateEmailFragment;
+import com.example.recipe_app.Fragment.UpdatePassword;
 import com.example.recipe_app.LoginActivity;
 import com.example.recipe_app.Model.AppModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -58,7 +59,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminProfileFragment extends Fragment {
-    RelativeLayout rl_version, rl_about, rl_logout,rl_username, rl_email;
+    RelativeLayout rl_version, rl_about, rl_logout,rl_username, rl_email, rl_password;
     ProgressDialog pd;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_img_picker, tv_apply;
@@ -83,6 +84,7 @@ public class AdminProfileFragment extends Fragment {
        tv_apply = root.findViewById(R.id.tv_apply);
        rl_username = root.findViewById(R.id.rl_username);
        rl_email = root.findViewById(R.id.rl_email);
+       rl_password = root.findViewById(R.id.rl_update_pass);
 
        pd = new ProgressDialog(getContext());
 
@@ -367,6 +369,8 @@ public class AdminProfileFragment extends Fragment {
 
         });
 
+
+        // Update email
         rl_email.setOnClickListener(view -> {
             Fragment fragment = new UpdateEmailFragment();
             Bundle bundle = new Bundle();
@@ -377,6 +381,22 @@ public class AdminProfileFragment extends Fragment {
             ft.addToBackStack(null);
             ft.commit();
         });
+
+        // Update password
+        rl_password.setOnClickListener(view -> {
+            Fragment fragment = new UpdatePassword();
+            Bundle bundle = new Bundle();
+            bundle.putString("admin", "admin");
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
+
+
 
        return root;
     }

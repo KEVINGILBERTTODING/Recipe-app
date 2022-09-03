@@ -96,11 +96,24 @@ public class UpdatePassword extends Fragment {
          public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
              ProfileModel profileModel = response.body();
              if (profileModel.getSuccess().equals("1")){
-                 FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, new CreateNewPasswordFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                 if (getArguments().getString("admin") != null) {
+
+                     FragmentManager fragmentManager = getFragmentManager();
+                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                     fragmentTransaction.replace(R.id.fragment_admin, new CreateNewPasswordFragment());
+                     fragmentTransaction.addToBackStack(null);
+                     fragmentTransaction.commit();
+
+                 } else {
+                     FragmentManager fragmentManager = getFragmentManager();
+                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                     fragmentTransaction.replace(R.id.fragment_container, new CreateNewPasswordFragment());
+                     fragmentTransaction.addToBackStack(null);
+                     fragmentTransaction.commit();
+                 }
+
+
+
 
 
 

@@ -55,10 +55,10 @@
                 android:id="@+id/iv_profile"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:src="@color/black"
                 android:layout_centerVertical="true"
+                android:src="@color/black"
                 app:civ_border_color="@color/main"
-                app:civ_border_width="@dimen/_3sdp" />
+                app:civ_border_width="@dimen/_2sdp" />
 
 
             <LinearLayout
@@ -173,7 +173,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/update_pass"
+            android:id="@+id/rl_update_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp">
