@@ -26,9 +26,10 @@
 
                 <ImageButton
                     android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/ic_back" />
 
                 <TextView
@@ -37,8 +38,9 @@
                     android:layout_toRightOf="@+id/btnBack"
                     android:fontFamily="@font/popsem"
                     android:text="Settings"
+                    android:layout_centerInParent="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tv_apply"
@@ -139,8 +141,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="@dimen/_5sdp"
@@ -171,7 +173,7 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
@@ -203,8 +205,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -235,8 +237,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:layout_centerInParent="true"
@@ -276,8 +278,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -308,8 +310,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -340,8 +342,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"
@@ -372,8 +374,8 @@
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:backgroundTint="@color/black"

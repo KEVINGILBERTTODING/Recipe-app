@@ -72,7 +72,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/popmed"
             android:text="Duration"
-            android:textSize="@dimen/_8sdp" />
+            android:textSize="@dimen/_7sdp" />
 
     <ImageButton
         android:layout_width="@dimen/_20sdp"
@@ -93,7 +93,7 @@
             android:fontFamily="@font/popsem"
             android:text="Title"
             android:textColor="#292E35"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_9sdp" />
 
 
     <TableLayout

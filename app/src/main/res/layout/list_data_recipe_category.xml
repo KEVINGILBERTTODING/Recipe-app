@@ -25,15 +25,16 @@
 
             android:layout_marginBottom="@dimen/_5sdp"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pepper sweetcorn ramen"
-                android:textSize="@dimen/_10sdp"
                 android:fontFamily="@font/popsem"
+                android:text="Pepper sweetcorn ramen"
+                android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textAlignment="center"/>
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tv_recipe1"
@@ -54,7 +55,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="Eve Antoinette"
                 android:textAlignment="center"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_9sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -71,7 +72,7 @@
                     android:fontFamily="@font/popmed"
                     android:gravity="bottom"
                     android:text="Time"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_7sdp" />
 
                 <TextView

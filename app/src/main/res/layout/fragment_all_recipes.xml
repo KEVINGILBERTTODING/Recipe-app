@@ -26,7 +26,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="Find all recipe"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_12sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -49,14 +49,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_5sdp"
-                        android:background="@drawable/search_bar"
+                        android:background="@drawable/search_bar2"
                         app:iconifiedByDefault="false"
+                        app:queryBackground="@color/transparent"
                         app:queryHint="Search recipes"
                         app:theme="@style/AppSearchView">
 
                         android:visibility="invisible" />
                     </androidx.appcompat.widget.SearchView>
-
 
 
                 </RelativeLayout>

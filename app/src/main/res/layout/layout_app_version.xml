@@ -53,13 +53,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:hint="About us"
-                android:maxLines="6"
+                android:hint="App version"
                 android:textAlignment="textStart"
                 android:fontFamily="@font/popmed"
-                android:lines="3"
                 android:layout_gravity="start"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_9sdp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOk"
@@ -69,7 +67,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="Ok"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_10sdp"
                 app:cornerRadius="@dimen/_8sdp" />
 
 
