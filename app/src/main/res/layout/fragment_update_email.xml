@@ -18,8 +18,9 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_centerVertical="true"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@drawable/ic_back" />
 
@@ -28,9 +29,10 @@
                 android:layout_height="wrap_content"
                 android:text="Back"
                 android:layout_toRightOf="@+id/btn_back"
+                android:layout_centerInParent="true"
                 android:fontFamily="@font/popsem"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="@dimen/_10sdp"/>
 
         </RelativeLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -62,7 +64,7 @@
                 android:text="Update email"
                 android:fontFamily="@font/popsem"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_12sdp" />
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

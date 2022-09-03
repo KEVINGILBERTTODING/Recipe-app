@@ -37,9 +37,9 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:background="@drawable/ic_back_white" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:gravity="center_vertical"
                 android:text="Back"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -64,8 +64,8 @@
 
             <ImageButton
                 android:id="@+id/btn_fav"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -74,8 +74,8 @@
 
             <ImageButton
                 android:id="@+id/btn_qrcode"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -84,16 +84,16 @@
 
             <ImageButton
                 android:id="@+id/btn_more"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/ic_more"
                 />
 
             <ImageButton
                 android:id="@+id/btn_more2"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/ic_more"
                 />
@@ -140,7 +140,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Recipe name"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"

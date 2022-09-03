@@ -408,6 +408,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvUsername.setOnClickListener(View -> {
 
 
+            // jika admin
             if (getArguments().getString("admin") != null) {
 
                 Fragment fragment = new ShowProfileFragment();

@@ -57,6 +57,8 @@ public class UpdateEmailFragment extends Fragment {
         btnUpdate = view.findViewById(R.id.btn_update_email);
         btnBack = view.findViewById(R.id.btn_back);
 
+        Toast.makeText(getContext(), useridx, Toast.LENGTH_LONG).show();
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
