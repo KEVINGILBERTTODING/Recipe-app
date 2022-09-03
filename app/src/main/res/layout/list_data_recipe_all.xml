@@ -26,8 +26,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/disslike_anim"
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
         app:lottie_autoPlay="true"
         android:layout_marginTop="@dimen/_20sdp"
         app:lottie_loop="false"
@@ -58,8 +58,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:padding="@dimen/_3sdp">
 
         <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
             android:layout_marginRight="@dimen/_2sdp"
             android:src="@drawable/ic_loved" />
 
@@ -72,7 +72,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:text="4,8"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/_11sdp" />
+            android:textSize="@dimen/_8sdp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -80,44 +80,44 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageButton
         android:id="@+id/btn_favorite"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"
         android:layout_alignParentRight="true"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:background="@drawable/btn_favorite_netral" />
 
-<TextView
-    android:id="@+id/tv_duration"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/img_recipe"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:fontFamily="@font/popmed"
-    android:text="Duration"
-    android:textSize="@dimen/_10sdp" />
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_recipe"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/popmed"
+        android:text="Duration"
+        android:textSize="@dimen/_8sdp" />
 
     <ImageButton
         android:id="@+id/btn_like"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
         android:layout_below="@id/img_recipe"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/_7sdp"
         android:background="@drawable/ic_love" />
 
 
-<TextView
-    android:id="@+id/tv_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/tv_duration"
-    android:layout_marginTop="7dp"
-    android:fontFamily="@font/popsem"
-    android:text="Title"
-    android:textColor="#292E35"
-    android:textSize="@dimen/_11sdp" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_duration"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/popsem"
+        android:text="Title"
+        android:textColor="#292E35"
+        android:textSize="@dimen/_9sdp" />
 
 
 <TableLayout

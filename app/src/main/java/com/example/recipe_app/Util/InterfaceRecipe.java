@@ -51,7 +51,8 @@ public interface InterfaceRecipe {
     // Get my SAVE recipe
     @GET("get_my_recipe.php")
     Call<List<RecipeModel>> getMyRecipe(
-            @Query("user_id") String user_id
+            @Query("user_id") String user_id,
+            @Query("status") Integer status
     );
 
     // Get my LIKE recipe
@@ -160,7 +161,15 @@ public interface InterfaceRecipe {
     Call<RecipeModel> reportRecipe(
             @Field("recipe_id") String recipe_id,
             @Field("user_id") String user_id,
+            @Field("title") String title,
+            @Field("image") String image,
             @Field("report") String reason
+    );
+
+    // get recipe by recipe_id
+    @GET("get_recipe.php")
+    Call<List<RecipeModel>> getRecipe(
+            @Query("recipe_id") String recipe_id
     );
 
 

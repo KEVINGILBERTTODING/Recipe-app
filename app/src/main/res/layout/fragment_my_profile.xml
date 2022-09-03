@@ -29,9 +29,10 @@
 
             <ImageButton
                 android:id="@+id/btn_setting"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/ic_setting"
                 android:backgroundTint="@color/black"
 
@@ -65,10 +66,12 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_toRightOf="@+id/btn_back"
             android:fontFamily="@font/popsem"
-            android:scrollbarSize="@dimen/_12sdp"
+            android:scrollbarSize="@dimen/_11sdp"
             android:text="Username"
             android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_11sdp" />
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,6 +113,7 @@
                 android:layout_marginRight="@dimen/_5sdp"
                 android:src="@drawable/ic_calendar" />
 
+
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
@@ -146,6 +150,8 @@
             android:text="Biography"
             android:textSize="@dimen/_8sdp" />
 
+
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
@@ -158,6 +164,17 @@
             app:tabTextAppearance="@style/TabFont">
 
         </com.google.android.material.tabs.TabLayout>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:text="No Data"
+
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:textSize="@dimen/_10sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_recipe"

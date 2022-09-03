@@ -17,12 +17,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:background="@drawable/ic_back"/>
+                android:background="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -51,11 +52,12 @@
         app:queryHint="Search user"
         app:theme="@style/AppSearchView" />
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_bar"
-        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/container_user"
         android:padding="@dimen/_10sdp">
 
@@ -74,11 +76,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv1"
             android:layout_marginTop="@dimen/_5sdp"
-            app:tabMode="scrollable"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/TabFont">
 
         </com.google.android.material.tabs.TabLayout>
 
+
+        <TextView
+            android:id="@+id/tv_no_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:text="No Reported User"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tab_layout"
+            android:textSize="@dimen/_10sdp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user"

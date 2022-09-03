@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/popsem"
             android:layout_marginTop="@dimen/_minus50sdp"
-            android:text="Hi, Welcome to Recipe-App"
+            android:text="Hi, Welcome to Kandean"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 

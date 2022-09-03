@@ -6,49 +6,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_150sdp"
-        android:layout_centerHorizontal="true"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/about_us" />
-
-    <TextView
-        android:id="@+id/tv"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/animation_view"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/popmed"
-        android:gravity="center_horizontal"
-        android:text="About us"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp" />
+        app:cardCornerRadius="@dimen/_20sdp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/about_us" />
 
-    <TextView
-        android:id="@+id/tv_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:fontFamily="@font/popmed"
-        android:gravity="center_horizontal"
-        android:text="@string/about_us"
-        android:textSize="@dimen/_8sdp" />
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/animation_view"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/popmed"
+                android:gravity="center_horizontal"
+                android:text="About us"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnOk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_version"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:text="Ok"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_12sdp"
-        app:cornerRadius="@dimen/_8sdp" />
+            <TextView
+                android:id="@+id/tv_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/popmed"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/_8sdp" />
+
+            <EditText
+                android:id="@+id/edt_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:textAlignment="textStart"
+                android:hint="About us"
+                android:maxLines="6"
+                android:fontFamily="@font/popmed"
+                android:lines="3"
+                android:textSize="@dimen/_8sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_about_us"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Ok"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_10sdp"
+                app:cornerRadius="@dimen/_8sdp" />
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
 
 
 </RelativeLayout>

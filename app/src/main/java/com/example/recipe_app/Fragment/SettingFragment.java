@@ -36,7 +36,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.LoginActivity;
+import com.example.recipe_app.Model.AppModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -58,7 +60,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -94,6 +96,7 @@ public class SettingFragment extends Fragment {
         aboutUs = view.findViewById(R.id.rl_about_us);
         tvPhoto = view.findViewById(R.id.tv_photo);
         tvApply = view.findViewById(R.id.tv_apply);
+        rl_username = view.findViewById(R.id.rl_username);
         addBio = view.findViewById(R.id.add_bio);
 
         progressDialog = new ProgressDialog(getContext());
@@ -143,6 +146,49 @@ public class SettingFragment extends Fragment {
             }
 
 
+        });
+
+        // Saat menu username di klik
+        rl_username.setOnClickListener(view1 -> {
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.layout_update_username);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            EditText edt_username = dialog.findViewById(R.id.edt_username);
+            Button btn_update = dialog.findViewById(R.id.btn_update);
+            dialog.show();
+
+            btn_update.setOnClickListener(view2 -> {
+                progressDialog.setMessage("Update...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+
+                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                interfaceProfile.updateUsername(userid, edt_username.getText().toString()).enqueue(new Callback<ProfileModel>() {
+                    @Override
+                    public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                        if (response.body().getSuccess().equals("1")) {
+                            Toast.makeText(getContext(), "Username updated", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            dialog.dismiss();
+                        }  else {
+                            Toast.makeText(getContext(), "Username already exist", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileModel> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+
+
+                    }
+                });
+            });
         });
 
         //saat menu biography di klik
@@ -233,7 +279,30 @@ public class SettingFragment extends Fragment {
         appVersion.setOnClickListener(view1->{
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.layout_app_version);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
+            final TextView tv_app_version = dialog.findViewById(R.id.tv_version);
+            final EditText edt_app = dialog.findViewById(R.id.edt_app_version);
+            edt_app.setVisibility(View.GONE);
+
+            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+            interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
+                @Override
+                public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
+                    List<AppModel> appModelList = response.body();
+                    if (appModelList.size() > 0 ) {
+                        tv_app_version.setText(appModelList.get(0).getApp_version());
+                    } else {
+                        Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<AppModel>> call, Throwable t) {
+
+                }
+            });
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });
@@ -245,7 +314,32 @@ public class SettingFragment extends Fragment {
         aboutUs.setOnClickListener(view1 -> {
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.layout_about_us);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
+            final TextView tv_about_us = dialog.findViewById(R.id.tv_about_us);
+            final EditText edt_about = dialog.findViewById(R.id.edt_about_us);
+            edt_about.setVisibility(View.GONE);
+
+            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+            interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
+                @Override
+                public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
+                    List<AppModel> appModelList = response.body();
+                    if (appModelList.size() > 0) {
+                        tv_about_us.setText(appModelList.get(0).getAbut_us());
+                    } else {
+                        Toast.makeText(getContext(), "Failed load about", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<AppModel>> call, Throwable t) {
+
+                }
+            });
+                    
+                    
+                    
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });

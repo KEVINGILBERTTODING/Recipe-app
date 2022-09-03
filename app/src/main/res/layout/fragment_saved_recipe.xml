@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Saved Recipes"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_12sdp"
             android:fontFamily="@font/popsem"
             android:textColor="@color/black"/>
 
@@ -28,7 +28,7 @@
             android:layout_height="@dimen/_35sdp"
             android:layout_below="@+id/tab_layout1"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/search_bar"
+            android:background="@drawable/search_bar2"
             android:focusable="false"
             app:iconifiedByDefault="false"
             app:queryBackground="@color/transparent"

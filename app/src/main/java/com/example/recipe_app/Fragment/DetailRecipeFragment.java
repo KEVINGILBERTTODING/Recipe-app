@@ -1,15 +1,24 @@
 package com.example.recipe_app.Fragment;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -19,6 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
@@ -29,6 +41,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +50,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.CommentAdapter;
+import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
@@ -48,6 +62,9 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,7 +75,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
-    ImageView ivRecipeImage, ivProfile, ivMyProfile;
+    ImageView ivRecipeImage, ivProfile, ivMyProfile, ivReport;
 
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2;
@@ -67,12 +84,19 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     ProgressDialog pd;
 
     EditText et_comment;
+    Button btnReport;
+    LinearLayout lrImagePicker;
+    RelativeLayout rlImagePicker;
+    Dialog reportForm;
+    Bitmap bitmap;
+    EditText et_report, et_title;
+    String image, userid;
+    private final int TAG_GALLERY = 200;
 
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
             photoRecipe, recipeNOtes, usernamex, useridx, totalLikes, recipeStatus, recipeCategory;
 
-    Dialog reportform;
 
 
 
@@ -83,7 +107,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     NestedScrollView nestedScrollView;
     RelativeLayout relativeLayout;
 
-    private List<RecipeModel> recipeModels;
+    private List<RecipeModel> recipeModelList;
 
     // Constructor
     public DetailRecipeFragment() {
@@ -159,6 +183,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         recipeCategory = getArguments().getString("category");
 
 
+
         tvRecipeName.setText(recipeName);
         tvRecipeIngredients.setText(recipeIngredients);
         tvRecipeSteps.setText(recipeSteps);
@@ -173,7 +198,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvLikes.setText(totalLikes);
 
         pd = new ProgressDialog(getContext());
-        reportform = new Dialog(getContext());
+        reportForm = new Dialog(getContext());
 
 
         // jika user id sama dengan user id maka akan muncul button edit dan delete
@@ -187,29 +212,72 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         btnMore2.setOnClickListener(view1 -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Report recipe");
-            builder.setItems(new CharSequence[]{"Report"}, (dialog, which) -> {
-                switch (which) {
+            builder.setTitle("Options");
+            builder.setItems(new CharSequence[] {"Report recipe"}, (dialog, which)->{
+                switch (which){
                     case 0:
-                        reportform.setContentView(R.layout.layout_report_reccipe);
-                        final EditText et_report = reportform.findViewById(R.id.edt_report);
-                        final Button btn_report = reportform.findViewById(R.id.btnReport);
-                        btn_report.setOnClickListener(view2 -> {
-                            if (et_report.getText().toString().isEmpty()){
-                                Toast.makeText(getContext(), "Field cannot empty", Toast.LENGTH_SHORT).show();
+                        reportForm.setContentView(R.layout.layout_report_recipe);
+                        reportForm.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        lrImagePicker = reportForm.findViewById(R.id.lr_image_picker);
+                        rlImagePicker = reportForm.findViewById(R.id.rl_image_picker);
+                        ivReport = reportForm.findViewById(R.id.iv_report);
+                        et_report = reportForm.findViewById(R.id.edt_report);
+                        et_title = reportForm.findViewById(R.id.edt_title);
+
+
+                        btnReport = reportForm.findViewById(R.id.btnReport);
+                        lrImagePicker.setOnClickListener(view2 -> {
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                             } else {
-                                reportRecipe(recipe_id, useridx, et_report.getText().toString());
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, TAG_GALLERY);
+
                             }
                         });
-                        reportform.setCancelable(true);
-                        reportform.show();
+
+                        rlImagePicker.setOnClickListener(view3 -> {
+                            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, TAG_GALLERY);
+
+                            }
+                        });
+
+                        btnReport.setOnClickListener(view2 -> {
+
+                            // validasi button dan edittext
+                            if (bitmap == null) {
+                                Toast.makeText(getContext(), "Please select image first", Toast.LENGTH_SHORT).show();
+                            } else if (et_report.getText().toString().isEmpty()) {
+                                Toast.makeText(getContext(), "Please fill report", Toast.LENGTH_SHORT).show();
+                                et_report.setError("Please fill report");
+                            } else {
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                                byte[] bytes = byteArrayOutputStream.toByteArray();
+                                image = Base64.encodeToString(bytes, Base64.DEFAULT);
+                                pd.setMessage("Please wait...");
+                                pd.show();
+                                pd.setCancelable(false);
+                                pd.setCanceledOnTouchOutside(false);
+                                reportRecipe(recipe_id, useridx, et_title.getText().toString(), image, et_report.getText().toString());
+
+                            }
+
+                        });
 
 
+
+
+
+                        reportForm.show();
                         break;
                 }
 
-
-            });
+            }) ;
 
             builder.show();
 
@@ -232,9 +300,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             fragmentTransaction.commit();
             fragmentTransaction.addToBackStack(null);
         });
-
-
-
 
 
         // saat btn more di klik
@@ -342,17 +407,43 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         // jika username di klik maka akan ke profile
         tvUsername.setOnClickListener(View -> {
 
-            Fragment fragment = new ShowProfileFragment();
 
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", user_id);
-            fragment.setArguments(bundle);
+            // jika admin
+            if (getArguments().getString("admin") != null) {
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
+                Fragment fragment = new ShowProfileFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                bundle.putString("admin", "admin");
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_admin, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+
+            } else {
+
+
+                Fragment fragment = new ShowProfileFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+
+
+            }
+
 
 
 
@@ -723,7 +814,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
     }
 
-    // method untu delete like recipe
+    // method untuk delete like recipe
 
     private void deleteLikeRecipe(String recipeid, String userid) {
 
@@ -746,6 +837,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     }
 
+    // count like
     private void countLike(String recipe_id, Integer code) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
@@ -797,25 +889,62 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     // method untuk report recipe
-    private void reportRecipe(String user_id, String recipe_id, String report) {
-        InterfaceRecipe ifr = DataApi.getClient().create(InterfaceRecipe.class);
-        ifr.reportRecipe(user_id, recipe_id, report).enqueue(new Callback<RecipeModel>() {
+    private void reportRecipe(String recipe_id, String user_id, String title, String image, String reason) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.reportRecipe(recipe_id, user_id,title, image, reason).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
-                if (response.body().getMessage().equals("success")) {
-                    Snackbar.make(getView(), "Recipe reported", Snackbar.LENGTH_LONG).show();
-                    reportform.dismiss();
+                RecipeModel recipeModel = response.body();
+                if(recipeModel.getStatus().equals("1")) {
+                    Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                    reportForm.dismiss();
+
                 } else {
-                    Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
                 }
+
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: ", t.getCause());
+                pd.dismiss();
 
             }
         });
+    }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode ==  RESULT_OK && requestCode == TAG_GALLERY && data != null && data.getData() != null){
+
+            Uri uri_path = data.getData();
+
+            try {
+
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
+                ivReport.setImageBitmap(bitmap);
+                rlImagePicker.setVisibility(View.VISIBLE);
+                lrImagePicker.setVisibility(View.GONE);
+
+                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+
+            }catch (IOException e){
+                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
     }
 
 

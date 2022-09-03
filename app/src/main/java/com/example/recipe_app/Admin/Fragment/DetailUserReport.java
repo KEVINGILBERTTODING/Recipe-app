@@ -20,7 +20,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
+import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,13 +33,13 @@ import retrofit2.Response;
 
 public class DetailUserReport extends Fragment {
     ImageButton btnDelete, btnBack;
-    Button btnAccept, btnReject;
+    Button btnAccept, btnReject, btnUnblocked;
     ImageView imgReport, img_profile;
     TextView tv_report, tv_title, tv_date, tv_username1, tv_time, tv_username2;
     private boolean zoomOut =  false;
 
     String image, pp1, pp2, username1, username2, title, report, email1, email2,
-            date, time, user_id1, user_id2, report_id;
+            date, time, user_id1, user_id2, report_id, status;
 
 
     @Override
@@ -58,6 +60,7 @@ public class DetailUserReport extends Fragment {
         img_profile = root.findViewById(R.id.img_profile);
         tv_time = root.findViewById(R.id.tv_time);
         tv_username2 = root.findViewById(R.id.tv_username2);
+        btnUnblocked = root.findViewById(R.id.btn_unblock);
 
 
 
@@ -76,6 +79,7 @@ public class DetailUserReport extends Fragment {
         pp1 = getArguments().getString("photo_profile1");
         pp2 = getArguments().getString("photo_profile2");
         report_id = getArguments().getString("report_id");
+        status = getArguments().getString("status");
 
         // load image report
         Glide.with(getContext())
@@ -87,6 +91,9 @@ public class DetailUserReport extends Fragment {
                 .fitCenter()
                 .centerCrop()
                 .into(imgReport);
+
+
+
 
        // load tv_username1
         tv_username1.setText(username1);
@@ -111,6 +118,16 @@ public class DetailUserReport extends Fragment {
            ft.commit();
 
         });
+
+       // if status
+        if (status.equals("0")) {
+            btnReject.setVisibility(View.GONE);
+            btnAccept.setVisibility(View.GONE);
+            btnAccept.setText("Accepted");
+        } else if (status.equals("2")) {
+            btnUnblocked.setVisibility(View.VISIBLE);
+            btnAccept.setVisibility(View.GONE);
+        }
 
        // set title
         tv_title.setText(title);
@@ -168,8 +185,172 @@ public class DetailUserReport extends Fragment {
 
 
 
+        // if tv username 2 is clicke than navigate to show profile
+        tv_username2.setOnClickListener(view -> {
+            Fragment fragment = new ShowProfileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", user_id2);
+            bundle.putString("admin", "admin");
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
+        // if button accpeted is clicked
+        btnAccept.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to accept this report?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportUser(report_id, 2).enqueue(new Callback<UserReportModel>() {
+                    @Override
+                    public void onResponse(Call<UserReportModel> call, Response<UserReportModel> response) {
+                        UserReportModel userReportModel = response.body();
+                        if (userReportModel.getStatus().equals("1")) {
+                            disableUser();
+
+                        } else  {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserReportModel> call, Throwable t) {
+                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+        // if button rejected is clicked
+        btnReject.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to reject this report?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportUser(report_id, 0).enqueue(new Callback<UserReportModel>() {
+                    @Override
+                    public void onResponse(Call<UserReportModel> call, Response<UserReportModel> response) {
+                        UserReportModel userReportModel = response.body();
+                        if (userReportModel.getStatus().equals("1")) {
+                            Toast.makeText(getContext(),
+                                    "Report rejected successfully", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_admin, new ReportUserFragment());
+                            ft.commit();
+
+                        } else  {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserReportModel> call, Throwable t) {
+                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+        // btn unbocked
+        btnUnblocked.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Accept Report");
+            builder.setMessage("Are you sure you want to activated this account?");
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+                interfaceAdmin.actionReportUser(report_id, 1).enqueue(new Callback<UserReportModel>() {
+                    @Override
+                    public void onResponse(Call<UserReportModel> call, Response<UserReportModel> response) {
+                        UserReportModel userReportModel = response.body();
+                        if (userReportModel.getStatus().equals("1")) {
+                            enabledUser();
+
+                        } else  {
+                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserReportModel> call, Throwable t) {
+                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
+                    }
+                });
+            }).setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            }).show();
+        });
+
+
+
 
         return root;
+    }
+
+    // method for disable = 0 and enable  = 1 user
+    private void disableUser(){
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.disableUser(user_id2).enqueue(new Callback<AdminModel>() {
+            @Override
+            public void onResponse(Call<AdminModel> call, Response<AdminModel> response) {
+                if (response.isSuccessful()) {
+                    AdminModel adminModel = response.body();
+                    if (adminModel.getStatus().equals("1")) {
+                        Toast.makeText(getContext(),
+                                "Report accepted successfully", Toast.LENGTH_SHORT).show();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_admin, new ReportUserFragment());
+                        ft.commit();
+
+                    } else{
+                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminModel> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // enable user
+    private void enabledUser(){
+        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+        interfaceAdmin.enableUser(user_id2).enqueue(new Callback<AdminModel>() {
+            @Override
+            public void onResponse(Call<AdminModel> call, Response<AdminModel> response) {
+                AdminModel adminModel = response.body();
+                if (adminModel.getStatus().equals("1")) {
+                    Toast.makeText(getContext(),
+                            "Activated account successfully", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_admin, new ReportUserFragment());
+                    ft.commit();
+                } else  {
+                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminModel> call, Throwable t) {
+                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 }

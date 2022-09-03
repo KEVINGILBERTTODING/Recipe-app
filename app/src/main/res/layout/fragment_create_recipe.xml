@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:text="Create recipe"
                 android:fontFamily="@font/popsem"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textColor="@color/black"/>
 
             <androidx.cardview.widget.CardView
@@ -67,7 +67,7 @@
                 android:padding="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:maxLength="150"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="@dimen/_10sdp"/>
 
             <EditText
                 android:id="@+id/edt_description"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:maxLength="150"
                 android:scrollbars="vertical"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="@dimen/_10sdp"/>
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:text="Category"
                     android:fontFamily="@font/popsem"
-                    android:textSize="@dimen/_13sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:textColor="@color/black"/>
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -204,7 +204,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Serves"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_10sdp" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -222,7 +222,7 @@
                     android:inputType="number"
                     android:maxLength="5"
                     android:padding="@dimen/_5sdp"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 
@@ -250,7 +250,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Cook time"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_10sdp" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -265,7 +265,7 @@
                     android:fontFamily="@font/popmed"
                     android:hint="How long?"
                     android:padding="@dimen/_5sdp"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </RelativeLayout>
 
@@ -282,7 +282,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="Ingredients"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <EditText
                     android:id="@+id/edt_ingredients"
@@ -299,7 +299,7 @@
                     android:inputType="textMultiLine"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:scrollbars="vertical"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_10sdp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -315,7 +315,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="How to make"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <EditText
                     android:id="@+id/edt_steps"
@@ -332,7 +332,7 @@
                     android:inputType="textMultiLine"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:scrollbars="vertical"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_10sdp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -348,7 +348,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="Notes"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <EditText
                     android:id="@+id/edt_notes"
@@ -366,7 +366,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:maxLength="150"
                     android:scrollbars="vertical"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_10sdp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 

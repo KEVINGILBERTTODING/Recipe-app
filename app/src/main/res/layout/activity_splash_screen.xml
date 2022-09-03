@@ -44,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:orientation="vertical">
 
         <TextView
@@ -59,12 +59,13 @@
             android:textSize="@dimen/_8sdp" />
 
         <TextView
+            android:id="@+id/tv_app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_2sdp"
             android:fontFamily="@font/popmed"
             android:text="v1.1.0"
-            android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_7sdp" />
 

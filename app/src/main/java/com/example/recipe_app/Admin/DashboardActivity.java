@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.recipe_app.Admin.Fragment.AdminProfileFragment;
 import com.example.recipe_app.Admin.Fragment.DashboardFragment;
 import com.example.recipe_app.Fragment.AllRecipesFragment;
 import com.example.recipe_app.Fragment.CreateRecipeFragment;
@@ -32,8 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Added a listener to the bottom navigation bar
         bnv_dashboard.add(new MeowBottomNavigation.Model(1,R.drawable.ic_home));
-        bnv_dashboard.add(new MeowBottomNavigation.Model(2,R.drawable.ic_search));
-        bnv_dashboard.add(new MeowBottomNavigation.Model(3,R.drawable.ic_person));
+        bnv_dashboard.add(new MeowBottomNavigation.Model(2,R.drawable.ic_person));
         bnv_dashboard.show(1,true);
         replace(new DashboardFragment());
         bnv_dashboard.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
@@ -46,11 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-//                        replace(new AllRecipesFragment());
-                        break;
-
-                    case 3:
-//                        replace(new MyProfileFragment());
+                        replace(new AdminProfileFragment());
                         break;
 
 
@@ -58,6 +55,8 @@ public class DashboardActivity extends AppCompatActivity {
                 return null;
             }
         });
+
+
     }
 
     private void replace(Fragment fragment) {

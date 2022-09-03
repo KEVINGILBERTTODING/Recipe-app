@@ -45,7 +45,7 @@ import retrofit2.Response;
 public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String username, userid, user_idx;
     ImageView iv_profile;
-    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_back;
+    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_no_data;
     ImageButton btnSetting;
 
     List<ProfileModel> profileModelList;
@@ -82,6 +82,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnSetting = view.findViewById(R.id.btn_setting);
+        tv_no_data = view.findViewById(R.id.tv_no_data);
 
         btnSetting.setOnClickListener(view1 -> {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -95,19 +96,23 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         getProfile(userid);
 
         // mengambil data recipe dari API
-        getRecipe(userid);
+        getRecipe(userid, 1);
 
 
         // create tablayout
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_layout));
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_eye));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_love2));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    getRecipe(userid);
-                } else if (tab.getPosition() == 1) {
+                    getRecipe(userid, 1);
+                } else if (tab.getPosition() == 1 ) {
+                    getRecipe(userid, 2);
+                } else if ((tab.getPosition() == 2 )){
                     getLikeRecipe(userid);
                 }
             }
@@ -123,7 +128,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             }
         });
 
-        getRecipe(userid);
+        getRecipe(userid, 1);
 
 
         return view;
@@ -165,20 +170,30 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
     }
 
-    private void getRecipe(String user_id) {
+    private void getRecipe(String user_id, Integer status) {
 
-        DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
+        DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id, status).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
                 recipeModelList = response.body();
-                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+                if (recipeModelList.size() > 0) {
+                    recipeModelList = response.body();
+                    myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
 
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-                rv_recipe.setLayoutManager(gridLayoutManager);
-                rv_recipe.setAdapter(myRecipeAdapter);
-                rv_recipe.setHasFixedSize(true);
-                myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    rv_recipe.setLayoutManager(gridLayoutManager);
+                    rv_recipe.setAdapter(myRecipeAdapter);
+                    rv_recipe.setVisibility(View.VISIBLE);
+                    rv_recipe.setHasFixedSize(true);
+                    tv_no_data.setVisibility(View.GONE);
+                    myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
 
+
+                } else {
+                    rv_recipe.setVisibility(View.GONE);
+                    tv_no_data.setVisibility(View.VISIBLE);
+                }
+              
 
             }
 

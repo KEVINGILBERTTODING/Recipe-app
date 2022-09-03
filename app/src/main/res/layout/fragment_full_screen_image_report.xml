@@ -9,11 +9,10 @@
     tools:context=".Admin.Fragment.FullScreenImageReport">
 
 
-
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/img_report"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/popmed"
-                android:textSize="@dimen/_11sdp"/>
+                android:textSize="@dimen/_10sdp"/>
 
 
         </RelativeLayout>

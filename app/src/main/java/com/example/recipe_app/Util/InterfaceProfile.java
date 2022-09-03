@@ -57,6 +57,7 @@ public interface InterfaceProfile {
  Call<ProfileModel>reportBug(
          @Field("user_id") String user_id,
          @Field("chat") String chat,
+         @Field("title") String title,
          @Field("image") String image
  );
 
@@ -83,6 +84,14 @@ public interface InterfaceProfile {
          @Field("image") String image,
          @Field("title") String title
 
+ );
+
+ // update username
+ @FormUrlEncoded
+ @POST("update_username.php")
+ Call<ProfileModel> updateUsername(
+         @Field("user_id") String user_id,
+         @Field("username") String username
  );
 
 

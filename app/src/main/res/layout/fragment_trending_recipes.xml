@@ -16,6 +16,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,23 +24,22 @@
 
                 <ImageButton
                     android:id="@+id/btn_back"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/ic_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/popsem"
+                    android:gravity="center_vertical"
                     android:text="Back"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -58,10 +58,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:background="@drawable/search_bar"
+                    android:background="@drawable/search_bar2"
                     android:focusable="false"
+                    app:queryBackground="@color/transparent"
                     app:iconifiedByDefault="false"
                     app:queryHint="Search recipes"
                     app:theme="@style/AppSearchView" />

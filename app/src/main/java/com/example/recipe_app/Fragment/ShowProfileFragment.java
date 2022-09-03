@@ -127,7 +127,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         getProfile(user_id);
 
         // mengambil data recipe dari API
-        getRecipe(user_id);
+        getRecipe(user_id, 1);
 
         // jika user id sama dengan user id profile makka btnmore dihilangkan
         if (user_id.equals(userid)) {
@@ -220,7 +220,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    getRecipe(user_id);
+                    getRecipe(user_id, 1);
                 } else if (tab.getPosition() == 1) {
                     getLikeRecipe(user_id);
                 }
@@ -237,7 +237,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             }
         });
 
-        getRecipe(user_id);
+        getRecipe(user_id, 1);
 
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fm = getFragmentManager();
@@ -284,9 +284,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
     }
 
-    private void getRecipe(String user_id) {
+    private void getRecipe(String user_id, Integer status) {
 
-        DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
+        DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id, status).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
                 recipeModelList = response.body();
@@ -365,6 +365,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     bundle.putString("photo_profile", recipeModel.getPhoto_profile());
                     bundle.putString("email", recipeModel.getEmail());
                     bundle.putString("notes", recipeModel.getNote());
+                    bundle.putString("admin", getArguments().getString("admin"));
                     fragment.setArguments(bundle);
 
                     FragmentTransaction ft = getFragmentManager().beginTransaction();

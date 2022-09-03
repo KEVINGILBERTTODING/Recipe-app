@@ -26,9 +26,11 @@ public class ProfileModel implements Serializable {
     String status;
     @SerializedName("status")
     String message;
+    @SerializedName("success")
+    String success;
 
     public ProfileModel(String user_id, String username, String photo_profile, String email, String biography,
-                        String date, String time, String status, String message) {
+                        String date, String time, String status, String message, String success) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
@@ -38,6 +40,7 @@ public class ProfileModel implements Serializable {
         this.time = time;
         this.status = status;
         this.message = message;
+        this.success = success;
     }
 
     public String getUser_id() {
@@ -110,5 +113,13 @@ public class ProfileModel implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(String success) {
+        this.success = success;
     }
 }
