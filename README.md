@@ -1,6 +1,4 @@
 # Kandean
-<h6> Version 1.1.0 Released date 2022-08-23 </h6>
-
 <h4>Kandean is an application to save or share our favorite recipes to other users. 
 There are several features that make this application different from other recipe applications. 🍔</h4>
 
