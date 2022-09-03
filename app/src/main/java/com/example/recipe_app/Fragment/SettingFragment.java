@@ -60,7 +60,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -96,6 +96,7 @@ public class SettingFragment extends Fragment {
         aboutUs = view.findViewById(R.id.rl_about_us);
         tvPhoto = view.findViewById(R.id.tv_photo);
         tvApply = view.findViewById(R.id.tv_apply);
+        rl_username = view.findViewById(R.id.rl_username);
         addBio = view.findViewById(R.id.add_bio);
 
         progressDialog = new ProgressDialog(getContext());
@@ -145,6 +146,49 @@ public class SettingFragment extends Fragment {
             }
 
 
+        });
+
+        // Saat menu username di klik
+        rl_username.setOnClickListener(view1 -> {
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.layout_update_username);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            EditText edt_username = dialog.findViewById(R.id.edt_username);
+            Button btn_update = dialog.findViewById(R.id.btn_update);
+            dialog.show();
+
+            btn_update.setOnClickListener(view2 -> {
+                progressDialog.setMessage("Update...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+
+                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                interfaceProfile.updateUsername(userid, edt_username.getText().toString()).enqueue(new Callback<ProfileModel>() {
+                    @Override
+                    public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                        if (response.body().getSuccess().equals("1")) {
+                            Toast.makeText(getContext(), "Username updated", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                            dialog.dismiss();
+                        }  else {
+                            Toast.makeText(getContext(), "Username already exist", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileModel> call, Throwable t) {
+                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+
+
+                    }
+                });
+            });
         });
 
         //saat menu biography di klik
