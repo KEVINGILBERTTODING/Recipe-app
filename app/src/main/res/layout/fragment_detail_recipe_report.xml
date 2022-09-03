@@ -191,19 +191,19 @@
                 android:textSize="@dimen/_9sdp"
                 android:fontFamily="@font/popmed"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/_20sdp"
+                android:orientation="vertical">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_unblock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Unblock"
                     app:cornerRadius="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:textAllCaps="false"
@@ -214,11 +214,12 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_accept"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:text="Accept"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_9sdp"
                     app:backgroundTint="@color/blue"
@@ -226,10 +227,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_rejected"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/btn_accept"
                     android:text="Rejected"
+                    android:layout_marginRight="@dimen/_10sdp"
                     app:cornerRadius="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
@@ -238,7 +240,10 @@
                     android:textSize="@dimen/_9sdp"/>
 
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            </LinearLayout>
 
 
 
