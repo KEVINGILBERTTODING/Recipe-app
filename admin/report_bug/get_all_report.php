@@ -19,8 +19,4 @@ if ($result) {
     }
     echo json_encode($arraydata);
 } else {
-    $response = new user();
-    $response->success = 0;
-    $response->message = "Error load data";
-    die(json_encode($response));
 }
