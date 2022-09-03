@@ -15,7 +15,15 @@ There are several features that make this application different from other recip
 
 <li><h4>Search page, qr code page, detail recipe, and profile page 🐥</h4></li>
 
-![cover2](https://user-images.githubusercontent.com/79959818/186108151-231e1cde-32b3-42c3-9aad-12678502873d.png)
+![cover_v2_1](https://user-images.githubusercontent.com/79959818/188264902-9df08ddb-b7dc-4ada-a35a-4b0a6d485317.png)
+
+
+<li><h4>Admin page🐥</h4></li>
+
+
+![cover2_v2_1](https://user-images.githubusercontent.com/79959818/188264929-42848c92-7098-45af-91a9-de12afe8a767.png)
+
+
 
 
 <h2> How to run the project </h4>
@@ -44,8 +52,28 @@ There are several features that make this application different from other recip
 
 </ul>
 
-<h2>Release history 🐾</h2>
+<h2>Released history 🐾</h2>
 <ul>
+
+<li><h3>v2.1.0</h3>
+September 03, 2022
+
+<h6>What's new? 🦄</h6>
+<ul>
+
+
+<li>Added admin page, to manage the whole app</li>
+<li>Migrate from md5 encrypted passwords to hashes, thereby increasing user security and privacy</li>
+<li>Added account report, recipe, and bug report features</li>
+<li>Now the user can change the account username</li>
+<li>Improve app performance</li>
+<li>Redesigned some pages and resized icons which in previous versions were too big</li>
+<li>Added account block feature, recipe, and bug work progress report on admin page</li>
+<li>Added private recipe tab on my profile page</li>
+<li>etc.</li>
+
+</ul>
+
 <li><h3>v1.1.0</h3>
 August 23, 2022
 
