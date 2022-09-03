@@ -37,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/popmed"
-                        android:text="Detail User Report"
+                        android:text="Detail Bug Report"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 

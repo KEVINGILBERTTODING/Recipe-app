@@ -170,6 +170,7 @@ public class DetailRecipeReport extends Fragment {
                         bundle.putString("photo_profile", recipeModelList.get(0).getPhoto_profile());
                         bundle.putString("email", recipeModelList.get(0).getEmail());
                         bundle.putString("notes", recipeModelList.get(0).getNote());
+                        bundle.putString("admin", "admin");
                         fragment.setArguments(bundle);
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.fragment_admin, fragment);

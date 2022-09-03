@@ -36,10 +36,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/popsem"
-                        android:text="Detail User Report"
                         android:layout_centerInParent="true"
+                        android:fontFamily="@font/popsem"
+                        android:text="Detail Recipe Report"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 
@@ -137,8 +136,8 @@
                     android:backgroundTint="@color/main"
                     android:fontFamily="@font/popmed"
                     android:text="Show recipe"
+                    app:cornerRadius="@dimen/_8sdp"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
                     android:textSize="@dimen/_7sdp" />
 
 
