@@ -34,8 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Added a listener to the bottom navigation bar
         bnv_dashboard.add(new MeowBottomNavigation.Model(1,R.drawable.ic_home));
-        bnv_dashboard.add(new MeowBottomNavigation.Model(2,R.drawable.ic_search));
-        bnv_dashboard.add(new MeowBottomNavigation.Model(3,R.drawable.ic_person));
+        bnv_dashboard.add(new MeowBottomNavigation.Model(2,R.drawable.ic_person));
         bnv_dashboard.show(1,true);
         replace(new DashboardFragment());
         bnv_dashboard.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
@@ -48,10 +47,6 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
 
                     case 2:
-//                        replace(new AllRecipesFragment());
-                        break;
-
-                    case 3:
                         replace(new AdminProfileFragment());
                         break;
 

@@ -186,6 +186,9 @@ public class AdminProfileFragment extends Fragment {
                         ProfileModel profileModel = response.body();
                         if (profileModel.getSuccess().equals("1")) {
                             Toast.makeText(getContext(), "Username updated", Toast.LENGTH_SHORT).show();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_admin, new AdminProfileFragment());
+                            ft.commit();
                             dialog_username.dismiss();
                         } else {
                             Toast.makeText(getContext(), profileModel.getStatus(), Toast.LENGTH_SHORT).show();
