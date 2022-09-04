@@ -56,6 +56,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -361,6 +362,8 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
         });
 
+        //  button follow di klik
+
         btn_follow.setOnClickListener(view1 -> {
             InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
             interfaceProfile1.followAccount(userid, user_id).enqueue(new Callback<ProfileModel>() {
@@ -382,6 +385,25 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
                 }
             });
+        });
+
+        // check followers than set button text follow back if user not followback account
+        interfaceProfile.checkFollowers(userid, user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0) {
+                    btn_follow.setText("Follow back");
+                } else {
+                    Toast.makeText(getContext(), "Something wwent wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+                Toast.makeText(getContext() , "Error no connection", Toast.LENGTH_SHORT).show();
+
+            }
         });
 
 

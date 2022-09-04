@@ -106,10 +106,19 @@ public interface InterfaceProfile {
          @Query("user_id") String user_id
  );
 
+ // check following
  @GET("check_following.php")
  Call<List<ProfileModel>> checkFollowing(
          @Query("user_id") String user_id,
          @Query("following_id") String following_id
+ );
+
+ // check followers
+ @GET("check_followers.php")
+ Call<List<ProfileModel>> checkFollowers(
+         @Query("user_id") String user_id,
+         @Query("followers_id") String followers_id
+
  );
 
  @FormUrlEncoded
