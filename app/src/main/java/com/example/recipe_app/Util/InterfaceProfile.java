@@ -106,5 +106,25 @@ public interface InterfaceProfile {
          @Query("user_id") String user_id
  );
 
+ @GET("check_following.php")
+ Call<List<ProfileModel>> checkFollowing(
+         @Query("user_id") String user_id,
+         @Query("following_id") String following_id
+ );
+
+ @FormUrlEncoded
+ @POST("action_following.php")
+ Call<ProfileModel> unfollAccount(
+         @Field("user_id") String userid,
+         @Field("following_id") String following_id
+ );
+
+ @FormUrlEncoded
+ @POST("action_follow.php")
+ Call<ProfileModel> followAccount(
+         @Field("user_id") String user_id,
+         @Field("following_id") String following_id
+ );
+
 
 }

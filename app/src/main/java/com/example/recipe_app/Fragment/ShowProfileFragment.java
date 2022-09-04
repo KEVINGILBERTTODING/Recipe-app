@@ -66,7 +66,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     String user_id;
     ImageView iv_profile, ivReport;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
-    String user_idx;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
@@ -92,6 +91,8 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     TextView tv_post, tv_followers, tv_following;
 
     TabLayout tabLayout;
+
+    Button btn_follow, btn_message, btn_unfollow;
 
 
     public ShowProfileFragment() {
@@ -125,6 +126,10 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
         tv_following = view.findViewById(R.id.tv_following);
+
+        btn_follow = view.findViewById(R.id.btn_follow);
+        btn_message = view.findViewById(R.id.btn_message);
+        btn_unfollow = view.findViewById(R.id.btn_unfollow);
 
 
         reportForm = new Dialog(getContext());
@@ -307,6 +312,76 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
 
             }
+        });
+
+
+        // CHECK IF USER WAS FOLLOWED THAN SHOW UNFOLLOW BUTTON
+       InterfaceProfile interfaceProfile2 = DataApi.getClient().create(InterfaceProfile.class);
+       interfaceProfile2.checkFollowing(userid, user_id).enqueue(new Callback<List<ProfileModel>>() {
+           @Override
+           public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+               if (response.body().size() > 0) {
+                   btn_unfollow.setVisibility(View.VISIBLE);
+                   btn_follow.setVisibility(View.GONE);
+               }
+           }
+
+           @Override
+           public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+               Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+               Log.e("THIS THE ERROR", t.getMessage());
+
+
+           }
+       });
+
+        // ACTION BUTTON UNFOLLOW
+        btn_unfollow.setOnClickListener(view1 ->  {
+
+            InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile1.unfollAccount(userid, user_id).enqueue(new Callback<ProfileModel>() {
+                @Override
+                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                    if (response.body().getSuccess().equals("1")) {
+                        btn_follow.setVisibility(View.VISIBLE);
+                        btn_unfollow.setVisibility(View.GONE);
+                        tv_followers.setText(Integer.parseInt(tv_followers.getText().toString()) - 1 + "");
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfileModel> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                    Log.e("THIS IS THE ERROR", t.getMessage());
+
+                }
+            });
+
+        });
+
+        btn_follow.setOnClickListener(view1 -> {
+            InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile1.followAccount(userid, user_id).enqueue(new Callback<ProfileModel>() {
+                @Override
+                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                    if (response.body().getSuccess().equals("1")) {
+                        btn_unfollow.setVisibility(View.VISIBLE);
+                        btn_follow.setVisibility(View.GONE);
+                        tv_followers.setText(Integer.parseInt(tv_followers.getText().toString()) + 1 + "");
+                    } else {
+                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfileModel> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                    Log.e("THIS IS THE ERROR", t.getMessage());
+
+                }
+            });
         });
 
 
