@@ -66,6 +66,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     String user_id;
     ImageView iv_profile, ivReport;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
+    String user_idx;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
@@ -84,6 +85,11 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     EditText et_report, et_title;
     String image, userid;
     private final int TAG_GALLERY = 200;
+
+    LinearLayout lr_post, lr_followers, lr_following;
+
+    // textview to count total post, followers and following
+    TextView tv_post, tv_followers, tv_following;
 
     TabLayout tabLayout;
 
@@ -115,6 +121,10 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnBack = view.findViewById(R.id.btn_back);
         btnMore = view.findViewById(R.id.btn_more);
+
+        tv_post = view.findViewById(R.id.tv_post);
+        tv_followers = view.findViewById(R.id.tv_followers);
+        tv_following = view.findViewById(R.id.tv_following);
 
 
         reportForm = new Dialog(getContext());
@@ -245,6 +255,62 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
 
+        // COUNT TOTAL POST
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getMyRecipe(user_id, 1).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    tv_post.setText(response.body().size() + "");
+                } else {
+                    tv_post.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT TOTAL FOLLOWERS
+        InterfaceProfile interfaceProfile =  DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowers(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    tv_followers.setText(response.body().size() + "");
+                } else {
+                    tv_followers.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT FOLLOWING
+        interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowing(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    tv_following.setText(response.body().size() + "");
+                } else {
+                    tv_following.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
+
+
+
         return view;
     }
 
@@ -260,6 +326,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     tv_username.setText(profileModel.getUsername());
                     tv_email.setText(profileModel.getEmail());
                     tv_biography.setText(profileModel.getBiography());
+                    if (profileModel.getBiography().isEmpty()) {
+                        tv_biography.setVisibility(View.GONE);
+                    }
                     tv_date.setText(profileModel.getDate());
                     tv_time.setText(profileModel.getTime());
                     Glide.with(getContext())

@@ -52,8 +52,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
             android:src="@color/black"
             app:civ_border_color="@color/main"
             app:civ_border_width="@dimen/_3sdp" />
@@ -71,6 +71,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 
+        <TextView
+            android:id="@+id/tv_biography"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btn_back"
+            android:fontFamily="@font/popmed"
+            android:text="Biography"
+            android:textSize="@dimen/_8sdp" />
+
+
 
 
         <LinearLayout
@@ -83,7 +93,7 @@
             <ImageView
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:src="@drawable/ic_mail" />
 
@@ -141,15 +151,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_biography"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_toRightOf="@+id/btn_back"
-            android:fontFamily="@font/popmed"
-            android:text="Biography"
-            android:textSize="@dimen/_8sdp" />
 
 
         <LinearLayout
