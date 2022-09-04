@@ -1,5 +1,6 @@
 package com.example.recipe_app.Util;
 
+import com.airbnb.lottie.L;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 
@@ -92,6 +93,17 @@ public interface InterfaceProfile {
  Call<ProfileModel> updateUsername(
          @Field("user_id") String user_id,
          @Field("username") String username
+ );
+
+ // get all followers
+ @GET("get_all_followers.php")
+ Call<List<ProfileModel>> getAllFollowers(
+         @Query("user_id") String user_id
+ );
+
+ @GET("get_all_following.php")
+ Call<List<ProfileModel>> getAllFollowing(
+         @Query("user_id") String user_id
  );
 
 

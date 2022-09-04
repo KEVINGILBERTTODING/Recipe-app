@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
-    String username, userid, user_idx;
+    String username, userid;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_no_data;
     ImageButton btnSetting;
@@ -54,6 +55,10 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
+    LinearLayout lr_post, lr_followers, lr_following;
+
+    // textview to count total post, followers and following
+    TextView tv_post, tv_followers, tv_following;
 
     TabLayout tabLayout;
 
@@ -83,6 +88,10 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnSetting = view.findViewById(R.id.btn_setting);
         tv_no_data = view.findViewById(R.id.tv_no_data);
+
+        tv_post = view.findViewById(R.id.tv_post);
+        tv_followers = view.findViewById(R.id.tv_followers);
+        tv_following = view.findViewById(R.id.tv_following);
 
         btnSetting.setOnClickListener(view1 -> {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -130,6 +139,60 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         getRecipe(userid, 1);
 
+
+        // COUNT TOTAL POST
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getMyRecipe(userid, 1).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    tv_post.setText(response.body().size() + "");
+                } else {
+                    tv_post.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT TOTAL FOLLOWERS
+        InterfaceProfile interfaceProfile =  DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowers(userid).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    tv_followers.setText(response.body().size() + "");
+                } else {
+                    tv_followers.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT FOLLOWING
+        interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowing(userid).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    tv_following.setText(response.body().size() + "");
+                } else {
+                    tv_following.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
 
         return view;
     }
