@@ -55,7 +55,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
-    LinearLayout lr_post, lr_followers, lr_following;
+    LinearLayout lr_followers;
 
     // textview to count total post, followers and following
     TextView tv_post, tv_followers, tv_following;
@@ -88,6 +88,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnSetting = view.findViewById(R.id.btn_setting);
         tv_no_data = view.findViewById(R.id.tv_no_data);
+        lr_followers = view.findViewById(R.id.lr_followers);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -192,6 +193,14 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
 
             }
+        });
+
+        // lr user is clicker
+        lr_followers.setOnClickListener(view1 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new FollowersFollowingFragment());
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
         return view;
