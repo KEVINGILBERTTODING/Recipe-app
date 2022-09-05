@@ -51,7 +51,7 @@
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_recipes_category"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/search_bar2"

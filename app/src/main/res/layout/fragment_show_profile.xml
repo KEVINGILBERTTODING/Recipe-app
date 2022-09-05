@@ -143,7 +143,6 @@
                     <TextView
                         android:id="@+id/tv_post"
                         android:layout_width="wrap_content"
-                        android:text="count post"
                         android:textColor="@color/black"
                         android:fontFamily="@font/popsem"
                         android:textSize="@dimen/_11sdp"
@@ -176,7 +175,6 @@
                     <TextView
                         android:id="@+id/tv_followers"
                         android:layout_width="wrap_content"
-                        android:text="count followers"
                         android:textColor="@color/black"
                         android:fontFamily="@font/popsem"
                         android:textSize="@dimen/_11sdp"
@@ -210,7 +208,6 @@
                     <TextView
                         android:id="@+id/tv_following"
                         android:layout_width="wrap_content"
-                        android:text="count followers"
                         android:textColor="@color/black"
                         android:fontFamily="@font/popsem"
                         android:textSize="@dimen/_11sdp"
@@ -274,7 +271,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
@@ -282,11 +279,13 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="wrap_content"
                     android:text="Unfollow"
+                    app:cornerRadius="@dimen/_5sdp"
                     android:visibility="gone"
-                    app:cornerRadius="@dimen/_8sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:textSize="@dimen/_10sdp"
+                    android:stateListAnimator="@null"
+                    app:backgroundTint="@color/gray"
                     android:textAllCaps="false"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -294,7 +293,9 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="wrap_content"
                     android:text="Follow"
-                    app:cornerRadius="@dimen/_8sdp"
+                    android:stateListAnimator="@null"
+                    app:elevation="0dp"
+                    app:cornerRadius="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:textSize="@dimen/_10sdp"
@@ -303,9 +304,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_message"
                     android:layout_width="@dimen/_100sdp"
+                    android:stateListAnimator="@null"
                     android:layout_height="wrap_content"
                     android:text="Message"
-                    app:cornerRadius="@dimen/_8sdp"
+                    app:cornerRadius="@dimen/_5sdp"
+                    app:elevation="0dp"
                     android:fontFamily="@font/popmed"
                     android:textSize="@dimen/_10sdp"
                     android:textAllCaps="false"/>

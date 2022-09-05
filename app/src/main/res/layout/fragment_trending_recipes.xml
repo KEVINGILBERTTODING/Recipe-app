@@ -56,13 +56,13 @@
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_all_recipes"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/search_bar2"
                     android:focusable="false"
-                    app:queryBackground="@color/transparent"
                     app:iconifiedByDefault="false"
+                    app:queryBackground="@color/transparent"
                     app:queryHint="Search recipes"
                     app:theme="@style/AppSearchView" />
 

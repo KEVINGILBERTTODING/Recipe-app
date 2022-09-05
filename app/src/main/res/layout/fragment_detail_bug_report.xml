@@ -191,6 +191,7 @@
                 android:fontFamily="@font/popmed"
                 android:text="Accept"
                 android:textAllCaps="false"
+                android:stateListAnimator="@null"
                 android:textSize="@dimen/_9sdp"
                 app:backgroundTint="@color/blue"
                 app:cornerRadius="@dimen/_5sdp" />
@@ -205,6 +206,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:stateListAnimator="@null"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_9sdp"
                 app:backgroundTint="#F4152F"

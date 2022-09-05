@@ -141,16 +141,18 @@ public interface InterfaceProfile {
  @FormUrlEncoded
  @POST("remove_followers.php")
  Call<ProfileModel> removeFollowers(
-         @Field("id") String id,
-         @Field("user_id") String user_id
+
+         @Field("user_id") String user_id,
+         @Field("followers_id") Integer followers_id
  );
 
  // REMOVE FOLLOWING
  @FormUrlEncoded
  @POST("remove_following.php")
  Call<ProfileModel> removeFollowing(
-         @Field("id") String id,
-         @Field("user_id") String user_id
+         @Field("user_id") String user_id,
+            @Field("following_id") Integer following_id
+
  );
 
 

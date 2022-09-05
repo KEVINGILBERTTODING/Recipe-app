@@ -55,7 +55,6 @@
                         app:queryHint="Search recipes"
                         app:theme="@style/AppSearchView">
 
-                        android:visibility="invisible" />
                     </androidx.appcompat.widget.SearchView>
 
 

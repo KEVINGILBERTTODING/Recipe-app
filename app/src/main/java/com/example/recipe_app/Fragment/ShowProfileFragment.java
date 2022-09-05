@@ -394,7 +394,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                 if (response.body().size() > 0) {
                     btn_follow.setText("Follow back");
                 } else {
-                    Toast.makeText(getContext(), "Something wwent wrong", Toast.LENGTH_SHORT).show();
                 }
             }
 

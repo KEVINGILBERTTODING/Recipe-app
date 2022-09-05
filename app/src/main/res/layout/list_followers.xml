@@ -56,9 +56,11 @@
                 android:layout_alignParentRight="true"
                 android:fontFamily="@font/popmed"
                 android:text="Remove"
+                android:stateListAnimator="@null"
                 android:textAllCaps="false"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
-                app:backgroundTint="#B1AFAF"
+                app:backgroundTint="#EFEFEF"
                 app:cornerRadius="@dimen/_5sdp" />
 
 

@@ -56,6 +56,7 @@
                 android:layout_below="@+id/tv_version"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="Update"
+                android:stateListAnimator="@null"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_10sdp"
                 app:cornerRadius="@dimen/_8sdp" />

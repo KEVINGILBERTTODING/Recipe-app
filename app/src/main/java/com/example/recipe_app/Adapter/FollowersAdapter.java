@@ -72,7 +72,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
         holder.btn_remove.setOnClickListener(view -> {
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.removeFollowers(profileModelList.get(position).getId(), userid).enqueue(new Callback<ProfileModel>() {
+            interfaceProfile.removeFollowers(userid, profileModelList.get(position).getFollowers_id()).enqueue(new Callback<ProfileModel>() {
                 @Override
                 public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                     if (response.body().getSuccess().equals("1")) {

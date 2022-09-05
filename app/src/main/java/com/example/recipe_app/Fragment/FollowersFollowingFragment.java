@@ -37,12 +37,12 @@ public class FollowersFollowingFragment extends Fragment {
     ImageButton btn_back;
     RecyclerView rv_user;
     TabLayout tabLayout;
-    SearchView searchView;
     List<ProfileModel> profileModelList;
     String userid;
     FollowersAdapter followersAdapter;
     LinearLayoutManager linearLayoutManager;
     FollowingAdapter followingAdapter;
+    SearchView searchFollowers, searchFollowing;
 
 
 
@@ -54,7 +54,8 @@ public class FollowersFollowingFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_followers_following, container, false);
         btn_back = root.findViewById(R.id.btn_back);
         rv_user = root.findViewById(R.id.rv_user);
-        searchView = root.findViewById(R.id.search_bar);
+        searchFollowers = root.findViewById(R.id.search_followers);
+        searchFollowing = root.findViewById(R.id.search_following);
         tabLayout = root.findViewById(R.id.tab_layout);
 
 
@@ -71,8 +72,11 @@ public class FollowersFollowingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
                     getAllFollowers();
+                    searchFollowing.setVisibility(View.GONE);
                 } else if (tab.getPosition() == 1) {
                     getAllFollowing();
+                    searchFollowers.setVisibility(View.GONE);
+                    searchFollowing.setVisibility(View.VISIBLE);
 
                 }
 
@@ -98,7 +102,9 @@ public class FollowersFollowingFragment extends Fragment {
 
         getAllFollowers();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+        // Search bar followers
+        searchFollowers.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -111,14 +117,38 @@ public class FollowersFollowingFragment extends Fragment {
             }
         });
 
+        // Search bar following
+        searchFollowing.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-
-
-
-
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterFollowing(newText);
+                return false;
+            }
+        });
 
 
         return root;
+    }
+
+    private void filterFollowing(String newText) {
+        ArrayList<ProfileModel> filterFollowing = new ArrayList<>();
+        for (ProfileModel item : profileModelList) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filterFollowing.add(item);
+            }
+
+            followingAdapter.filterList(filterFollowing);
+            if (filterFollowing.isEmpty()) {
+                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            } else {
+                followingAdapter.filterList(filterFollowing);
+            }
+        }
     }
 
     private void filter(String newText) {

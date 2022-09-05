@@ -197,8 +197,11 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         // lr user is clicker
         lr_followers.setOnClickListener(view1 -> {
+            Fragment fragment = new FollowersFollowingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("username",username);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, new FollowersFollowingFragment());
+            ft.replace(R.id.fragment_container, fragment);
             ft.addToBackStack(null);
             ft.commit();
         });

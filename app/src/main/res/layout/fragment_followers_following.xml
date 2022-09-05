@@ -36,12 +36,11 @@
                         android:id="@+id/tv_username_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="username"
-                        android:textSize="@dimen/_10sdp"
-                        android:fontFamily="@font/popsem"
-                        android:textColor="@color/black"
                         android:layout_centerInParent="true"
-                        android:layout_centerHorizontal="true"/>
+                        android:fontFamily="@font/popsem"
+                        android:text="username"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
 
 
                 </RelativeLayout>
@@ -71,21 +70,40 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_bar"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_below="@+id/appbar"
-                android:background="@drawable/search_bar2"
-                android:focusable="false"
-                android:layout_marginTop="@dimen/_20sdp"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@color/transparent"
-                app:queryHint="Search user"
-                app:theme="@style/AppSearchView" />
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_followers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/search_bar2"
+                    android:focusable="false"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@color/transparent"
+                    app:queryHint="Search user"
+                    app:theme="@style/AppSearchView" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_following"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/search_bar2"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@color/transparent"
+                    app:queryHint="Search user"
+                    app:theme="@style/AppSearchView" />
+
+
+            </RelativeLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_user"
