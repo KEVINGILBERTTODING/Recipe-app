@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.FollowersAdapter;
@@ -45,6 +46,7 @@ public class FollowersFollowingFragment extends Fragment {
     FollowingAdapter followingAdapter;
     SearchView searchFollowing;
     ArrayList<ProfileModel> filteredList;
+    TextView tv_username_bar;
 
 
 
@@ -59,22 +61,14 @@ public class FollowersFollowingFragment extends Fragment {
         rv_user = root.findViewById(R.id.rv_user);
         searchFollowing = root.findViewById(R.id.search_following);
         tabLayout = root.findViewById(R.id.tab_layout);
+        tv_username_bar = root.findViewById(R.id.tv_username_bar);
+
+
+        userid = getArguments().getString("user_id");
+        tv_username_bar.setText(getArguments().getString("username"));
 
 
 
-
-        // Mengambil username dan user_id menggunakan sharedpreferences
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
-
-        userid = sharedPreferences.getString("user_id", null);
-
-//        if (user_idx.equals(getArguments().getString("user_id"))) {
-//            userid = getArguments().getString("user_id");
-//            Toast.makeText(getContext(), userid, Toast.LENGTH_LONG).show();
-//        } else {
-//            userid = sharedPreferences.getString("user_id", null);
-//            Toast.makeText(getContext(), userid, Toast.LENGTH_LONG).show();
-//        }
 
 
         tabLayout.addTab(tabLayout.newTab().setText("Followers"));

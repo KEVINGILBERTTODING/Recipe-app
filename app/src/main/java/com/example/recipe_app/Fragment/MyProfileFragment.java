@@ -200,6 +200,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             Fragment fragment = new FollowersFollowingFragment();
             Bundle bundle = new Bundle();
             bundle.putString("username",username);
+            bundle.putString("user_id", userid);
+            fragment.setArguments(bundle);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, fragment);
             ft.addToBackStack(null);

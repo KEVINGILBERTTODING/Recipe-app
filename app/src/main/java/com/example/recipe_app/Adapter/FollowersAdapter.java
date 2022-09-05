@@ -75,6 +75,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
                 .override(1024, 768)
                 .into(holder.iv_profile);
 
+
         holder.btn_remove.setOnClickListener(view -> {
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
             interfaceProfile.removeFollowers(userid, profileModelList.get(position).getFollowers_id()).enqueue(new Callback<ProfileModel>() {
@@ -126,6 +127,14 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_remove = itemView.findViewById(R.id.btn_remove);
+
+            // SHOW OR HIDE REMOVE BUTTON WHERE USR ID == USER ID
+            if (userid == (profileModelList.get(0).getUser_id())) {
+                btn_remove.setVisibility(View.VISIBLE);
+            } else {
+                btn_remove.setVisibility(View.GONE);
+            }
+
 
             itemView.setOnClickListener(this);
 

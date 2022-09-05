@@ -87,7 +87,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     String image, userid;
     private final int TAG_GALLERY = 200;
 
-    LinearLayout lr_post, lr_followers, lr_following;
+    LinearLayout lr_button;
 
     // textview to count total post, followers and following
     TextView tv_post, tv_followers, tv_following;
@@ -110,7 +110,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
-
         userid = sharedPreferences.getString("user_id", null);
 
 
@@ -133,6 +132,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         btn_follow = view.findViewById(R.id.btn_follow);
         btn_message = view.findViewById(R.id.btn_message);
         btn_unfollow = view.findViewById(R.id.btn_unfollow);
+        lr_button = view.findViewById(R.id.lr_button);
 
 
         reportForm = new Dialog(getContext());
@@ -147,11 +147,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         // mengambil data recipe dari API
         getRecipe(user_id, 1);
 
-        // jika user id sama dengan user id profile makka btnmore dihilangkan
+        // jika user id sama dengan user id profile maka btnmore dan button follow dihilangkan
         if (user_id.equals(userid)) {
             btnMore.setVisibility(View.GONE);
+            lr_button.setVisibility(View.GONE);
         } else{
             btnMore.setVisibility(View.VISIBLE);
+            lr_button.setVisibility(View.VISIBLE);
         }
 
         // show dialog saat klik button more
@@ -412,6 +414,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             Fragment fragment = new FollowersFollowingFragment();
             Bundle bundle = new Bundle();
             bundle.putString("user_id", user_id);
+            bundle.putString("username", tv_username.getText().toString());
             fragment.setArguments(bundle);
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
