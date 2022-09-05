@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -100,7 +105,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
     @Override
     public int getItemCount() {
-        return profileModelList.size();
+        return profileModelList == null ? 0 : profileModelList.size();
     }
 
     public void filterList(ArrayList<ProfileModel> filteredList) {
@@ -108,7 +113,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView iv_profile;
         TextView tv_username;
@@ -121,6 +126,23 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_remove = itemView.findViewById(R.id.btn_remove);
+
+            itemView.setOnClickListener(this);
+
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            Fragment fragment = new ShowProfileFragment();
+            Bundle bundle =  new Bundle();
+            bundle.putString("user_id", profileModelList.get(getAdapterPosition()).getFollowers_id().toString());
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
 
         }
     }

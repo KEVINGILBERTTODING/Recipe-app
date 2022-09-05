@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,8 @@ public class FollowersFollowingFragment extends Fragment {
     FollowersAdapter followersAdapter;
     LinearLayoutManager linearLayoutManager;
     FollowingAdapter followingAdapter;
-    SearchView searchFollowers, searchFollowing;
+    SearchView searchFollowing;
+    ArrayList<ProfileModel> filteredList;
 
 
 
@@ -54,7 +56,6 @@ public class FollowersFollowingFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_followers_following, container, false);
         btn_back = root.findViewById(R.id.btn_back);
         rv_user = root.findViewById(R.id.rv_user);
-        searchFollowers = root.findViewById(R.id.search_followers);
         searchFollowing = root.findViewById(R.id.search_following);
         tabLayout = root.findViewById(R.id.tab_layout);
 
@@ -72,11 +73,8 @@ public class FollowersFollowingFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
                     getAllFollowers();
-                    searchFollowing.setVisibility(View.GONE);
                 } else if (tab.getPosition() == 1) {
                     getAllFollowing();
-                    searchFollowers.setVisibility(View.GONE);
-                    searchFollowing.setVisibility(View.VISIBLE);
 
                 }
 
@@ -104,20 +102,6 @@ public class FollowersFollowingFragment extends Fragment {
 
 
         // Search bar followers
-        searchFollowers.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return false;
-            }
-        });
-
-        // Search bar following
         searchFollowing.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -126,46 +110,21 @@ public class FollowersFollowingFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterFollowing(newText);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    filter(newText);
+
+                } else {
+                    filterFollowing(newText);
+                }
+
                 return false;
             }
         });
 
 
+
+
         return root;
-    }
-
-    private void filterFollowing(String newText) {
-        ArrayList<ProfileModel> filterFollowing = new ArrayList<>();
-        for (ProfileModel item : profileModelList) {
-            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
-                filterFollowing.add(item);
-            }
-
-            followingAdapter.filterList(filterFollowing);
-            if (filterFollowing.isEmpty()) {
-                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-            } else {
-                followingAdapter.filterList(filterFollowing);
-            }
-        }
-    }
-
-    private void filter(String newText) {
-        ArrayList<ProfileModel> filteredList = new ArrayList<>();
-        for (ProfileModel item : profileModelList) {
-            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())){
-                filteredList.add(item);
-            }
-
-            followersAdapter.filterList(filteredList);
-
-            if (filteredList.isEmpty()) {
-                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-            } else {
-                followersAdapter.filterList(filteredList);
-            }
-        }
     }
 
     // get all followers
@@ -176,13 +135,16 @@ public class FollowersFollowingFragment extends Fragment {
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 profileModelList = response.body();
                 if (profileModelList.size() > 0) {
-                    rv_user.setVisibility(View.VISIBLE);
-                    followersAdapter = new FollowersAdapter(getContext(), profileModelList);
-                    linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                    rv_user.setLayoutManager(linearLayoutManager);
-                    rv_user.setAdapter(followersAdapter);
-                    rv_user.setHasFixedSize(true);
-                    
+                    if (profileModelList.get(0).getUsername() != null) {
+                        rv_user.setVisibility(View.VISIBLE);
+                        followersAdapter = new FollowersAdapter(getContext(), profileModelList);
+                        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        rv_user.setLayoutManager(linearLayoutManager);
+                        rv_user.setAdapter(followersAdapter);
+                        rv_user.setHasFixedSize(true);
+
+                    }
+
                 } else {
                     rv_user.setVisibility(View.GONE);
                 }
@@ -225,4 +187,41 @@ public class FollowersFollowingFragment extends Fragment {
             }
         });
     }
+
+
+    private void filterFollowing(String newText) {
+        filteredList = new ArrayList<>();
+        for (ProfileModel item : profileModelList) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+
+            followingAdapter.followingList(filteredList);
+            if (filteredList.isEmpty()) {
+                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            } else {
+                followingAdapter.followingList(filteredList);
+            }
+        }
+    }
+
+    private void filter(String newText) {
+
+        filteredList = new ArrayList<>() ;
+        for (ProfileModel item : profileModelList) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+
+            followersAdapter.filterList(filteredList);
+            Log.d("filter", "filter: " + filteredList);
+            if (filteredList.isEmpty()) {
+                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            } else {
+                followersAdapter.filterList(filteredList);
+            }
+        }
+
+    }
+
 }

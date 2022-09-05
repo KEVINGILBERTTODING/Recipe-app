@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -393,6 +394,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0) {
                     btn_follow.setText("Follow back");
+
                 } else {
                 }
             }

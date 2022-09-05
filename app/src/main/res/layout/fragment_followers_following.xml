@@ -77,25 +77,12 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search_followers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/search_bar2"
-                    android:focusable="false"
-                    app:iconifiedByDefault="false"
-                    app:queryBackground="@color/transparent"
-                    app:queryHint="Search user"
-                    app:theme="@style/AppSearchView" />
-
-                <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_following"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/search_bar2"
                     android:focusable="false"
-                    android:visibility="gone"
                     app:iconifiedByDefault="false"
                     app:queryBackground="@color/transparent"
                     app:queryHint="Search user"

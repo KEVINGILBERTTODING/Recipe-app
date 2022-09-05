@@ -5,6 +5,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -56,9 +61,9 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
     @Override
     public void onBindViewHolder(@NonNull FollowingAdapter.ViewHolder holder, int position) {
 
-        holder.tv_username.setText(profileModelList.get(position).getUsername());
+        holder.tv_username.setText(profileModelList.get(holder.getAdapterPosition()).getUsername());
         Glide.with(context)
-                .load(profileModelList.get(position).getPhoto_profile())
+                .load(profileModelList.get(holder.getAdapterPosition()).getPhoto_profile())
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -72,7 +77,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
         holder.btn_remove.setOnClickListener(view -> {
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.removeFollowing(userid, profileModelList.get(position).getFollowing_id()).enqueue(new Callback<ProfileModel>() {
+            interfaceProfile.removeFollowing(userid, profileModelList.get(holder.getAdapterPosition()).getFollowing_id()).enqueue(new Callback<ProfileModel>() {
                 @Override
                 public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                     if (response.body().getSuccess().equals("1")) {
@@ -96,6 +101,9 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             });
         });
 
+
+
+
     }
 
     @Override
@@ -103,16 +111,18 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
         return profileModelList.size();
     }
 
-    public void filterList(ArrayList<ProfileModel> filteredList) {
-        profileModelList = filteredList;
+    public void followingList(ArrayList<ProfileModel> filteredList) {
+        profileModelList= filteredList;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView iv_profile;
         TextView tv_username;
         Button btn_remove;
+
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -122,6 +132,21 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_remove = itemView.findViewById(R.id.btn_remove);
 
+          itemView.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            Fragment fragment = new ShowProfileFragment();
+            Bundle bundle =  new Bundle();
+            bundle.putString("user_id", profileModelList.get(getAdapterPosition()).getFollowing_id().toString());
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
 
         }
     }

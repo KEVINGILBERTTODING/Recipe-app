@@ -284,6 +284,7 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/black"
                     android:stateListAnimator="@null"
                     app:backgroundTint="@color/gray"
                     android:textAllCaps="false"/>
