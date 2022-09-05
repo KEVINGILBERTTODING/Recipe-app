@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.FollowersAdapter;
+import com.example.recipe_app.Adapter.FollowingAdapter;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -37,11 +38,12 @@ public class FollowersFollowingFragment extends Fragment {
     RecyclerView rv_user;
     TabLayout tabLayout;
     SearchView searchView;
-    InterfaceProfile interfaceProfile;
     List<ProfileModel> profileModelList;
     String userid;
     FollowersAdapter followersAdapter;
     LinearLayoutManager linearLayoutManager;
+    FollowingAdapter followingAdapter;
+
 
 
 
@@ -175,10 +177,10 @@ public class FollowersFollowingFragment extends Fragment {
                 if (profileModelList.size() > 0 ) {
                     rv_user.setVisibility(View.VISIBLE);
 
-                    followersAdapter = new FollowersAdapter(getContext(), profileModelList);
+                    followingAdapter = new FollowingAdapter(getContext(), profileModelList);
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     rv_user.setLayoutManager(linearLayoutManager);
-                    rv_user.setAdapter(followersAdapter);
+                    rv_user.setAdapter(followingAdapter);
                     rv_user.setHasFixedSize(true);
                     
                 } else {
@@ -188,6 +190,7 @@ public class FollowersFollowingFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "no connection", Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -1,7 +1,6 @@
 package com.example.recipe_app.Adapter;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
@@ -32,13 +31,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.ViewHolder> {
+public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.ViewHolder> {
 
     Context context;
     List<ProfileModel> profileModelList;
     String userid;
 
-    public FollowersAdapter(Context context, List<ProfileModel> profileModelList) {
+    public FollowingAdapter(Context context, List<ProfileModel> profileModelList) {
         this.context = context;
         this.profileModelList = profileModelList;
 
@@ -49,13 +48,13 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
     @NonNull
     @Override
-    public FollowersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FollowingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_followers, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FollowersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FollowingAdapter.ViewHolder holder, int position) {
 
         holder.tv_username.setText(profileModelList.get(position).getUsername());
         Glide.with(context)
@@ -70,16 +69,17 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
                 .override(1024, 768)
                 .into(holder.iv_profile);
 
+
         holder.btn_remove.setOnClickListener(view -> {
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.removeFollowers(profileModelList.get(position).getId(), userid).enqueue(new Callback<ProfileModel>() {
+            interfaceProfile.removeFollowing(profileModelList.get(position).getId(), userid).enqueue(new Callback<ProfileModel>() {
                 @Override
                 public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                     if (response.body().getSuccess().equals("1")) {
                         profileModelList.remove(position);
                         notifyItemRemoved(position);
                         notifyDataSetChanged();
-
+                   
 
                     } else {
                         Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_SHORT).show();
@@ -121,6 +121,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_remove = itemView.findViewById(R.id.btn_remove);
+
 
         }
     }

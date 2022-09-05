@@ -1,5 +1,7 @@
 package com.example.recipe_app.Util;
 
+import android.media.MediaCrypto;
+
 import com.airbnb.lottie.L;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
@@ -133,6 +135,22 @@ public interface InterfaceProfile {
  Call<ProfileModel> followAccount(
          @Field("user_id") String user_id,
          @Field("following_id") String following_id
+ );
+
+ // REMOVE FOLLOWERS
+ @FormUrlEncoded
+ @POST("remove_followers.php")
+ Call<ProfileModel> removeFollowers(
+         @Field("id") String id,
+         @Field("user_id") String user_id
+ );
+
+ // REMOVE FOLLOWING
+ @FormUrlEncoded
+ @POST("remove_following.php")
+ Call<ProfileModel> removeFollowing(
+         @Field("id") String id,
+         @Field("user_id") String user_id
  );
 
 
