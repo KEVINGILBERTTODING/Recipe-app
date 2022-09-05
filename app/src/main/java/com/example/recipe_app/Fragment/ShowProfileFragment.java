@@ -78,7 +78,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     public static ArrayList<RecipeModel> mItems = new ArrayList<>();
     ImageButton btnBack, btnMore;
     Button btnReport;
-    LinearLayout lrImagePicker;
+    LinearLayout lrImagePicker, lr_info;
     RelativeLayout rlImagePicker;
     Dialog reportForm;
     Bitmap bitmap;
@@ -124,6 +124,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnBack = view.findViewById(R.id.btn_back);
         btnMore = view.findViewById(R.id.btn_more);
+        lr_info = view.findViewById(R.id.lr_info_account);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -405,6 +406,18 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                 Toast.makeText(getContext() , "Error no connection", Toast.LENGTH_SHORT).show();
 
             }
+        });
+
+        lr_info.setOnClickListener(view1 -> {
+            Fragment fragment = new FollowersFollowingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", user_id);
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
 

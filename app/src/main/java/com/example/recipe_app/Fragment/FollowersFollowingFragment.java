@@ -49,6 +49,7 @@ public class FollowersFollowingFragment extends Fragment {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,10 +61,21 @@ public class FollowersFollowingFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tab_layout);
 
 
+
+
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
 
         userid = sharedPreferences.getString("user_id", null);
+
+//        if (user_idx.equals(getArguments().getString("user_id"))) {
+//            userid = getArguments().getString("user_id");
+//            Toast.makeText(getContext(), userid, Toast.LENGTH_LONG).show();
+//        } else {
+//            userid = sharedPreferences.getString("user_id", null);
+//            Toast.makeText(getContext(), userid, Toast.LENGTH_LONG).show();
+//        }
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Followers"));
         tabLayout.addTab(tabLayout.newTab().setText("Following"));
@@ -72,9 +84,9 @@ public class FollowersFollowingFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    getAllFollowers();
+                    getAllFollowers(userid);
                 } else if (tab.getPosition() == 1) {
-                    getAllFollowing();
+                    getAllFollowing(userid);
 
                 }
 
@@ -98,7 +110,7 @@ public class FollowersFollowingFragment extends Fragment {
             fm.popBackStack();
         });
 
-        getAllFollowers();
+        getAllFollowers(userid);
 
 
         // Search bar followers
@@ -110,12 +122,26 @@ public class FollowersFollowingFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (tabLayout.getSelectedTabPosition() == 0) {
-                    filter(newText);
+
+
+                if (newText != null && !newText.isEmpty()) {
+                    if (tabLayout.getSelectedTabPosition() == 0){
+                        filter(newText);
+
+                    } else {
+                        filterFollowing(newText);
+                    }
+
 
                 } else {
-                    filterFollowing(newText);
+                    if (tabLayout.getSelectedTabPosition() == 0) {
+                        getAllFollowers(userid);
+                    } else if (tabLayout.getSelectedTabPosition() == 1) {
+                        getAllFollowing(userid);
+                    }
                 }
+
+
 
                 return false;
             }
@@ -124,13 +150,15 @@ public class FollowersFollowingFragment extends Fragment {
 
 
 
+
+
         return root;
     }
 
     // get all followers
-    private void getAllFollowers(){
+    private void getAllFollowers(String useridx){
         InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
-        interfaceProfile1.getAllFollowers(userid).enqueue(new Callback<List<ProfileModel>>() {
+        interfaceProfile1.getAllFollowers(useridx).enqueue(new Callback<List<ProfileModel>>() {
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 profileModelList = response.body();
@@ -160,9 +188,9 @@ public class FollowersFollowingFragment extends Fragment {
     }
     
     // get all following
-    private void getAllFollowing(){
+    private void getAllFollowing(String useridx){
         InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
-        interfaceProfile1.getAllFollowing(userid).enqueue(new Callback<List<ProfileModel>>() {
+        interfaceProfile1.getAllFollowing(useridx).enqueue(new Callback<List<ProfileModel>>() {
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 profileModelList = response.body();
@@ -190,6 +218,7 @@ public class FollowersFollowingFragment extends Fragment {
 
 
     private void filterFollowing(String newText) {
+        filteredList = null;
         filteredList = new ArrayList<>();
         for (ProfileModel item : profileModelList) {
             if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
@@ -206,8 +235,13 @@ public class FollowersFollowingFragment extends Fragment {
     }
 
     private void filter(String newText) {
+        filteredList =null;
+
+
 
         filteredList = new ArrayList<>() ;
+
+
         for (ProfileModel item : profileModelList) {
             if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(item);
