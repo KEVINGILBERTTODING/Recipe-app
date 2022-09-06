@@ -282,14 +282,23 @@
             android:layout_marginTop="@dimen/_40sdp"
             android:textSize="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_recipe"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
     </LinearLayout>

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
     LinearLayout lr_followers;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     // textview to count total post, followers and following
     TextView tv_post, tv_followers, tv_following;
@@ -89,6 +91,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         btnSetting = view.findViewById(R.id.btn_setting);
         tv_no_data = view.findViewById(R.id.tv_no_data);
         lr_followers = view.findViewById(R.id.lr_followers);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -100,6 +103,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             fragmentTransaction.commit();
             fragmentTransaction.addToBackStack(null);
         });
+
+
 
 
         // Mengambil data profile dari API
@@ -119,11 +124,30 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipe(userid, 1);
+                        }
+                    });
                     getRecipe(userid, 1);
                 } else if (tab.getPosition() == 1 ) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipe(userid, 2);
+                        }
+                    });
                     getRecipe(userid, 2);
                 } else if ((tab.getPosition() == 2 )){
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getLikeRecipe(userid);
+                        }
+                    });
                     getLikeRecipe(userid);
+
                 }
             }
 
@@ -139,6 +163,17 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         });
 
         getRecipe(userid, 1);
+
+//        // SET SWIPE REFRESH
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecipe(userid, 1);
+            }
+        });
+
 
 
         // COUNT TOTAL POST
@@ -263,12 +298,20 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     rv_recipe.setVisibility(View.VISIBLE);
                     rv_recipe.setHasFixedSize(true);
                     tv_no_data.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    myRecipeAdapter.notifyDataSetChanged();
+
+
+
                     myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+
+
 
 
                 } else {
                     rv_recipe.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
               
 
@@ -277,6 +320,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -295,6 +339,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                 rv_recipe.setAdapter(myRecipeAdapter);
                 rv_recipe.setHasFixedSize(true);
                 myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+                swipeRefreshLayout.setRefreshing(false);
 
 
             }
@@ -302,6 +347,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
