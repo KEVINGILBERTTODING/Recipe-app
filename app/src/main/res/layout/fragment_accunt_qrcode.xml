@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="@color/main"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.QrcodeFragment">
+    tools:context=".Fragment.AccountQrcode">
 
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_bar"
+        >
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/app_bar"
-            >
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:background="@drawable/ic_back" />
 
-                <ImageButton
-                    android:id="@+id/btn_back"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:background="@drawable/ic_back" />
-
-            </RelativeLayout>
+        </RelativeLayout>
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_recipe"
+        android:id="@+id/iv_user"
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_centerHorizontal="true"
@@ -57,21 +57,21 @@
         android:id="@+id/layout_qqrcode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_recipe"
+        android:layout_below="@id/iv_user"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-
         android:layout_marginTop="@dimen/_20sdp"
+
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_recipe_name"
+            android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_precipe"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/popsem"
-            android:text="Recipe Name"
+            android:text="Username"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
 
@@ -82,28 +82,19 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/popmed"
-            android:text="by"
+            android:text="Please scan the QR code to find me"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp" />
 
 
-        <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recipe_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="@font/popmed"
-            android:text="Username"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp" />
+
 
 
         <ImageView
             android:id="@+id/iv_qrcode"
             android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_200sdp"/>
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="@dimen/_200sdp" />
 
 
     </LinearLayout>
@@ -115,15 +106,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_40sdp"
         android:fontFamily="@font/popmed"
         android:text="Scan QR Code"
         android:textAllCaps="false"
         android:textSize="@dimen/_10sdp"
         app:cornerRadius="@dimen/_10sdp"
         app:icon="@drawable/ic_qrcode" />
-
 
 </RelativeLayout>

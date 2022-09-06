@@ -24,9 +24,11 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.zxing.Result;
 
@@ -66,7 +68,14 @@ public class ScannerFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        getRecipeScanner(result.getText());
+                        if (getArguments().getString("user_id") != null) {
+                            getAccount(result.getText());
+                        } else {
+                            getRecipeScanner(result.getText());
+                        }
+
+
+
                     }
                 });
             }
@@ -183,4 +192,37 @@ public class ScannerFragment extends Fragment {
             }
         });
     }
+
+    // getAccount
+    private void getAccount(String user_id) {
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0) {
+                    Fragment fragment = new ShowProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("user_id", response.body().get(0).getUser_id());
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+
+
+                } else {
+                    Toast.makeText(getContext(), "User not ofund", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error check your connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 }

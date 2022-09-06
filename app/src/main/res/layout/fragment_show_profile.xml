@@ -36,13 +36,31 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
-            <ImageButton
-                android:id="@+id/btn_more"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_more_vertical" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_qrcode"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:backgroundTint="@color/black"
+                    android:background="@drawable/ic_qrcode" />
+
+                <ImageButton
+                    android:id="@+id/btn_more"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/ic_more_vertical" />
+            </LinearLayout>
+
+
 
 
 
@@ -270,17 +288,18 @@
 
             <LinearLayout
                 android:id="@+id/lr_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_unfollow"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:stateListAnimator="@null"
                     android:text="Unfollow"
@@ -293,9 +312,8 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_follow"
-                    android:layout_width="@dimen/_100sdp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/popmed"
                     android:stateListAnimator="@null"
                     android:text="Follow"
@@ -311,6 +329,7 @@
                     android:fontFamily="@font/popmed"
                     android:stateListAnimator="@null"
                     android:text="Message"
+                    android:visibility="gone"
                     android:textAllCaps="false"
                     android:textSize="@dimen/_10sdp"
                     app:cornerRadius="@dimen/_5sdp"

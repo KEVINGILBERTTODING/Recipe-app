@@ -40,6 +40,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/activity_test.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/dialog_edit_comment.xml" value="0.18034188034188034" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/edit_image_recipe.xml" value="0.18034188034188034" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_accunt_qrcode.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_admin_profile.xml" value="0.39042357274401474" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_all_comment.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_all_recipes.xml" value="0.176" />
@@ -57,13 +58,13 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_home.xml" value="0.152" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_my_profile.xml" value="0.152" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_noodle.xml" value="0.19145299145299147" />
-        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_qrcode.xml" value="0.1890295358649789" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_qrcode.xml" value="0.22037037037037038" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_report_bug.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_report_problem.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_report_recipe.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_report_user.xml" value="0.2" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_saved_recipe.xml" value="0.19145299145299147" />
-        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_scanner.xml" value="0.16458333333333333" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_scanner.xml" value="0.136" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_setting.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_show_profile.xml" value="0.176" />
@@ -121,7 +122,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.1" />
+        <option name="scale" value="0.136" />
       </ProjectState>
     </option>
   </component>

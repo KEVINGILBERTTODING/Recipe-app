@@ -76,7 +76,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
     public static ArrayList<RecipeModel> mItems = new ArrayList<>();
-    ImageButton btnBack, btnMore;
+    ImageButton btnBack, btnMore, btnQrCode;
     Button btnReport;
     LinearLayout lrImagePicker, lr_info;
     RelativeLayout rlImagePicker;
@@ -124,6 +124,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         btnBack = view.findViewById(R.id.btn_back);
         btnMore = view.findViewById(R.id.btn_more);
         lr_info = view.findViewById(R.id.lr_info_account);
+        btnQrCode = view.findViewById(R.id.btn_qrcode);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -231,6 +232,19 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
         });
 
+
+        // BTN SHOW QOCDODE ACCOUNT
+        btnQrCode.setOnClickListener(view1 ->{
+            Fragment fragment = new AccountQrcode();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", user_id);
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
 
         // create tablayout
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_layout));
