@@ -135,6 +135,15 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
           itemView.setOnClickListener(this);
 
 
+          // btn remove hide where userid != user id
+
+          if (userid.equals(profileModelList.get(0).getUser_id()) ) {
+              btn_remove.setVisibility(View.VISIBLE);
+          } else{
+              btn_remove.setVisibility(View.GONE);
+          }
+
+
         }
 
         @Override
