@@ -34,6 +34,8 @@ public class SplashScreen extends AppCompatActivity {
         hideNavigationBar();
 
         final Handler handler = new Handler();
+
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

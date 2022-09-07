@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ShowProfileFragment">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
     <LinearLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -29,9 +37,9 @@
                 android:id="@+id/tv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:layout_centerInParent="true"
                 android:text="Back"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
@@ -69,11 +77,6 @@
 
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar"
-        android:layout_marginTop="@dimen/_15sdp">
 
 
         <LinearLayout
@@ -101,7 +104,17 @@
                 android:scrollbarSize="@dimen/_12sdp"
                 android:text="Username"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp" />
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:id="@+id/tv_biography"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/btn_back"
+                android:fontFamily="@font/popmed"
+                android:text="Biography"
+                android:textSize="@dimen/_8sdp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,6 +130,8 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_mail" />
 
+
+
                 <TextView
                     android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
@@ -131,15 +146,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_biography"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/btn_back"
-                android:fontFamily="@font/popmed"
-                android:text="Biography"
-                android:textSize="@dimen/_8sdp" />
 
             <LinearLayout
                 android:id="@+id/lr_info_account"
@@ -351,18 +357,53 @@
 
             </com.google.android.material.tabs.TabLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_recipe"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_notfound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No recipe found"
+                        android:fontFamily="@font/popmed"
+                        android:gravity="center"
+                        android:textSize="@dimen/_9sdp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_recipe"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+                </LinearLayout>
+
+
+
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
 
+    </LinearLayout>
 </RelativeLayout>

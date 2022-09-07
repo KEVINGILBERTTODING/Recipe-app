@@ -5,6 +5,8 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -62,6 +64,8 @@ public class HomeFragment extends Fragment {
     SearchView searchView;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories;
+    Context context;
+
 
 
 
@@ -80,6 +84,10 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
         username = sharedPreferences.getString(TAG_USERNAME, null);
         userid = sharedPreferences.getString("user_id", null);
+
+        context = getContext();
+
+
 
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         shimmerRecipeCategoryPopular = view.findViewById(R.id.recycler_recipe_category);
@@ -328,7 +336,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }

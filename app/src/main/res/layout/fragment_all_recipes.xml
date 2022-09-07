@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -20,6 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_banner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -29,15 +31,23 @@
                 android:textSize="@dimen/_12sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp">
+            android:layout_marginTop="@dimen/_10sdp"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TabFont" />
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -48,7 +58,6 @@
                         android:id="@+id/search_all_recipes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_5sdp"
                         android:background="@drawable/search_bar2"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@color/transparent"
@@ -60,18 +69,42 @@
 
                 </RelativeLayout>
 
-
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recycler_recipe_all"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:padding="@dimen/_5sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_item_count="1"
-                    app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+                    android:layout_marginTop="@dimen/_10sdp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/recycler_recipe_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:shimmer_recycler_item_count="5"
+                        app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/rv_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:shimmer_recycler_highlight_color="@color/main"
+                        app:shimmer_recycler_item_count="5"
+                        app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+
+                </RelativeLayout>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

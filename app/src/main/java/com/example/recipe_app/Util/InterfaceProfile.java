@@ -3,6 +3,7 @@ package com.example.recipe_app.Util;
 import android.media.MediaCrypto;
 
 import com.airbnb.lottie.L;
+import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 
@@ -16,7 +17,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface InterfaceProfile {
- // Get All Recipe
+ // Get All profile
  @GET("get_profile.php")
  Call<List<ProfileModel>> getProfile(
          @Query("user_id") String user_id
@@ -153,6 +154,13 @@ public interface InterfaceProfile {
          @Field("user_id") String user_id,
             @Field("following_id") Integer following_id
 
+ );
+
+
+ // get all user
+ @GET("get_all_user.php")
+ Call<List<ProfileModel>> getAllUser(
+         @Query("active") Integer active
  );
 
 

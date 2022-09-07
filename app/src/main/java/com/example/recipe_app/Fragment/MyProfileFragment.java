@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -47,12 +48,11 @@ import retrofit2.Response;
 public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String username, userid;
     ImageView iv_profile;
-    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_no_data;
+    TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
     ImageButton btnSetting;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
-    InterfaceProfile interfaceProfile;
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
@@ -60,7 +60,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     SwipeRefreshLayout swipeRefreshLayout;
 
     // textview to count total post, followers and following
-    TextView tv_post, tv_followers, tv_following;
+    TextView tv_post, tv_followers, tv_following, tvNotFound;
 
     TabLayout tabLayout;
 
@@ -89,13 +89,13 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnSetting = view.findViewById(R.id.btn_setting);
-        tv_no_data = view.findViewById(R.id.tv_no_data);
         lr_followers = view.findViewById(R.id.lr_followers);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
         tv_following = view.findViewById(R.id.tv_following);
+        tvNotFound = view.findViewById(R.id.tv_notfound);
 
         btnSetting.setOnClickListener(view1 -> {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -116,7 +116,6 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         // create tablayout
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_layout));
-
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_eye));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_love2));
 
@@ -297,21 +296,15 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     rv_recipe.setAdapter(myRecipeAdapter);
                     rv_recipe.setVisibility(View.VISIBLE);
                     rv_recipe.setHasFixedSize(true);
-                    tv_no_data.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     myRecipeAdapter.notifyDataSetChanged();
-
-
-
+                    tvNotFound.setVisibility(View.GONE);
                     myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
-
-
-
 
                 } else {
                     rv_recipe.setVisibility(View.GONE);
-                    tv_no_data.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.VISIBLE);
                 }
               
 
@@ -331,15 +324,27 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         DataApi.getClient().create(InterfaceRecipe.class).getMyLikeRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
 
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-                rv_recipe.setLayoutManager(gridLayoutManager);
-                rv_recipe.setAdapter(myRecipeAdapter);
-                rv_recipe.setHasFixedSize(true);
-                myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
-                swipeRefreshLayout.setRefreshing(false);
+                if (response.body().size() > 0) {
+                    recipeModelList = response.body();
+                    myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    rv_recipe.setLayoutManager(gridLayoutManager);
+                    rv_recipe.setAdapter(myRecipeAdapter);
+                    rv_recipe.setHasFixedSize(true);
+                    myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.GONE);
+
+                } else {
+
+                    rv_recipe.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.VISIBLE);
+
+                }
+
 
 
             }

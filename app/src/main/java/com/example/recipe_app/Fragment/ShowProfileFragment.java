@@ -7,9 +7,11 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -67,11 +70,10 @@ import retrofit2.Response;
 public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String user_id;
     ImageView iv_profile, ivReport;
-    TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
+    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_notfound;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
-    InterfaceProfile interfaceProfile;
     RecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
@@ -86,8 +88,10 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     EditText et_report, et_title;
     String image, userid;
     private final int TAG_GALLERY = 200;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     LinearLayout lr_button;
+    Context context;
 
     // textview to count total post, followers and following
     TextView tv_post, tv_followers, tv_following;
@@ -125,10 +129,12 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         btnMore = view.findViewById(R.id.btn_more);
         lr_info = view.findViewById(R.id.lr_info_account);
         btnQrCode = view.findViewById(R.id.btn_qrcode);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
         tv_following = view.findViewById(R.id.tv_following);
+        tv_notfound = view.findViewById(R.id.tv_notfound);
 
         btn_follow = view.findViewById(R.id.btn_follow);
         btn_message = view.findViewById(R.id.btn_message);
@@ -138,6 +144,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
         reportForm = new Dialog(getContext());
         pd = new ProgressDialog(getContext());
+        context = getContext();
 
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
@@ -254,9 +261,24 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+
                     getRecipe(user_id, 1);
-                } else if (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipe(user_id, 1);
+                        }
+                    });
+
+                } else if(tabLayout.getSelectedTabPosition() == 1)  {
                     getLikeRecipe(user_id);
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getLikeRecipe(user_id);
+                        }
+                    });
+                   ;
                 }
             }
 
@@ -268,6 +290,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecipe(user_id, 1);
             }
         });
 
@@ -486,15 +515,28 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         DataApi.getClient().create(InterfaceRecipe.class).getMyRecipe(user_id, status).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
 
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-                rv_recipe.setLayoutManager(gridLayoutManager);
-                rv_recipe.setAdapter(myRecipeAdapter);
-                rv_recipe.setHasFixedSize(true);
-                myRecipeAdapter.notifyDataSetChanged();
-                myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
+                if (response.body().size() > 0 ) {
+                    recipeModelList = response.body();
+                    myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    rv_recipe.setLayoutManager(gridLayoutManager);
+                    rv_recipe.setAdapter(myRecipeAdapter);
+                    rv_recipe.setHasFixedSize(true);
+                    myRecipeAdapter.notifyDataSetChanged();
+                    myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
+                    tv_notfound.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rv_recipe.setVisibility(View.VISIBLE);
+
+                } else {
+                    tv_notfound.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rv_recipe.setVisibility(View.GONE);
+                }
+
+
 
 
             }
@@ -502,6 +544,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -513,18 +556,32 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         call.enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
 
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-                rv_recipe.setLayoutManager(gridLayoutManager);
-                rv_recipe.setAdapter(myRecipeAdapter);
-                rv_recipe.setHasFixedSize(true);
+                if (response.body().size() > 0) {
+                    recipeModelList = response.body();
+                    myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    rv_recipe.setLayoutManager(gridLayoutManager);
+                    rv_recipe.setAdapter(myRecipeAdapter);
+                    rv_recipe.setHasFixedSize(true);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tv_notfound.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rv_recipe.setVisibility(View.VISIBLE);
+                } else {
+                    tv_notfound.setVisibility(View.VISIBLE);
+                    rv_recipe.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
 
