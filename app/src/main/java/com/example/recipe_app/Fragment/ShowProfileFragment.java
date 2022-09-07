@@ -525,11 +525,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     rv_recipe.setAdapter(myRecipeAdapter);
                     rv_recipe.setHasFixedSize(true);
                     myRecipeAdapter.notifyDataSetChanged();
-                    myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
+
                     tv_notfound.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     rv_recipe.setVisibility(View.VISIBLE);
 
+                    // set agar item dapat di click
+                    myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
                 } else {
                     tv_notfound.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -569,6 +571,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     tv_notfound.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     rv_recipe.setVisibility(View.VISIBLE);
+                    myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
                 } else {
                     tv_notfound.setVisibility(View.VISIBLE);
                     rv_recipe.setVisibility(View.GONE);
