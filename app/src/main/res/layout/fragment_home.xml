@@ -24,7 +24,7 @@
                 android:layout_centerInParent="true"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:src="@color/gray" />
+                android:src="@drawable/template_img" />
 
             <TextView
                 android:id="@+id/tv_username"

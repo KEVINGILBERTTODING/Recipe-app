@@ -54,7 +54,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:src="@color/black"
+            android:src="@drawable/template_img"
             app:civ_border_color="@color/main"
             app:civ_border_width="@dimen/_3sdp" />
 

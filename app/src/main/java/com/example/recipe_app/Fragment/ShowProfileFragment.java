@@ -3,11 +3,9 @@ package com.example.recipe_app.Fragment;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -29,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -55,6 +54,7 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +75,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
-    RecyclerView rv_recipe;
+    ShimmerRecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
     public static ArrayList<RecipeModel> mItems = new ArrayList<>();
@@ -467,6 +468,8 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
 
+        // show shimmer
+        setShimmer();
 
         return view;
     }
@@ -530,6 +533,26 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     swipeRefreshLayout.setRefreshing(false);
                     rv_recipe.setVisibility(View.VISIBLE);
 
+
+                    rv_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_GRID:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_my_recipe
+                                        : R.layout.template_my_recipe;
+                        }
+                    });
+
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer();
+                    }, 1000);
+
+
                     // set agar item dapat di click
                     myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
                 } else {
@@ -545,7 +568,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your internet connection").show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -571,6 +594,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     tv_notfound.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     rv_recipe.setVisibility(View.VISIBLE);
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer();
+                    }, 1000);
+
+                    // click item
                     myRecipeAdapter.setOnRecipeListener(ShowProfileFragment.this);
                 } else {
                     tv_notfound.setVisibility(View.VISIBLE);
@@ -583,7 +613,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -733,6 +762,24 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                 e.printStackTrace();
             }
         }
+    }
+
+    // set shimmer
+    private void setShimmer() {
+        rv_recipe.setItemViewType((type, position) -> {
+            switch (type) {
+
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_my_recipe
+                            : R.layout.template_my_recipe;
+            }
+        });
+
+        rv_recipe.showShimmer();     // to start showing shimmer
+
     }
 
 }
