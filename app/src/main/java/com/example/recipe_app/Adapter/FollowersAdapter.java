@@ -76,31 +76,94 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
                 .into(holder.iv_profile);
 
 
-//        holder.btn_action.setOnClickListener(view -> {
-//            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-//            interfaceProfile.removeFollowers(userid, profileModelList.get(position).getFollowers_id()).enqueue(new Callback<ProfileModel>() {
-//                @Override
-//                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-//                    if (response.body().getSuccess().equals("1")) {
-//                        profileModelList.remove(position);
-//                        notifyItemRemoved(position);
-//                        notifyDataSetChanged();
-//
-//
-//                    } else {
-//                        Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ProfileModel> call, Throwable t) {
-//                    Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
-//                    Log.e("MYAPPP", t.getMessage());
-//
-//                }
-//            });
-//        });
+        String followers_id = profileModelList.get(position).getFollowers_id().toString();
+
+        if (userid.equals(followers_id)) {
+            holder.btn_unfollow.setVisibility(View.GONE);
+            holder.btn_follow.setVisibility(View.GONE);
+        } else  {
+            //         check if user id have follow than show button following
+            InterfaceProfile interfaceProfile =  DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile.checkFollowing(userid, profileModelList.get(position).getFollowers_id().toString()).enqueue(new Callback<List<ProfileModel>>() {
+                @Override
+                public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                    if (response.body().size() > 0 ) {
+
+
+                        holder.btn_follow.setVisibility(View.GONE);
+                        holder.btn_unfollow.setVisibility(View.VISIBLE);
+
+                        holder.btn_unfollow.setOnClickListener(view -> {
+                            InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
+                            interfaceProfile1.unfollAccount(userid, profileModelList.get(position).getFollowers_id().toString()).enqueue(new Callback<ProfileModel>() {
+                                @Override
+                                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                                    if (response.body().getSuccess().equals("1")) {
+                                        holder.btn_unfollow.setVisibility(View.GONE);
+                                        holder.btn_follow.setVisibility(View.VISIBLE);
+
+                                    }
+
+                                    else {
+                                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+
+                                }
+                            });
+                        });
+
+
+
+                    } else {
+                        holder.btn_follow.setVisibility(View.VISIBLE);
+                        holder.btn_unfollow.setVisibility(View.GONE);
+
+                        holder.btn_follow.setOnClickListener(view -> {
+                            InterfaceProfile interfaceProfile1 =  DataApi.getClient().create(InterfaceProfile.class);
+                            interfaceProfile1.followAccount(userid, profileModelList.get(position).getFollowers_id().toString()).enqueue(new Callback<ProfileModel>() {
+                                @Override
+                                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                                    if (response.body().getSuccess().equals("1")) {
+                                        holder.btn_follow.setVisibility(View.GONE);
+                                        holder.btn_unfollow.setVisibility(View.VISIBLE);
+                                    } else {
+                                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+                                }
+                            });
+                        });
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                    Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
+
+
+
+
+
+
+
 
 
     }
@@ -153,25 +216,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
         }
     }
 
-    // check following
-    private void checkFollowing(String user_id, String following_id) {
-        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-        interfaceProfile.checkFollowing(user_id, following_id).enqueue(new Callback<List<ProfileModel>>() {
-            @Override
-            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
 
-                if (response.body().size() > 0 ) {
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-
-            }
-        });
-    }
 
 
 }

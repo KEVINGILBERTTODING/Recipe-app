@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.MyRecipeAdapter;
@@ -40,6 +41,7 @@ public class SavedRecipeFragment extends Fragment {
     RecyclerView rv_saved_recipe;
     String username, userid;
     SearchView searchView;
+    TextView tv_notfound;
 
 
 
@@ -62,6 +64,7 @@ public class SavedRecipeFragment extends Fragment {
 
         rv_saved_recipe = view.findViewById(R.id.recycler_saved_recipe);
         searchView = view.findViewById(R.id.search_barr);
+        tv_notfound = view.findViewById(R.id.tv_notfound);
 
         getSavedRecipe(userid);
 
@@ -107,13 +110,25 @@ public class SavedRecipeFragment extends Fragment {
         DataApi.getClient().create(InterfaceRecipe.class).getSavedRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                savedRecipeAdapter = new SavedRecipeAdapter(getContext(), recipeModelList);
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                rv_saved_recipe.setLayoutManager(linearLayoutManager);
-                rv_saved_recipe.setAdapter(savedRecipeAdapter);
-                rv_saved_recipe.setHasFixedSize(true);
+                if (response.body().size() > 0) {
+                    recipeModelList = response.body();
+                    savedRecipeAdapter = new SavedRecipeAdapter(getContext(), recipeModelList);
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    rv_saved_recipe.setLayoutManager(linearLayoutManager);
+                    rv_saved_recipe.setAdapter(savedRecipeAdapter);
+                    rv_saved_recipe.setHasFixedSize(true);
+                    tv_notfound.setVisibility(View.GONE);
+                    rv_saved_recipe.setVisibility(View.VISIBLE);
+
+                } else {
+                    tv_notfound.setVisibility(View.VISIBLE);
+                    tv_notfound.setText("No recipe found");
+                    rv_saved_recipe.setVisibility(View.GONE);
+
+                }
+
 
 
 
@@ -121,6 +136,8 @@ public class SavedRecipeFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                tv_notfound.setText("Cannot load the recipe");
+                tv_notfound.setVisibility(View.VISIBLE);
 
             }
         });

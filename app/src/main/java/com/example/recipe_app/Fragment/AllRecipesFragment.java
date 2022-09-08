@@ -202,16 +202,42 @@ public class AllRecipesFragment extends Fragment {
                     // set query serach bar
                     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
-                        public boolean onQueryTextSubmit(String querry) {
-                            return false;
+                        public boolean onQueryTextSubmit(String newText) {
+
+                            return true;
                         }
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
                             searchUser(newText);
+                            // set shimmer user
+                            rv_user.setItemViewType((type, position) -> {
+                                switch (type) {
+
+
+                                    default:
+                                    case ShimmerRecyclerView.LAYOUT_LIST:
+                                        return position == 0 || position % 2 == 0
+                                                ? R.layout.template_list_user_search
+                                                : R.layout.template_list_user_search;
+                                }
+                            });
+
+                            rv_user.showShimmer();     // to start showing shimmer
+                            // To stimulate long running work using android.os.Handler
+                            final Handler handler = new Handler();
+                            handler.postDelayed((Runnable) () -> {
+                                rv_user.hideShimmer(); // to hide shimmer
+                            }, 1000);
+                            rv_user.setVisibility(View.VISIBLE);
+                            if (newText.isEmpty()) {
+                                rv_user.setVisibility(View.GONE);
+                            }
                             return true;
                         }
                     });
+
+                    rv_user.setVisibility(View.GONE);
 
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override

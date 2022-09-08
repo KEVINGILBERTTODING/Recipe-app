@@ -35,6 +35,18 @@
             app:queryHint="Search recipes"
             app:theme="@style/AppSearchView" />
 
+
+        <TextView
+            android:id="@+id/tv_notfound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No recipe found"
+            android:fontFamily="@font/popmed"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:textSize="@dimen/_9sdp"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_saved_recipe"
             android:layout_width="match_parent"

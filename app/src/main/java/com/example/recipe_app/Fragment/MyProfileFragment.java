@@ -80,6 +80,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         username = sharedPreferences.getString(TAG_USERNAME, null);
         userid = sharedPreferences.getString("user_id", null);
 
+
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
         tv_email = view.findViewById(R.id.tv_email);
@@ -336,6 +337,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
                     swipeRefreshLayout.setRefreshing(false);
                     tvNotFound.setVisibility(View.GONE);
+                    rv_recipe.setVisibility(View.VISIBLE);
 
                 } else {
 
