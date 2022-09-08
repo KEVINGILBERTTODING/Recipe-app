@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -30,6 +32,7 @@ import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,18 +85,54 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Vegetables", 1);
+                        }
+                    });
                     getCategory("Vegetables", 1);
                 } else if (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Meat", 1);
+                        }
+                    });
                     getCategory("Meat", 1);
                 } else if (tab.getPosition() == 2) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Drinks", 1);
+                        }
+                    });
                     getCategory("Drinks", 1);
                 } else if (tab.getPosition() == 3) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Noodle", 1);
+                        }
+                    });
                     getCategory("Noodle", 1);
                 } else if (tab.getPosition() == 4) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Others", 1);
+                        }
+                    });
                     getCategory("Others", 1);
                 } else {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getCategory("Meat", 1);
+                        }
+                    });
                     getCategory("Meat", 1);
-                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -112,9 +151,12 @@ public class CategoryFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshItem();
+                getCategory("Vegetables", 1);
             }
         });
+
+        // change color swipe refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
 
 
@@ -133,51 +175,7 @@ public class CategoryFragment extends Fragment {
         return view;
     }
 
-    private void refreshItem() {
-        swipeRefreshLayout.setRefreshing(false);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    getCategory("Vegetables", 1);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else if (tab.getPosition() == 1) {
-                    getCategory("Meat", 1);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else if (tab.getPosition() == 2) {
-                    getCategory("Drinks", 1);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else if (tab.getPosition() == 3) {
-                    getCategory("Noodle", 1);
-                } else if (tab.getPosition() == 4) {
-                    getCategory("Others", 1);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    getCategory("Meat", 1);
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
-                }
-
-                swipeRefreshLayout.setRefreshing(false);
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                swipeRefreshLayout.setRefreshing(false);
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                swipeRefreshLayout.setRefreshing(false);
-
-
-            }
-
-        });
-    }
 
     private void getCategory(String category, Integer status) {
         interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
@@ -198,11 +196,33 @@ public class CategoryFragment extends Fragment {
 
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer();
+                }, 1000);
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -218,6 +238,26 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer();
+                }, 1000);
                 filter(newText);
                 return true;
             }
@@ -229,14 +269,11 @@ public class CategoryFragment extends Fragment {
         shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_lits_data_recipe_category
-                            : R.layout.template_lits_data_recipe_category;
+
 
                 default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position % 3 == 0
                             ? R.layout.template_lits_data_recipe_category
                             : R.layout.template_lits_data_recipe_category;
             }

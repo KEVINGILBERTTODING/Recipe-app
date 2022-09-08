@@ -104,6 +104,9 @@ dependencies {
     // Dependencies for floating action button
     implementation 'com.getbase:floatingactionbutton:1.10.1'
 
+    // dependencies for toast
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
 
 
 

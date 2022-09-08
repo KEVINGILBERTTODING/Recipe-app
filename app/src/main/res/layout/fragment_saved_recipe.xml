@@ -43,16 +43,26 @@
             android:text="No recipe found"
             android:fontFamily="@font/popmed"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_40sdp"
             android:textSize="@dimen/_9sdp"/>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_saved_recipe"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="@dimen/_15sdp"/>
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_saved_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
 
 
 

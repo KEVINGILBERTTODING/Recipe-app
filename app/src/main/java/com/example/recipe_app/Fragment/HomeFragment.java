@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +38,13 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +56,7 @@ public class HomeFragment extends Fragment {
     ShimmerRecyclerView shimmerRecyclerView, shimmerRecipeCategoryPopular, shimmerRecipeTrending;
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
+    View view1;
 
     private List<ProfileModel> profileModelList;
     InterfaceProfile interfaceProfile;
@@ -86,6 +91,7 @@ public class HomeFragment extends Fragment {
         userid = sharedPreferences.getString("user_id", null);
 
         context = getContext();
+        view1 = getView();
 
 
 
@@ -158,7 +164,6 @@ public class HomeFragment extends Fragment {
                     getCategory("Others", 1);
                 } else {
                     getCategory("Meat", 1);
-                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -177,7 +182,7 @@ public class HomeFragment extends Fragment {
         btn_see_all_recipes.setOnClickListener(View ->{
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
-            fragmentTransaction.replace(R.id.fragment_container, new AllRecipesFragment());
+            fragmentTransaction.replace(R.id.fragment_container, new RecentRecipesFragment());
             fragmentTransaction.commit();
 
         });
@@ -220,6 +225,9 @@ public class HomeFragment extends Fragment {
 
         // call method get profile image
         getProfileImage(userid);
+
+        // change color swipe for refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
 
 
@@ -269,12 +277,34 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeTrending.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecipeTrending.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_list_data_recipe_trending
+                                    : R.layout.template_list_data_recipe_trending;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_list_data_recipe_trending
+                                    : R.layout.template_list_data_recipe_trending;
+                    }
+                });
+                shimmerRecipeTrending.showShimmer();     // to start showing shimmer
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecipeTrending.hideShimmer(); // to hide shimmer
+                }, 1000);
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
+
             }
 
 
@@ -301,11 +331,30 @@ public class HomeFragment extends Fragment {
 
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecipeCategoryPopular.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_lits_data_recipe_category
+                                    : R.layout.template_lits_data_recipe_category;
+                    }
+                });
+                shimmerRecipeCategoryPopular.showShimmer();     // to start showing shimmer
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecipeCategoryPopular.hideShimmer(); // to hide shimmer
+                }, 1000);
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -332,11 +381,31 @@ public class HomeFragment extends Fragment {
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_list_data_recipe_recent
+                                    : R.layout.template_list_data_recipe_recent;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_list_data_recipe_recent
+                                    : R.layout.template_list_data_recipe_recent;
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer(); // to hide shimmer
+                }, 1000);
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -432,7 +501,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                Log.e("Disini Error nyaa", t.getMessage());
             }
         });
 

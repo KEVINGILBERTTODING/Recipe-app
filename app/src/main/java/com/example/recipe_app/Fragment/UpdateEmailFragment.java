@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +105,7 @@ public class UpdateEmailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
 
             }
         });
@@ -127,7 +128,7 @@ public class UpdateEmailFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Snackbar.make(getView(), "No Connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
             }
         });
     }

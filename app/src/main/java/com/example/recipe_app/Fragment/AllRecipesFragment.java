@@ -39,6 +39,7 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -119,6 +120,8 @@ public class AllRecipesFragment extends Fragment {
 
         });
 
+        setShimmerRecipe();
+
     
 
         // if tab layout set tab selected
@@ -127,7 +130,6 @@ public class AllRecipesFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
 
-                    setShimmer();
 
                     // get all recipe
                     getAllRecipe();
@@ -152,6 +154,28 @@ public class AllRecipesFragment extends Fragment {
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
+
+                            shimmerRecyclerView.setItemViewType((type, position) -> {
+                                switch (type) {
+                                    case ShimmerRecyclerView.LAYOUT_GRID:
+                                        return position % 2 == 0
+                                                ? R.layout.template_data_show_all
+                                                : R.layout.template_data_show_all;
+
+                                    default:
+                                    case ShimmerRecyclerView.LAYOUT_LIST:
+                                        return position == 0 || position % 2 == 0
+                                                ? R.layout.template_data_show_all
+                                                : R.layout.template_data_show_all;
+                                }
+                            });
+                            shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed((Runnable) () -> {
+                                shimmerRecyclerView.hideShimmer(); // to hide shimmer
+                            }, 1000);
+
                             filter(newText);
                             return true;
                         }
@@ -210,7 +234,7 @@ public class AllRecipesFragment extends Fragment {
                         @Override
                         public boolean onQueryTextChange(String newText) {
                             searchUser(newText);
-                            // set shimmer user
+
                             rv_user.setItemViewType((type, position) -> {
                                 switch (type) {
 
@@ -229,7 +253,9 @@ public class AllRecipesFragment extends Fragment {
                             handler.postDelayed((Runnable) () -> {
                                 rv_user.hideShimmer(); // to hide shimmer
                             }, 1000);
+
                             rv_user.setVisibility(View.VISIBLE);
+
                             if (newText.isEmpty()) {
                                 rv_user.setVisibility(View.GONE);
                             }
@@ -242,23 +268,6 @@ public class AllRecipesFragment extends Fragment {
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
-                            // get data all user
-
-                            // set shimmer user
-                            rv_user.setItemViewType((type, position) -> {
-                                switch (type) {
-
-
-                                    default:
-                                    case ShimmerRecyclerView.LAYOUT_LIST:
-                                        return position == 0 || position % 2 == 0
-                                                ? R.layout.template_list_user_search
-                                                : R.layout.template_list_user_search;
-                                }
-                            });
-
-                            rv_user.showShimmer();     // to start showing shimmer
-                            // To stimulate long running work using android.os.Handler
 
                             getUser();
 
@@ -294,7 +303,6 @@ public class AllRecipesFragment extends Fragment {
 
         searchView.requestFocus();
 
-        setShimmer();
         getAllRecipe();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -305,6 +313,27 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_data_show_all
+                                    : R.layout.template_data_show_all;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_data_show_all
+                                    : R.layout.template_data_show_all;
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                final Handler handler = new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer(); // to hide shimmer
+                }, 1000);
+
                 filter(newText);
                 return true;
             }
@@ -316,7 +345,6 @@ public class AllRecipesFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getAllRecipe();
-                setShimmer();
             }
         });
 
@@ -327,30 +355,8 @@ public class AllRecipesFragment extends Fragment {
         return view;
     }
 
-    private void refreshItem() {
-        getAllRecipe();
-        swipeRefreshLayout.setRefreshing(false);
-    }
 
-    private void setShimmer() {
-        shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecyclerView.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_data_show_all
-                            : R.layout.template_data_show_all;
 
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_data_show_all
-                            : R.layout.template_data_show_all;
-            }
-        });
-        shimmerRecyclerView.showShimmer();     // to start showing shimmer
-    }
 
     private void getAllRecipe() {
         interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
@@ -360,23 +366,52 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                recipeShowAllAdapter = new RecipeShowAllAdapter(getContext(), recipeModelList);
-                // Make it Horizontal recycler view
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-                shimmerRecyclerView.setLayoutManager(gridLayoutManager);
-                shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
-                shimmerRecyclerView.setHasFixedSize(true);
-                swipeRefreshLayout.setRefreshing(false);
+
+                if (response.body().size() > 0 ) {
+
+                    recipeModelList = response.body();
+                    recipeShowAllAdapter = new RecipeShowAllAdapter(getContext(), recipeModelList);
+                    // Make it Horizontal recycler view
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+                    shimmerRecyclerView.setLayoutManager(gridLayoutManager);
+                    shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
+                    shimmerRecyclerView.setHasFixedSize(true);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    shimmerRecyclerView.setItemViewType((type, position) -> {
+                        switch (type) {
+                            case ShimmerRecyclerView.LAYOUT_GRID:
+                                return position % 2 == 0
+                                        ? R.layout.template_data_show_all
+                                        : R.layout.template_data_show_all;
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_data_show_all
+                                        : R.layout.template_data_show_all;
+                        }
+                    });
+                    shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        shimmerRecyclerView.hideShimmer(); // to hide shimmer
+                    }, 1200);
+
+
+                } else {
+
+                }
+
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar snackbar = Snackbar.make(getView(), "No conection", Snackbar.LENGTH_SHORT);
-                snackbar.show();
-                snackbar.setBackgroundTint(getResources().getColor(R.color.main));
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
+
 
             }
 
@@ -402,6 +437,24 @@ public class AllRecipesFragment extends Fragment {
                     rv_user.setAdapter(allUserAdapter);
                     rv_user.setHasFixedSize(true);
                     swipeRefreshLayout.setRefreshing(false);
+                    rv_user.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_list_user_search
+                                        : R.layout.template_list_user_search;
+                        }
+                    });
+
+                    rv_user.showShimmer();     // to start showing shimmer
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_user.hideShimmer(); // to hide shimmer
+                    }, 1000);
 
                 } else {
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
@@ -414,7 +467,10 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+                snackbar.setBackgroundTint(getResources().getColor(R.color.main));
+
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -464,6 +520,31 @@ public class AllRecipesFragment extends Fragment {
         } else {
             allUserAdapter.filter(searchUser);
         }
+    }
+
+    // show shimmer get recipe
+    private void setShimmerRecipe(){
+
+        shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
+        shimmerRecyclerView.setHasFixedSize(true);
+        shimmerRecyclerView.setItemViewType((type, position) -> {
+            switch (type) {
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position % 2 == 0
+                            ? R.layout.template_data_show_all
+                            : R.layout.template_data_show_all;
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_LIST:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_data_show_all
+                            : R.layout.template_data_show_all;
+            }
+        });
+        shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+
+
     }
 
 

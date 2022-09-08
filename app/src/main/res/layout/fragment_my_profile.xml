@@ -309,10 +309,12 @@
                     android:textSize="@dimen/_9sdp"/>
 
 
-                <androidx.recyclerview.widget.RecyclerView
+                <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/recycler_recipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:shimmer_recycler_item_count="10"
+                    tools:listitem="@layout/list_my_recipe"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
             </LinearLayout>

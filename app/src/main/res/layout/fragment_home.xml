@@ -24,8 +24,7 @@
                 android:layout_centerInParent="true"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
-
-                android:src="@color/black" />
+                android:src="@color/gray" />
 
             <TextView
                 android:id="@+id/tv_username"
@@ -193,11 +192,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:fontFamily="@font/popmed"
                             android:gravity="right"
                             android:text="See all"
-                            android:layout_gravity="center"
                             android:textColor="@color/main"
                             android:textSize="@dimen/_9sdp" />
 

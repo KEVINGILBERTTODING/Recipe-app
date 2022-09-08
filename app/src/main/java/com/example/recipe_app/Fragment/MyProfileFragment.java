@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,11 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +56,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
-    RecyclerView rv_recipe;
+    ShimmerRecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
     LinearLayout lr_followers;
@@ -64,10 +67,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
     TabLayout tabLayout;
 
-    public MyProfileFragment() {
-        // Required empty public constructor
-    }
-
+    Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,6 +105,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             fragmentTransaction.addToBackStack(null);
         });
 
+        context = getContext();
+
 
 
 
@@ -113,6 +115,9 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         // mengambil data recipe dari API
         getRecipe(userid, 1);
+
+        // Set shimmer
+        setShimmer();
 
 
         // create tablayout
@@ -127,6 +132,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
+                            setShimmer();
                             getRecipe(userid, 1);
                         }
                     });
@@ -135,6 +141,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
+                            setShimmer();
                             getRecipe(userid, 2);
                         }
                     });
@@ -143,6 +150,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
+                            setShimmer();
                             getLikeRecipe(userid);
                         }
                     });
@@ -276,7 +284,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
             }
         });
 
@@ -302,6 +310,26 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     tvNotFound.setVisibility(View.GONE);
                     myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
 
+                    rv_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_list_user_search
+                                        : R.layout.template_list_user_search;
+                        }
+                    });
+
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer(); // to hide shimmer
+                    }, 1000);
+
+
                 } else {
                     rv_recipe.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -313,8 +341,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
+
 
             }
         });
@@ -339,6 +367,26 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     tvNotFound.setVisibility(View.GONE);
                     rv_recipe.setVisibility(View.VISIBLE);
 
+                    rv_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_GRID:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_my_recipe
+                                        : R.layout.template_my_recipe;
+                        }
+                    });
+
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer(); // to hide shimmer
+                    }, 1000);
+
+
                 } else {
 
                     rv_recipe.setVisibility(View.GONE);
@@ -353,7 +401,6 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
 
             }
@@ -397,6 +444,27 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
                 break;
         }
+
+    }
+
+    private void setShimmer() {
+        rv_recipe.setAdapter(myRecipeAdapter);
+        tvNotFound.setVisibility(View.GONE);
+        rv_recipe.setVisibility(View.VISIBLE);
+
+        rv_recipe.setItemViewType((type, position) -> {
+            switch (type) {
+
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_my_recipe
+                            : R.layout.template_my_recipe;
+            }
+        });
+
+        rv_recipe.showShimmer();     // to start showing shimmer
 
     }
 }
