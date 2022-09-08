@@ -2,6 +2,7 @@ package com.example.recipe_app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -29,7 +30,8 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -56,8 +58,10 @@ public class AllRecipesFragment extends Fragment {
     Handler handler;
     TextView tv_banner;
 
-    FloatingActionButton btn_scan;
+    FloatingActionButton btn_scan, btn_scan_recipe, btn_scan_account;
     Context context;
+    FloatingActionsMenu btn_action;
+
 
 
 
@@ -79,14 +83,43 @@ public class AllRecipesFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_user = view.findViewById(R.id.rv_user);
         tv_banner = view.findViewById(R.id.tv_banner);
-
+        btn_action = view.findViewById(R.id.multiple_actions);
+        btn_scan_account = view.findViewById(R.id.btn_scan_account);
+        btn_scan_recipe = view.findViewById(R.id.btn_scan_recipe);
+                
         handler = new Handler();
         context = getContext();
 
 
         // Add tab layout
         tabLayout.addTab(tabLayout.newTab().setText("Recipe"));
-        tabLayout.addTab(tabLayout.newTab().setText("User"));
+        tabLayout.addTab(tabLayout.newTab().setText("Account"));
+        
+
+            btn_scan.setOnClickListener(view1 -> {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new ScannerFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+
+        });
+        btn_scan_account.setOnClickListener(view1-> {
+
+
+
+                Fragment fragment = new ScannerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", "user_id");
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+
+
+        });
+
+    
 
         // if tab layout set tab selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -131,6 +164,9 @@ public class AllRecipesFragment extends Fragment {
 
                         }
                     });
+
+
+
 
                 } else {
 
@@ -219,20 +255,16 @@ public class AllRecipesFragment extends Fragment {
 
         });
 
-        // catch data from searchbar
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String title = bundle.getString("searchText");
-            searchView.setQuery(title, false);
-        }
-
+        // if btn scan is clicked than show scanner fragment
         btn_scan.setOnClickListener(view1 -> {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, new ScannerFragment());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new ScannerFragment());
+            ft.addToBackStack(null);
+            ft.commit();
         });
+
+
 
         searchView.requestFocus();
 

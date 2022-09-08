@@ -5,6 +5,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,32 +75,100 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
                 .override(1024, 768)
                 .into(holder.iv_profile);
 
+        String following_id = profileModelList.get(position).getFollowing_id().toString();
 
-        holder.btn_remove.setOnClickListener(view -> {
-            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.removeFollowing(userid, profileModelList.get(holder.getAdapterPosition()).getFollowing_id()).enqueue(new Callback<ProfileModel>() {
-                @Override
-                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                    if (response.body().getSuccess().equals("1")) {
-                        profileModelList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyDataSetChanged();
-                   
+        if (userid.equals(following_id)) {
+            holder.btn_unfollow.setVisibility(View.GONE);
+            holder.btn_follow.setVisibility(View.GONE);
+        } else  {
+            //         check if user id have follow than show button following
+        InterfaceProfile interfaceProfile =  DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.checkFollowing(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
 
-                    } else {
-                        Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                    }
+
+                    holder.btn_follow.setVisibility(View.GONE);
+                    holder.btn_unfollow.setVisibility(View.VISIBLE);
+
+
+
+
+                    holder.btn_unfollow.setOnClickListener(view -> {
+                        InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
+                        interfaceProfile1.unfollAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
+                            @Override
+                            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                                if (response.body().getSuccess().equals("1")) {
+                                    holder.btn_unfollow.setVisibility(View.GONE);
+                                    holder.btn_follow.setVisibility(View.VISIBLE);
+                                }
+
+                                else {
+                                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+
+                            }
+                        });
+                    });
+
+
+
+                } else {
+                    holder.btn_follow.setVisibility(View.VISIBLE);
+                    holder.btn_unfollow.setVisibility(View.GONE);
+
+                    holder.btn_follow.setOnClickListener(view -> {
+                        InterfaceProfile interfaceProfile1 =  DataApi.getClient().create(InterfaceProfile.class);
+                        interfaceProfile1.followAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
+                            @Override
+                            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                                if (response.body().getSuccess().equals("1")) {
+                                    holder.btn_follow.setVisibility(View.GONE);
+                                    holder.btn_unfollow.setVisibility(View.VISIBLE);
+                                } else {
+                                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+                            }
+                        });
+                    });
+
 
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ProfileModel> call, Throwable t) {
-                    Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
-                    Log.e("MYAPPP", t.getMessage());
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
 
-                }
-            });
+            }
         });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -121,7 +190,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
         ImageView iv_profile;
         TextView tv_username;
-        Button btn_remove;
+        Button btn_follow, btn_unfollow;
 
 
 
@@ -130,18 +199,11 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
-            btn_remove = itemView.findViewById(R.id.btn_remove);
+            btn_unfollow = itemView.findViewById(R.id.btn_unfollow);
+            btn_follow = itemView.findViewById(R.id.btn_follow);
 
           itemView.setOnClickListener(this);
 
-
-          // btn remove hide where userid != user id
-
-          if (userid.equals(profileModelList.get(0).getUser_id()) ) {
-              btn_remove.setVisibility(View.VISIBLE);
-          } else{
-              btn_remove.setVisibility(View.GONE);
-          }
 
 
         }
@@ -159,6 +221,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
         }
     }
+
 
 
 }

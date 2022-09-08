@@ -49,14 +49,34 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp" />
 
+
+
+
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_remove"
+                android:id="@+id/btn_follow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:fontFamily="@font/popmed"
-                android:text="Remove"
                 android:stateListAnimator="@null"
+                android:text="Follow"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
+                app:backgroundTint="@color/main"
+                app:cornerRadius="@dimen/_5sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_unfollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/popmed"
+                android:stateListAnimator="@null"
+                android:text="Unfollow"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"

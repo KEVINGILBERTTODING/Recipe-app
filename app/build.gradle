@@ -101,6 +101,9 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    // Dependencies for floating action button
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+
 
 
 

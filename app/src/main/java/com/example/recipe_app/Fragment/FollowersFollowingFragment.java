@@ -47,6 +47,7 @@ public class FollowersFollowingFragment extends Fragment {
     SearchView searchFollowing;
     ArrayList<ProfileModel> filteredList;
     TextView tv_username_bar;
+    TextView tv_no_data;
 
 
 
@@ -62,6 +63,7 @@ public class FollowersFollowingFragment extends Fragment {
         searchFollowing = root.findViewById(R.id.search_following);
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_username_bar = root.findViewById(R.id.tv_username_bar);
+        tv_no_data = root.findViewById(R.id.tv_notfound);
 
 
         userid = getArguments().getString("user_id");
@@ -164,11 +166,13 @@ public class FollowersFollowingFragment extends Fragment {
                         rv_user.setLayoutManager(linearLayoutManager);
                         rv_user.setAdapter(followersAdapter);
                         rv_user.setHasFixedSize(true);
+                        tv_no_data.setVisibility(View.GONE);
 
                     }
 
                 } else {
                     rv_user.setVisibility(View.GONE);
+                    tv_no_data.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -196,9 +200,13 @@ public class FollowersFollowingFragment extends Fragment {
                     rv_user.setLayoutManager(linearLayoutManager);
                     rv_user.setAdapter(followingAdapter);
                     rv_user.setHasFixedSize(true);
-                    
+                    tv_no_data.setVisibility(View.GONE);
+
+
                 } else {
                     rv_user.setVisibility(View.GONE);
+                    tv_no_data.setVisibility(View.VISIBLE);
+
                 }
             }
 

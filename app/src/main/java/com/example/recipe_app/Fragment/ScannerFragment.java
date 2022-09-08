@@ -68,7 +68,9 @@ public class ScannerFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (getArguments().getString("user_id") != null) {
+
+                        // jika ada data dari bundle maka akan menjalankan method search account
+                        if (getArguments() != null) {
                             getAccount(result.getText());
                         } else {
                             getRecipeScanner(result.getText());

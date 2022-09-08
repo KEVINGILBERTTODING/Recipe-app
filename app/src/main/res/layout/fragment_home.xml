@@ -21,6 +21,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_13sdp"
                 app:civ_border_width="@dimen/_2sdp"
+                android:layout_centerInParent="true"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
 
@@ -32,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/popsem"
                 android:text="Hi, Eve"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
 
@@ -53,7 +55,7 @@
                         android:textSize="@dimen/_14sdp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/popsem"
                         android:text="best recipes"
@@ -62,7 +64,7 @@
                 </TableRow>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popsem"
                     android:text="for cooking"

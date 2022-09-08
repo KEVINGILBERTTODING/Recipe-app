@@ -76,31 +76,31 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
                 .into(holder.iv_profile);
 
 
-        holder.btn_remove.setOnClickListener(view -> {
-            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.removeFollowers(userid, profileModelList.get(position).getFollowers_id()).enqueue(new Callback<ProfileModel>() {
-                @Override
-                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                    if (response.body().getSuccess().equals("1")) {
-                        profileModelList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyDataSetChanged();
-
-
-                    } else {
-                        Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ProfileModel> call, Throwable t) {
-                    Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
-                    Log.e("MYAPPP", t.getMessage());
-
-                }
-            });
-        });
+//        holder.btn_action.setOnClickListener(view -> {
+//            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+//            interfaceProfile.removeFollowers(userid, profileModelList.get(position).getFollowers_id()).enqueue(new Callback<ProfileModel>() {
+//                @Override
+//                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+//                    if (response.body().getSuccess().equals("1")) {
+//                        profileModelList.remove(position);
+//                        notifyItemRemoved(position);
+//                        notifyDataSetChanged();
+//
+//
+//                    } else {
+//                        Toast.makeText(context, response.body().getStatus(), Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Call<ProfileModel> call, Throwable t) {
+//                    Toast.makeText(context, "Error no connection", Toast.LENGTH_SHORT).show();
+//                    Log.e("MYAPPP", t.getMessage());
+//
+//                }
+//            });
+//        });
 
 
     }
@@ -119,7 +119,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
         ImageView iv_profile;
         TextView tv_username;
-        Button btn_remove;
+        Button btn_follow, btn_unfollow;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -127,14 +127,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
-            btn_remove = itemView.findViewById(R.id.btn_remove);
+            btn_follow =  itemView.findViewById(R.id.btn_follow);
+            btn_unfollow = itemView.findViewById(R.id.btn_unfollow);
 
-            // SHOW OR HIDE REMOVE BUTTON WHERE USR ID == USER ID
-            if (userid.equals(profileModelList.get(0).getUser_id())) {
-                btn_remove.setVisibility(View.VISIBLE);
-            } else {
-                btn_remove.setVisibility(View.GONE);
-            }
+
 
 
             itemView.setOnClickListener(this);
@@ -155,6 +151,26 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
             ft.commit();
 
         }
+    }
+
+    // check following
+    private void checkFollowing(String user_id, String following_id) {
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.checkFollowing(user_id, following_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+
+                if (response.body().size() > 0 ) {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
     }
 
 

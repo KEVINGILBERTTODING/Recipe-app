@@ -76,7 +76,13 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <!-- Style agar image view memiliki corner radius  -->
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/popmed</item>
+    </style>
+
 
 
 

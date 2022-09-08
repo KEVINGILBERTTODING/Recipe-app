@@ -305,9 +305,8 @@
                     android:text="No recipe found"
                     android:fontFamily="@font/popmed"
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/_40sdp"
                     android:textSize="@dimen/_9sdp"/>
-
-
 
 
                 <androidx.recyclerview.widget.RecyclerView

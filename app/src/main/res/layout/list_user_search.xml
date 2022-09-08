@@ -33,7 +33,6 @@
         <LinearLayout
             android:id="@+id/lr_username"
             android:layout_width="match_parent"
-            android:layout_toLeftOf="@+id/tv_date"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/_10sdp"

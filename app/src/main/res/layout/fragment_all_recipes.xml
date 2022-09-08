@@ -44,36 +44,36 @@
             app:tabTextAppearance="@style/TabFont" />
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/search_all_recipes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/search_bar2"
-                        app:iconifiedByDefault="false"
-                        app:queryBackground="@color/transparent"
-                        app:queryHint="Search recipes"
-                        app:theme="@style/AppSearchView">
-
-                    </androidx.appcompat.widget.SearchView>
-
-
-                </RelativeLayout>
-
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/swipe_refresh_layout"
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_all_recipes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp">
+                    android:background="@drawable/search_bar2"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@color/transparent"
+                    app:queryHint="Search recipes"
+                    app:theme="@style/AppSearchView">
+
+                </androidx.appcompat.widget.SearchView>
+
+
+            </RelativeLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp">
 
 
                 <RelativeLayout
@@ -100,14 +100,14 @@
 
                 </RelativeLayout>
 
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,5 +119,47 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:src="@drawable/ic_scanner"
+        android:visibility="gone"
         app:backgroundTint="@color/main" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:fab_labelStyle="@style/menu_labels_style"
+        android:layout_marginRight="@dimen/_10sdp"
+        app:fab_addButtonSize="normal"
+        app:fab_expandDirection="up"
+        app:fab_addButtonColorNormal="@color/main"
+        app:fab_addButtonColorPressed="@color/main"
+        app:fab_addButtonPlusIconColor="@color/white"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_scan_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="@color/main"
+            app:fab_icon="@drawable/hamburger"
+            app:fab_title="Scan recipe" />
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_scan_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/white"
+            app:fab_icon="@drawable/user"
+            app:fab_title="Scan user" />
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 </RelativeLayout>
