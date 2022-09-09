@@ -61,6 +61,7 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -101,7 +102,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
 
 
-    RecyclerView recyclerView;
+    ShimmerRecyclerView recyclerView;
     private List<CommentModel> commentModelsList;
     CommentAdapter commentAdapter;
     NestedScrollView nestedScrollView;
@@ -366,6 +367,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             });
             builder.show();
         });
+
+        // show shimmer
+        setShimmer();
 
 
         // load photo profile in comment
@@ -639,6 +643,29 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     commentAdapter = new CommentAdapter(getContext(), commentModelsList);
                     recyclerView.setAdapter(commentAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    recyclerView.setItemViewType((type, position) -> {
+                        switch (type) {
+                            case ShimmerRecyclerView.LAYOUT_GRID:
+                                return position % 2 == 0
+                                        ? R.layout.template_comments
+                                        : R.layout.template_comments;
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_comments
+                                        : R.layout.template_comments;
+                        }
+                    });
+                    recyclerView.showShimmer();     // to start showing shimmer
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        recyclerView.hideShimmer(); // to hide shimmer
+                    }, 1000);
+
+
+
 
                 }
             }
@@ -966,6 +993,28 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     @Override
     public boolean onDoubleTapEvent(MotionEvent motionEvent) {
         return false;
+    }
+
+    // set shimmer
+    private void setShimmer() {
+        recyclerView.setItemViewType((type, position) -> {
+            switch (type) {
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position % 2 == 0
+                            ? R.layout.template_comments
+                            : R.layout.template_comments;
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_LIST:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_comments
+                            : R.layout.template_comments;
+            }
+        });
+        recyclerView.showShimmer();     // to start showing shimmer
+
+
+
     }
 }
 

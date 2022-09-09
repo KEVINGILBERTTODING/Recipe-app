@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ import retrofit2.Response;
 
 public class FollowersFollowingFragment extends Fragment {
     ImageButton btn_back;
-    RecyclerView rv_user;
+    ShimmerRecyclerView rv_user;
     TabLayout tabLayout;
     List<ProfileModel> profileModelList;
     String userid;
@@ -99,6 +101,9 @@ public class FollowersFollowingFragment extends Fragment {
             }
         });
 
+        //show shimmer
+        setShimmer();
+
 
         // button back
         btn_back.setOnClickListener(view -> {
@@ -122,9 +127,53 @@ public class FollowersFollowingFragment extends Fragment {
 
                 if (newText != null && !newText.isEmpty()) {
                     if (tabLayout.getSelectedTabPosition() == 0){
+
+                        /* Shimmer layout view type depending on List / Gird */
+                        rv_user.setItemViewType((type, position) -> {
+                            switch (type) {
+
+
+                                default:
+                                case ShimmerRecyclerView.LAYOUT_LIST:
+                                    return position == 0 || position % 2 == 0
+                                            ? R.layout.template_list_user_search
+                                            : R.layout.template_list_user_search;
+                            }
+                        });
+
+                        rv_user.showShimmer();     // to start showing shimmer
+
+                        // To stimulate long running work using android.os.Handler
+                        final Handler handler = new Handler();
+
+                        handler.postDelayed((Runnable) () -> {
+                            rv_user.hideShimmer(); // to hide shimmer
+                        }, 1000);
                         filter(newText);
 
                     } else {
+
+                        /* Shimmer layout view type depending on List / Gird */
+                        rv_user.setItemViewType((type, position) -> {
+                            switch (type) {
+
+
+                                default:
+                                case ShimmerRecyclerView.LAYOUT_LIST:
+                                    return position == 0 || position % 2 == 0
+                                            ? R.layout.template_list_user_search
+                                            : R.layout.template_list_user_search;
+                            }
+                        });
+
+                        rv_user.showShimmer();     // to start showing shimmer
+
+                        // To stimulate long running work using android.os.Handler
+                        final Handler handler = new Handler();
+
+                        handler.postDelayed((Runnable) () -> {
+                            rv_user.hideShimmer(); // to hide shimmer
+                        }, 1000);
                         filterFollowing(newText);
                     }
 
@@ -168,7 +217,30 @@ public class FollowersFollowingFragment extends Fragment {
                         rv_user.setHasFixedSize(true);
                         tv_no_data.setVisibility(View.GONE);
 
+                        /* Shimmer layout view type depending on List / Gird */
+                        rv_user.setItemViewType((type, position) -> {
+                            switch (type) {
+
+
+                                default:
+                                case ShimmerRecyclerView.LAYOUT_LIST:
+                                    return position == 0 || position % 2 == 0
+                                            ? R.layout.template_list_user_search
+                                            : R.layout.template_list_user_search;
+                            }
+                        });
+
+                        rv_user.showShimmer();     // to start showing shimmer
+
+                        // To stimulate long running work using android.os.Handler
+                        final Handler handler = new Handler();
+
+                        handler.postDelayed((Runnable) () -> {
+                            rv_user.hideShimmer(); // to hide shimmer
+                        }, 1000);
                     }
+
+
 
                 } else {
                     rv_user.setVisibility(View.GONE);
@@ -201,6 +273,28 @@ public class FollowersFollowingFragment extends Fragment {
                     rv_user.setAdapter(followingAdapter);
                     rv_user.setHasFixedSize(true);
                     tv_no_data.setVisibility(View.GONE);
+
+                    /* Shimmer layout view type depending on List / Gird */
+                    rv_user.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_list_user_search
+                                        : R.layout.template_list_user_search;
+                        }
+                    });
+
+                    rv_user.showShimmer();     // to start showing shimmer
+
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+
+                    handler.postDelayed((Runnable) () -> {
+                        rv_user.hideShimmer(); // to hide shimmer
+                    }, 1000);
 
 
                 } else {
@@ -257,6 +351,28 @@ public class FollowersFollowingFragment extends Fragment {
                 followersAdapter.filterList(filteredList);
             }
         }
+
+    }
+
+
+    // set shimmer
+    private void setShimmer() {
+        /* Shimmer layout view type depending on List / Gird */
+        rv_user.setAdapter(followersAdapter);
+        rv_user.setItemViewType((type, position) -> {
+            switch (type) {
+
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_LIST:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_list_user_search
+                            : R.layout.template_list_user_search;
+            }
+        });
+
+        rv_user.showShimmer();     // to start showing shimmer
+
 
     }
 

@@ -103,7 +103,7 @@
                 android:textSize="@dimen/_9sdp"/>
 
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.todkars.shimmer.ShimmerRecyclerView
                 android:id="@+id/rv_user"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_15sdp"

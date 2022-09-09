@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,6 +130,28 @@ public class TrendingRecipesFragment extends Fragment {
                 shimmerRecyclerView.setAdapter(recipeTrandingAdapter2);
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
+
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_data_show_all
+                                    : R.layout.template_data_show_all;
+
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_data_show_all
+                                    : R.layout.template_data_show_all;
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                final Handler handler =  new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer();
+                }, 1000);
+
 
             }
 

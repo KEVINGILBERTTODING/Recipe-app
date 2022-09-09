@@ -400,13 +400,19 @@
 
                     </RelativeLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <com.todkars.shimmer.ShimmerRecyclerView
                         android:id="@+id/recycler_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:shimmer_recycler_item_count="3"
                         android:layout_marginTop="@dimen/_10sdp" />
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
