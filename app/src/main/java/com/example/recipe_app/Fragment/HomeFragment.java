@@ -493,6 +493,7 @@ public class HomeFragment extends Fragment {
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .dontAnimate()
                             .fitCenter()
+                            .placeholder(R.drawable.template_img)
                             .centerCrop()
                             .override(200, 200)
                             .into(img_profile);

@@ -59,6 +59,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -91,8 +92,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     Dialog reportForm;
     Bitmap bitmap;
     EditText et_report, et_title;
-    String image, userid;
+    String image;
     private final int TAG_GALLERY = 200;
+    ShimmerFrameLayout sf_image;
 
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
@@ -182,6 +184,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         totalLikes = getArguments().getString("likes");
         recipeStatus = getArguments().getString("status");
         recipeCategory = getArguments().getString("category");
+
+
 
 
 
@@ -1015,6 +1019,18 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
 
 
+    }
+
+    @Override
+    public void onResume() {
+        sf_image.startShimmer();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        sf_image.stopShimmer();
+        super.onPause();
     }
 }
 

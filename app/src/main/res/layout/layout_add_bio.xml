@@ -6,53 +6,69 @@
     android:layout_margin="@dimen/_10sdp"
     android:layout_height="match_parent">
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_150sdp"
-        android:layout_centerHorizontal="true"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/bio_animate" />
-
-    <TextView
-        android:id="@+id/tv"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/animation_view"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/popmed"
-        android:gravity="center_horizontal"
-        android:text="Add your bio"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp" />
+        app:cardCornerRadius="@dimen/_30sdp"
+        app:contentPadding="@dimen/_10sdp"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/edt_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:fontFamily="@font/popmed"
-        android:gravity="start"
-        android:hint="Write your biography..."
-        android:inputType="textMultiLine"
-        android:minLines="4"
-        android:padding="@dimen/_5sdp"
-        android:textSize="@dimen/_9sdp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_bio"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_12sdp"
-        app:cornerRadius="@dimen/_8sdp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_centerHorizontal="true"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/bio_animate" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/animation_view"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/popmed"
+                android:gravity="center_horizontal"
+                android:text="Add your bio"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
+
+            <EditText
+                android:id="@+id/edt_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_9sdp"
+                android:fontFamily="@font/popmed"
+                android:gravity="start"
+                android:hint="Write your biography..."
+                android:inputType="textMultiLine"
+                android:minLines="1"
+                android:padding="@dimen/_5sdp"
+                android:textSize="@dimen/_9sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_bio"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_8sdp" />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 
 </RelativeLayout>
