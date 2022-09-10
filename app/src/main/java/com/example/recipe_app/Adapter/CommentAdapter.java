@@ -32,7 +32,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -48,11 +50,9 @@ import retrofit2.Response;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     String username, userid;
-
-
     List<CommentModel> commentModelsList;
     Context context;
-    CommentAdapter commentAdapter;
+    private OnCommentLisstener onCommentLisstener;
 
     public CommentAdapter(Context context, List<CommentModel> commentModelsList) {
         this.commentModelsList = commentModelsList;
@@ -102,113 +102,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             // Change text color if user_id == user_id comment
             holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
             holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    //Create popup menu
-                    PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END);
-                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
+               @Override
+               public boolean onLongClick(View view) {
+                   onCommentLisstener.onCommentCLick(view, position);
+                   return false;
+               }
+           });
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
-
-
-                                case R.id.mnu_delete_comment:
-                                    DataApi.getClient().create(InterfaceComment.class).deleteComment(commentModelsList.get(position).getComment_id()).enqueue(new Callback<CommentModel>() {
-                                        @Override
-                                        public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                            if (response.isSuccessful()) {
-
-
-                                                commentModelsList.remove(position);
-                                                notifyItemRemoved(position);
-                                                notifyItemRangeChanged(position, commentModelsList.size());
-
-
-
-                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
-                                                        .show();
-
-                                            }
-
-                                            else {
-                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<CommentModel> call, Throwable t) {
-                                            Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                                                    .show();
-                                        }
-                                    });
-
-                                    break;
-                                case R.id.mnu_edit_comment:
-
-                                    Dialog dialog = new Dialog(context);
-                                    dialog.setContentView(R.layout.dialog_edit_comment);
-                                    dialog.setTitle("Edit Comment");
-                                    dialog.show();
-                                    final EditText et_comment = dialog.findViewById(R.id.et_comment);
-                                    final Button btn_edit = dialog.findViewById(R.id.btn_edit);
-
-                                    et_comment.setText(commentModelsList.get(position).getComment());
-
-
-                                    // saat menu edit di pilih
-                                    btn_edit.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            DataApi.getClient().create(InterfaceComment.class)
-                                                    .editComment(commentModelsList.get(position).getComment_id(), et_comment.getText().toString())
-                                                    .enqueue(new Callback<CommentModel>() {
-                                                @Override
-                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                                    if (response.isSuccessful()) {
-
-                                                        // response langsung di refresh
-                                                        commentModelsList.get(position).setComment(et_comment.getText().toString());
-                                                        notifyItemChanged(position);
-                                                        notifyItemRangeChanged(position, commentModelsList.size());
-
-                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment edited", Snackbar.LENGTH_SHORT)
-                                                                .show();
-
-                                                    }
-
-                                                    else {
-                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                                                                .show();
-                                                    }
-                                                }
-                                                @Override
-                                                public void onFailure(Call<CommentModel> call, Throwable t) {
-                                                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                                                            .show();
-                                                }
-                                            });
-
-                                            dialog.dismiss();
-                                        }
-                                    });
-
-
-
-                                    break;
-                            }
-                            return false;
-                        }
-                    });
-
-                    popupMenu.show();
-
-                    return false;
-                }
-            });
         }
 
 
@@ -220,10 +120,21 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return commentModelsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnCommentListener(DetailRecipeFragment detailRecipeFragment) {
+        this.onCommentLisstener = detailRecipeFragment;
+
+    }
+
+    public interface OnCommentLisstener {
+        void onCommentCLick(View view, int position);
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile;
         TextView tv_username, tv_comment, tv_date, tv_time;
         RelativeLayout list_comment;
+
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -238,6 +149,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_time = itemView.findViewById(R.id.tv_time);
             list_comment = itemView.findViewById(R.id.list_comments);
 
+
+
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (onCommentLisstener!= null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    onCommentLisstener.onCommentCLick(view, position);
+                }
+            }
 
 
         }

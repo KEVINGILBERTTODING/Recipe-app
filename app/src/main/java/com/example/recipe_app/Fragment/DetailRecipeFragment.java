@@ -33,7 +33,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,13 +70,15 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener{
+public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener, CommentAdapter.OnCommentLisstener{
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
@@ -84,6 +89,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
+
+    CommentAdapter commentAdapter;
 
     EditText et_comment;
     Button btnReport;
@@ -106,7 +113,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     ShimmerRecyclerView recyclerView;
     private List<CommentModel> commentModelsList;
-    CommentAdapter commentAdapter;
     NestedScrollView nestedScrollView;
     RelativeLayout relativeLayout;
 
@@ -668,6 +674,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         recyclerView.hideShimmer(); // to hide shimmer
                     }, 1000);
 
+                    commentAdapter.setOnCommentListener(DetailRecipeFragment.this);
+
 
 
 
@@ -1029,6 +1037,86 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+
+
+    @Override
+    public void onCommentCLick(View view, int position) {
+        CommentModel commentModel = commentModelsList.get(position);
+        switch (view.getId()) {
+            case R.id.list_comments :
+
+                PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
+                popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.mnu_edit_comment:
+                                popupMenu.dismiss();
+                                relativeLayout.setVisibility(View.VISIBLE);
+                                et_comment.setText(commentModel.getComment());
+                                et_comment.requestFocus();
+                                btnSend.setOnClickListener(view1 -> {
+                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                                    interfaceComment.editComment(commentModel.getComment_id(), et_comment.getText().toString()).enqueue(new Callback<CommentModel>() {
+                                        @Override
+                                        public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                            if (response.body().getSuccess().equals("1")) {
+                                                Toasty.success(getContext(), "Comment updated!", Toasty.LENGTH_SHORT).show();
+                                                commentModel.setComment(et_comment.getText().toString());
+                                                relativeLayout.setVisibility(View.GONE);
+                                                commentAdapter.notifyItemChanged(position);
+
+                                                et_comment.setText("");
+                                                commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                            } else {
+                                                Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<CommentModel> call, Throwable t) {
+                                            Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                });
+                                break;
+                            case R.id.mnu_delete_comment:
+                                popupMenu.dismiss();
+                                InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                                interfaceComment.deleteComment(commentModel.getComment_id()).enqueue(new Callback<CommentModel>() {
+                                    @Override
+                                    public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                        if (response.body().getSuccess().equals("1")) {
+                                            commentModelsList.remove(position);
+                                            Toasty.error(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
+                                            commentAdapter.notifyItemChanged(position);
+                                            commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                        } else {
+                                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<CommentModel> call, Throwable t) {
+                                        Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+
+                break;
+        }
+
     }
 }
 

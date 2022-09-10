@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
@@ -37,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DetailRecipeReport extends Fragment {
+public class DetailRecipeReport extends Fragment{
 
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
     ImageView img_profile, imgReport;

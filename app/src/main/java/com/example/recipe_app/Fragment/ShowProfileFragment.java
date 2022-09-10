@@ -102,10 +102,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     Button btn_follow, btn_message, btn_unfollow;
 
 
-    public ShowProfileFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
