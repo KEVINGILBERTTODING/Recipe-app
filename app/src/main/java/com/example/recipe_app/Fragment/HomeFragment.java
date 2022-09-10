@@ -426,11 +426,14 @@ public class HomeFragment extends Fragment {
                             .override(200, 200)
                             .into(img_profile);
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Log.e("Disini Error nyaa", t.getMessage());
+                swipeRefreshLayout.setRefreshing(true);
+                getProfileImage(userid);
             }
         });
 

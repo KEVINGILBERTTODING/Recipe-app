@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -186,7 +187,15 @@ public class ReportUserFragment extends Fragment {
                         tvNoReport.setVisibility(View.GONE);
                         swipeRefreshLayout.setRefreshing(false);
 
-                        rv_user.hideShimmer();
+                        rv_user.showShimmer();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rv_user.hideShimmer();
+                            }
+                        }, 1200);
+
                         if (userReportModelList.size() == 0) {
                             tvNoReport.setVisibility(View.VISIBLE);
                             rv_user.hideShimmer();
@@ -197,7 +206,6 @@ public class ReportUserFragment extends Fragment {
 
                     } else {
                         swipeRefreshLayout.setRefreshing(false);
-
 
                     }
                 

@@ -279,12 +279,15 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                             .placeholder(R.drawable.template_img)
                             .override(1024, 768)
                             .into(iv_profile);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getProfile(userid);
             }
         });
 

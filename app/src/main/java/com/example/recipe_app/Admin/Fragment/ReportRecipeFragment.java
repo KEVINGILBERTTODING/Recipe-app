@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -194,8 +195,17 @@ public class ReportRecipeFragment extends Fragment {
                     rv_recipe.setHasFixedSize(true);
                     tv_no_data.setVisibility(View.GONE);
                     rv_recipe.setVisibility(View.VISIBLE);
-                    rv_recipe.hideShimmer();
+
                     swipeRefreshLayout.setRefreshing(false);
+                    rv_recipe.showShimmer();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_recipe.hideShimmer();
+                        }
+                    }, 1200);
 
                     
                 } else  {

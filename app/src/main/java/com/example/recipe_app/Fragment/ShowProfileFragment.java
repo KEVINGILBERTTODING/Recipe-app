@@ -150,11 +150,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
 
-        // Mengambil data profile dari API
-        getProfile(user_id);
-
-        // mengambil data recipe dari API
-        getRecipe(user_id, 1);
 
         // jika user id sama dengan user id profile maka btnmore dan button follow dihilangkan
         if (user_id.equals(userid)) {
@@ -301,7 +296,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             }
         });
 
-        getRecipe(user_id, 1);
 
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fm = getFragmentManager();
@@ -468,9 +462,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
 
-        // show shimmer
-        setShimmer();
-
         return view;
     }
 
@@ -528,12 +519,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     rv_recipe.setAdapter(myRecipeAdapter);
                     rv_recipe.setHasFixedSize(true);
                     myRecipeAdapter.notifyDataSetChanged();
-
                     tv_notfound.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     rv_recipe.setVisibility(View.VISIBLE);
-
-
                     rv_recipe.setItemViewType((type, position) -> {
                         switch (type) {
 
@@ -550,7 +538,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     final Handler handler = new Handler();
                     handler.postDelayed((Runnable) () -> {
                         rv_recipe.hideShimmer();
-                    }, 1000);
+                    }, 1200);
 
 
                     // set agar item dapat di click
@@ -569,7 +557,8 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your internet connection").show();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                getRecipe(user_id, 1);
 
             }
         });
@@ -613,7 +602,8 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                getLikeRecipe(user_id);
             }
 
 
@@ -782,4 +772,21 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
     }
 
+    @Override
+    public void onResume() {
+        setShimmer();
+        // Mengambil data profile dari API
+        getProfile(user_id);
+
+        // mengambil data recipe dari API
+        getRecipe(user_id, 1);
+
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        rv_recipe.hideShimmer();
+        super.onPause();
+    }
 }

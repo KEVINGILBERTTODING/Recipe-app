@@ -206,7 +206,15 @@ public class ReportBugFragment extends Fragment {
                     swipeRefreshLayout .setRefreshing(false);
 
 
-                    rv_report.hideShimmer();
+                    rv_report.showShimmer();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_report.hideShimmer();
+                        }
+                    }, 1200);
+
 
                 } else {
                     rv_report.setVisibility(View.GONE);

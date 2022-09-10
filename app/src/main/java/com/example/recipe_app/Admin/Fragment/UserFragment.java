@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,9 +176,19 @@ public class UserFragment extends Fragment {
                     rv_user.setLayoutManager(linearLayoutManager);
                     rv_user.setHasFixedSize(true);
                     rv_user.setVisibility(View.VISIBLE);
-                    rv_user.hideShimmer();
+
                     swipeRefreshLayout.setRefreshing(false);
                     tv_noReport.setVisibility(View.GONE);
+
+                    rv_user.showShimmer();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_user.hideShimmer();
+                        }
+                    }, 1200);
                 } else {
                     tv_noReport.setVisibility(View.VISIBLE);
                     rv_user.setVisibility(View.GONE);
