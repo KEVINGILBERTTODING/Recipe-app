@@ -427,9 +427,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:background="@color/white">
+        android:paddingBottom="@dimen/_5sdp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_myProfile"
@@ -462,7 +462,6 @@
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/et_comment"
             android:background="@drawable/ic_send" />
-
 
 
     </RelativeLayout>

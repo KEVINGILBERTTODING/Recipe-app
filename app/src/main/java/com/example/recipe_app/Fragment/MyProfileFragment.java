@@ -317,8 +317,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                             default:
                             case ShimmerRecyclerView.LAYOUT_LIST:
                                 return position == 0 || position % 2 == 0
-                                        ? R.layout.template_list_user_search
-                                        : R.layout.template_list_user_search;
+                                        ? R.layout.template_my_recipe
+                                        : R.layout.template_my_recipe;
                         }
                     });
 
@@ -327,7 +327,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     final Handler handler = new Handler();
                     handler.postDelayed((Runnable) () -> {
                         rv_recipe.hideShimmer(); // to hide shimmer
-                    }, 1000);
+                    }, 1200);
 
 
                 } else {
@@ -341,7 +341,12 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getRecipe(userid, 1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getRecipe(userid, 2);
+                }
 
 
             }
@@ -384,7 +389,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     final Handler handler = new Handler();
                     handler.postDelayed((Runnable) () -> {
                         rv_recipe.hideShimmer(); // to hide shimmer
-                    }, 1000);
+                    }, 1200);
 
 
                 } else {
@@ -401,7 +406,8 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                getLikeRecipe(userid);
 
             }
         });
@@ -448,7 +454,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     }
 
     private void setShimmer() {
-        rv_recipe.setAdapter(myRecipeAdapter);
+        rv_recipe.setLayoutManager(new GridLayoutManager(getContext(), 3));
         tvNotFound.setVisibility(View.GONE);
         rv_recipe.setVisibility(View.VISIBLE);
 
@@ -466,5 +472,17 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         rv_recipe.showShimmer();     // to start showing shimmer
 
+    }
+
+    @Override
+    public void onResume() {
+        setShimmer();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        rv_recipe.hideShimmer();
+        super.onPause();
     }
 }

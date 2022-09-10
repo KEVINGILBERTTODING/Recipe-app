@@ -1023,13 +1023,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     @Override
     public void onResume() {
-        sf_image.startShimmer();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        sf_image.stopShimmer();
         super.onPause();
     }
 }

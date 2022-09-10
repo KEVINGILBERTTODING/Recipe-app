@@ -72,7 +72,7 @@ public class SavedRecipeFragment extends Fragment {
         tv_notfound = view.findViewById(R.id.tv_notfound);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
-        getSavedRecipe(userid);
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -118,8 +118,6 @@ public class SavedRecipeFragment extends Fragment {
         // style load bar swipe refresh
         swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
-        // show shimmer
-        setShimmer();
 
 
 
@@ -182,14 +180,16 @@ public class SavedRecipeFragment extends Fragment {
                     // To stimulate long running work using android.os.Handler
                     mHandler.postDelayed((Runnable) () -> {
                         rv_saved_recipe.hideShimmer(); // to hide shimmer
-                    }, 1200);
+                    }, 1000);
 
 
                 } else {
                     tv_notfound.setVisibility(View.VISIBLE);
                     tv_notfound.setText("No recipe found");
                     rv_saved_recipe.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
+
+
 
 
                 }
@@ -201,9 +201,11 @@ public class SavedRecipeFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
-                tv_notfound.setText("Cannot load the recipe");
+
                 tv_notfound.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+
+                getSavedRecipe(userid);
 
 
             }
@@ -211,6 +213,10 @@ public class SavedRecipeFragment extends Fragment {
     }
 
     private void setShimmer(){
+        rv_saved_recipe.setLayoutManager(new LinearLayoutManager(getContext()),
+                R.layout.template_data_saved_recipe);
+
+        rv_saved_recipe.setAdapter(savedRecipeAdapter);
         rv_saved_recipe.setItemViewType((type, position) -> {
             switch (type) {
                 default:
@@ -225,7 +231,18 @@ public class SavedRecipeFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        getSavedRecipe(userid);
 
+        // show shimer
+        setShimmer();
+        super.onResume();
+    }
 
-
+    @Override
+    public void onPause() {
+        rv_saved_recipe.hideShimmer();
+        super.onPause();
+    }
 }

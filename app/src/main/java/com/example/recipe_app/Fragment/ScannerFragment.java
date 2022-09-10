@@ -132,16 +132,11 @@ public class ScannerFragment extends Fragment {
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 RecipeModel recipeModel = response.body().get(0);
                 if (recipeModel.getRecipe_id().equals(recipe_id)) {
-
-                    Toast.makeText(getContext(), "Recipe found", Toast.LENGTH_SHORT).show();
-
                     Dialog dialog = new Dialog(getActivity());
                     dialog.setContentView(R.layout.layout_success_scann);
+                    dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                     tv_result = dialog.findViewById(R.id.tv_result);
                     btn_show = dialog.findViewById(R.id.btn_show);
-
-
-
                     tv_result.setText(recipeModel.getTitle());
 
                     btn_show.setOnClickListener(new View.OnClickListener() {

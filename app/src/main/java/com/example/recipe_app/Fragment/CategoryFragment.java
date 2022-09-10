@@ -77,9 +77,6 @@ public class CategoryFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Others"));
 
 
-        setShimmerCategoryRecipe();
-
-        getCategory("Vegetables", 1);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -223,7 +220,28 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+
+
+                    getCategory("Vegetables", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+
+                    getCategory("Meat", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+
+                    getCategory("Drinks", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 3) {
+
+                    getCategory("Noodle", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 4) {
+
+                    getCategory("Others", 1);
+                } else {
+
+                    getCategory("Meat", 1);
+                }
+
 
             }
 
@@ -238,21 +256,9 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                shimmerRecyclerView.setItemViewType((type, position) -> {
-                    switch (type) {
-                        case ShimmerRecyclerView.LAYOUT_GRID:
-                            return position % 2 == 0
-                                    ? R.layout.template_lits_data_recipe_category
-                                    : R.layout.template_lits_data_recipe_category;
 
-                        default:
-                        case ShimmerRecyclerView.LAYOUT_LIST:
-                            return position == 0 || position % 2 == 0
-                                    ? R.layout.template_lits_data_recipe_category
-                                    : R.layout.template_lits_data_recipe_category;
-                    }
-                });
                 shimmerRecyclerView.showShimmer();     // to start showing shimmer
+                shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2) );
 
                 final Handler handler = new Handler();
                 handler.postDelayed((Runnable) () -> {
@@ -265,15 +271,13 @@ public class CategoryFragment extends Fragment {
     }
 
     private void setShimmerCategoryRecipe(){
-        shimmerRecyclerView.setAdapter(recipeCategoryPopular);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2), R.layout.template_lits_data_recipe_category);
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
 
-
                 default:
                 case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 3 == 0
+                    return position % 2 == 0
                             ? R.layout.template_lits_data_recipe_category
                             : R.layout.template_lits_data_recipe_category;
             }
@@ -306,6 +310,18 @@ public class CategoryFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        setShimmerCategoryRecipe();
 
+        getCategory("Vegetables", 1);
 
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        shimmerRecyclerView.hideShimmer();
+        super.onPause();
+    }
 }

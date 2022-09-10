@@ -59,7 +59,7 @@ public class AllRecipesFragment extends Fragment {
     Handler handler;
     TextView tv_banner;
 
-    FloatingActionButton btn_scan, btn_scan_recipe, btn_scan_account;
+    FloatingActionButton btn_scan_recipe, btn_scan_account;
     Context context;
     FloatingActionsMenu btn_action;
 
@@ -80,14 +80,13 @@ public class AllRecipesFragment extends Fragment {
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         searchView = view.findViewById(R.id.search_all_recipes);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        btn_scan = view.findViewById(R.id.btn_scan);
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_user = view.findViewById(R.id.rv_user);
         tv_banner = view.findViewById(R.id.tv_banner);
         btn_action = view.findViewById(R.id.multiple_actions);
         btn_scan_account = view.findViewById(R.id.btn_scan_account);
         btn_scan_recipe = view.findViewById(R.id.btn_scan_recipe);
-                
+
         handler = new Handler();
         context = getContext();
 
@@ -95,34 +94,37 @@ public class AllRecipesFragment extends Fragment {
         // Add tab layout
         tabLayout.addTab(tabLayout.newTab().setText("Recipe"));
         tabLayout.addTab(tabLayout.newTab().setText("Account"));
-        
 
-            btn_scan.setOnClickListener(view1 -> {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new ScannerFragment());
-                ft.addToBackStack(null);
-                ft.commit();
 
-        });
+
+        // float action button scann account
         btn_scan_account.setOnClickListener(view1-> {
 
 
 
-                Fragment fragment = new ScannerFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("user_id", "user_id");
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, fragment);
-                ft.addToBackStack(null);
-                ft.commit();
+            Fragment fragment = new ScannerFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", "user_id");
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
 
 
         });
 
+        // btn scan account
+        btn_scan_recipe.setOnClickListener(view1 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new ScannerFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
         setShimmerRecipe();
 
-    
+
 
         // if tab layout set tab selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -196,7 +198,7 @@ public class AllRecipesFragment extends Fragment {
 
                     // get data all user
                     getUser();
-                    
+
                     // hide recycler view recipe when tab user is selected
                     shimmerRecyclerView.setVisibility(View.GONE);
                     rv_user.setVisibility(View.VISIBLE);
@@ -291,13 +293,6 @@ public class AllRecipesFragment extends Fragment {
         });
 
 
-        // if btn scan is clicked than show scanner fragment
-        btn_scan.setOnClickListener(view1 -> {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, new ScannerFragment());
-            ft.addToBackStack(null);
-            ft.commit();
-        });
 
 
 
@@ -378,26 +373,15 @@ public class AllRecipesFragment extends Fragment {
                     shimmerRecyclerView.setHasFixedSize(true);
                     swipeRefreshLayout.setRefreshing(false);
 
-                    shimmerRecyclerView.setItemViewType((type, position) -> {
-                        switch (type) {
-                            case ShimmerRecyclerView.LAYOUT_GRID:
-                                return position % 2 == 0
-                                        ? R.layout.template_data_show_all
-                                        : R.layout.template_data_show_all;
-
-                            default:
-                            case ShimmerRecyclerView.LAYOUT_LIST:
-                                return position == 0 || position % 2 == 0
-                                        ? R.layout.template_data_show_all
-                                        : R.layout.template_data_show_all;
+                    shimmerRecyclerView.showShimmer();
+                    final Handler handller  = new Handler();
+                    handller.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            shimmerRecyclerView.hideShimmer();
                         }
-                    });
-                    shimmerRecyclerView.showShimmer();     // to start showing shimmer
+                    },1000);
 
-                    final Handler handler = new Handler();
-                    handler.postDelayed((Runnable) () -> {
-                        shimmerRecyclerView.hideShimmer(); // to hide shimmer
-                    }, 1200);
 
 
                 } else {
@@ -410,7 +394,8 @@ public class AllRecipesFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                getAllRecipe();
 
 
             }
@@ -458,7 +443,8 @@ public class AllRecipesFragment extends Fragment {
 
                 } else {
                     Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(true);
+                    getUser();
 
                 }
 
@@ -525,8 +511,7 @@ public class AllRecipesFragment extends Fragment {
     // show shimmer get recipe
     private void setShimmerRecipe(){
 
-        shimmerRecyclerView.setAdapter(recipeShowAllAdapter);
-        shimmerRecyclerView.setHasFixedSize(true);
+        shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2), R.layout.template_data_show_all);
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
                 case ShimmerRecyclerView.LAYOUT_GRID:

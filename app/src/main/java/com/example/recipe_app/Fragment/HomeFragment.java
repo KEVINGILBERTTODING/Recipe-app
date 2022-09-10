@@ -118,10 +118,7 @@ public class HomeFragment extends Fragment {
         // set username
         tv_username.setText("Hi, "+username);
 
-        // show shimmer recyclerview
-        setShimmerAllRecipe();
-        setShimmerCategoryRecipe();
-        setShimmerTrendingRecipe();
+
 
         // saat image profile di klik
         img_profile.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +145,7 @@ public class HomeFragment extends Fragment {
         getCategory("Vegetables", 1);
         getRecipeTranding(1,1);
 
-        // when tabLayout and then excute method get recipe
+        // when tabLayout and then excute method get recipe by category
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -277,33 +274,28 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeTrending.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
-                shimmerRecipeTrending.setItemViewType((type, position) -> {
-                    switch (type) {
-                        case ShimmerRecyclerView.LAYOUT_GRID:
-                            return position % 2 == 0
-                                    ? R.layout.template_list_data_recipe_trending
-                                    : R.layout.template_list_data_recipe_trending;
 
-                        default:
-                        case ShimmerRecyclerView.LAYOUT_LIST:
-                            return position == 0 || position % 2 == 0
-                                    ? R.layout.template_list_data_recipe_trending
-                                    : R.layout.template_list_data_recipe_trending;
+
+                shimmerRecipeTrending.showShimmer();
+                final Handler handller  = new Handler();
+                handller.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeTrending.hideShimmer();
                     }
-                });
-                shimmerRecipeTrending.showShimmer();     // to start showing shimmer
-                final Handler handler = new Handler();
-                handler.postDelayed((Runnable) () -> {
-                    shimmerRecipeTrending.hideShimmer(); // to hide shimmer
-                }, 1000);
+                },1000);
+
+
 
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
                 Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
+                getRecipeTranding(1, 1);
+
 
             }
 
@@ -328,34 +320,39 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeCategoryPopular.setLayoutManager(linearLayoutManager);
                 shimmerRecipeCategoryPopular.setAdapter(recipeCategoryPopular);
                 shimmerRecipeCategoryPopular.setHasFixedSize(true);
-
                 swipeRefreshLayout.setRefreshing(false);
 
-                shimmerRecipeCategoryPopular.setItemViewType((type, position) -> {
-                    switch (type) {
-                        case ShimmerRecyclerView.LAYOUT_GRID:
-                            return position % 2 == 0
-                                    ? R.layout.template_lits_data_recipe_category
-                                    : R.layout.template_lits_data_recipe_category;
-
-                        default:
-                        case ShimmerRecyclerView.LAYOUT_LIST:
-                            return position == 0 || position % 2 == 0
-                                    ? R.layout.template_lits_data_recipe_category
-                                    : R.layout.template_lits_data_recipe_category;
+                // show shimmer when get data success
+                shimmerRecipeCategoryPopular.showShimmer();
+                final Handler handller  = new Handler();
+                handller.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeCategoryPopular.hideShimmer();
                     }
-                });
-                shimmerRecipeCategoryPopular.showShimmer();     // to start showing shimmer
-                final Handler handler = new Handler();
-                handler.postDelayed((Runnable) () -> {
-                    shimmerRecipeCategoryPopular.hideShimmer(); // to hide shimmer
-                }, 1000);
+                },1000);
+
+
+
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getCategory("Vegetables", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getCategory("Meat", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    getCategory("Drinks", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 3) {
+                    getCategory("Noodle", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 4) {
+                    getCategory("Others", 1);
+                } else {
+                    getCategory("Meat", 1);
+                }
 
             }
 
@@ -381,101 +378,32 @@ public class HomeFragment extends Fragment {
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
-                shimmerRecyclerView.setItemViewType((type, position) -> {
-                    switch (type) {
-                        case ShimmerRecyclerView.LAYOUT_GRID:
-                            return position % 2 == 0
-                                    ? R.layout.template_list_data_recipe_recent
-                                    : R.layout.template_list_data_recipe_recent;
 
-                        default:
-                        case ShimmerRecyclerView.LAYOUT_LIST:
-                            return position == 0 || position % 2 == 0
-                                    ? R.layout.template_list_data_recipe_recent
-                                    : R.layout.template_list_data_recipe_recent;
-                    }
-                });
-                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                shimmerRecipeTrending.showShimmer();
                 final Handler handler = new Handler();
-                handler.postDelayed((Runnable) () -> {
-                    shimmerRecyclerView.hideShimmer(); // to hide shimmer
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeTrending.hideShimmer();
+                    }
                 }, 1000);
-
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
-
+                swipeRefreshLayout.setRefreshing(true);
+                getAllRecipe();
             }
 
 
         });
     }
 
-    private void setShimmerAllRecipe(){
-        shimmerRecyclerView.setAdapter(recipeAllAdapter);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecyclerView.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_recent
-                            : R.layout.template_list_data_recipe_recent;
 
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_recent
-                            : R.layout.template_list_data_recipe_recent;
-            }
-        });
-        shimmerRecyclerView.showShimmer();     // to start showing shimmer
 
-    }
 
-    private void setShimmerCategoryRecipe(){
-        shimmerRecipeCategoryPopular.setAdapter(recipeCategoryPopular);
-        shimmerRecipeCategoryPopular.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecipeCategoryPopular.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_lits_data_recipe_category
-                            : R.layout.template_lits_data_recipe_category;
-
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_lits_data_recipe_category
-                            : R.layout.template_lits_data_recipe_category;
-            }
-        });
-        shimmerRecipeCategoryPopular.showShimmer();     // to start showing shimmer
-
-    }
-
-    private void setShimmerTrendingRecipe(){
-        shimmerRecipeTrending.setAdapter(recipeTrandingAdapter);
-        shimmerRecipeTrending.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecipeTrending.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
-
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
-            }
-        });
-        shimmerRecipeTrending.showShimmer();     // to start showing shimmer
-
-    }
 
     // get profile image
     private void getProfileImage(String user_id) {
@@ -509,4 +437,20 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        shimmerRecyclerView.showShimmer();
+        shimmerRecipeTrending.showShimmer();
+        shimmerRecipeCategoryPopular.showShimmer();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        shimmerRecyclerView.hideShimmer();
+        shimmerRecipeTrending.hideShimmer();
+        shimmerRecipeCategoryPopular.hideShimmer();
+        super.onPause();
+    }
 }
