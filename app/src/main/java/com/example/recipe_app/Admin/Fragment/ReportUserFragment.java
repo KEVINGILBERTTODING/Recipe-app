@@ -2,13 +2,12 @@ package com.example.recipe_app.Admin.Fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,27 +24,26 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReportUserFragment extends Fragment {
-    RecyclerView rv_user;
+    ShimmerRecyclerView rv_user;
     List<UserReportModel> userReportModelList;
     ReportUserAdapter reportUserAdapter;
     LinearLayoutManager linearLayoutManager;
     TabLayout tabLayout;
     SearchView searchView;
-    
-
     TextView tvNoReport;
-
-
     ImageButton btnBack;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -59,10 +57,21 @@ public class ReportUserFragment extends Fragment {
         searchView = view.findViewById(R.id.search_bar);
         tvNoReport = view.findViewById(R.id.tv_no_report);
         btnBack = view.findViewById(R.id.btn_back);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.popBackStack();
+        });
+
+        // change color swiper refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllReport(1);
+
+            }
         });
 
 
@@ -79,16 +88,35 @@ public class ReportUserFragment extends Fragment {
 
                 //get all report
                 if (tab.getPosition() == 0) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(1);
+                        }
+                    });
                     getAllReport(1);
                 }
 
                 // get accepted report
                 else if  (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(2);
+                        }
+                    });
+
                     getAllReport(2);
                 }
 
                 // get rejcted report
                 else if(tab.getPosition() == 2) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(0);
+                        }
+                    });
                     getAllReport(0);
                 }
 
@@ -156,13 +184,20 @@ public class ReportUserFragment extends Fragment {
                         rv_user.setAdapter(reportUserAdapter);
                         rv_user.setHasFixedSize(true);
                         tvNoReport.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+
+                        rv_user.hideShimmer();
                         if (userReportModelList.size() == 0) {
                             tvNoReport.setVisibility(View.VISIBLE);
+                            rv_user.hideShimmer();
+                            swipeRefreshLayout.setRefreshing(false);
+
                         }
 
 
                     } else {
-                        Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
+
 
                     }
                 
@@ -171,7 +206,18 @@ public class ReportUserFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getAllReport(1);
+
+                } else if(tabLayout.getSelectedTabPosition() == 1) {
+                    getAllReport(2);
+
+                } else {
+                    getAllReport(0);
+                }
+
 
 
             }
@@ -182,6 +228,15 @@ public class ReportUserFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        rv_user.showShimmer();
+        super.onResume();
+    }
 
-
+    @Override
+    public void onPause() {
+        rv_user.hideShimmer();
+        super.onPause();
+    }
 }

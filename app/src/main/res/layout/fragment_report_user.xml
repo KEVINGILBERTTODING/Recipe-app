@@ -97,13 +97,24 @@
             android:layout_below="@+id/tab_layout"
             android:textSize="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_user"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/tab_layout"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content">
+
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/rv_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="10"
+                app:shimmer_recycler_layout="@layout/template_recipe_report" />
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 

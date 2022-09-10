@@ -81,15 +81,36 @@
 
         </com.google.android.material.tabs.TabLayout>
 
+        <TextView
+            android:id="@+id/tv_no_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:text="No data"
+            android:visibility="gone"
+            android:layout_below="@+id/tab_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_user"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tab_layout"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_marginTop="@dimen/_5sdp">
 
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/rv_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="10"
+                app:shimmer_recycler_layout="@layout/template_recipe_report" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 

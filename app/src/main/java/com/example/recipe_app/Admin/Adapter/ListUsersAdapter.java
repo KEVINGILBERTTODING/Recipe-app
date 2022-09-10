@@ -102,6 +102,9 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, adminModelList.size());
                             });
+                            builder.setNegativeButton("No", ((dialogInterface, i) -> {
+
+                            }));
                             builder.show();
 
                             break;
@@ -139,6 +142,9 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, adminModelList.size());
                             });
+                            builder.setNegativeButton("No", ((dialogInterface, i) -> {
+
+                            }));
                             builder.show();
 
                             break;
@@ -150,8 +156,6 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
             });
 
         }
-
-
 
 
 

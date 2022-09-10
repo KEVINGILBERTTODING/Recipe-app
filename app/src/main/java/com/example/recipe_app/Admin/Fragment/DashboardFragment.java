@@ -43,6 +43,7 @@ import com.kosalgeek.android.photoutil.GalleryPhoto;
 import java.util.Calendar;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -181,8 +182,8 @@ public class DashboardFragment extends Fragment {
                     Log.d("count", "onResponse: " + adminModelList.size());
                     tv_total_users.setText(adminModelList.size() + " Users");
 
-                } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                }else {
+
                 }
             }
 
@@ -223,7 +224,8 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
             }
         });
@@ -270,7 +272,6 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
 
 
             }
