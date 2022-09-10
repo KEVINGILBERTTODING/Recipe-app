@@ -494,11 +494,14 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                             .override(1024, 768)
                             .into(iv_profile);
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getProfile(user_id);
             }
         });
 
