@@ -139,6 +139,7 @@ public class HomeFragment extends Fragment {
 
         // when btn notification is clicked
         btn_notification.setOnClickListener(view2 ->  {
+            readNotification(userid);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, new NotificationFragment());
             ft.addToBackStack(null);
@@ -450,7 +451,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    // Count total havent read
+    // Count total notification status = '1'
     private void countNotification(){
         InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
         interfaceNotification.countTotalNotif(userid).enqueue(new Callback<List<NotificationModel>>() {
@@ -467,6 +468,29 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
                 Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    // method to read notification where user click button notification then update status notif
+    // where 1 to
+
+    private void readNotification(String userid) {
+        InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+        interfaceNotification.readNotif(userid).enqueue(new Callback<NotificationModel>() {
+            @Override
+            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+                if (response.body().getStatus().equals("1")) {
+
+
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NotificationModel> call, Throwable t) {
 
             }
         });

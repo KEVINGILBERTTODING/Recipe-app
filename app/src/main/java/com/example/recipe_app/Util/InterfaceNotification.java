@@ -5,7 +5,10 @@ import com.example.recipe_app.Model.NotificationModel;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface InterfaceNotification {
@@ -22,4 +25,14 @@ public interface InterfaceNotification {
     Call<List<NotificationModel>> countTotalNotif(
             @Query("user_id") String userId
     );
+
+    // update status notification when user click button notification
+    // in home fragment
+
+    @FormUrlEncoded
+    @POST("read_notification.php")
+    Call<NotificationModel> readNotif(
+            @Field("user_id") String user_id
+    );
+
 }

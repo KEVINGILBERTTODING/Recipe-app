@@ -145,7 +145,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         holder.btnLikes.setOnClickListener(view -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (holder.btnLikes.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
-                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid);
+                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
                 // memanggil method untuk mengurangi likes jika button unlike
                 countLike(recipeModels.get(position).getRecipe_id(), 2);
@@ -358,10 +358,10 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     // method untu delete like recipe
 
-    private void deleteLikeRecipe(String recipeid, String userid) {
+    private void deleteLikeRecipe(String recipeid, String userid, String user_id_notif) {
 
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.deleteLikedRecipe(recipeid, userid).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.deleteLikedRecipe(recipeid, userid, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {

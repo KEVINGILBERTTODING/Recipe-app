@@ -176,7 +176,7 @@ public class AllRecipesFragment extends Fragment {
                             final Handler handler = new Handler();
                             handler.postDelayed((Runnable) () -> {
                                 shimmerRecyclerView.hideShimmer(); // to hide shimmer
-                            }, 1000);
+                            }, 1200);
 
                             filter(newText);
                             return true;
@@ -254,7 +254,7 @@ public class AllRecipesFragment extends Fragment {
                             final Handler handler = new Handler();
                             handler.postDelayed((Runnable) () -> {
                                 rv_user.hideShimmer(); // to hide shimmer
-                            }, 1000);
+                            }, 1200);
 
                             rv_user.setVisibility(View.VISIBLE);
 

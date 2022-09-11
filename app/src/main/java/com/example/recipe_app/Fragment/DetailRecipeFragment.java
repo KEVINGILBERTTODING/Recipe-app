@@ -507,7 +507,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                             }
                         }, 1500);
 
-                        deleteLikeRecipe(recipe_id, useridx);
+                        deleteLikeRecipe(recipe_id, useridx, user_id);
 
                     }
 
@@ -611,7 +611,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         btnLike.setOnClickListener(View -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (btnLike.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_liked).getConstantState()) {
-                deleteLikeRecipe(recipe_id, useridx);
+                deleteLikeRecipe(recipe_id, useridx, user_id);
                 countLike(recipe_id, 2);
                 tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) - 1));
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_like));
@@ -855,10 +855,10 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     // method untuk delete like recipe
 
-    private void deleteLikeRecipe(String recipeid, String userid) {
+    private void deleteLikeRecipe(String recipeid, String userid, String user_id_report) {
 
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.deleteLikedRecipe(recipeid, userid).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.deleteLikedRecipe(recipeid, userid, user_id_report).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
