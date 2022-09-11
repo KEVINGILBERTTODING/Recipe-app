@@ -474,7 +474,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     if (btnLike.getBackground().getConstantState() == getResources().getDrawable(R.drawable.btn_like).getConstantState()) {
 
                         // menyimpan informasi like recipe ke database
-                        likedRecipe(recipe_id, useridx);
+                        likedRecipe(recipe_id, useridx, user_id);
 
                         // menambah jumlah like pada di database
                         countLike(recipe_id, 1);
@@ -619,7 +619,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             //jika di klik maka akan like resep
             else {
-                likedRecipe(recipe_id, useridx);
+                likedRecipe(recipe_id, useridx, user_id);
 
                 // method untuk mengambil data like recipe
                 countLike(recipe_id, 1);
@@ -833,9 +833,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     // method untuk like recipe
 
-    private void likedRecipe(String recipeid, String useridd) {
+    private void likedRecipe(String recipeid, String useridd, String user_id_notif) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.saveLikeRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.saveLikeRecipe(recipeid, useridd, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {

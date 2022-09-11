@@ -182,7 +182,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
             //jika di klik maka akan menambah total like
             else {
-                likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
+                likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
                 // memanggil method untuk menambah likes jika button di like
                 countLike(recipeModels.get(position).getRecipe_id(), 1);
@@ -346,9 +346,9 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     // method untuk like recipe
 
-    private void likedRecipe(String recipeid, String useridd) {
+    private void likedRecipe(String recipeid, String useridd, String user_id_notif) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.saveLikeRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.saveLikeRecipe(recipeid, useridd, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {

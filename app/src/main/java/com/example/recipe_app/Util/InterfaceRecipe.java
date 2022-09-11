@@ -92,7 +92,8 @@ public interface InterfaceRecipe {
     @POST("save_like_recipe.php")
     Call<RecipeModel> saveLikeRecipe(
             @Field("recipe_id") String recipe_id,
-            @Field("user_id") String user_id
+            @Field("user_id") String user_id,
+            @Field("user_id_notif") String user_id_notif
     );
 
     // edit image recipe

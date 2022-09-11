@@ -71,8 +71,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         if (type.equals("like")) {
             holder.tv_content.setText("liked your recipe.");
             holder.iv_recipe.setVisibility(View.VISIBLE);
-            Toast.makeText(context, recipe_id, Toast.LENGTH_SHORT).show();
 
+
+            // call api untuk menampilkan gambar berdasarkan recipe id
             InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
             interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
                 @Override
@@ -88,7 +89,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
 
                     } else {
-                        Toasty.error(context, "FAILED", Toasty.LENGTH_SHORT).show();
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
 
                     }
 
@@ -101,10 +102,16 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 }
             });
 
-        } else if (type.equals("follow")) {
+        }
+
+        // Jika type notif adalah follow
+        else if (type.equals("follow")) {
+
+            // maka akan menampilkan teks
             holder.tv_content.setText("started following you.");
 
-            // check if user is following
+            // check if user is following, jika user telah follow maka tampil button following
+            // tetapi jika user belum follow maka tampil button follow
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
             interfaceProfile.checkFollowing(userid, notificationModelist.get(position).getUser_id()).enqueue(new Callback<List<ProfileModel>>() {
                 @Override
