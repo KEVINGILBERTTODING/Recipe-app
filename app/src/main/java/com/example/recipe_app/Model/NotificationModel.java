@@ -33,6 +33,8 @@ public class NotificationModel implements Serializable {
      @SerializedName("image")
     String image;
 
+
+
     public NotificationModel(String notif_id, String user_id, String user_id_notif, String recipe_id, String type, String date, String time, Integer status, String username, String photo_profile, String title, String image) {
         this.notif_id = notif_id;
         this.user_id = user_id;
