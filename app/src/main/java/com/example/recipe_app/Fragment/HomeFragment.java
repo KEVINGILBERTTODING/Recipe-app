@@ -32,10 +32,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
+import com.example.recipe_app.Model.NotificationModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
@@ -52,7 +54,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     String username, userid;
-    TextView tv_username;
+    TextView tv_username, tvTotalNotif;
     ShimmerRecyclerView shimmerRecyclerView, shimmerRecipeCategoryPopular, shimmerRecipeTrending;
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
@@ -61,14 +63,14 @@ public class HomeFragment extends Fragment {
     private List<ProfileModel> profileModelList;
     InterfaceProfile interfaceProfile;
     RecipeAllAdapter recipeAllAdapter;
-    RelativeLayout layoutHeader;
+    RelativeLayout layoutHeader, rlCountNotif;
     RecipeCategoryPopular recipeCategoryPopular;
     RecipeTrandingAdapter recipeTrandingAdapter;
     TabLayout tabLayout;
     ImageView img_profile;
     SearchView searchView;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories;
+    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories, btn_notification;
     Context context;
 
 
@@ -107,6 +109,9 @@ public class HomeFragment extends Fragment {
         btn_see_all_categories = view.findViewById(R.id.btn_see_all_categories);
         btn_see_all_recipes = view.findViewById(R.id.btn_see_all);
         btn_see_all_trendings = view.findViewById(R.id.btn_see_all_trending);
+        btn_notification = view.findViewById(R.id.btn_notification);
+        rlCountNotif = view.findViewById(R.id.rl_count_notif);
+        tvTotalNotif = view.findViewById(R.id.tv_total_notif);
 
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
@@ -130,6 +135,14 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();
                 fragmentTransaction.addToBackStack(null);
             }
+        });
+
+        // when btn notification is clicked
+        btn_notification.setOnClickListener(view2 ->  {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new NotificationFragment());
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
         // when refresh swipe
@@ -402,9 +415,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-
-
     // get profile image
     private void getProfileImage(String user_id) {
         DataApi.getClient().create(InterfaceProfile.class).getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
@@ -440,11 +450,34 @@ public class HomeFragment extends Fragment {
 
     }
 
+    // Count total havent read
+    private void countNotification(){
+        InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+        interfaceNotification.countTotalNotif(userid).enqueue(new Callback<List<NotificationModel>>() {
+            @Override
+            public void onResponse(Call<List<NotificationModel>> call, Response<List<NotificationModel>> response) {
+                if (response.body().size() > 0 ) {
+                    rlCountNotif.setVisibility(View.VISIBLE);
+                    tvTotalNotif.setText(response.body().size() + "");
+                } else  {
+                    rlCountNotif.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
+                Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         shimmerRecyclerView.showShimmer();
         shimmerRecipeTrending.showShimmer();
         shimmerRecipeCategoryPopular.showShimmer();
+        countNotification();
         super.onResume();
     }
 

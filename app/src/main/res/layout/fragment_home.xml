@@ -18,13 +18,48 @@
                 android:id="@+id/img_profile"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_13sdp"
+                android:layout_alignParentLeft="true"
                 app:civ_border_width="@dimen/_2sdp"
                 android:layout_centerInParent="true"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:src="@drawable/template_img" />
+
+
+                <ImageButton
+                    android:id="@+id/btn_notification"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:backgroundTint="@color/black"
+                    android:background="@drawable/ic_notification"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_count_notif"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/_2sdp"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/container_notification"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_total_notif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/popmed"
+                        android:textSize="@dimen/_9sdp"/>
+
+                </RelativeLayout>
+
+
+            
 
             <TextView
                 android:id="@+id/tv_username"
@@ -38,6 +73,7 @@
 
 
             <TableLayout
+                android:layout_toRightOf="@id/img_profile"
                 android:id="@+id/tab_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
