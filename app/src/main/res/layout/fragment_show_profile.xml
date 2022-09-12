@@ -384,6 +384,7 @@
                         android:text="No recipe found"
                         android:fontFamily="@font/popmed"
                         android:gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:textSize="@dimen/_9sdp"/>
 
                     <com.todkars.shimmer.ShimmerRecyclerView

@@ -79,6 +79,9 @@ public class NotificationFragment extends Fragment {
             }
         });
 
+        // Set color swipe icon
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
 
         return root;
     }

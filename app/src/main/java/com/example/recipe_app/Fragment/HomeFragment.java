@@ -95,8 +95,6 @@ public class HomeFragment extends Fragment {
         context = getContext();
         view1 = getView();
 
-
-
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         shimmerRecipeCategoryPopular = view.findViewById(R.id.recycler_recipe_category);
         shimmerRecipeTrending = view.findViewById(R.id.recycler_recipe_trending);
@@ -122,6 +120,16 @@ public class HomeFragment extends Fragment {
 
         // set username
         tv_username.setText("Hi, "+username);
+
+        // Every 3 second will refresh notification
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                countNotification();
+                handler.postDelayed(this,3000);
+            }
+        }, 3000);
 
 
 

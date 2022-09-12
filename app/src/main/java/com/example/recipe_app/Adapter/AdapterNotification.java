@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ import retrofit2.Response;
 public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolder> {
     Context context;
     List<NotificationModel> notificationModelist = new ArrayList<>();
-    String userid, username;
+    String userid, username, user_id_notif;
 
     public AdapterNotification(Context context, List<NotificationModel> notificationModelist) {
         this.context = context;
@@ -73,6 +74,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
         String type = notificationModelist.get(position).getType();
         String recipe_id = notificationModelist.get(position).getRecipe_id();
+        user_id_notif = notificationModelist.get(holder.getAdapterPosition()).getUser_id_notif();
+        String user_idx = notificationModelist.get(holder.getAdapterPosition()).getUser_id();
 
         if (type.equals("like")) {
             holder.tv_content.setText("liked your recipe.");
@@ -86,7 +89,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                     if (response.body().size() > 0) {
                         Glide.with(context)
-                                .load(response.body().get(position).getImage())
+                                .load(response.body().get(0).getImage())
                                 .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .skipMemoryCache(true)
@@ -189,14 +192,31 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         holder.tv_date.setText(notificationModelist.get(position).getDate());
         holder.tv_time.setText(notificationModelist.get(position).getTime());
 
+        // load photo profile
         Glide.with(context)
                 .load(notificationModelist.get(position).getPhoto_profile())
+                .thumbnail(0.5f)
                 .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(300,300)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate()
+                .fitCenter()
+                .centerCrop()
                 .placeholder(R.drawable.template_img)
+                .override(300, 300)
                 .into(holder.iv_user);
+
+        // Jika user id like recipe sendiri maka akan langsung di hilangkan
+        // dari notification
+        if (userid.equals(user_idx)) {
+            holder.rl_notification.setVisibility(View.GONE);
+        } else {
+            holder.rl_notification.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+
 
     }
 
@@ -209,6 +229,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         ImageView iv_user, iv_recipe;
         TextView tv_username, tv_content, tv_date, tv_time;
         Button btn_follow, btn_unfoll;
+        RelativeLayout rl_notification;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -221,6 +242,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             tv_time = itemView.findViewById(R.id.tv_time);
             btn_follow = itemView.findViewById(R.id.btn_follow);
             btn_unfoll = itemView.findViewById(R.id.btn_unfollow);
+            rl_notification =itemView.findViewById(R.id.rl_notification);
 
             itemView.setOnClickListener(this);
 

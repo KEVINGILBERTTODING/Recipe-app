@@ -104,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popsem"
                     android:text="for cooking"
+                    android:layout_marginTop="@dimen/_minus5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
 
