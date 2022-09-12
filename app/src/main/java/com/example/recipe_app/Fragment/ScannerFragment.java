@@ -34,6 +34,7 @@ import com.google.zxing.Result;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,12 +71,13 @@ public class ScannerFragment extends Fragment {
                     public void run() {
 
                         // jika ada data dari bundle maka akan menjalankan method search account
-                        if (getArguments() != null) {
+                        if (getArguments().getString("user_id") != null) {
                             getAccount(result.getText());
-                        } else {
+
+                        } else if (getArguments().getString("recipe") != null){
+
                             getRecipeScanner(result.getText());
                         }
-
 
 
                     }
@@ -143,48 +145,83 @@ public class ScannerFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
-                            Fragment fragment = new DetailRecipeFragment();
-                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("recipe_id", recipeModel.getRecipe_id());
-                            bundle.putString("user_id", recipeModel.getUser_id());
-                            bundle.putString("username", recipeModel.getUsername());
-                            bundle.putString("title", recipeModel.getTitle());
-                            bundle.putString("description", recipeModel.getDescription());
-                            bundle.putString("category", recipeModel.getCategory());
-                            bundle.putString("servings", recipeModel.getServings());
-                            bundle.putString("duration", recipeModel.getDuration());
-                            bundle.putString("ingredients", recipeModel.getIngredients());
-                            bundle.putString("steps", recipeModel.getSteps());
-                            bundle.putString("upload_date", recipeModel.getUpload_date());
-                            bundle.putString("upload_time", recipeModel.getUpload_time());
-                            bundle.putString("image", recipeModel.getImage());
-                            bundle.putString("status", recipeModel.getStatus());
-                            bundle.putString("ratings", recipeModel.getRatings());
-                            bundle.putString("likes", recipeModel.getLikes());
-                            bundle.putString("photo_profile", recipeModel.getPhoto_profile());
-                            bundle.putString("email", recipeModel.getEmail());
-                            bundle.putString("notes", recipeModel.getNote());
 
-                            fragment.setArguments(bundle);
-                            fragmentTransaction.replace(R.id.fragment_container, fragment);
-                            fragmentTransaction.commit();
-                            fragmentTransaction.addToBackStack(null);
-                        }
+                            // Jika ada data yang dikirim admin maka akan diarahkan ke fragment admin
+                            if (getArguments().getString("admin") != null) {
+                                Fragment fragment = new DetailRecipeFragment();
+                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("admin", "admin");
+                                bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                                bundle.putString("user_id", recipeModel.getUser_id());
+                                bundle.putString("username", recipeModel.getUsername());
+                                bundle.putString("title", recipeModel.getTitle());
+                                bundle.putString("description", recipeModel.getDescription());
+                                bundle.putString("category", recipeModel.getCategory());
+                                bundle.putString("servings", recipeModel.getServings());
+                                bundle.putString("duration", recipeModel.getDuration());
+                                bundle.putString("ingredients", recipeModel.getIngredients());
+                                bundle.putString("steps", recipeModel.getSteps());
+                                bundle.putString("upload_date", recipeModel.getUpload_date());
+                                bundle.putString("upload_time", recipeModel.getUpload_time());
+                                bundle.putString("image", recipeModel.getImage());
+                                bundle.putString("status", recipeModel.getStatus());
+                                bundle.putString("ratings", recipeModel.getRatings());
+                                bundle.putString("likes", recipeModel.getLikes());
+                                bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                                bundle.putString("email", recipeModel.getEmail());
+                                bundle.putString("notes", recipeModel.getNote());
+
+                                fragment.setArguments(bundle);
+                                fragmentTransaction.replace(R.id.fragment_admin, fragment);
+                                fragmentTransaction.commit();
+                                fragmentTransaction.addToBackStack(null);
+                            } else  {
+                                Fragment fragment = new DetailRecipeFragment();
+                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("recipe_id", recipeModel.getRecipe_id());
+                                bundle.putString("user_id", recipeModel.getUser_id());
+                                bundle.putString("username", recipeModel.getUsername());
+                                bundle.putString("title", recipeModel.getTitle());
+                                bundle.putString("description", recipeModel.getDescription());
+                                bundle.putString("category", recipeModel.getCategory());
+                                bundle.putString("servings", recipeModel.getServings());
+                                bundle.putString("duration", recipeModel.getDuration());
+                                bundle.putString("ingredients", recipeModel.getIngredients());
+                                bundle.putString("steps", recipeModel.getSteps());
+                                bundle.putString("upload_date", recipeModel.getUpload_date());
+                                bundle.putString("upload_time", recipeModel.getUpload_time());
+                                bundle.putString("image", recipeModel.getImage());
+                                bundle.putString("status", recipeModel.getStatus());
+                                bundle.putString("ratings", recipeModel.getRatings());
+                                bundle.putString("likes", recipeModel.getLikes());
+                                bundle.putString("photo_profile", recipeModel.getPhoto_profile());
+                                bundle.putString("email", recipeModel.getEmail());
+                                bundle.putString("notes", recipeModel.getNote());
+
+                                fragment.setArguments(bundle);
+                                fragmentTransaction.replace(R.id.fragment_container, fragment);
+                                fragmentTransaction.commit();
+                                fragmentTransaction.addToBackStack(null);
+                            }
+                            }
+
+
                     });
                     dialog.show();
 
 
 
                 } else {
-                    Toast.makeText(getActivity(), "Recipe Not Found", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Recipe not found ☹").show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -197,25 +234,45 @@ public class ScannerFragment extends Fragment {
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0) {
-                    Fragment fragment = new ShowProfileFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("user_id", response.body().get(0).getUser_id());
-                    fragment.setArguments(bundle);
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    // Jika admin yang melihat
+                    if (getArguments().getString("admin") != null) {
+                        Fragment fragment = new ShowProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("user_id", response.body().get(0).getUser_id());
+                        bundle.putString("admin", "admin");
+                        fragment.setArguments(bundle);
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_admin, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+
+                    }
+
+                    // Jika user biasa
+                    else {
+                        Fragment fragment = new ShowProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("user_id", response.body().get(0).getUser_id());
+                        fragment.setArguments(bundle);
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+
 
 
                 } else {
-                    Toast.makeText(getContext(), "User not ofund", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "User not found ☹", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error check your connection", Toast.LENGTH_SHORT).show();
+               Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });

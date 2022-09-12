@@ -125,6 +125,8 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                             Fragment fragment = new ShowProfileFragment();
                             Bundle bundle = new Bundle();
                             bundle.putString("user_id", adminModelList.get(position).getUser_id());
+
+                            // kirim string admin
                             bundle.putString("admin", "admin");
                             fragment.setArguments(bundle);
                             FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();

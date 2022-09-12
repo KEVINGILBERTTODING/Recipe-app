@@ -116,8 +116,12 @@ public class AllRecipesFragment extends Fragment {
 
         // btn scan account
         btn_scan_recipe.setOnClickListener(view1 -> {
+            Fragment fragment = new ScannerFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe", "recipe");
+            fragment.setArguments(bundle);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, new ScannerFragment());
+            ft.replace(R.id.fragment_container, fragment);
             ft.addToBackStack(null);
             ft.commit();
         });

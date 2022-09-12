@@ -232,18 +232,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
 
-        // BTN SHOW QOCDODE ACCOUNT
-        btnQrCode.setOnClickListener(view1 ->{
-            Fragment fragment = new AccountQrcode();
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", user_id);
-            fragment.setArguments(bundle);
 
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
-        });
 
         // create tablayout
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_layout));
@@ -444,18 +433,61 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             }
         });
 
-        lr_info.setOnClickListener(view1 -> {
-            Fragment fragment = new FollowersFollowingFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", user_id);
-            bundle.putString("username", tv_username.getText().toString());
-            fragment.setArguments(bundle);
+        // ketik admin yang melihat maka akan di arahkan ke fragment admin
+        // namun ketika user biasa maka akan diarahkan sebagai user biasa
 
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
-        });
+        if (getArguments().getString("admin")!= null) {
+
+            // BTN SHOW QOCDODE ACCOUNT
+            btnQrCode.setOnClickListener(view1 ->{
+                Fragment fragment = new AccountQrcode();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                bundle.putString("admin", "admin");
+                fragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_admin, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            });
+
+
+
+
+
+        } else {
+
+            // BTN SHOW QOCDODE ACCOUNT
+            btnQrCode.setOnClickListener(view1 ->{
+                Fragment fragment = new AccountQrcode();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            });
+
+
+            // infor user seperti jumlah followers dan following
+            lr_info.setOnClickListener(view1 -> {
+                Fragment fragment = new FollowersFollowingFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", user_id);
+                bundle.putString("username", tv_username.getText().toString());
+                fragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            });
+
+        }
+
 
 
         return view;

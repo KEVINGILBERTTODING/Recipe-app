@@ -295,23 +295,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         });
 
-        // saat btn qrcode diklik
-        btnQrcode.setOnClickListener(view1 -> {
-
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            QrcodeFragment qrcodeFragment = new QrcodeFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("recipe_id", recipe_id);
-            bundle.putString("recipe_name", recipeName);
-            bundle.putString("recipe_image", photoRecipe);
-            bundle.putString("username", recipeUsername);
-            qrcodeFragment.setArguments(bundle);
-
-            fragmentTransaction.replace(R.id.fragment_container, qrcodeFragment);
-
-            fragmentTransaction.commit();
-            fragmentTransaction.addToBackStack(null);
-        });
 
 
         // saat btn more di klik
@@ -539,15 +522,29 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 @Override
                 public boolean onSingleTapUp(MotionEvent e) {
 
-                    Fragment fragment = new FullScreenImageReport();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("image", photoRecipe);
-                    fragment.setArguments(bundle);
+                    if (getArguments().getString("admin") != null) {
+                        Fragment fragment = new FullScreenImageReport();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("image", photoRecipe);
+                        fragment.setArguments(bundle);
 
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, fragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_admin, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    } else {
+                        Fragment fragment = new FullScreenImageReport();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("image", photoRecipe);
+                        fragment.setArguments(bundle);
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.fragment_container, fragment);
+                        ft.addToBackStack(null);
+                        ft.commit();
+                    }
+
+
                     return super.onSingleTapUp(e);
 
 
@@ -604,6 +601,47 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     relativeLayout.setVisibility(View.VISIBLE);
                 }
             });
+        }
+
+        // Jika get argument admin != null
+        if (getArguments().getString("admin") != null) {
+            btnFav.setVisibility(View.GONE);
+            // saat btn qrcode diklik
+            btnQrcode.setOnClickListener(view1 -> {
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                QrcodeFragment qrcodeFragment = new QrcodeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipe_id);
+                bundle.putString("recipe_name", recipeName);
+                bundle.putString("recipe_image", photoRecipe);
+                bundle.putString("username", recipeUsername);
+                bundle.putString("admin", "admin");
+                qrcodeFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_admin, qrcodeFragment);
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            });
+
+        } else {
+            // saat btn qrcode diklik
+            btnQrcode.setOnClickListener(view1 -> {
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                QrcodeFragment qrcodeFragment = new QrcodeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipe_id);
+                bundle.putString("recipe_name", recipeName);
+                bundle.putString("recipe_image", photoRecipe);
+                bundle.putString("username", recipeUsername);
+                qrcodeFragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.fragment_container, qrcodeFragment);
+
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            });
+
         }
 
         // check apakah recipe sudah ada di simpan atau belum

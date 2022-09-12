@@ -72,12 +72,11 @@ public class FollowersFollowingFragment extends Fragment {
         tv_username_bar.setText(getArguments().getString("username"));
 
 
-
-
-
+        // Create tablayout
         tabLayout.addTab(tabLayout.newTab().setText("Followers"));
         tabLayout.addTab(tabLayout.newTab().setText("Following"));
 
+        // tab selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -101,8 +100,6 @@ public class FollowersFollowingFragment extends Fragment {
             }
         });
 
-        //show shimmer
-        setShimmer();
 
 
         // button back
@@ -376,4 +373,16 @@ public class FollowersFollowingFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        //show shimmer
+        setShimmer();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        rv_user.hideShimmer();
+        super.onPause();
+    }
 }

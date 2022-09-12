@@ -60,6 +60,7 @@ public class AccountQrcode extends Fragment {
             fm.popBackStack();
         });
 
+        // create qrcode
         qrgEncoder = new QRGEncoder(getArguments().getString("user_id"), null, QRGContents.Type.TEXT, 500);
         try {
             bitmap = qrgEncoder.encodeAsBitmap();
@@ -92,16 +93,33 @@ public class AccountQrcode extends Fragment {
             }
         });
 
-        btnScan.setOnClickListener(view -> {
-            Fragment fragment  = new ScannerFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", "user_id");
-            fragment.setArguments(bundle);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
-        });
+        if (getArguments().getString("admin") != null) {
+            btnScan.setOnClickListener(view -> {
+                Fragment fragment  = new ScannerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", "user_id");
+                bundle.putString("admin", "admin");
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_admin, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            });
+
+        } else{
+            btnScan.setOnClickListener(view -> {
+                Fragment fragment  = new ScannerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", "user_id");
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            });
+
+        }
+
 
 
 

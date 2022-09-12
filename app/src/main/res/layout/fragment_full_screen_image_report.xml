@@ -25,23 +25,13 @@
 
             <ImageButton
                 android:id="@+id/btnBack"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:background="@drawable/ic_back"
                 android:layout_centerInParent="true"
                 android:layout_alignParentLeft="true"
                 android:backgroundTint="@color/white" />
 
-            <TextView
-                android:id="@+id/tv_image_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Image Report"
-                android:textColor="@color/white"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/popmed"
-                android:textSize="@dimen/_10sdp"/>
 
         </RelativeLayout>
 

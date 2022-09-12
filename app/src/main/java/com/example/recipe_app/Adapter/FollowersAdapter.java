@@ -203,6 +203,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.View
 
         @Override
         public void onClick(View view) {
+
             Fragment fragment = new ShowProfileFragment();
             Bundle bundle =  new Bundle();
             bundle.putString("user_id", profileModelList.get(getAdapterPosition()).getFollowers_id().toString());
