@@ -230,7 +230,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         @Override
         public void onClick(View view) {
             
-            
+            // Jika type follow makan akan direct ke showprofile
             if (notificationModelist.get(getAdapterPosition()).getType().toString().equals("follow")) {
 
                 Fragment fragment = new ShowProfileFragment();
@@ -243,7 +243,10 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 ft.commit();
 
 
-            } else if (notificationModelist.get(getAdapterPosition()).getType().equals("like")){
+            }
+
+            // Jika type like maka kirim data ke detail recipe
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("like")){
                 InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
                 interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
                     @Override
@@ -277,7 +280,6 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             ft.addToBackStack(null);
                             ft.commit();
 
-                            Toast.makeText(context, "berhasil", Toast.LENGTH_LONG).show();
 
                         } else {
                             Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();

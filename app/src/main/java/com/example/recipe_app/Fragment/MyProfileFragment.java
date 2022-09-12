@@ -52,7 +52,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     String username, userid;
     ImageView iv_profile;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
-    ImageButton btnSetting;
+    ImageButton btnSetting, btnQrCode;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
@@ -92,6 +92,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         btnSetting = view.findViewById(R.id.btn_setting);
         lr_followers = view.findViewById(R.id.lr_followers);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        btnQrCode = view.findViewById(R.id.btn_qrcode);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -107,17 +108,18 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         context = getContext();
 
+        // button qrcode listener
+        btnQrCode.setOnClickListener(view1 -> {
+            Fragment fragment = new AccountQrcode();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", userid);
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
 
-
-
-        // Mengambil data profile dari API
-        getProfile(userid);
-
-        // mengambil data recipe dari API
-        getRecipe(userid, 1);
-
-        // Set shimmer
-        setShimmer();
 
 
         // create tablayout
@@ -480,6 +482,15 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     @Override
     public void onResume() {
         setShimmer();
+        // Mengambil data profile dari API
+        getProfile(userid);
+
+        // mengambil data recipe dari API
+        getRecipe(userid, 1);
+
+        // Set shimmer
+        setShimmer();
+
         super.onResume();
     }
 
