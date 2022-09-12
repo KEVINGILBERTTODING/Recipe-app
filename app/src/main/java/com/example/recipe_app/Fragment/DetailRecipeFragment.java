@@ -53,6 +53,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.CommentAdapter;
+import com.example.recipe_app.Admin.Fragment.FullScreenImageReport;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -378,6 +379,22 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             builder.show();
         });
 
+        // Saat image recipe di klik
+        ivRecipeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new FullScreenImageReport();
+                Bundle bundle = new Bundle();
+                bundle.putString("image", image);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         // show shimmer
         setShimmer();
 
@@ -518,10 +535,28 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 public boolean onDown(MotionEvent e) {
                     return true;
                 }
+
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+
+                    Fragment fragment = new FullScreenImageReport();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("image", photoRecipe);
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    return super.onSingleTapUp(e);
+
+
+                }
             });
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetector.onTouchEvent(motionEvent);
+
                 return true;
             }
         });

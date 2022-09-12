@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,6 +22,7 @@ public class FullScreenImageReport extends Fragment {
     PhotoView img_report;
     ImageButton btn_back;
     String image;
+    TextView tv_title;
 
 
 
@@ -31,6 +33,7 @@ public class FullScreenImageReport extends Fragment {
         View root = inflater.inflate(R.layout.fragment_full_screen_image_report, container, false);
         img_report = root.findViewById(R.id.img_report);
         btn_back = root.findViewById(R.id.btnBack);
+        tv_title =  root.findViewById(R.id.tv_image_title);
 
         // get data from bundle
         image = getArguments().getString("image");
