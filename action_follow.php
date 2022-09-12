@@ -18,11 +18,15 @@ $query = "INSERT INTO following (user_id, following_id, date, time)
 VALUES ('$user_id', '$following_id', '$date', '$time')";
 $result = mysqli_query($koneksi, $query);
 if ($result) {
-    // $follow = "INSERT INTO notifications (user_id, following_id, type, date, time)"
+
 
     $follow = "INSERT INTO followers (user_id, followers_id, date, time)
     VALUES ('$following_id', '$user_id', '$date', '$time')";
     $execute = mysqli_query($koneksi, $follow);
+
+    $notification = "INSERT INTO notification (user_id, user_id_notif, type, status, date, time)
+                    VALUES ('$user_id', '$following_id', 'follow', '1', '$date', '$time')";
+    $execute = mysqli_query($koneksi, $notification);
     $response = new usr();
     $response->success = 1;
     $response->message = "Successfully followed";

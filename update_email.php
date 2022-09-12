@@ -7,8 +7,7 @@ class usr
 
 $email = $_POST['email'];
 $user_id = $_POST['user_id'];
-
-$query = "UPDATE users SET email = '$email' WHERE user_id = '$user_id'";
+$$query = "UPDATE users SET email = '$email' WHERE user_id = '$user_id'";
 $result = mysqli_query($koneksi, $query);
 if ($result) {
     $response = new usr();
