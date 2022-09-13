@@ -681,6 +681,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         });
 
+
         // saat button like di klik
         btnLike.setOnClickListener(View -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
@@ -778,8 +779,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     getComment(recipe_id);
                     et_comment.setText("");
 
-                    //show snackbar
-                    Snackbar.make(getView(), "Comment added", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Comment added", Toasty.LENGTH_SHORT).show();
 
                 }
                 else {
@@ -1148,9 +1148,21 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                                     commentModel.setComment(et_comment.getText().toString());
                                                     relativeLayout.setVisibility(View.GONE);
                                                     commentAdapter.notifyItemChanged(position);
-
                                                     et_comment.setText("");
                                                     commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+
+                                                    // if btn update comment is click and success than reset button send to create
+                                                    // new comment
+                                                    btnSend.setOnClickListener(View -> {
+                                                        String comment = et_comment.getText().toString();
+                                                        if (comment.isEmpty()) {
+                                                            Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+                                                        }
+                                                    });
+
+
                                                 } else {
                                                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                                                 }
