@@ -36,9 +36,11 @@ import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Model.CommentModel;
+import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -80,6 +82,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_date.setText(commentModelsList.get(position).getComment_date());
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
         String comment = commentModelsList.get(position).getComment();
+        String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
 
 
@@ -96,20 +99,48 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .into(holder.img_profile);
 
 
-        // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
-        if (user_id.equals(userid)) {
 
-            // Change text color if user_id == user_id comment
-            holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
-            holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
-               @Override
-               public boolean onLongClick(View view) {
-                   onCommentLisstener.onCommentCLick(view, position);
-                   return false;
-               }
-           });
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
+                    if (user_id.equals(userid)) {
 
-        }
+                        // Change text color if user_id == user_id comment
+                        holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
+                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                                return false;
+                            }
+                        });
+
+                    } else if (response.body().get(0).getUser_id().equals(userid)) {
+                        // Change text color if user_id == user_id comment
+
+                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                                return false;
+                            }
+                        });
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+
+
 
 
 

@@ -1119,79 +1119,137 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     @Override
     public void onCommentCLick(View view, int position) {
         CommentModel commentModel = commentModelsList.get(position);
-        switch (view.getId()) {
-            case R.id.list_comments :
+        String userid_new = commentModel.getUser_id();
 
-                PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
-                popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
-                            case R.id.mnu_edit_comment:
-                                popupMenu.dismiss();
-                                relativeLayout.setVisibility(View.VISIBLE);
-                                et_comment.setText(commentModel.getComment());
-                                et_comment.requestFocus();
-                                btnSend.setOnClickListener(view1 -> {
-                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                    interfaceComment.editComment(commentModel.getComment_id(), et_comment.getText().toString()).enqueue(new Callback<CommentModel>() {
-                                        @Override
-                                        public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                            if (response.body().getSuccess().equals("1")) {
-                                                Toasty.success(getContext(), "Comment updated!", Toasty.LENGTH_SHORT).show();
-                                                commentModel.setComment(et_comment.getText().toString());
-                                                relativeLayout.setVisibility(View.GONE);
-                                                commentAdapter.notifyItemChanged(position);
+        // muncul opsi edit dan delete jika user comment
+        if (user_id.equals(userid_new)) {
 
-                                                et_comment.setText("");
-                                                commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
-                                            } else {
-                                                Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+            switch (view.getId()) {
+                case R.id.list_comments :
+                    PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
+                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()){
+
+                                case R.id.mnu_edit_comment:
+                                    popupMenu.dismiss();
+                                    relativeLayout.setVisibility(View.VISIBLE);
+                                    et_comment.setText(commentModel.getComment());
+                                    et_comment.requestFocus();
+                                    btnSend.setOnClickListener(view1 -> {
+                                        InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                                        interfaceComment.editComment(commentModel.getComment_id(), et_comment.getText().toString()).enqueue(new Callback<CommentModel>() {
+                                            @Override
+                                            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                                if (response.body().getSuccess().equals("1")) {
+                                                    Toasty.success(getContext(), "Comment updated!", Toasty.LENGTH_SHORT).show();
+                                                    commentModel.setComment(et_comment.getText().toString());
+                                                    relativeLayout.setVisibility(View.GONE);
+                                                    commentAdapter.notifyItemChanged(position);
+
+                                                    et_comment.setText("");
+                                                    commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                                } else {
+                                                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                                }
+
                                             }
 
-                                        }
+                                            @Override
+                                            public void onFailure(Call<CommentModel> call, Throwable t) {
+                                                Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
 
-                                        @Override
-                                        public void onFailure(Call<CommentModel> call, Throwable t) {
-                                            Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
-
-                                        }
+                                            }
+                                        });
                                     });
-                                });
-                                break;
-                            case R.id.mnu_delete_comment:
-                                popupMenu.dismiss();
-                                InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, commentModel.getComment_date(), commentModel.getComment_time())
-                                        .enqueue(new Callback<CommentModel>() {
-                                    @Override
-                                    public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                        if (response.body().getSuccess().equals("1")) {
-                                            commentModelsList.remove(position);
-                                            Toasty.error(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
-                                            commentAdapter.notifyItemChanged(position);
-                                            commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
-                                        } else {
-                                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                    break;
 
-                                        }
-                                    }
+                                case R.id.mnu_delete_comment:
+                                    popupMenu.dismiss();
+                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, commentModel.getComment_date(), commentModel.getComment_time())
+                                            .enqueue(new Callback<CommentModel>() {
+                                                @Override
+                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                                    if (response.body().getSuccess().equals("1")) {
+                                                        commentModelsList.remove(position);
+                                                        Toasty.error(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
+                                                        commentAdapter.notifyItemChanged(position);
+                                                        commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                                    } else {
+                                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
 
-                                    @Override
-                                    public void onFailure(Call<CommentModel> call, Throwable t) {
-                                        Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+                                                    }
+                                                }
 
-                                    }
-                                });
+                                                @Override
+                                                public void onFailure(Call<CommentModel> call, Throwable t) {
+                                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+
+                                                }
+                                            });
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+                    });
+                    popupMenu.show();
 
-                break;
+                    break;
+            }
+
+
         }
+        // Jika pemilik recipe yang klik maka ada opsi untuk delete comment
+        else {
+            switch (view.getId()) {
+                case R.id.list_comments :
+
+                    PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
+                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu2, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()){
+
+                                case R.id.mnu_delete_comment:
+                                    popupMenu.dismiss();
+                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, commentModel.getComment_date(), commentModel.getComment_time())
+                                            .enqueue(new Callback<CommentModel>() {
+                                                @Override
+                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                                    if (response.body().getSuccess().equals("1")) {
+                                                        commentModelsList.remove(position);
+                                                        Toasty.error(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
+                                                        commentAdapter.notifyItemChanged(position);
+                                                        commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                                    } else {
+                                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<CommentModel> call, Throwable t) {
+                                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+
+                                                }
+                                            });
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+
+                    break;
+            }
+
+        }
+
+
+
 
     }
 }
