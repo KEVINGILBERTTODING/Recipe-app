@@ -12,6 +12,11 @@ $query = "DELETE FROM comments WHERE comment_id='$comment_id'";
 
 $result = mysqli_query($koneksi, $query);
 if ($result) {
+
+
+
+    // $notification = "DELETE FROM notification where notif_id = '$notif_id' ";
+    // $result = mysqli_query($koneksi, $notification);
     $response = new emp();
     $response->success = 1;
     $response->message = "Successfully deleted";

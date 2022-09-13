@@ -10,7 +10,7 @@ class followers
 $followers_id = $_POST['followers_id'];
 $user_id = $_POST['user_id'];
 
-$query = "DELETE FROM followers where user_id = '$user_id' and followers_id ";
+$query = "DELETE FROM followers where user_id = '$user_id' and followers_id ='$followers_id' ";
 $result = mysqli_query($koneksi, $query);
 
 if ($result) {
