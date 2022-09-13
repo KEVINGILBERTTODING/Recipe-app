@@ -1163,7 +1163,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                             case R.id.mnu_delete_comment:
                                 popupMenu.dismiss();
                                 InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, recipeDate, recipeTime)
+                                interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, commentModel.getComment_date(), commentModel.getComment_time())
                                         .enqueue(new Callback<CommentModel>() {
                                     @Override
                                     public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
