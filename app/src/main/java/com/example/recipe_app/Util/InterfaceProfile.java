@@ -144,7 +144,7 @@ public interface InterfaceProfile {
  Call<ProfileModel> removeFollowers(
 
          @Field("user_id") String user_id,
-         @Field("followers_id") Integer followers_id
+         @Field("followers_id") String followers_id
  );
 
  // REMOVE FOLLOWING

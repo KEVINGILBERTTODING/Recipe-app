@@ -146,6 +146,12 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
 
+        // Mengambil data profile dari API
+        getProfile(user_id);
+
+        // mengambil data recipe dari API
+        getRecipe(user_id, 1);
+
 
         // jika user id sama dengan user id profile maka btnmore dan button follow dihilangkan
         if (user_id.equals(userid)) {
@@ -806,11 +812,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     @Override
     public void onResume() {
         setShimmer();
-        // Mengambil data profile dari API
-        getProfile(user_id);
 
-        // mengambil data recipe dari API
-        getRecipe(user_id, 1);
 
         super.onResume();
     }

@@ -246,6 +246,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             Bundle bundle = new Bundle();
             bundle.putString("username",username);
             bundle.putString("user_id", userid);
+            bundle.putString("my_profile", "my_profile");
             fragment.setArguments(bundle);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_container, fragment);

@@ -99,6 +99,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_data_saved_recipe.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_data_show_all.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_followers.xml" value="0.264" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_my_followers.xml" value="0.20092592592592592" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_my_recipe.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_notification.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/list_recipe_report.xml" value="0.23333333333333334" />
@@ -123,6 +124,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/layout.xml" value="0.2" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/list_user_admin_menu.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/list_user_admin_menu_disable.xml" value="0.175" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/list_user_admin_menu_enable.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/saved_menu_recipe.xml" value="0.19145299145299147" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/menu/values.xml" value="0.19145299145299147" />
       </map>

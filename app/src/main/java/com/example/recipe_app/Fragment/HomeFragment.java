@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                 countNotification();
                 handler.postDelayed(this,3000);
             }
-        }, 3000);
+        }, 1000);
 
 
 
