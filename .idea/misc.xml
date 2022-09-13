@@ -57,7 +57,7 @@
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_detail_recipe_report.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_detail_user_report.xml" value="0.2" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_edit_my_recipe.xml" value="0.19145299145299147" />
-        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_followers_following.xml" value="0.19145299145299147" />
+        <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_followers_following.xml" value="0.2" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_full_screen_image_report.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/lenovo/Desktop/Recipe-App/app/src/main/res/layout/fragment_my_profile.xml" value="0.2" />
@@ -139,7 +139,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.264" />
+        <option name="scale" value="0.2" />
       </ProjectState>
     </option>
   </component>

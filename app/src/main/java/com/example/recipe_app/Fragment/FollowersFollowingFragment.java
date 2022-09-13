@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class FollowersFollowingFragment extends Fragment {
     TextView tv_username_bar;
     TextView tv_no_data;
     MyFollowersAdapter myFollowersAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -68,6 +70,7 @@ public class FollowersFollowingFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_username_bar = root.findViewById(R.id.tv_username_bar);
         tv_no_data = root.findViewById(R.id.tv_notfound);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
 
 
         userid = getArguments().getString("user_id");
@@ -78,21 +81,47 @@ public class FollowersFollowingFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Followers"));
         tabLayout.addTab(tabLayout.newTab().setText("Following"));
 
+
+
         // tab selected
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (getArguments().getString("my_profile") != null) {
                     if (tab.getPosition() == 0) {
+                        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                getMyFollowers(userid);
+                            }
+                        });
                         getMyFollowers(userid);
                     } else if (tab.getPosition() == 1) {
+                        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                getAllFollowing(userid);
+                            }
+                        });
                         getAllFollowing(userid);
                     }
                 } else {
 
                     if (tab.getPosition() == 0) {
+                        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                getAllFollowers(userid);
+                            }
+                        });
                         getAllFollowers(userid);
                     } else if (tab.getPosition() == 1) {
+                        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                            @Override
+                            public void onRefresh() {
+                                getAllFollowing(userid);
+                            }
+                        });
                         getAllFollowing(userid);
 
                     }
@@ -125,6 +154,9 @@ public class FollowersFollowingFragment extends Fragment {
         } else {
             getAllFollowers(userid);
         }
+
+        // change icon color swipe refreshh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
 
 
@@ -233,6 +265,7 @@ public class FollowersFollowingFragment extends Fragment {
                         rv_user.setAdapter(followersAdapter);
                         rv_user.setHasFixedSize(true);
                         tv_no_data.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
 
                         /* Shimmer layout view type depending on List / Gird */
                         rv_user.setItemViewType((type, position) -> {
@@ -262,12 +295,15 @@ public class FollowersFollowingFragment extends Fragment {
                 } else {
                     rv_user.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getAllFollowers(useridx);
                 
 
             }
@@ -291,6 +327,7 @@ public class FollowersFollowingFragment extends Fragment {
                         rv_user.setAdapter(myFollowersAdapter);
                         rv_user.setHasFixedSize(true);
                         tv_no_data.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
 
                         /* Shimmer layout view type depending on List / Gird */
                         rv_user.setItemViewType((type, position) -> {
@@ -320,12 +357,15 @@ public class FollowersFollowingFragment extends Fragment {
                 } else {
                     rv_user.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getMyFollowers(useridx);
 
 
             }
@@ -348,6 +388,7 @@ public class FollowersFollowingFragment extends Fragment {
                     rv_user.setAdapter(followingAdapter);
                     rv_user.setHasFixedSize(true);
                     tv_no_data.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
 
                     /* Shimmer layout view type depending on List / Gird */
                     rv_user.setItemViewType((type, position) -> {
@@ -375,6 +416,7 @@ public class FollowersFollowingFragment extends Fragment {
                 } else {
                     rv_user.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
 
                 }
             }
@@ -382,6 +424,8 @@ public class FollowersFollowingFragment extends Fragment {
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "no connection", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getAllFollowing(useridx);
 
             }
         });

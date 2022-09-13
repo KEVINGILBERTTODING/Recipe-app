@@ -404,7 +404,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(true)
-                .override(100, 100)
+                .fitCenter()
+                .override(300, 300)
                 .into(ivProfile);
 
         // if btn back is click
@@ -589,7 +590,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             if (comment.isEmpty()) {
                 Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
             } else {
-                postComment(useridx, recipe_id, et_comment.getText().toString());
+                postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
             }
         });
 
@@ -767,8 +768,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     // Post comment
-    public void postComment(String user_id,  String recipe_id, String comment) {
-        DataApi.getClient().create(InterfaceComment.class).createComment(user_id, recipe_id, comment).enqueue(new Callback<CommentModel>() {
+    public void postComment(String user_id,  String recipe_id, String user_id_notif, String comment) {
+        DataApi.getClient().create(InterfaceComment.class).createComment(user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
             @Override
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
                 if (response.isSuccessful()) {
@@ -789,6 +790,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onFailure(Call<CommentModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Log.e("MYAppp" , t.getMessage());
             }
 
         });
@@ -1161,7 +1163,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                             case R.id.mnu_delete_comment:
                                 popupMenu.dismiss();
                                 InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                interfaceComment.deleteComment(commentModel.getComment_id()).enqueue(new Callback<CommentModel>() {
+                                interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id, recipeDate, recipeTime)
+                                        .enqueue(new Callback<CommentModel>() {
                                     @Override
                                     public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
                                         if (response.body().getSuccess().equals("1")) {

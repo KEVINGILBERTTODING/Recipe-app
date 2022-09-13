@@ -24,6 +24,7 @@ public interface InterfaceComment {
     @POST("post_comment.php")
     Call<CommentModel> createComment(@Field("user_id") String user_id,
                                      @Field("recipe_id") String recipe_id,
+                                     @Field("user_id_notif") String user_id_notif,
                                      @Field("comment") String comment);
 
     // method for edit comment
@@ -36,7 +37,14 @@ public interface InterfaceComment {
     // method for delete comment
     @FormUrlEncoded
     @POST("delete_comment.php")
-    Call<CommentModel> deleteComment(@Field("comment_id") String comment_id);
+    Call<CommentModel> deleteComment(
+            @Field("comment_id") String comment_id,
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id") String user_id,
+            @Field("user_id_notif") String user_id_notif,
+            @Field("date") String date,
+            @Field("time") String time
+    );
 
 
 

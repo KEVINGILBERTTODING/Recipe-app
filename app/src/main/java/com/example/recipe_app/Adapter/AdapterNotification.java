@@ -138,6 +138,43 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                 }
             });
+        } else if(type.equals("comment")) {
+
+            holder.tv_content.setText("Commented on your recipe:");
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setText(notificationModelist.get(position).getComment().toString() +"");
+            holder.tv_comment.setVisibility(View.VISIBLE);
+
+
+            // call api untuk menampilkan gambar berdasarkan recipe id
+            InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+            interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                @Override
+                public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                    if (response.body().size() > 0) {
+                        Glide.with(context)
+                                .load(response.body().get(0).getImage())
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true)
+                                .override(300, 300)
+                                .into(holder.iv_recipe);
+
+
+                    } else {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
         }
 
 
@@ -227,7 +264,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv_user, iv_recipe;
-        TextView tv_username, tv_content, tv_date, tv_time;
+        TextView tv_username, tv_content, tv_date, tv_time, tv_comment;
         Button btn_follow, btn_unfoll;
         RelativeLayout rl_notification;
         public ViewHolder(@NonNull View itemView) {
@@ -243,7 +280,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             btn_follow = itemView.findViewById(R.id.btn_follow);
             btn_unfoll = itemView.findViewById(R.id.btn_unfollow);
             rl_notification =itemView.findViewById(R.id.rl_notification);
-
+            tv_comment = itemView.findViewById(R.id.tv_comment);
             itemView.setOnClickListener(this);
 
 
@@ -269,6 +306,55 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
             // Jika type like maka kirim data ke detail recipe
             else if (notificationModelist.get(getAdapterPosition()).getType().equals("like")){
+                InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
+                    @Override
+                    public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                        if (response.body().size() > 0 ) {
+                            Fragment fragment =  new DetailRecipeFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("recipe_id", response.body().get(getAdapterPosition()).getRecipe_id());
+                            bundle.putString("user_id", response.body().get(getAdapterPosition()).getUser_id_notif());
+                            bundle.putString("username", response.body().get(getAdapterPosition()).getUsername());
+                            bundle.putString("title", response.body().get(getAdapterPosition()).getTitle());
+                            bundle.putString("description", response.body().get(getAdapterPosition()).getDescription());
+                            bundle.putString("category", response.body().get(getAdapterPosition()).getCategory());
+                            bundle.putString("servings", response.body().get(getAdapterPosition()).getServings());
+                            bundle.putString("duration", response.body().get(getAdapterPosition()).getDuration());
+                            bundle.putString("ingredients", response.body().get(getAdapterPosition()).getIngredients());
+                            bundle.putString("steps", response.body().get(getAdapterPosition()).getSteps());
+                            bundle.putString("upload_date", response.body().get(getAdapterPosition()).getUpload_date());
+                            bundle.putString("upload_time", response.body().get(getAdapterPosition()).getUpload_time());
+                            bundle.putString("image", response.body().get(getAdapterPosition()).getImage());
+                            bundle.putString("status", response.body().get(getAdapterPosition()).getStatus());
+                            bundle.putString("ratings", response.body().get(getAdapterPosition()).getRatings());
+                            bundle.putString("likes", response.body().get(getAdapterPosition()).getLikes());
+                            bundle.putString("photo_profile", response.body().get(getAdapterPosition()).getPhoto_profile());
+                            bundle.putString("email", response.body().get(getAdapterPosition()).getEmail());
+                            bundle.putString("notes", response.body().get(getAdapterPosition()).getNote());
+                            fragment.setArguments(bundle);
+
+                            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, fragment);
+                            ft.addToBackStack(null);
+                            ft.commit();
+
+
+                        } else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+
+            // Jika type comment maka kirim data ke detail recipe dan menagarahkan pada comment
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("comment")){
                 InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
                 interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
                     @Override

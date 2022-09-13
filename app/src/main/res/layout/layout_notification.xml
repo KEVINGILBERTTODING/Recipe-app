@@ -46,6 +46,15 @@
                 android:text="the content should be here"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp" />
+            <TextView
+                android:id="@+id/tv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:visibility="gone"
+                android:text="comment will be here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 
