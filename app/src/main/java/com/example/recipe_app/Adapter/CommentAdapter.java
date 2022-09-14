@@ -85,6 +85,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
 
+        // If comment is edited than show text "edited"
+        if (commentModelsList.get(position).getEdited().equals("1")) {
+            holder.tv_edited.setVisibility(View.VISIBLE);
+        } else{
+            holder.tv_edited.setVisibility(View.GONE);
+        }
+
 
         Glide.with(context)
                 .load(commentModelsList.get(position).getPhoto_profile())
@@ -109,7 +116,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     if (user_id.equals(userid)) {
 
                         // Change text color if user_id == user_id comment
-                        holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
+                        holder.tv_username.setTextColor(context.getResources().getColor(R.color.blue));
                         holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View view) {
@@ -163,7 +170,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile;
-        TextView tv_username, tv_comment, tv_date, tv_time;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited;
         RelativeLayout list_comment;
 
 
@@ -179,9 +186,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_time = itemView.findViewById(R.id.tv_time);
             list_comment = itemView.findViewById(R.id.list_comments);
-
-
-
+            tv_edited = itemView.findViewById(R.id.tv_edited);
 
 
         }

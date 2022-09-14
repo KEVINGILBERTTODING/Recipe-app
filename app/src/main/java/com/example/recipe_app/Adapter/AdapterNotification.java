@@ -363,7 +363,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             Fragment fragment =  new DetailRecipeFragment();
                             Bundle bundle = new Bundle();
                             bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
-                            bundle.putString("user_id", response.body().get(0).getUser_id_notif());
+                            bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("user_id", response.body().get(0).getUser_id());
                             bundle.putString("username", response.body().get(0).getUsername());
                             bundle.putString("title", response.body().get(0).getTitle());
                             bundle.putString("description", response.body().get(0).getDescription());
