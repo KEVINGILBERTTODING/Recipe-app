@@ -7,6 +7,14 @@ class emp
 
 $comment_id = $_POST['comment_id'];
 
+$recipe_id = $_POST['recipe_id'];
+$user_id = $_POST['user_id'];
+$user_id_notif = $_POST['user_id_notif'];
+$date = $_POST['date'];
+$time = $_POST['time'];
+
+
+
 
 $query = "DELETE FROM comments WHERE comment_id='$comment_id'";
 
@@ -15,8 +23,12 @@ if ($result) {
 
 
 
-    // $notification = "DELETE FROM notification where notif_id = '$notif_id' ";
-    // $result = mysqli_query($koneksi, $notification);
+    // Delete notification
+    $notification = "DELETE FROM notification where user_id = '$user_id' and user_id_notif = '$user_id_notif'
+                    and recipe_id = '$recipe_id' and date = '$date' and time = '$time'";
+
+    $execute = mysqli_query($koneksi, $notification);
+
     $response = new emp();
     $response->success = 1;
     $response->message = "Successfully deleted";
