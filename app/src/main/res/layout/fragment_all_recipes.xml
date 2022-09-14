@@ -28,7 +28,7 @@
                 android:fontFamily="@font/popsem"
                 android:text="Find all recipe"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 

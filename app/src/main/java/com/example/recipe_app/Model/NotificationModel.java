@@ -34,11 +34,14 @@ public class NotificationModel implements Serializable {
     String image;
      @SerializedName("comment")
      String comment;
+     @SerializedName("success")
+     String success;
 
 
 
     public NotificationModel(String notif_id, String user_id, String user_id_notif, String recipe_id, String type, String date,
-                             String time, Integer status, String username, String photo_profile, String title, String image, String comment) {
+                             String time, Integer status, String username, String photo_profile,
+                             String title, String image, String comment, String success) {
         this.notif_id = notif_id;
         this.user_id = user_id;
         this.user_id_notif = user_id_notif;
@@ -52,6 +55,7 @@ public class NotificationModel implements Serializable {
         this.title = title;
         this.image = image;
         this.comment =comment;
+        this.success = success;
     }
 
     public String getNotif_id() {
@@ -156,5 +160,13 @@ public class NotificationModel implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(String success) {
+        this.success = success;
     }
 }

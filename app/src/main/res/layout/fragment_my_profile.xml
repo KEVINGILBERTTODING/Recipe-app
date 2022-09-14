@@ -25,26 +25,28 @@
                 android:fontFamily="@font/popsem"
                 android:text="Profile"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:layout_centerInParent="true"
+                android:gravity="end"
                 android:orientation="horizontal">
+
                 <ImageButton
                     android:id="@+id/btn_qrcode"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:backgroundTint="@color/black"
-                    android:background="@drawable/ic_qrcode" />
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/ic_qrcode"
+                    android:backgroundTint="@color/black" />
+
                 <ImageButton
                     android:id="@+id/btn_setting"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/ic_setting"

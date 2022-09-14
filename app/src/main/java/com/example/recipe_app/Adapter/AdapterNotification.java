@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.NotificationModel;
@@ -35,6 +38,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
 
@@ -144,6 +148,37 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             holder.iv_recipe.setVisibility(View.VISIBLE);
             holder.tv_comment.setText(notificationModelist.get(position).getComment().toString() +"");
             holder.tv_comment.setVisibility(View.VISIBLE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
 
 
             // call api untuk menampilkan gambar berdasarkan recipe id
@@ -267,6 +302,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         TextView tv_username, tv_content, tv_date, tv_time, tv_comment;
         Button btn_follow, btn_unfoll;
         RelativeLayout rl_notification;
+        SwipeLayout swipeLayout;
+        ImageButton btn_delete;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -281,6 +318,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             btn_unfoll = itemView.findViewById(R.id.btn_unfollow);
             rl_notification =itemView.findViewById(R.id.rl_notification);
             tv_comment = itemView.findViewById(R.id.tv_comment);
+            swipeLayout = itemView.findViewById(R.id.swipe_notification);
+            btn_delete = itemView.findViewById(R.id.btn_delete);
             itemView.setOnClickListener(this);
 
 

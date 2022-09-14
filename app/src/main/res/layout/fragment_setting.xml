@@ -26,21 +26,22 @@
 
                 <ImageButton
                     android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_15sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_centerVertical="true"
-                    android:layout_height="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/ic_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_toRightOf="@+id/btnBack"
                     android:fontFamily="@font/popsem"
                     android:text="Settings"
-                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:id="@+id/tv_apply"
@@ -63,8 +64,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_centerVertical="true"
                 android:src="@color/gray"
                 app:civ_border_color="@color/main"
@@ -86,7 +87,7 @@
                     android:fontFamily="@font/popsem"
                     android:text="Username"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tv_email"
@@ -104,7 +105,7 @@
                     android:layout_below="@id/iv_profile"
                     android:fontFamily="@font/popmed"
                     android:text="Change Profile Picture"
-                    android:textSize="@dimen/_7sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
             </LinearLayout>
         </RelativeLayout>

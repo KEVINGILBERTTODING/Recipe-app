@@ -35,4 +35,12 @@ public interface InterfaceNotification {
             @Field("user_id") String user_id
     );
 
+
+    // Delete notification
+    @FormUrlEncoded
+    @POST("delete_notification.php")
+    Call<NotificationModel> deleteNotification(
+            @Field("notif_id") String notif_id
+    );
+
 }

@@ -7,6 +7,42 @@
     android:layout_marginBottom="@dimen/_10sdp"
     android:layout_height="wrap_content">
 
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/lr_delete"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:background="@color/red"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_trash"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
     <RelativeLayout
         android:id="@+id/rl_notification"
         android:layout_width="match_parent"
@@ -136,6 +172,7 @@
     </RelativeLayout>
 
 
+    </com.daimajia.swipe.SwipeLayout>
 
 
 
