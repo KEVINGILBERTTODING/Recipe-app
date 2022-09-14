@@ -31,11 +31,16 @@ public class SplashScreen extends AppCompatActivity {
 
         tv_app_version = findViewById(R.id.tv_app_version);
 
-        hideNavigationBar();
+        // Fungsi untuk menyembunyikan navbar
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+
+
 
         final Handler handler = new Handler();
-
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -45,33 +50,7 @@ public class SplashScreen extends AppCompatActivity {
         }, 3000L);
 
 
-        // get app version
-        InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
-        interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
-            @Override
-            public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
-                List<AppModel> appModelList  = response.body();
-                if (response.body().size() > 0 ) {
-                    tv_app_version.setText(appModelList.get(0).getApp_version());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<AppModel>> call, Throwable t) {
-
-            }
-        });
-
     }
 
-    private void hideNavigationBar() {
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
+
 }
