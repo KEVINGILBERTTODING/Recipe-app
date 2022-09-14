@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
@@ -84,6 +85,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String comment = commentModelsList.get(position).getComment();
         String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
 
         // If comment is edited than show text "edited"
         if (commentModelsList.get(position).getEdited().equals("1")) {
@@ -105,8 +108,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .override(200, 200)
                 .into(holder.img_profile);
 
+        holder.swipeLayout.setSwipeEnabled(false);
+        
 
 
+        // Mengambil userid pemilik recipe
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
             @Override
@@ -117,24 +123,57 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
                         // Change text color if user_id == user_id comment
                         holder.tv_username.setTextColor(context.getResources().getColor(R.color.blue));
-                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+
+                        // set agar btn edit dapat diklik di detailrecipefragment
+                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public boolean onLongClick(View view) {
+                            public void onClick(View view) {
                                 onCommentLisstener.onCommentCLick(view, position);
-                                return false;
                             }
                         });
+
+                        // set agar btn delete dapat diklik di detailrecipefragment
+                        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
+                        // Jika ingin long click listener
+//                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+//                            @Override
+//                            public boolean onLongClick(View view) {
+//                                onCommentLisstener.onCommentCLick(view, position);
+//                                return false;
+//                            }
+//                        });
+
+
+                        // active kan swipe layout
+                        holder.swipeLayout.setSwipeEnabled(true);
 
                     } else if (response.body().get(0).getUser_id().equals(userid)) {
-                        // Change text color if user_id == user_id comment
 
-                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+                        // set agar btn delete dapat diklik di detailrecipefragment
+                        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public boolean onLongClick(View view) {
+                            public void onClick(View view) {
                                 onCommentLisstener.onCommentCLick(view, position);
-                                return false;
                             }
                         });
+
+                        // set agar btn edit dapat diklik di detailrecipefragment
+                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
+
+                        // active swipe comment to edit or delete option
+                        holder.swipeLayout.setSwipeEnabled(true);
                     }
 
 
@@ -172,6 +211,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         ImageView img_profile;
         TextView tv_username, tv_comment, tv_date, tv_time, tv_edited;
         RelativeLayout list_comment;
+        ImageButton btn_edit, btn_delete;
+        SwipeLayout swipeLayout;
 
 
 
@@ -187,6 +228,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_time = itemView.findViewById(R.id.tv_time);
             list_comment = itemView.findViewById(R.id.list_comments);
             tv_edited = itemView.findViewById(R.id.tv_edited);
+            btn_edit = itemView.findViewById(R.id.btn_edit);
+            btn_delete = itemView.findViewById(R.id.btn_delete);
+            swipeLayout = itemView.findViewById(R.id.swipe_comment);
 
 
         }

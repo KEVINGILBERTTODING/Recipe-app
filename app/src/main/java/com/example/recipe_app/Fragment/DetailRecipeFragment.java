@@ -79,7 +79,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener, CommentAdapter.OnCommentLisstener{
+public class DetailRecipeFragment extends Fragment implements  GestureDetector.OnDoubleTapListener, View.OnClickListener, CommentAdapter.OnCommentLisstener {
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
@@ -109,9 +109,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             photoRecipe, recipeNOtes, usernamex, useridx, totalLikes, recipeStatus, recipeCategory;
 
 
-
-
-
     ShimmerRecyclerView recyclerView;
     private List<CommentModel> commentModelsList;
     NestedScrollView nestedScrollView;
@@ -123,7 +120,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     public DetailRecipeFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -193,9 +189,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         recipeCategory = getArguments().getString("category");
 
 
-
-
-
         tvRecipeName.setText(recipeName);
         tvRecipeIngredients.setText(recipeIngredients);
         tvRecipeSteps.setText(recipeSteps);
@@ -225,8 +218,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         btnMore2.setOnClickListener(view1 -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Options");
-            builder.setItems(new CharSequence[] {"Report recipe"}, (dialog, which)->{
-                switch (which){
+            builder.setItems(new CharSequence[]{"Report recipe"}, (dialog, which) -> {
+                switch (which) {
                     case 0:
                         reportForm.setContentView(R.layout.layout_report_recipe);
                         reportForm.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -282,19 +275,15 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         });
 
 
-
-
-
                         reportForm.show();
                         break;
                 }
 
-            }) ;
+            });
 
             builder.show();
 
         });
-
 
 
         // saat btn more di klik
@@ -334,7 +323,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                 .replace(R.id.fragment_container, fragment)
                                 .addToBackStack(null)
                                 .commit();
-
 
 
                         break;
@@ -386,7 +374,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         getPhotoProfile(useridx);
 
         // load image recipe
-        Glide. with(getContext())
+        Glide.with(getContext())
                 .load(photoRecipe)
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
@@ -456,10 +444,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 ft.commit();
 
 
-
             }
-
-
 
 
         });
@@ -487,8 +472,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
 
 
-                    }
-                    else {
+                    } else {
 
                         disslike_anim.setVisibility(View.VISIBLE);
                         disslike_anim.playAnimation();
@@ -551,6 +535,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                 }
             });
+
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetector.onTouchEvent(motionEvent);
@@ -558,7 +543,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 return true;
             }
         });
-
 
 
         // Show ingredients
@@ -712,8 +696,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
 
 
-
-
         return view;
     }
 
@@ -749,9 +731,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         recyclerView.hideShimmer(); // to hide shimmer
                     }, 1000);
 
+                    // method click dari comment adapter
                     commentAdapter.setOnCommentListener(DetailRecipeFragment.this);
-
-
 
 
                 }
@@ -769,7 +750,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     // Post comment
-    public void postComment(String user_id,  String recipe_id, String user_id_notif, String comment) {
+    public void postComment(String user_id, String recipe_id, String user_id_notif, String comment) {
         DataApi.getClient().create(InterfaceComment.class).createComment(user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
             @Override
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
@@ -781,9 +762,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                     Toasty.success(getContext(), "Comment added", Toasty.LENGTH_SHORT).show();
 
-                }
-
-                else {
+                } else {
                     Toast.makeText(getContext(), "Error something went wrong", Toast.LENGTH_SHORT).show();
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
@@ -792,7 +771,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onFailure(Call<CommentModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                Log.e("MYAppp" , t.getMessage());
+                Log.e("MYAppp", t.getMessage());
             }
 
         });
@@ -824,7 +803,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
 
-
     // method for if recipe is saved
     private void checkSavedRecipe(String userid, String recipeid) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
@@ -841,6 +819,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
@@ -860,6 +839,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     Snackbar.make(getView(), "Recipe saved", Snackbar.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
@@ -868,7 +848,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     //    // method for delete recipe
-    private void deleteSavedRecipe(String recipe_id, String useridx ) {
+    private void deleteSavedRecipe(String recipe_id, String useridx) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<RecipeModel> call = interfaceRecipe.deleteSavedRecipe(recipe_id, useridx);
         call.enqueue(new Callback<RecipeModel>() {
@@ -878,6 +858,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     Snackbar.make(getView(), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
@@ -901,6 +882,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
@@ -918,11 +900,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 if (response.isSuccessful()) {
                     Snackbar.make(getView(), "Recipe liked", Snackbar.LENGTH_SHORT).show();
 
-                }
-                else {
+                } else {
                     Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
@@ -940,11 +922,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(getView(), "Recipe unliked", Snackbar.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
@@ -961,8 +943,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
 
-                }
-                else {
+                } else {
                     Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
                 }
 
@@ -984,7 +965,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         interfaceRecipe.deleteRecipe(recipe_id).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     pd.dismiss();
                     FragmentManager fm = getFragmentManager();
                     fm.popBackStack();
@@ -1007,11 +988,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     // method untuk report recipe
     private void reportRecipe(String recipe_id, String user_id, String title, String image, String reason) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.reportRecipe(recipe_id, user_id,title, image, reason).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.reportRecipe(recipe_id, user_id, title, image, reason).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 RecipeModel recipeModel = response.body();
-                if(recipeModel.getStatus().equals("1")) {
+                if (recipeModel.getStatus().equals("1")) {
                     Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                     reportForm.dismiss();
@@ -1034,13 +1015,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode ==  RESULT_OK && requestCode == TAG_GALLERY && data != null && data.getData() != null){
+        if (resultCode == RESULT_OK && requestCode == TAG_GALLERY && data != null && data.getData() != null) {
 
             Uri uri_path = data.getData();
 
@@ -1056,7 +1035,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 e.printStackTrace();
                 Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
 
-            }catch (IOException e){
+            } catch (IOException e) {
                 Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
                 e.printStackTrace();
             }
@@ -1103,7 +1082,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         recyclerView.showShimmer();     // to start showing shimmer
 
 
-
     }
 
     @Override
@@ -1117,7 +1095,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
 
-
     @Override
     public void onCommentCLick(View view, int position) {
         CommentModel commentModel = commentModelsList.get(position);
@@ -1127,101 +1104,91 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         if (user_id.equals(userid_new) || useridx.equals(userid_new)) {
 
             switch (view.getId()) {
-                case R.id.list_comments :
-                    PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
-                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()){
-
-                                case R.id.mnu_edit_comment:
-                                    popupMenu.dismiss();
-                                    relativeLayout.setVisibility(View.VISIBLE);
-                                    et_comment.setText(commentModel.getComment());
-                                    et_comment.requestFocus();
-                                    btnSend.setOnClickListener(view1 -> {
-                                        InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                        interfaceComment.editComment(commentModel.getComment_id(),
-                                                et_comment.getText().toString(),
-                                                recipe_id,
-                                                useridx,
-                                                user_id,
-                                                commentModel.getComment_date(),
-                                                commentModel.getComment_time())
-                                                .enqueue(new Callback<CommentModel>() {
-                                            @Override
-                                            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                                if (response.body().getSuccess().equals("1")) {
-                                                    Toasty.success(getContext(), "Comment updated!", Toasty.LENGTH_SHORT).show();
-                                                    commentModel.setComment(et_comment.getText().toString());
-                                                    relativeLayout.setVisibility(View.GONE);
-                                                    commentAdapter.notifyItemChanged(position);
-                                                    et_comment.setText("");
-                                                    commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
-
-                                                    // if btn update comment is click and success than reset button send to create
-                                                    // new comment
-                                                    btnSend.setOnClickListener(View -> {
-                                                        String comment = et_comment.getText().toString();
-                                                        if (comment.isEmpty()) {
-                                                            Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
-                                                        }
-                                                    });
 
 
+                case R.id.btn_edit:
+
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    et_comment.setText(commentModel.getComment());
+                    et_comment.requestFocus();
+                    btnSend.setOnClickListener(view1 -> {
+                        InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                        interfaceComment.editComment(commentModel.getComment_id(),
+                                        et_comment.getText().toString(),
+                                        recipe_id,
+                                        useridx,
+                                        user_id,
+                                        commentModel.getComment_date(),
+                                        commentModel.getComment_time())
+                                .enqueue(new Callback<CommentModel>() {
+                                    @Override
+                                    public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                        if (response.body().getSuccess().equals("1")) {
+                                            Toasty.success(getContext(), "Comment updated!", Toasty.LENGTH_SHORT).show();
+                                            commentModel.setComment(et_comment.getText().toString());
+                                            relativeLayout.setVisibility(View.GONE);
+                                            commentAdapter.notifyItemChanged(position);
+                                            et_comment.setText("");
+                                            commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+
+                                            // if btn update comment is click and success than reset button send to create
+                                            // new comment
+                                            btnSend.setOnClickListener(View -> {
+                                                String comment = et_comment.getText().toString();
+                                                if (comment.isEmpty()) {
+                                                    Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                                    postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
                                                 }
+                                            });
 
-                                            }
 
-                                            @Override
-                                            public void onFailure(Call<CommentModel> call, Throwable t) {
-                                                Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
+                                        } else {
+                                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                        }
 
-                                            }
-                                        });
-                                    });
-                                    break;
+                                    }
 
-                                case R.id.mnu_delete_comment:
-                                    popupMenu.dismiss();
-                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id,
-                                                    commentModel.getComment_date(), commentModel.getComment_time())
-                                            .enqueue(new Callback<CommentModel>() {
-                                                @Override
-                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                                    if (response.body().getSuccess().equals("1")) {
-                                                        Toasty.success(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
-                                                        getComment(recipe_id);
+                                    @Override
+                                    public void onFailure(Call<CommentModel> call, Throwable t) {
+                                        Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
 
-                                                        // remove from response buy postion
+                                    }
+                                });
+                    });
+                    break;
+
+                case R.id.btn_delete:
+                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id,
+                                    commentModel.getComment_date(), commentModel.getComment_time())
+                            .enqueue(new Callback<CommentModel>() {
+                                @Override
+                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                    if (response.body().getSuccess().equals("1")) {
+                                        Toasty.success(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
+                                        getComment(recipe_id);
+
+                                        // remove from response buy postion
 //                                                        commentModelsList.remove(position);
 //                                                        commentAdapter.notifyItemChanged(position);
 //                                                        commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
-                                                    } else {
-                                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                    } else {
+                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
 
-                                                    }
-                                                }
+                                    }
+                                }
 
-                                                @Override
-                                                public void onFailure(Call<CommentModel> call, Throwable t) {
-                                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+                                @Override
+                                public void onFailure(Call<CommentModel> call, Throwable t) {
+                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
 
-                                                }
-                                            });
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.show();
+                                }
+
+                            });
 
                     break;
+
             }
 
 
@@ -1229,58 +1196,43 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         // Jika pemilik recipe yang klik maka ada opsi untuk delete comment
         else {
             switch (view.getId()) {
-                case R.id.list_comments :
+                case R.id.btn_delete:
 
-                    PopupMenu popupMenu = new PopupMenu(getContext(), view, Gravity.END);
-                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu2, popupMenu.getMenu());
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            switch (menuItem.getItemId()){
+                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id,
+                                    commentModel.getComment_date(), commentModel.getComment_time())
+                            .enqueue(new Callback<CommentModel>() {
+                                @Override
+                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                                    if (response.body().getSuccess().equals("1")) {
+                                        Toasty.success(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
+                                        getComment(recipe_id);
 
-                                case R.id.mnu_delete_comment:
-                                    popupMenu.dismiss();
-                                    InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-                                    interfaceComment.deleteComment(commentModel.getComment_id(), recipe_id, useridx, user_id,
-                                                    commentModel.getComment_date(), commentModel.getComment_time())
-                                            .enqueue(new Callback<CommentModel>() {
-                                                @Override
-                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                                    if (response.body().getSuccess().equals("1")) {
-                                                        Toasty.success(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
-                                                        getComment(recipe_id);
-
-                                                        // remove from response buy postion
+                                        // remove from response buy postion
 //                                                        commentModelsList.remove(position);
 //                                                        commentAdapter.notifyItemChanged(position);
 //                                                        commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
-                                                    } else {
-                                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                    } else {
+                                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
 
-                                                    }
-                                                }
+                                    }
+                                }
 
-                                                @Override
-                                                public void onFailure(Call<CommentModel> call, Throwable t) {
-                                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
+                                @Override
+                                public void onFailure(Call<CommentModel> call, Throwable t) {
+                                    Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
 
-                                                }
-                                            });
-                            }
-                            return false;
-                        }
+                                }
+                            });
 
-                    });
-                    popupMenu.show();
 
                     break;
+
+
             }
 
         }
-
-
-
-
     }
 }
+
 
