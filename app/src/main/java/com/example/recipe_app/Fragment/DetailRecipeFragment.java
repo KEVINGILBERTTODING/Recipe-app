@@ -1232,6 +1232,72 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             }
 
         }
+
+        if (getArguments().getString("admin") != null) {
+        switch (view.getId()) {
+            case R.id.tv_username:
+
+
+                    Fragment fragment = new ShowProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("admin", "admin");
+                    bundle.putString("user_id", commentModel.getUser_id());
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_admin, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                break;
+
+            case R.id.iv_profile:
+                Fragment fragment1 = new ShowProfileFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("user_id", commentModel.getUser_id());
+                bundle1.putString("admin", "admin");
+                fragment1.setArguments(bundle1);
+                FragmentTransaction sp  = getFragmentManager().beginTransaction();
+                sp.replace(R.id.fragment_admin, fragment1);
+                sp.addToBackStack(null);
+                sp.commit();
+                break;
+
+            }
+
+
+
+        } else {
+            switch (view.getId()) {
+                case R.id.tv_username:
+
+
+                    Fragment fragment = new ShowProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("user_id", commentModel.getUser_id());
+                    fragment.setArguments(bundle);
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    break;
+
+                case R.id.iv_profile:
+                    Fragment fragment2 = new ShowProfileFragment();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("user_id", commentModel.getUser_id());
+                    fragment2.setArguments(bundle1);
+
+                    FragmentTransaction ft2 = getFragmentManager().beginTransaction();
+                    ft2.replace(R.id.fragment_container, fragment2);
+                    ft2.addToBackStack(null);
+                    ft2.commit();
+                    break;
+
+            }
+
+        }
+
     }
 }
 

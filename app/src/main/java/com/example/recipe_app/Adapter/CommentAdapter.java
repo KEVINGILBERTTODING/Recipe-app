@@ -82,10 +82,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_comment.setText(commentModelsList.get(position).getComment());
         holder.tv_date.setText(commentModelsList.get(position).getComment_date());
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
-        String comment = commentModelsList.get(position).getComment();
         String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+        // set agar tv username dan foto profile dapat di klik di detail recipe fragment
+        holder.tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCommentLisstener.onCommentCLick(view, position);
+            }
+        });
+
+        holder.img_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCommentLisstener.onCommentCLick(view, position);
+            }
+        });
+
+
 
 
         // If comment is edited than show text "edited"
