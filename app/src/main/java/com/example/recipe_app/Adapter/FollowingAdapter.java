@@ -87,65 +87,12 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-
-
                     holder.btn_follow.setVisibility(View.GONE);
                     holder.btn_unfollow.setVisibility(View.VISIBLE);
-
-
-
-
-                    holder.btn_unfollow.setOnClickListener(view -> {
-                        InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
-                        interfaceProfile1.unfollAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
-                            @Override
-                            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                                if (response.body().getSuccess().equals("1")) {
-                                    holder.btn_unfollow.setVisibility(View.GONE);
-                                    holder.btn_follow.setVisibility(View.VISIBLE);
-                                }
-
-                                else {
-                                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<ProfileModel> call, Throwable t) {
-
-
-                            }
-                        });
-                    });
-
-
 
                 } else {
                     holder.btn_follow.setVisibility(View.VISIBLE);
                     holder.btn_unfollow.setVisibility(View.GONE);
-
-                    holder.btn_follow.setOnClickListener(view -> {
-                        InterfaceProfile interfaceProfile1 =  DataApi.getClient().create(InterfaceProfile.class);
-                        interfaceProfile1.followAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
-                            @Override
-                            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                                if (response.body().getSuccess().equals("1")) {
-                                    holder.btn_follow.setVisibility(View.GONE);
-                                    holder.btn_unfollow.setVisibility(View.VISIBLE);
-                                } else {
-                                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<ProfileModel> call, Throwable t) {
-
-                            }
-                        });
-                    });
-
 
                 }
             }
@@ -157,6 +104,55 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             }
         });
         }
+
+        // action button follow
+
+        holder.btn_follow.setOnClickListener(view -> {
+            InterfaceProfile interfaceProfile1 =  DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile1.followAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
+                @Override
+                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                    if (response.body().getSuccess().equals("1")) {
+                        holder.btn_follow.setVisibility(View.GONE);
+                        holder.btn_unfollow.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+                }
+            });
+        });
+
+        // action button unfollow
+
+        holder.btn_unfollow.setOnClickListener(view -> {
+            InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile1.unfollAccount(userid, profileModelList.get(position).getFollowing_id().toString()).enqueue(new Callback<ProfileModel>() {
+                @Override
+                public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                    if (response.body().getSuccess().equals("1")) {
+                        holder.btn_unfollow.setVisibility(View.GONE);
+                        holder.btn_follow.setVisibility(View.VISIBLE);
+                    }
+
+                    else {
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+
+                }
+            });
+        });
 
 
 
