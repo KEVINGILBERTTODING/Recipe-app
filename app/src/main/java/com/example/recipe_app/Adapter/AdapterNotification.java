@@ -82,8 +82,42 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         String user_idx = notificationModelist.get(holder.getAdapterPosition()).getUser_id();
 
         if (type.equals("like")) {
+
+
+
+            // Menampilkan teks liked recipe
             holder.tv_content.setText("liked your recipe.");
             holder.iv_recipe.setVisibility(View.VISIBLE);
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
 
 
             // call api untuk menampilkan gambar berdasarkan recipe id
@@ -120,8 +154,43 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         // Jika type notif adalah follow
         else if (type.equals("follow")) {
 
+
+
             // maka akan menampilkan teks
             holder.tv_content.setText("started following you.");
+
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+
 
             // check if user is following, jika user telah follow maka tampil button following
             // tetapi jika user belum follow maka tampil button follow
@@ -141,8 +210,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                     Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                 }
+
+
             });
         } else if(type.equals("comment")) {
+
+
+
 
             holder.tv_content.setText("Commented on your recipe:");
             holder.iv_recipe.setVisibility(View.VISIBLE);
@@ -320,13 +394,14 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             tv_comment = itemView.findViewById(R.id.tv_comment);
             swipeLayout = itemView.findViewById(R.id.swipe_notification);
             btn_delete = itemView.findViewById(R.id.btn_delete);
-            itemView.setOnClickListener(this);
+            rl_notification.setOnClickListener(this);
 
 
         }
 
         @Override
         public void onClick(View view) {
+
             
             // Jika type follow makan akan direct ke showprofile
             if (notificationModelist.get(getAdapterPosition()).getType().toString().equals("follow")) {
@@ -352,25 +427,25 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         if (response.body().size() > 0 ) {
                             Fragment fragment =  new DetailRecipeFragment();
                             Bundle bundle = new Bundle();
-                            bundle.putString("recipe_id", response.body().get(getAdapterPosition()).getRecipe_id());
-                            bundle.putString("user_id", response.body().get(getAdapterPosition()).getUser_id_notif());
-                            bundle.putString("username", response.body().get(getAdapterPosition()).getUsername());
-                            bundle.putString("title", response.body().get(getAdapterPosition()).getTitle());
-                            bundle.putString("description", response.body().get(getAdapterPosition()).getDescription());
-                            bundle.putString("category", response.body().get(getAdapterPosition()).getCategory());
-                            bundle.putString("servings", response.body().get(getAdapterPosition()).getServings());
-                            bundle.putString("duration", response.body().get(getAdapterPosition()).getDuration());
-                            bundle.putString("ingredients", response.body().get(getAdapterPosition()).getIngredients());
-                            bundle.putString("steps", response.body().get(getAdapterPosition()).getSteps());
-                            bundle.putString("upload_date", response.body().get(getAdapterPosition()).getUpload_date());
-                            bundle.putString("upload_time", response.body().get(getAdapterPosition()).getUpload_time());
-                            bundle.putString("image", response.body().get(getAdapterPosition()).getImage());
-                            bundle.putString("status", response.body().get(getAdapterPosition()).getStatus());
-                            bundle.putString("ratings", response.body().get(getAdapterPosition()).getRatings());
-                            bundle.putString("likes", response.body().get(getAdapterPosition()).getLikes());
-                            bundle.putString("photo_profile", response.body().get(getAdapterPosition()).getPhoto_profile());
-                            bundle.putString("email", response.body().get(getAdapterPosition()).getEmail());
-                            bundle.putString("notes", response.body().get(getAdapterPosition()).getNote());
+                            bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("user_id", response.body().get(0).getUser_id_notif());
+                            bundle.putString("username", response.body().get(0).getUsername());
+                            bundle.putString("title", response.body().get(0).getTitle());
+                            bundle.putString("description", response.body().get(0).getDescription());
+                            bundle.putString("category", response.body().get(0).getCategory());
+                            bundle.putString("servings", response.body().get(0).getServings());
+                            bundle.putString("duration", response.body().get(0).getDuration());
+                            bundle.putString("ingredients", response.body().get(0).getIngredients());
+                            bundle.putString("steps", response.body().get(0).getSteps());
+                            bundle.putString("upload_date", response.body().get(0).getUpload_date());
+                            bundle.putString("upload_time", response.body().get(0).getUpload_time());
+                            bundle.putString("image", response.body().get(0).getImage());
+                            bundle.putString("status", response.body().get(0).getStatus());
+                            bundle.putString("ratings", response.body().get(0).getRatings());
+                            bundle.putString("likes", response.body().get(0).getLikes());
+                            bundle.putString("photo_profile", response.body().get(0).getPhoto_profile());
+                            bundle.putString("email", response.body().get(0).getEmail());
+                            bundle.putString("notes", response.body().get(0).getNote());
                             fragment.setArguments(bundle);
 
                             FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
