@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -210,7 +211,26 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    tv_followers.setText(response.body().size() + "");
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_followers.setText(Math.abs(response.body().size()) + "");
+                    }
+
                 } else {
                     tv_followers.setText("0");
                 }
@@ -228,7 +248,25 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    tv_following.setText(response.body().size() + "");
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_following.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_following.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_following.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_following.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_following.setText(Math.abs(response.body().size()) + "");
+                    }
                 } else {
                     tv_following.setText("0");
                 }
@@ -499,5 +537,16 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     public void onPause() {
         rv_recipe.hideShimmer();
         super.onPause();
+    }
+
+    private void prettyCount(TextView textView, String count) {
+        int countInt = Integer.parseInt(count);
+        if (countInt > 1000) {
+            textView.setText(String.format("%.1f", countInt / 1000.0) + "K");
+        }else if (countInt > 1000000) {
+            textView.setText(String.format("%.1f", countInt / 1000000.0) + "M");
+        }else {
+            textView.setText(count);
+        }
     }
 }

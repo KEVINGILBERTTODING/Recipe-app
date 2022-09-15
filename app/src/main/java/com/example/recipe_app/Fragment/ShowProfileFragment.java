@@ -318,7 +318,17 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    tv_followers.setText(response.body().size() + "");
+
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else {
+                        tv_followers.setText(Math.abs(response.body().size()) + "");
+                    }
+
                 } else {
                     tv_followers.setText("0");
                 }
@@ -336,7 +346,16 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    tv_following.setText(response.body().size() + "");
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_following.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else {
+                        tv_following.setText(Math.abs(response.body().size()) + "");
+                    }
+
                 } else {
                     tv_following.setText("0");
                 }
@@ -362,8 +381,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
            @Override
            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-               Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
-               Log.e("THIS THE ERROR", t.getMessage());
+               Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
 
 
            }
@@ -379,16 +397,53 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     if (response.body().getSuccess().equals("1")) {
                         btn_follow.setVisibility(View.VISIBLE);
                         btn_unfollow.setVisibility(View.GONE);
-                        tv_followers.setText(Integer.parseInt(tv_followers.getText().toString()) - 1 + "");
+                        InterfaceProfile interfaceProfile3 = DataApi.getClient().create(InterfaceProfile.class);
+                        interfaceProfile3.getAllFollowers(user_id).enqueue(new Callback<List<ProfileModel>>() {
+                            @Override
+                            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                                if (response.body().size() > 0) {
+                                    if(Math.abs(response.body().size()) > 1000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
+                                    } else if(Math.abs(response.body().size()) > 1001) {
+                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
+                                    }
+                                    else if(Math.abs(response.body().size()) > 1000000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
+                                    } else if(Math.abs(response.body().size()) > 1000001){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
+                                    }
+
+                                    else if (Math.abs(response.body().size()) > 1000000000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
+                                    } else if (Math.abs(response.body().size()) > 1000000001){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                                    }
+                                    else {
+                                        tv_followers.setText(Math.abs(response.body().size()) + "");
+                                    }
+
+                                } else {
+                                    tv_followers.setText("0");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+
                     } else {
-                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ProfileModel> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
-                    Log.e("THIS IS THE ERROR", t.getMessage());
+                    Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
                 }
             });
@@ -405,16 +460,52 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     if (response.body().getSuccess().equals("1")) {
                         btn_unfollow.setVisibility(View.VISIBLE);
                         btn_follow.setVisibility(View.GONE);
-                        tv_followers.setText(Integer.parseInt(tv_followers.getText().toString()) + 1 + "");
+
+                        InterfaceProfile interfaceProfile3 = DataApi.getClient().create(InterfaceProfile.class);
+                        interfaceProfile3.getAllFollowers(user_id).enqueue(new Callback<List<ProfileModel>>() {
+                            @Override
+                            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                                if (response.body().size() > 0) {
+                                    if(Math.abs(response.body().size()) > 1000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
+                                    } else if(Math.abs(response.body().size()) > 1001) {
+                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
+                                    }
+                                    else if(Math.abs(response.body().size()) > 1000000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
+                                    } else if(Math.abs(response.body().size()) > 1000001){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
+                                    }
+
+                                    else if (Math.abs(response.body().size()) > 1000000000){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
+                                    } else if (Math.abs(response.body().size()) > 1000000001){
+                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                                    }
+                                    else {
+                                        tv_followers.setText(Math.abs(response.body().size()) + "");
+                                    }
+                                } else {
+                                    tv_followers.setText("0");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+
                     } else {
-                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ProfileModel> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
-                    Log.e("THIS IS THE ERROR", t.getMessage());
+                    Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                 }
             });
