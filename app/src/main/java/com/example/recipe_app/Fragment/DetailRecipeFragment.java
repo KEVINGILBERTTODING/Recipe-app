@@ -210,8 +210,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         rlDummyComment.setOnClickListener(view1 -> {
             relativeLayout.setVisibility(View.VISIBLE);
             et_comment.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_comment, InputMethodManager.SHOW_IMPLICIT);
+            showKeyboard();
         });
 
 
@@ -592,6 +591,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             } else {
                 postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
                 hideKeyboard();
+                relativeLayout.setVisibility(android.view.View.GONE);
             }
         });
 
@@ -716,6 +716,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
 
         return view;
+    }
+
+    private void showKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(et_comment, InputMethodManager.SHOW_IMPLICIT);
     }
 
     // Get comment
@@ -1212,6 +1217,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     relativeLayout.setVisibility(View.VISIBLE);
                     et_comment.setText(commentModel.getComment());
                     et_comment.requestFocus();
+                    showKeyboard();
                     btnSend.setOnClickListener(view1 -> {
                         InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
                         interfaceComment.editComment(commentModel.getComment_id(),
@@ -1231,13 +1237,15 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                             commentAdapter.notifyItemChanged(position);
                                             et_comment.setText("");
                                             commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
+                                            relativeLayout.setVisibility(View.GONE);
+                                            hideKeyboard();
 
                                             // if btn update comment is click and success than reset button send to create
                                             // new comment
                                             btnSend.setOnClickListener(View -> {
                                                 String comment = et_comment.getText().toString();
                                                 if (comment.isEmpty()) {
-                                                    Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
+                                                    Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
                                                 } else {
                                                     postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
                                                     hideKeyboard();

@@ -137,7 +137,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(holder.itemView, "Something went wrong", Snackbar.LENGTH_SHORT).show();
+               Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
             }
         });
 
