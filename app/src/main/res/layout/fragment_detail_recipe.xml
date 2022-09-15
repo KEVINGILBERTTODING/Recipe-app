@@ -381,8 +381,8 @@
 
                         <ImageView
                             android:id="@+id/iv_comment"
-                            android:layout_width="@dimen/_15sdp"
-                            android:layout_height="@dimen/_15sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:src="@drawable/ic_comment" />
@@ -391,12 +391,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/iv_comment"
-                            android:fontFamily="@font/popmed"
+                            android:fontFamily="@font/popsem"
                             android:text="Comments"
+                            android:layout_centerVertical="true"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_10sdp" />
+                            android:textSize="@dimen/_12sdp" />
+
+
+                        <ImageButton
+                            android:id="@+id/btnRefresh"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/ic_baseline_refresh_24"
+                            android:backgroundTint="@color/black" />
 
 
                     </RelativeLayout>
@@ -405,8 +414,49 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+                <RelativeLayout
 
-                    <com.todkars.shimmer.ShimmerRecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white"
+                    android:paddingTop="@dimen/_10sdp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_myProfile2"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:src="@color/black"
+                        app:civ_border_color="@color/main"
+                        app:civ_border_width="2dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_dummy_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_toRightOf="@id/iv_myProfile2"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:background="@drawable/container_comment"
+                        android:padding="@dimen/_5sdp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/popmed"
+                            android:text="Write a comment..."
+                            android:textSize="@dimen/_9sdp" />
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+
+
+                <com.todkars.shimmer.ShimmerRecyclerView
                         android:id="@+id/recycler_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -428,6 +478,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
+        android:visibility="gone"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp">
 
@@ -450,15 +501,16 @@
             android:layout_toRightOf="@id/iv_myProfile"
             android:background="@drawable/container_comment"
             android:fontFamily="@font/popmed"
-            android:hint="write a comment..."
+            android:hint="Write a comment..."
             android:padding="@dimen/_5sdp"
+            android:maxLines="3"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
 
         <ImageButton
             android:id="@+id/btn_send"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/et_comment"
             android:background="@drawable/ic_send" />

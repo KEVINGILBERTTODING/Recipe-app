@@ -24,9 +24,9 @@
             android:id="@+id/lr_edit"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:background="@drawable/shape_edit_comment"
             android:padding="@dimen/_5sdp"
-            android:layout_gravity="center_vertical"
             android:gravity="center">
 
             <ImageButton
@@ -44,7 +44,7 @@
             android:id="@+id/lr_delete"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_6sdp"
             android:background="@drawable/shape_delete_comment"
             android:gravity="center">
 

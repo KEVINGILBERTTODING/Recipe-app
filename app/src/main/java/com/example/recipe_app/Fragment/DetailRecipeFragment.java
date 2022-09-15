@@ -10,10 +10,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -26,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -39,6 +42,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,6 +56,8 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Admin.Fragment.FullScreenImageReport;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
@@ -83,15 +89,16 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
-    ImageView ivRecipeImage, ivProfile, ivMyProfile, ivReport;
+    ImageView ivRecipeImage, ivProfile, ivMyProfile, ivReport, ivProfile2;
 
     Button btnIngredients, btnSteps;
-    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2;
+    ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2, btnRefresh;
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
 
     CommentAdapter commentAdapter;
+
 
     EditText et_comment;
     Button btnReport;
@@ -102,7 +109,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     EditText et_report, et_title;
     String image;
     private final int TAG_GALLERY = 200;
-    ShimmerFrameLayout sf_image;
 
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
@@ -112,14 +118,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     ShimmerRecyclerView recyclerView;
     private List<CommentModel> commentModelsList;
     NestedScrollView nestedScrollView;
-    RelativeLayout relativeLayout;
+    RelativeLayout relativeLayout, rlDummyComment;
 
-    private List<RecipeModel> recipeModelList;
-
-    // Constructor
-    public DetailRecipeFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -165,7 +165,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         btnMore = view.findViewById(R.id.btn_more);
         btnQrcode = view.findViewById(R.id.btn_qrcode);
         btnMore2 = view.findViewById(R.id.btn_more2);
-
+        rlDummyComment = view.findViewById(R.id.rl_dummy_comment);
+        ivProfile2 = view.findViewById(R.id.iv_myProfile2);
+        btnRefresh = view.findViewById(R.id.btnRefresh);
         // Get data from bundle
 
         recipeName = getArguments().getString("title");
@@ -205,6 +207,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         pd = new ProgressDialog(getContext());
         reportForm = new Dialog(getContext());
 
+        rlDummyComment.setOnClickListener(view1 -> {
+            relativeLayout.setVisibility(View.VISIBLE);
+            et_comment.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et_comment, InputMethodManager.SHOW_IMPLICIT);
+        });
+
 
         // jika user id sama dengan user id maka akan muncul button edit dan delete
         if (useridx.equals(user_id)) {
@@ -214,6 +223,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             btnMore.setVisibility(View.GONE);
             btnMore2.setVisibility(View.VISIBLE);
         }
+
+        btnRefresh.setOnClickListener(view1 -> {
+            YoYo.with(Techniques.RotateIn)
+                            .duration(700)
+                                    .playOn(view.findViewById(R.id.btnRefresh));
+            getComment(recipe_id);
+        });
 
         btnMore2.setOnClickListener(view1 -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -572,21 +588,23 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         btnSend.setOnClickListener(View -> {
             String comment = et_comment.getText().toString();
             if (comment.isEmpty()) {
-                Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
+                Toasty.normal(getContext(), "Please fill the comment", Toasty.LENGTH_SHORT).show();
             } else {
                 postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+                hideKeyboard();
             }
         });
 
-        if (nestedScrollView != null) {
-            nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                if (scrollY > oldScrollY) {
-                    relativeLayout.setVisibility(View.GONE);
-                } else {
-                    relativeLayout.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+//           Saat scrolling maka editttext comment hide
+//        if (nestedScrollView != null) {
+//            nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//                if (scrollY > oldScrollY) {
+//                    relativeLayout.setVisibility(View.GONE);
+//                } else {
+//                    relativeLayout.setVisibility(View.VISIBLE);
+//                }
+//            });
+//        }
 
         // Jika get argument admin != null
         if (getArguments().getString("admin") != null) {
@@ -792,6 +810,14 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .skipMemoryCache(true)
                             .into(ivMyProfile);
+
+
+                    Glide.with(getContext())
+                            .load(photoProfile)
+                            .dontAnimate()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .skipMemoryCache(true)
+                            .into(ivProfile2);
                 }
             }
 
@@ -1139,6 +1165,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                                     Toast.makeText(getContext(), "Please enter comment", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+                                                    hideKeyboard();
                                                 }
                                             });
 
@@ -1208,7 +1235,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                         Toasty.success(getContext(), "Comment deleted!", Toasty.LENGTH_SHORT).show();
                                         getComment(recipe_id);
 
-                                        // remove from response buy postion
+                                        // remove from response by postion
 //                                                        commentModelsList.remove(position);
 //                                                        commentAdapter.notifyItemChanged(position);
 //                                                        commentAdapter.notifyItemRangeChanged(position, commentModelsList.size());
@@ -1299,6 +1326,20 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         }
 
     }
+
+    // method for show keyboard
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+    }
+
+
 }
 
 
