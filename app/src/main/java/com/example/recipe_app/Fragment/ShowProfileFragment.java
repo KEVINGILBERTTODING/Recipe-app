@@ -300,7 +300,25 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.body().size() > 0) {
-                    tv_post.setText(response.body().size() + "");
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_post.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_post.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_post.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_post.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_post.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_post.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_post.setText(Math.abs(response.body().size()) + "");
+                    }
                 } else {
                     tv_post.setText("0");
                 }
