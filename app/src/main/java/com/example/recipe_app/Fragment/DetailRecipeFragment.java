@@ -202,7 +202,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvDate.setText(recipeDate);
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
-        tvLikes.setText(totalLikes);
+        getTotalLikes(recipe_id);
 
         pd = new ProgressDialog(getContext());
         reportForm = new Dialog(getContext());
@@ -686,11 +686,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         // saat button like di klik
         btnLike.setOnClickListener(View -> {
+         
+            
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (btnLike.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_liked).getConstantState()) {
                 deleteLikeRecipe(recipe_id, useridx, user_id);
                 countLike(recipe_id, 2);
-                tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) - 1));
+
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_like));
             }
 
@@ -705,7 +707,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 anim_love.setVisibility(View.VISIBLE);
                 anim_love.playAnimation();
 
-                tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
 
 
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
@@ -926,8 +927,44 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 if (response.isSuccessful()) {
                     Snackbar.make(getView(), "Recipe liked", Snackbar.LENGTH_SHORT).show();
 
+                    interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                        @Override
+                        public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                            if (response.body().size() > 0 ) {
+                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                                }
+                                else {
+                                    tvLikes.setText(Math.abs(totalLikes) + "");
+                                }
+                            } else {
+                                tvLikes.setText("0");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+                        }
+                    });
+
                 } else {
-                    Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Something went wrong", Snackbar.LENGTH_SHORT).show();
                 }
             }
 
@@ -948,6 +985,44 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(getView(), "Recipe unliked", Snackbar.LENGTH_SHORT).show();
+
+
+                    interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                        @Override
+                        public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                            if (response.body().size() > 0 ) {
+                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                                }
+                                else {
+                                    tvLikes.setText(Math.abs(totalLikes) + "");
+                                }
+                            } else {
+                                tvLikes.setText("0");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+                        }
+                    });
+
                 } else {
                     Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
                 }
@@ -1327,17 +1402,56 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     }
 
-    // method for show keyboard
-    public void showKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
 
     public void hideKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
     }
+
+    // get recipe id to get total likes
+    private void getTotalLikes(String recipe_id) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                    if(Math.abs(totalLikes) > 1000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
+                    } else if(Math.abs(totalLikes) > 1001) {
+                        tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
+                    }
+                    else if(Math.abs(totalLikes) > 1000000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
+                    } else if(Math.abs(totalLikes) > 1000001){
+                        tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(totalLikes) > 1000000000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                    } else if (Math.abs(totalLikes) > 1000000001){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                    }
+                    else {
+                        tvLikes.setText(Math.abs(totalLikes) + "");
+                    }
+
+                } else {
+                    tvLikes.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
 
 
 }
