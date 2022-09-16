@@ -102,6 +102,9 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, adminModelList.size());
                             });
+                            builder.setNegativeButton("No", ((dialogInterface, i) -> {
+
+                            }));
                             builder.show();
 
                             break;
@@ -118,7 +121,8 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                 popupMenu.getMenuInflater().inflate(R.menu.list_user_admin_menu_enable, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     switch (menuItem.getItemId()){
-                        case R.id.mnu_show:
+                        case R.id.mnu_show2:
+
                             Fragment fragment = new ShowProfileFragment();
                             Bundle bundle = new Bundle();
                             bundle.putString("user_id", adminModelList.get(position).getUser_id());
@@ -139,6 +143,9 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, adminModelList.size());
                             });
+                            builder.setNegativeButton("No", ((dialogInterface, i) -> {
+
+                            }));
                             builder.show();
 
                             break;
@@ -150,8 +157,6 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
             });
 
         }
-
-
 
 
 

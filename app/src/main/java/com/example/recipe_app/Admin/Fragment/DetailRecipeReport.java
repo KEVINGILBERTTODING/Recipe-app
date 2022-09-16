@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
@@ -32,12 +33,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DetailRecipeReport extends Fragment {
+public class DetailRecipeReport extends Fragment{
 
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
     ImageView img_profile, imgReport;
@@ -185,6 +187,7 @@ public class DetailRecipeReport extends Fragment {
 
                 @Override
                 public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                    Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                 }
             });
@@ -205,20 +208,18 @@ public class DetailRecipeReport extends Fragment {
                     public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
                         RecipeReportmodel recipeReportmodel = response.body();
                         if (recipeReportmodel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(),
-                                    "Report deleted successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(), "Report deleted successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
                             ft.commit();
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.warning(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                        Log.e("INI ERRORNYAA", t.getMessage());
+                        Toasty.error(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -243,13 +244,13 @@ public class DetailRecipeReport extends Fragment {
                            actionRecipe(recipeId, "0");
 
                         } else {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.warning(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -309,13 +310,13 @@ public class DetailRecipeReport extends Fragment {
                             actionRecipe(recipeId, "1");
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -343,19 +344,19 @@ public class DetailRecipeReport extends Fragment {
             public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
                 RecipeReportmodel recipeReportmodel = response.body();
                 if (recipeReportmodel.getStatus().equals("1")) {
-                    Toast.makeText(getContext(), "Report accepted successfully", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Report accepted succesfully", Toasty.LENGTH_SHORT).show();
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_admin, new ReportRecipeFragment());
                     fragmentTransaction.commit();
                 } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });

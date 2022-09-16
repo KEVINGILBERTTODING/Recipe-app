@@ -25,6 +25,7 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,10 +61,7 @@ public class DetailBugReportFragment extends Fragment {
         tv_time = root.findViewById(R.id.tv_time);
 
 
-        btnBack.setOnClickListener(view1 -> {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack();
-        });
+
 
         // get data from bundle
         reportId    = getArguments().getString("report_id");
@@ -85,6 +83,14 @@ public class DetailBugReportFragment extends Fragment {
         tv_title.setText(title);
         tv_report.setText(report);
         tv_time.setText(time);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
+            }
+        });
 
 
         // load photo profile
@@ -145,18 +151,19 @@ public class DetailBugReportFragment extends Fragment {
                     public void onResponse(Call<BugReportModel> call, Response<BugReportModel> response) {
                         BugReportModel bugReportModel = response.body();
                         if (bugReportModel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(), "Delete report successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(), "Delete report successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportBugFragment());
                             ft.commit();
                         } else{
-                            Toast.makeText(getContext(), "Failed get data", Toast.LENGTH_SHORT).show();
+
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<BugReportModel> call, Throwable t) {
-                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -181,11 +188,11 @@ public class DetailBugReportFragment extends Fragment {
             builder.setPositiveButton("yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "2");
                 if (status.equals("3")){
-                    Toast.makeText(getContext(), "Roll back successfully", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Roll back successfully", Toasty.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Accepted report successfully", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Accepted report successfully", Toasty.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getContext(), "Report accepted", Toast.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Report accepted", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
             }); builder.setNegativeButton("No", (dialogInterface, i) -> {
                 dialogInterface.dismiss();
@@ -206,6 +213,7 @@ public class DetailBugReportFragment extends Fragment {
             builder2.setPositiveButton("Yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "3");
                 Toast.makeText(getContext(), "Bug solved", Toast.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Bug Solved!", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
 
             }); builder2.setNegativeButton("No", (dialogInterface, i) -> {
@@ -250,14 +258,14 @@ public class DetailBugReportFragment extends Fragment {
                     ft.commit();
 
                 } else {
-                    Toast.makeText(getContext(), "Failed load report", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Failed load report", Toasty.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<BugReportModel> call, Throwable t) {
-                Log.e("MyApp", t.getMessage());
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });

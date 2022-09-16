@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +44,7 @@ public class UpdateEmailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragmenta
         View view= inflater.inflate(R.layout.fragment_update_email, container, false);
 
         // Mengambil username dan user_id menggunakan sharedpreferences
@@ -56,9 +57,6 @@ public class UpdateEmailFragment extends Fragment {
         txt_password = view.findViewById(R.id.ti_pass);
         btnUpdate = view.findViewById(R.id.btn_update_email);
         btnBack = view.findViewById(R.id.btn_back);
-
-        Toast.makeText(getContext(), useridx, Toast.LENGTH_LONG).show();
-
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +91,7 @@ public class UpdateEmailFragment extends Fragment {
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 ProfileModel profileModel = response.body();
                 if (profileModel.getStatus().equals("success")){
-                    Toast.makeText(getContext(), "Email is updated", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Email is updated", Toasty.LENGTH_SHORT).show();
                     FragmentManager fm = getFragmentManager();
                     fm.popBackStack();
                 } else {
@@ -104,7 +102,7 @@ public class UpdateEmailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
 
             }
         });
@@ -121,13 +119,13 @@ public class UpdateEmailFragment extends Fragment {
                     updateEmail(useridx, txt_email.getText().toString());
 
                 }else{
-                    Toast.makeText(getContext(), "Password is incorrect", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Password is incorrect", Toasty.LENGTH_SHORT).show();
                     til_password.setError("Password is incorrect");
                 }
             }
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Snackbar.make(getView(), "No Connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
             }
         });
     }

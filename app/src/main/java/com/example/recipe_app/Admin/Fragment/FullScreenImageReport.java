@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,7 +22,6 @@ public class FullScreenImageReport extends Fragment {
     PhotoView img_report;
     ImageButton btn_back;
     String image;
-
 
 
     @Override

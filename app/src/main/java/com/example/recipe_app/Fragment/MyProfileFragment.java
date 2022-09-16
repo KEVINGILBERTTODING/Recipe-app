@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +15,16 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,32 +41,36 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
-    String username, userid, user_idx;
+    String username, userid;
     ImageView iv_profile;
-    TextView tv_username, tv_email, tv_biography, tv_date, tv_time, tv_no_data;
-    ImageButton btnSetting;
+    TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
+    ImageButton btnSetting, btnQrCode;
 
     List<ProfileModel> profileModelList;
     ProfileModel profileModel;
-    InterfaceProfile interfaceProfile;
-    RecyclerView rv_recipe;
+    ShimmerRecyclerView rv_recipe;
     MyRecipeAdapter myRecipeAdapter;
     List<RecipeModel> recipeModelList;
+    LinearLayout lr_followers;
+    SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
+
+    // textview to count total post, followers and following
+    TextView tv_post, tv_followers, tv_following, tvNotFound;
 
     TabLayout tabLayout;
 
-    public MyProfileFragment() {
-        // Required empty public constructor
-    }
-
+    Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +83,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         username = sharedPreferences.getString(TAG_USERNAME, null);
         userid = sharedPreferences.getString("user_id", null);
 
+
         iv_profile = view.findViewById(R.id.iv_profile);
         tv_username = view.findViewById(R.id.tv_username);
         tv_email = view.findViewById(R.id.tv_email);
@@ -82,7 +93,14 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         tabLayout = view.findViewById(R.id.tab_layout);
         rv_recipe = view.findViewById(R.id.recycler_recipe);
         btnSetting = view.findViewById(R.id.btn_setting);
-        tv_no_data = view.findViewById(R.id.tv_no_data);
+        lr_followers = view.findViewById(R.id.lr_followers);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        btnQrCode = view.findViewById(R.id.btn_qrcode);
+
+        tv_post = view.findViewById(R.id.tv_post);
+        tv_followers = view.findViewById(R.id.tv_followers);
+        tv_following = view.findViewById(R.id.tv_following);
+        tvNotFound = view.findViewById(R.id.tv_notfound);
 
         btnSetting.setOnClickListener(view1 -> {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -91,17 +109,24 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             fragmentTransaction.addToBackStack(null);
         });
 
+        context = getContext();
 
-        // Mengambil data profile dari API
-        getProfile(userid);
+        // button qrcode listener
+        btnQrCode.setOnClickListener(view1 -> {
+            Fragment fragment = new AccountQrcode();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", userid);
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
 
-        // mengambil data recipe dari API
-        getRecipe(userid, 1);
 
 
         // create tablayout
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_layout));
-
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_eye));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_love2));
 
@@ -109,11 +134,33 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            setShimmer();
+                            getRecipe(userid, 1);
+                        }
+                    });
                     getRecipe(userid, 1);
                 } else if (tab.getPosition() == 1 ) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            setShimmer();
+                            getRecipe(userid, 2);
+                        }
+                    });
                     getRecipe(userid, 2);
                 } else if ((tab.getPosition() == 2 )){
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            setShimmer();
+                            getLikeRecipe(userid);
+                        }
+                    });
                     getLikeRecipe(userid);
+
                 }
             }
 
@@ -130,6 +177,140 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
         getRecipe(userid, 1);
 
+//        // SET SWIPE REFRESH
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecipe(userid, 1);
+            }
+        });
+
+
+
+        // COUNT TOTAL POST
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getMyRecipe(userid, 1).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_post.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_post.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_post.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_post.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_post.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_post.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_post.setText(Math.abs(response.body().size()) + "");
+                    }
+                } else {
+                    tv_post.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT TOTAL FOLLOWERS
+        InterfaceProfile interfaceProfile =  DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowers(userid).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_followers.setText(Math.abs(response.body().size()) + "");
+                    }
+
+                } else {
+                    tv_followers.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
+
+        // COUNT FOLLOWING
+        interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getAllFollowing(userid).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+                    if(Math.abs(response.body().size()) > 1000){
+                        tv_following.setText(Math.abs(response.body().size())/1000 + "K");
+                    } else if(Math.abs(response.body().size()) > 1001) {
+                        tv_following.setText(Math.abs(response.body().size())/1001 + "K+");
+                    }
+                    else if(Math.abs(response.body().size()) > 1000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000 + "M");
+                    } else if(Math.abs(response.body().size()) > 1000001){
+                        tv_following.setText(Math.abs(response.body().size())/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(response.body().size()) > 1000000000){
+                        tv_following.setText(Math.abs(response.body().size())/1000000000 + "B");
+                    } else if (Math.abs(response.body().size()) > 1000000001){
+                        tv_following.setText(Math.abs(response.body().size())/1000000001 + "B+");
+                    }
+                    else {
+                        tv_following.setText(Math.abs(response.body().size()) + "");
+                    }
+                } else {
+                    tv_following.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+            }
+        });
+
+        // lr user is clicker
+        lr_followers.setOnClickListener(view1 -> {
+            Fragment fragment = new FollowersFollowingFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("username",username);
+            bundle.putString("user_id", userid);
+            bundle.putString("my_profile", "my_profile");
+            fragment.setArguments(bundle);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
 
         return view;
     }
@@ -159,12 +340,14 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                             .placeholder(R.drawable.template_img)
                             .override(1024, 768)
                             .into(iv_profile);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getProfile(userid);
             }
         });
 
@@ -185,13 +368,35 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     rv_recipe.setAdapter(myRecipeAdapter);
                     rv_recipe.setVisibility(View.VISIBLE);
                     rv_recipe.setHasFixedSize(true);
-                    tv_no_data.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    myRecipeAdapter.notifyDataSetChanged();
+                    tvNotFound.setVisibility(View.GONE);
                     myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+
+                    rv_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_my_recipe
+                                        : R.layout.template_my_recipe;
+                        }
+                    });
+
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer(); // to hide shimmer
+                    }, 1200);
 
 
                 } else {
                     rv_recipe.setVisibility(View.GONE);
-                    tv_no_data.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.VISIBLE);
                 }
               
 
@@ -199,7 +404,14 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getRecipe(userid, 1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getRecipe(userid, 2);
+                }
+
 
             }
         });
@@ -210,21 +422,57 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         DataApi.getClient().create(InterfaceRecipe.class).getMyLikeRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
 
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
-                rv_recipe.setLayoutManager(gridLayoutManager);
-                rv_recipe.setAdapter(myRecipeAdapter);
-                rv_recipe.setHasFixedSize(true);
-                myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+                if (response.body().size() > 0) {
+                    recipeModelList = response.body();
+                    myRecipeAdapter = new MyRecipeAdapter(getContext(), recipeModelList);
+
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+                    rv_recipe.setLayoutManager(gridLayoutManager);
+                    rv_recipe.setAdapter(myRecipeAdapter);
+                    rv_recipe.setHasFixedSize(true);
+                    myRecipeAdapter.setOnRecipeListener(MyProfileFragment.this);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.GONE);
+                    rv_recipe.setVisibility(View.VISIBLE);
+
+                    rv_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+
+
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_GRID:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_my_recipe
+                                        : R.layout.template_my_recipe;
+                        }
+                    });
+
+                    rv_recipe.showShimmer();     // to start showing shimmer
+                    // To stimulate long running work using android.os.Handler
+                    final Handler handler = new Handler();
+                    handler.postDelayed((Runnable) () -> {
+                        rv_recipe.hideShimmer(); // to hide shimmer
+                    }, 1200);
+
+
+                } else {
+
+                    rv_recipe.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvNotFound.setVisibility(View.VISIBLE);
+
+                }
+
 
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getLikeRecipe(userid);
 
             }
         });
@@ -269,4 +517,62 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         }
 
     }
+
+    private void setShimmer() {
+        rv_recipe.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        tvNotFound.setVisibility(View.GONE);
+        rv_recipe.setVisibility(View.VISIBLE);
+
+        rv_recipe.setItemViewType((type, position) -> {
+            switch (type) {
+
+
+                default:
+                case ShimmerRecyclerView.LAYOUT_GRID:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_my_recipe
+                            : R.layout.template_my_recipe;
+            }
+        });
+
+        rv_recipe.showShimmer();     // to start showing shimmer
+
+    }
+
+    @Override
+    public void onResume() {
+        setShimmer();
+        // Mengambil data profile dari API
+        getProfile(userid);
+        // mengambil data recipe dari API
+        getRecipe(userid, 1);
+        checkConnection();
+        // Set shimmer
+        setShimmer();
+
+        super.onResume();
+    }
+
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        rv_recipe.hideShimmer();
+        super.onPause();
+    }
+
 }

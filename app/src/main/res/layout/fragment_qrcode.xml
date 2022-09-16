@@ -45,13 +45,13 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_recipe"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_90sdp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_60sdp"
         android:src="@color/black"
         app:civ_border_color="@color/main"
-        app:civ_border_width="@dimen/_3sdp" />
+        app:civ_border_width="@dimen/_4sdp" />
 
     <LinearLayout
         android:id="@+id/layout_qqrcode"
@@ -60,6 +60,8 @@
         android:layout_below="@id/iv_recipe"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+
+        android:layout_marginTop="@dimen/_20sdp"
         android:orientation="vertical">
 
         <TextView
@@ -68,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_precipe"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/popsem"
             android:text="Recipe Name"
             android:textColor="@color/black"
@@ -111,16 +112,17 @@
         android:id="@+id/btn_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_qqrcode"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:fontFamily="@font/popmed"
         android:text="Scan QR Code"
         android:textAllCaps="false"
         android:textSize="@dimen/_10sdp"
         app:cornerRadius="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_centerHorizontal="true"
         app:icon="@drawable/ic_qrcode" />
 
 

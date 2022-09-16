@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ShowProfileFragment">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
     <LinearLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -20,29 +28,48 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:background="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/tv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:layout_centerInParent="true"
                 android:text="Back"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_12sdp" />
 
-            <ImageButton
-                android:id="@+id/btn_more"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_more_vertical" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_qrcode"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:backgroundTint="@color/black"
+                    android:background="@drawable/ic_qrcode" />
+
+                <ImageButton
+                    android:id="@+id/btn_more"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/ic_more_vertical" />
+            </LinearLayout>
+
+
 
 
 
@@ -51,132 +78,335 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/app_bar">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            app:civ_border_width="@dimen/_3sdp"
-            app:civ_border_color="@color/main"
-            android:src="@color/black" />
-        <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13sdp"
-            android:fontFamily="@font/popsem"
-            android:textColor="@color/black"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_gravity="center_horizontal"
-            android:scrollbarSize="@dimen/_12sdp"
-            android:layout_toRightOf="@+id/btn_back"
-            android:text="Username"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/ic_mail"
-                android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:src="@color/gray"
+                app:civ_border_color="@color/main"
+                app:civ_border_width="@dimen/_3sdp" />
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_toRightOf="@+id/btn_back"
+                android:fontFamily="@font/popsem"
+                android:scrollbarSize="@dimen/_12sdp"
+                android:text="Username"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
             <TextView
-                android:id="@+id/tv_email"
+                android:id="@+id/tv_biography"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:text="Email"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_mail" />
+
+
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@+id/btn_back"
+                    android:fontFamily="@font/popmed"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_8sdp" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/lr_info_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lr_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popmed"
+                        android:text="Post"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_9sdp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:id="@+id/lr_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:gravity="center"
+
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_followers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popmed"
+                        android:text="Followers"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_9sdp" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@color/gray" />
+
+                <LinearLayout
+                    android:id="@+id/lr_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popmed"
+                        android:text="Following"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_9sdp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/btn_back"
+                    android:fontFamily="@font/popmed"
+                    android:text="Date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@+id/btn_back"
+                    android:fontFamily="@font/popmed"
+                    android:text="Time"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lr_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_unfollow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popmed"
+                    android:stateListAnimator="@null"
+                    android:text="Following"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/gray"
+                    app:cornerRadius="@dimen/_5sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_follow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popmed"
+                    android:stateListAnimator="@null"
+                    android:text="Follow"
+                    app:backgroundTint="@color/blue"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_10sdp"
+                    app:cornerRadius="@dimen/_5sdp"
+                    app:elevation="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_message"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popmed"
+                    android:stateListAnimator="@null"
+                    android:text="Message"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/_10sdp"
+                    app:cornerRadius="@dimen/_5sdp"
+                    app:elevation="0dp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:tabGravity="fill"
+                app:tabIndicatorFullWidth="true"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/TabFont">
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_notfound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No recipe found"
+                        android:fontFamily="@font/popmed"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:textSize="@dimen/_9sdp"/>
+
+                    <com.todkars.shimmer.ShimmerRecyclerView
+                        android:id="@+id/recycler_recipe"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:shimmer_recycler_item_count="10"
+                        app:shimmer_recycler_layout="@layout/list_my_recipe"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+                </LinearLayout>
+
+
+
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/ic_calendar"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/btn_back"
-                android:fontFamily="@font/popmed"
-                android:text="Date"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/black"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:textSize="@dimen/_8sdp" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/btn_back"
-                android:fontFamily="@font/popmed"
-                android:text="Time"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
-
-
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tv_biography"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/btn_back"
-            android:fontFamily="@font/popmed"
-            android:text="Biography"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_11sdp" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:tabMaxWidth="0dp"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            app:tabIndicatorFullWidth="true"
-            app:tabTextAppearance="@style/TabFont">
-
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_recipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
 
     </LinearLayout>
-
 </RelativeLayout>

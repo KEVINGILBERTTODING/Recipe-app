@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -12,10 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.MyRecipeAdapter;
@@ -25,10 +30,12 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,9 +44,13 @@ public class SavedRecipeFragment extends Fragment {
 
     List<RecipeModel> recipeModelList;
     SavedRecipeAdapter savedRecipeAdapter;
-    RecyclerView rv_saved_recipe;
+    ShimmerRecyclerView rv_saved_recipe;
     String username, userid;
     SearchView searchView;
+    TextView tv_notfound;
+    SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
+    Context context;
 
 
 
@@ -62,8 +73,11 @@ public class SavedRecipeFragment extends Fragment {
 
         rv_saved_recipe = view.findViewById(R.id.recycler_saved_recipe);
         searchView = view.findViewById(R.id.search_barr);
+        tv_notfound = view.findViewById(R.id.tv_notfound);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        context = getContext();
 
-        getSavedRecipe(userid);
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -72,10 +86,44 @@ public class SavedRecipeFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                rv_saved_recipe.setItemViewType((type, position) -> {
+                    switch (type) {
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_LIST:
+                            return position == 0 || position % 2 == 0
+                                    ? R.layout.template_data_saved_recipe
+                                    : R.layout.template_data_saved_recipe;
+                    }
+                });
+
+                rv_saved_recipe.showShimmer();     // to start showing shimmer
+
+                final Handler mHandler = new Handler();
+
+                // To stimulate long running work using android.os.Handler
+                mHandler.postDelayed((Runnable) () -> {
+                    rv_saved_recipe.hideShimmer(); // to hide shimmer
+                }, 1000);
+
+
                 filter(newText);
                 return false;
             }
         });
+
+        // swipe for refresh
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSavedRecipe(userid);
+            }
+        });
+
+        // style load bar swipe refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
+
 
 
         return view;
@@ -107,24 +155,114 @@ public class SavedRecipeFragment extends Fragment {
         DataApi.getClient().create(InterfaceRecipe.class).getSavedRecipe(user_id).enqueue(new retrofit2.Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, retrofit2.Response<List<RecipeModel>> response) {
-                recipeModelList = response.body();
-                savedRecipeAdapter = new SavedRecipeAdapter(getContext(), recipeModelList);
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                rv_saved_recipe.setLayoutManager(linearLayoutManager);
-                rv_saved_recipe.setAdapter(savedRecipeAdapter);
-                rv_saved_recipe.setHasFixedSize(true);
+                if (response.body().size() > 0) {
+                    recipeModelList = response.body();
+                    savedRecipeAdapter = new SavedRecipeAdapter(getContext(), recipeModelList);
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    rv_saved_recipe.setLayoutManager(linearLayoutManager);
+                    rv_saved_recipe.setAdapter(savedRecipeAdapter);
+                    rv_saved_recipe.setHasFixedSize(true);
+                    tv_notfound.setVisibility(View.GONE);
+                    rv_saved_recipe.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    rv_saved_recipe.setItemViewType((type, position) -> {
+                        switch (type) {
+                            default:
+                            case ShimmerRecyclerView.LAYOUT_LIST:
+                                return position == 0 || position % 2 == 0
+                                        ? R.layout.template_data_saved_recipe
+                                        : R.layout.template_data_saved_recipe;
+                        }
+                    });
+
+                    rv_saved_recipe.showShimmer();     // to start showing shimmer
+
+                    final Handler mHandler = new Handler();
+
+                    // To stimulate long running work using android.os.Handler
+                    mHandler.postDelayed((Runnable) () -> {
+                        rv_saved_recipe.hideShimmer(); // to hide shimmer
+                    }, 1000);
+
+
+                } else {
+                    tv_notfound.setVisibility(View.VISIBLE);
+                    tv_notfound.setText("No recipe found");
+                    rv_saved_recipe.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
+
+
+
+
+                }
+
 
 
 
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                tv_notfound.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(true);
+                getSavedRecipe(userid);
+
 
             }
         });
     }
 
+    private void setShimmer(){
+        rv_saved_recipe.setLayoutManager(new LinearLayoutManager(getContext()),
+                R.layout.template_data_saved_recipe);
 
+        rv_saved_recipe.setAdapter(savedRecipeAdapter);
+        rv_saved_recipe.setItemViewType((type, position) -> {
+            switch (type) {
+                default:
+                case ShimmerRecyclerView.LAYOUT_LIST:
+                    return position == 0 || position % 2 == 0
+                            ? R.layout.template_data_saved_recipe
+                            : R.layout.template_data_saved_recipe;
+            }
+        });
+
+        rv_saved_recipe.showShimmer();     // to start showing shimmer
+
+    }
+
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        getSavedRecipe(userid);
+        checkConnection();
+
+        // show shimer
+        setShimmer();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        rv_saved_recipe.hideShimmer();
+        super.onPause();
+    }
 }

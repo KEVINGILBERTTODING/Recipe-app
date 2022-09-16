@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:src="@color/gray"
+            app:civ_border_color="@color/gray"
+            app:civ_border_width="@dimen/_2sdp" />
+
+        <LinearLayout
+            android:id="@+id/linear_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_user"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@id/relative_action"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popsem"
+                android:background="@color/gray"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/gray"
+                android:textSize="@dimen/_9sdp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/relative_action"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/popmed"
+                android:stateListAnimator="@null"
+                android:text="Follow"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
+                app:backgroundTint="@color/main"
+                app:cornerRadius="@dimen/_5sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_unfollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/popmed"
+                android:stateListAnimator="@null"
+                android:text="Unfollow"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
+                app:backgroundTint="#EFEFEF"
+                app:cornerRadius="@dimen/_5sdp" />
+
+            <ImageView
+                android:id="@+id/iv_recipe"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@color/gray" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+
+
+
+
+
+</RelativeLayout>

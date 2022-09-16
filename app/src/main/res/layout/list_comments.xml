@@ -6,7 +6,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/lr_edit"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/shape_edit_comment"
+            android:padding="@dimen/_5sdp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btn_edit"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_edit"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lr_delete"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@drawable/shape_delete_comment"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_trash"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
     <RelativeLayout
+        android:id="@+id/rl_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,6 +73,7 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:src="@color/black"
             app:civ_border_color="@color/main"
@@ -41,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/iv_profile"
-                    android:fontFamily="@font/popsem"
+                    android:fontFamily="@font/popmed"
                     android:text="Username"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp" />
@@ -85,11 +144,26 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/popmed"
                 android:text="Time"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:textSize="@dimen/_7sdp" />
+
+            <TextView
+                android:id="@+id/tv_edited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:text="Edited"
+                android:visibility="gone"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_7sdp" />
+
+
 
         </LinearLayout>
 
 
     </RelativeLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
 
 </RelativeLayout>

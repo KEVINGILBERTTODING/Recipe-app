@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mnu_show"
+        android:id="@+id/mnu_show2"
         android:icon="@drawable/ic_show"
         android:title="Show account"
 

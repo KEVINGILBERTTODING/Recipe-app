@@ -33,6 +33,8 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.okhttp.ResponseBody;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -68,6 +70,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
         holder.tv_like.setText(recipeModels.get(position).getLikes());
+        getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
         Integer like = Integer.parseInt(recipeModels.get(position).getLikes());
 
         String recipe_idd = recipeModels.get(position).getRecipe_id();
@@ -158,10 +161,10 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         holder.btnLike.setOnClickListener(view -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
-                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid);
+                deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
                 // memanggil method untuk mengurangi likes jika button unlike
-                countLike(recipeModels.get(position).getRecipe_id(), 2);
+                countLike(recipeModels.get(position).getRecipe_id(), 2, holder.tv_like);
 
                 // mengubah background button menjadi belum di unlike
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
@@ -175,17 +178,17 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                     holder.disslikeAnimation.cancelAnimation();
                 }, 1500);
 
-                // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) - 1));
+                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
 
             }
 
             //jika di klik maka akan menambah total like
             else {
-                likedRecipe(recipeModels.get(position).getRecipe_id(), userid);
+                likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
                 // memanggil method untuk menambah likes jika button di like
-                countLike(recipeModels.get(position).getRecipe_id(), 1);
+                countLike(recipeModels.get(position).getRecipe_id(), 1, holder.tv_like);
 
                 // mengubah background button jika di like
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
@@ -194,8 +197,8 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 holder.likeAnimation.setVisibility(View.VISIBLE);
                 holder.likeAnimation.playAnimation();
 
-                // menambah jumlah likes jika button di like
-                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
+
+                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
             }
         });
 
@@ -346,9 +349,9 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     // method untuk like recipe
 
-    private void likedRecipe(String recipeid, String useridd) {
+    private void likedRecipe(String recipeid, String useridd, String user_id_notif) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.saveLikeRecipe(recipeid, useridd).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.saveLikeRecipe(recipeid, useridd, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
@@ -367,10 +370,10 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     // method untu delete like recipe
 
-    private void deleteLikeRecipe(String recipeid, String userid) {
+    private void deleteLikeRecipe(String recipeid, String userid , String user_id_notif) {
 
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
-        interfaceRecipe.deleteLikedRecipe(recipeid, userid).enqueue(new Callback<RecipeModel>() {
+        interfaceRecipe.deleteLikedRecipe(recipeid, userid, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
@@ -388,12 +391,48 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     }
 
-    private void countLike(String recipe_id, Integer code) {
+    private void countLike(String recipe_id, Integer code, TextView tvLikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
+
+                    interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                        @Override
+                        public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                            if (response.body().size() > 0 ) {
+                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                                }
+                                else {
+                                    tvLikes.setText(Math.abs(totalLikes) + "");
+                                }
+                            } else {
+                                tvLikes.setText("0");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+                        }
+                    });
 
                 }
                 else {
@@ -405,6 +444,47 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
                 Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // get recipe id to get total likes
+    private void getTotalLikes(String recipe_id, TextView tv_likes) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                    if(Math.abs(totalLikes) > 1000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000 + "K");
+                    } else if(Math.abs(totalLikes) > 1001) {
+                        tv_likes.setText(Math.abs(totalLikes)/1001 + "K+");
+                    }
+                    else if(Math.abs(totalLikes) > 1000000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000 + "M");
+                    } else if(Math.abs(totalLikes) > 1000001){
+                        tv_likes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(totalLikes) > 1000000000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                    } else if (Math.abs(totalLikes) > 1000000001){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                    }
+                    else {
+                        tv_likes.setText(Math.abs(totalLikes) + "");
+                    }
+
+                } else {
+                    tv_likes.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
 
             }
         });

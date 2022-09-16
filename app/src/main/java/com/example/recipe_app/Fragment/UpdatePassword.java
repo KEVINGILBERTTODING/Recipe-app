@@ -29,6 +29,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,7 +97,7 @@ public class UpdatePassword extends Fragment {
          public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
              ProfileModel profileModel = response.body();
              if (profileModel.getSuccess().equals("1")){
-                 if (getArguments().getString("admin") != null) {
+                 if (getArguments() != null) {
 
                      FragmentManager fragmentManager = getFragmentManager();
                      FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -113,13 +114,8 @@ public class UpdatePassword extends Fragment {
                  }
 
 
-
-
-
-
-
              }else{
-                 Toast.makeText(getContext(), "Password is incorrect", Toast.LENGTH_SHORT).show();
+                 Toasty.error(getContext(), "Password is incorrect", Toasty.LENGTH_SHORT).show();
              }
          }
          @Override

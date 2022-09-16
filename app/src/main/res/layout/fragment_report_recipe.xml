@@ -21,19 +21,12 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:background="@drawable/ic_back" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/btn_back"
-                android:fontFamily="@font/popmed"
-                android:text="Back"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp" />
+
 
         </RelativeLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -97,13 +90,26 @@
             android:visibility="gone"
             android:textSize="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_recipe"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/tab_layout"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content">
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/rv_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tab_layout"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:shimmer_recycler_layout="@layout/template_recipe_report"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="10" />
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </RelativeLayout>
 

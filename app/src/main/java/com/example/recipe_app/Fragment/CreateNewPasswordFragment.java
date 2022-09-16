@@ -25,6 +25,7 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,9 +72,10 @@ public class CreateNewPasswordFragment extends Fragment {
                 updatePassword(useridx, txtPassword.getText().toString());
 
             } else if (txtPassword.getText().toString().isEmpty() || txtPasswordConf.getText().toString().isEmpty()){
-                Toast.makeText(getContext(), "field cannot be empty", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "field cannot be empty", Toasty.LENGTH_SHORT ).show();
+
             } else if(txtPassword.length() < 6 || txtPasswordConf.length() < 6){
-                Toast.makeText(getContext(), "password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "password must be at least 6 characters", Toasty.LENGTH_SHORT ).show();
             } else{
                 Toast.makeText(getContext(), "password doesn't match", Toast.LENGTH_SHORT).show();
                 tilPasswordConf.setError("password doesn't match");
@@ -105,14 +107,15 @@ public class CreateNewPasswordFragment extends Fragment {
                     getActivity().finish();
                 }else{
                     // Jika gagal update password
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+
 
                 }
             }
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
 
 
             }

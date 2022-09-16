@@ -65,7 +65,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_2sdp"
             android:fontFamily="@font/popmed"
-            android:text="v1.1.0"
+            android:text="v2.1.1"
             android:textColor="@color/black"
             android:textSize="@dimen/_7sdp" />
 

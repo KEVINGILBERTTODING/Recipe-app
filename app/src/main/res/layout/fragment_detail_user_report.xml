@@ -222,6 +222,7 @@
                 android:text="Accept"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_9sdp"
+                android:stateListAnimator="@null"
                 app:backgroundTint="@color/blue"
                 app:cornerRadius="@dimen/_5sdp" />
 
@@ -231,6 +232,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/btn_accept"
                 android:text="Rejected"
+                android:stateListAnimator="@null"
                 app:cornerRadius="@dimen/_5sdp"
                 android:fontFamily="@font/popmed"
                 app:backgroundTint="#F4152F"

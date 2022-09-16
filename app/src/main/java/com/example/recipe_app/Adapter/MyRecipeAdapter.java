@@ -120,43 +120,6 @@ public class MyRecipeAdapter extends RecyclerView.Adapter<MyRecipeAdapter.ViewHo
                 }
             }
 
-
-            // get position of item clicked
-//            Fragment fragment = new DetailRecipeFragment();
-//
-//            // Send data to detailrecipe fragment
-//
-//            Bundle bundle = new Bundle();
-//            bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
-//            bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
-//            bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
-//            bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
-//            bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
-//            bundle.putString("category", recipeModels.get(getAdapterPosition()).getCategory());
-//            bundle.putString("servings", recipeModels.get(getAdapterPosition()).getServings());
-//            bundle.putString("duration", recipeModels.get(getAdapterPosition()).getDuration());
-//            bundle.putString("ingredients", recipeModels.get(getAdapterPosition()).getIngredients());
-//            bundle.putString("steps", recipeModels.get(getAdapterPosition()).getSteps());
-//            bundle.putString("upload_date", recipeModels.get(getAdapterPosition()).getUpload_date());
-//            bundle.putString("upload_time", recipeModels.get(getAdapterPosition()).getUpload_time());
-//            bundle.putString("image", recipeModels.get(getAdapterPosition()).getImage());
-//            bundle.putString("status", recipeModels.get(getAdapterPosition()).getStatus());
-//            bundle.putString("ratings", recipeModels.get(getAdapterPosition()).getRatings());
-//            bundle.putString("likes", recipeModels.get(getAdapterPosition()).getLikes());
-//            bundle.putString("photo_profile", recipeModels.get(getAdapterPosition()).getPhoto_profile());
-//            bundle.putString("email", recipeModels.get(getAdapterPosition()).getEmail());
-//            bundle.putString("notes", recipeModels.get(getAdapterPosition()).getNote());
-//            fragment.setArguments(bundle);
-//
-//            // get Fragment
-//
-//            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_container, fragment)
-//                    .addToBackStack(null)
-//                    .commit();
-//
-//
-//
         }
 
     }

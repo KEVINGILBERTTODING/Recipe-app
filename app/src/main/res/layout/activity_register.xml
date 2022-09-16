@@ -12,8 +12,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,7 +85,7 @@
                 android:fontFamily="@font/popmed"
                 android:hint="Email"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp">
+                android:textSize="@dimen/_11sdp">
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +110,7 @@
                 android:fontFamily="@font/popmed"
                 android:hint="Username"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp">
+                android:textSize="@dimen/_11sdp">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -139,7 +138,7 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp">
+                android:textSize="@dimen/_11sdp">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -168,7 +167,7 @@
                 android:hint="Password Confirmation"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp">
+                android:textSize="@dimen/_11sdp">
 
             </com.google.android.material.textfield.TextInputEditText>
 

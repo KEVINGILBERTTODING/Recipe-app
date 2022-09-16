@@ -99,7 +99,24 @@ dependencies {
 
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 
+    // Dependencies agar image dapat di zoom
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    // Dependencies for floating action button
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+
+    // dependencies for custom toast
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // shimmer layout
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // Swipe layout
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    // Yoyo animation
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
+
 
 
 

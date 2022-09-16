@@ -54,6 +54,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -152,13 +153,14 @@ public class CreateRecipeFragment extends Fragment {
 
             // if bitmap == null, then show toast
             if (bitmap == null) {
-                Toast.makeText(getContext(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please select image first", Toasty.LENGTH_SHORT).show();
             }
 
             // if field is empty, then show toast
             if (recipe_name.isEmpty() || description_.isEmpty() || serves_.isEmpty() || duration_.isEmpty() || ingredients_.isEmpty() || steps_.isEmpty()) {
 
-                Toast.makeText(getContext(), "Field cannot empty", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Field cannot empty", Toasty.LENGTH_SHORT).show();
+
             }
 
             else {
@@ -293,7 +295,7 @@ public class CreateRecipeFragment extends Fragment {
 
                 } else {
                     pd.dismiss();
-                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -301,7 +303,8 @@ public class CreateRecipeFragment extends Fragment {
             public void onFailure(retrofit2.Call<RecipeModel> call, Throwable t) {
                 pd.dismiss();
                 Log.d("onFailure", t.getMessage());
-                Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
 
@@ -318,7 +321,9 @@ public class CreateRecipeFragment extends Fragment {
                 startActivityForResult(galleryIntent, TAG_GALLERY);
             }
             else {
-                Snackbar.make(getView(), "Permission Denied", Snackbar.LENGTH_LONG).show();
+
+                Toasty.error(getContext(), "Permission Denied", Toasty.LENGTH_SHORT).show();
+
             }
             return;
         }
@@ -340,12 +345,13 @@ public class CreateRecipeFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 img_recipe.setImageBitmap(bitmap);
 
-                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Success load image", Toasty.LENGTH_SHORT).show();
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Failed", Toasty.LENGTH_SHORT).show();
 
-//                Snackbar.make(findViewById(android.R.id.content), "Something Wrong", Snackbar.LENGTH_SHORT).show();
+
             }catch (IOException e){
                 e.printStackTrace();
             }

@@ -39,7 +39,7 @@
                     android:layout_alignParentRight="true"
                     android:fontFamily="@font/popmed"
                     android:text="Apply"
-                    android:textColor="@color/main"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/_11sdp"
                     android:visibility="gone" />
 
@@ -53,12 +53,13 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_centerVertical="true"
-                android:src="@color/black"
+                android:src="@color/gray"
                 app:civ_border_color="@color/main"
-                app:civ_border_width="@dimen/_2sdp" />
+                app:civ_border_width="@dimen/_3sdp" />
+
 
 
             <LinearLayout
@@ -84,8 +85,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
                     android:text="Email"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_9sdp" />
 
                 <TextView
                     android:id="@+id/tv_photo"
@@ -94,7 +95,7 @@
                     android:layout_below="@id/iv_profile"
                     android:fontFamily="@font/popmed"
                     android:text="Change Profile Picture"
-                    android:textSize="@dimen/_7sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
             </LinearLayout>
         </RelativeLayout>

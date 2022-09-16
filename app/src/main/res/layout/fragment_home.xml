@@ -18,13 +18,48 @@
                 android:id="@+id/img_profile"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/_13sdp"
+                android:layout_alignParentLeft="true"
                 app:civ_border_width="@dimen/_2sdp"
+                android:layout_centerInParent="true"
                 app:civ_border_color="@color/main"
                 android:layout_marginRight="@dimen/_10sdp"
+                android:src="@drawable/template_img" />
 
-                android:src="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/btn_notification"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:backgroundTint="@color/black"
+                    android:background="@drawable/ic_notification"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_count_notif"
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/_2sdp"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/container_notification"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_total_notif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/popmed"
+                        android:textSize="@dimen/_9sdp"/>
+
+                </RelativeLayout>
+
+
+            
 
             <TextView
                 android:id="@+id/tv_username"
@@ -32,14 +67,17 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/popsem"
                 android:text="Hi, Eve"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
 
 
             <TableLayout
+                android:layout_toRightOf="@id/img_profile"
                 android:id="@+id/tab_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_below="@id/tv_username">
 
                 <TableRow>
@@ -53,7 +91,7 @@
                         android:textSize="@dimen/_14sdp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/popsem"
                         android:text="best recipes"
@@ -62,10 +100,11 @@
                 </TableRow>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popsem"
                     android:text="for cooking"
+                    android:layout_marginTop="@dimen/_minus5sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
 
@@ -118,7 +157,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Trending Recipes"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -143,12 +182,12 @@
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_trending"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
@@ -159,8 +198,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_30sdp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:shimmer_recycler_item_count="1"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:shimmer_recycler_item_count="2"
                         app:shimmer_recycler_layout="@layout/template_list_data_recipe_trending" />
 
                 </RelativeLayout>
@@ -179,7 +218,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Popular Categories"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <LinearLayout
                         android:id="@+id/layout_see_all_catgories"
@@ -191,18 +230,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:fontFamily="@font/popmed"
                             android:gravity="right"
                             android:text="See all"
-                            android:layout_gravity="center"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_categories"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
@@ -228,9 +267,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_item_count="1"
-                    app:shimmer_recycler_layout="@layout/list_data_recipe_category" />
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:shimmer_recycler_item_count="2"
+                    app:shimmer_recycler_layout="@layout/template_lits_data_recipe_category" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -244,7 +283,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Recent Recipes"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <LinearLayout
                         android:id="@+id/layout_see_all"
@@ -261,12 +300,12 @@
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
@@ -279,8 +318,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:shimmer_recycler_item_count="1"
-                    app:shimmer_recycler_layout="@layout/list_data_recipe_all" />
+                    app:shimmer_recycler_item_count="2"
+                    app:shimmer_recycler_layout="@layout/template_list_data_recipe_recent" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

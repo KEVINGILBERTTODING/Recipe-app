@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import es.dmoral.toasty.Toasty;
+
 public class LoginActivity extends AppCompatActivity {
 
     TextInputLayout til_user, til_pass;
@@ -84,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     &&
                     conMgr.getActiveNetworkInfo().isConnected()) {
             } else {
-                Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toasty.error(this, "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
 
@@ -127,11 +129,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(Objects.requireNonNull(ti_user.getText()).toString().isEmpty() || ti_pass.getText().length() < 8){
                     if(ti_user.getText().toString().isEmpty()){
                         til_user.setErrorEnabled(true);
-                        til_user.setError("Masukan Nama Pengguna");
+                        til_user.setError("Please enter your username");
                     }
                     if(ti_pass.getText().length() < 6) {
                         til_pass.setErrorEnabled(true);
-                        til_pass.setError("Password berisi minimal 8 karakter");
+                        til_pass.setError("Password must be at least 8 characters");
                     }
                 }else {
                     try {
@@ -143,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                 conMgr.getActiveNetworkInfo().isConnected()) {
                             checkLogin(username, password);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Periksa Koneksi Internet", Toast.LENGTH_LONG).show();
+                            Toasty.error(LoginActivity.this, "Please check your internet connection", Toasty.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -177,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkLogin(final String username, final String password) {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-        pDialog.setMessage("Tunggu Sebentar ...");
+        pDialog.setMessage("Please wait ...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST, ServerAPI.URL_LOGIN, new Response.Listener<String>() {
             @Override
@@ -204,8 +206,8 @@ public class LoginActivity extends AppCompatActivity {
                             String username = jObj.getString(TAG_USERNAME);
                             String user_id = jObj.getString("user_id");
 
-                            Log.e("Berhasil Masuk!", jObj.toString());
-                            Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                            Log.e("Success!", jObj.toString());
+                            Toasty.success(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toasty.LENGTH_LONG).show();
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putBoolean(session_admin, true);
                             editor.putString(TAG_USERNAME, username);
@@ -220,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                             String username = jObj.getString(TAG_USERNAME);
                             String user_id = jObj.getString("user_id");
                             Log.e("Berhasil Masuk!", jObj.toString());
-                            Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
+                            Toasty.success(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toasty.LENGTH_LONG).show();
                             // menyimpan login ke session
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putBoolean(session_status, true);

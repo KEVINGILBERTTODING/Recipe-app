@@ -56,6 +56,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -368,18 +369,17 @@ public class EditMyRecipeFragment extends Fragment {
                 if (response.isSuccessful()){
                     pd.dismiss();
                     dialog.dismiss();
-                    Toast.makeText(getContext(), "Upload image success", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Upload image success", Toasty.LENGTH_SHORT).show();
                     img_recipe.setImageBitmap(bitmap);
                 } else {
                     pd.dismiss();
-                    Toast.makeText(getContext(), "Upload image failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Upload image failed", Toasty.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Toast.makeText(getContext(), "cek koneksi", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 pd.dismiss();
-                Log.d("onFailure", t.toString());
             }
         });
 

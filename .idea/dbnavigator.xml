@@ -84,10 +84,12 @@
     <connection id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="jatimakmur.barang" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="recipes.liked" active-filter-id="" />
     <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="recipes.recipe" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="recipes.users" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="recipes.report_user" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="recipes.notification" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" dataset="crud_retrofit.contacts" active-filter-id="EMPTY_FILTER">
       <filter id="c2ea4cd2-08ad-40d1-bd57-e679eed8d543" name="12" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="id" operator="=" value="12" active="true" />

@@ -27,8 +27,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_back"
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_centerVertical="true"
                         android:background="@drawable/ic_back" />
 
@@ -39,14 +39,15 @@
                         android:fontFamily="@font/popmed"
                         android:text="Detail Bug Report"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <ImageButton
                         android:id="@+id/btn_delete"
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
+                        android:backgroundTint="@color/red"
                         android:background="@drawable/ic_delete" />
 
                 </RelativeLayout>
@@ -191,6 +192,7 @@
                 android:fontFamily="@font/popmed"
                 android:text="Accept"
                 android:textAllCaps="false"
+                android:stateListAnimator="@null"
                 android:textSize="@dimen/_9sdp"
                 app:backgroundTint="@color/blue"
                 app:cornerRadius="@dimen/_5sdp" />
@@ -205,6 +207,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:stateListAnimator="@null"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_9sdp"
                 app:backgroundTint="#F4152F"

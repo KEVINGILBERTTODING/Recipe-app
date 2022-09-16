@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_height="wrap_content">
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/lr_delete"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:background="@color/red"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_gravity="center_vertical"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_trash"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:src="@color/black"
+            app:civ_border_color="@color/main"
+            app:civ_border_width="@dimen/_2sdp" />
+
+        <LinearLayout
+            android:id="@+id/linear_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_user"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@id/relative_action"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popsem"
+                android:text="Username"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:text="the content should be here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+            <TextView
+                android:id="@+id/tv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:visibility="gone"
+                android:text="comment will be here"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/relative_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/popmed"
+                android:stateListAnimator="@null"
+                android:text="Follow"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
+                app:backgroundTint="@color/blue"
+                app:cornerRadius="@dimen/_5sdp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_unfollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/popmed"
+                android:stateListAnimator="@null"
+                android:text="Following"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
+                app:backgroundTint="#EFEFEF"
+                app:cornerRadius="@dimen/_5sdp" />
+
+            <ImageView
+                android:id="@+id/iv_recipe"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@color/gray" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_username"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_toRightOf="@id/iv_user"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                android:text="date"
+                android:textSize="@dimen/_7sdp" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:text="time"
+                android:textSize="@dimen/_7sdp" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+
+
+    </com.daimajia.swipe.SwipeLayout>
+
+
+
+
+
+
+</RelativeLayout>

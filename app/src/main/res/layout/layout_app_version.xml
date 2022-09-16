@@ -67,6 +67,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="Ok"
                 android:textAllCaps="false"
+                android:stateListAnimator="@null"
                 android:textSize="@dimen/_10sdp"
                 app:cornerRadius="@dimen/_8sdp" />
 

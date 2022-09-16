@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,16 +26,18 @@ import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReportBugFragment extends Fragment {
-    RecyclerView rv_report;
+    ShimmerRecyclerView rv_report;
     LinearLayoutManager linearLayoutManager;
     ReportBugAdapter reportBugAdapter;
     TabLayout tabLayout;
@@ -41,6 +45,7 @@ public class ReportBugFragment extends Fragment {
     SearchView searchView;
     List<BugReportModel> bugReportModelList;
     ImageButton btnBack;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -53,7 +58,18 @@ public class ReportBugFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_no_report = root.findViewById(R.id.tv_no_report);
         searchView = root.findViewById(R.id.search_bar);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
         btnBack = root.findViewById(R.id.btn_back);
+
+        // when refreshimg not in tab layout
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllReport(1);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
         btnBack.setOnClickListener(view -> {
             FragmentManager fm = getFragmentManager();
@@ -72,21 +88,46 @@ public class ReportBugFragment extends Fragment {
 
                 //get all report
                 if (tab.getPosition() == 0) {
+                    // when refreshimg not in tab layout
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(1);
+                        }
+                    });
                     getAllReport(1);
                 }
 
                 // get accepted report
                 else if  (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(2);
+                        }
+                    });
                     getAllReport(2);
                 }
 
                 // get done report
                 else if(tab.getPosition() == 2) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(3);
+                        }
+                    });
                     getAllReport(3);
                 }
 
                 // get reject report
                 else if(tab.getPosition() == 3) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAllReport(0);
+                        }
+                    });
                     getAllReport(0);
                 }
 
@@ -113,6 +154,7 @@ public class ReportBugFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 filter(newText);
                 return false;
             }
@@ -137,8 +179,9 @@ public class ReportBugFragment extends Fragment {
         reportBugAdapter.filterList(filteredList);
 
         if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            Toasty.error(getContext(), "Not found", Toasty.LENGTH_SHORT).show();
         } else {
+            rv_report.hideShimmer();
             reportBugAdapter.filterList(filteredList);
         }
     }
@@ -159,10 +202,23 @@ public class ReportBugFragment extends Fragment {
                     rv_report.setHasFixedSize(true);
                     tv_no_report.setVisibility(View.GONE);
                     rv_report.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout .setRefreshing(false);
+
+
+                    rv_report.showShimmer();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_report.hideShimmer();
+                        }
+                    }, 1200);
+
 
                 } else {
                     rv_report.setVisibility(View.GONE);
                     tv_no_report.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
 
                     Log.d("failed", "onResponse: ");
                     Log.e("failed", "onResponse: " + response.body());
@@ -171,11 +227,39 @@ public class ReportBugFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<BugReportModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
-                Log.e("MyApp", t.getMessage());
+                Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getAllReport(1);
+
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getAllReport(2);
+
+                } else if (tabLayout.getSelectedTabPosition() == 2 ) {
+                    getAllReport(3);
+
+                } else {
+                    getAllReport(0);
+
+                }
 
             }
         });
+    }
+
+
+    @Override
+    public void onResume() {
+        rv_report.showShimmer();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        rv_report.hideShimmer();
+        super.onPause();
     }
 
 

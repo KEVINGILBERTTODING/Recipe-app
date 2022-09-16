@@ -8,10 +8,12 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -53,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,8 +71,8 @@ public class SettingFragment extends Fragment {
     TextView tv_username, tv_email, tvPhoto, tvApply;
     private final int TAG_GALLERY = 2222;
     Bitmap bitmap;
-    public static final int progress_bar_type = 0;
     ProgressDialog progressDialog;
+    ConnectivityManager conMgr;
 
 
 
@@ -100,6 +103,9 @@ public class SettingFragment extends Fragment {
         addBio = view.findViewById(R.id.add_bio);
 
         progressDialog = new ProgressDialog(getContext());
+
+        // check internet connection
+        checkConnection();
 
 
         // memamnggil method untuk load profile
@@ -142,7 +148,7 @@ public class SettingFragment extends Fragment {
                 builder.show();
 
             } else {
-                Toast.makeText(getContext(), "Please select image", Toast.LENGTH_SHORT).show();
+                Toasty.warning(getContext(), "Please select image", Toast.LENGTH_SHORT, true).show();
             }
 
 
@@ -160,34 +166,41 @@ public class SettingFragment extends Fragment {
             dialog.show();
 
             btn_update.setOnClickListener(view2 -> {
-                progressDialog.setMessage("Update...");
-                progressDialog.show();
-                progressDialog.setCancelable(false);
+                if (edt_username.getText().toString().isEmpty()) {
+                    edt_username.setError("Field cannot be empty");
+                    edt_username.requestFocus();
+                } else {
+                    progressDialog.setMessage("Update...");
+                    progressDialog.show();
+                    progressDialog.setCancelable(false);
 
-                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-                interfaceProfile.updateUsername(userid, edt_username.getText().toString()).enqueue(new Callback<ProfileModel>() {
-                    @Override
-                    public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
-                        if (response.body().getSuccess().equals("1")) {
-                            Toast.makeText(getContext(), "Username updated", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                            dialog.dismiss();
-                        }  else {
-                            Toast.makeText(getContext(), "Username already exist", Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
+                    InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                    interfaceProfile.updateUsername(userid, edt_username.getText().toString()).enqueue(new Callback<ProfileModel>() {
+                        @Override
+                        public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                            if (response.body().getSuccess().equals("1")) {
+                                Toasty.success(getContext(), "Username updated!", Toast.LENGTH_SHORT, true).show();
+                                progressDialog.dismiss();
+                                dialog.dismiss();
+                            }  else {
+                                Toasty.error(getContext(), "Username already exist", Toast.LENGTH_SHORT, true).show();
+                                progressDialog.dismiss();
+
+                            }
 
                         }
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProfileModel> call, Throwable t) {
-                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
+                        @Override
+                        public void onFailure(Call<ProfileModel> call, Throwable t) {
+                            Toasty.error(getContext(), "No connection", Toast.LENGTH_SHORT, true).show();
+                            progressDialog.dismiss();
 
 
-                    }
-                });
+                        }
+                    });
+
+                }
+
             });
         });
 
@@ -195,6 +208,7 @@ public class SettingFragment extends Fragment {
         addBio.setOnClickListener(View -> {
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.layout_add_bio);
+            dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
             Button btnSave = dialog.findViewById(R.id.btnSave);
             EditText edtBio = dialog.findViewById(R.id.edt_bio);
             btnSave.setOnClickListener(view1 -> {
@@ -204,16 +218,16 @@ public class SettingFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                         if (response.body().getStatus().equals("success")) {
-                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(), "Success!", Toast.LENGTH_SHORT, true).show();
                             dialog.dismiss();
                         } else {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Failed", Toast.LENGTH_SHORT, true).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ProfileModel> call, Throwable t) {
-                        Snackbar.make(getView(), "No connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toast.LENGTH_SHORT, true).show();
 
                     }
                 });
@@ -293,7 +307,7 @@ public class SettingFragment extends Fragment {
                     if (appModelList.size() > 0 ) {
                         tv_app_version.setText(appModelList.get(0).getApp_version());
                     } else {
-                        Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Failed load data", Toast.LENGTH_SHORT, true).show();
                     }
 
                 }
@@ -328,7 +342,8 @@ public class SettingFragment extends Fragment {
                     if (appModelList.size() > 0) {
                         tv_about_us.setText(appModelList.get(0).getAbut_us());
                     } else {
-                        Toast.makeText(getContext(), "Failed load about", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Failed load data", Toast.LENGTH_SHORT, true).show();
+
                     }
                 }
 
@@ -398,6 +413,8 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getProfile(userid);
 
             }
         });
@@ -413,18 +430,19 @@ public class SettingFragment extends Fragment {
 
                 if(profileModel.getStatus().equals("success")){
 
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Success!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Failed!", Toast.LENGTH_SHORT, true).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), "Gagal", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -443,12 +461,29 @@ public class SettingFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 iv_profile.setImageBitmap(bitmap);
                 tvApply.setVisibility(View.VISIBLE);
-                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Successfully load image", Toast.LENGTH_SHORT, true).show();
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Failed to load image", Toast.LENGTH_SHORT, true).show();
+
             }catch (IOException e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
     }

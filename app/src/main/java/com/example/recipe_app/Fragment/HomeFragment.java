@@ -5,7 +5,10 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
+
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -14,6 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +33,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.RecipeAllAdapter;
 import com.example.recipe_app.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Adapter.RecipeTrandingAdapter;
+import com.example.recipe_app.Model.NotificationModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.tabs.TabLayout;
@@ -39,6 +46,7 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,22 +54,25 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     String username, userid;
-    TextView tv_username;
+    TextView tv_username, tvTotalNotif;
     ShimmerRecyclerView shimmerRecyclerView, shimmerRecipeCategoryPopular, shimmerRecipeTrending;
     private List<RecipeModel> recipeModelList;
     private InterfaceRecipe interfaceRecipe;
+    View view1;
 
     private List<ProfileModel> profileModelList;
-    InterfaceProfile interfaceProfile;
     RecipeAllAdapter recipeAllAdapter;
-    RelativeLayout layoutHeader;
+    RelativeLayout layoutHeader, rlCountNotif;
     RecipeCategoryPopular recipeCategoryPopular;
     RecipeTrandingAdapter recipeTrandingAdapter;
     TabLayout tabLayout;
     ImageView img_profile;
     SearchView searchView;
+    ConnectivityManager conMgr;
     SwipeRefreshLayout swipeRefreshLayout;
-    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories;
+    ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories, btn_notification;
+    Context context;
+
 
 
 
@@ -81,6 +92,9 @@ public class HomeFragment extends Fragment {
         username = sharedPreferences.getString(TAG_USERNAME, null);
         userid = sharedPreferences.getString("user_id", null);
 
+        context = getContext();
+        view1 = getView();
+
         shimmerRecyclerView = view.findViewById(R.id.recycler_recipe_all);
         shimmerRecipeCategoryPopular = view.findViewById(R.id.recycler_recipe_category);
         shimmerRecipeTrending = view.findViewById(R.id.recycler_recipe_trending);
@@ -93,6 +107,9 @@ public class HomeFragment extends Fragment {
         btn_see_all_categories = view.findViewById(R.id.btn_see_all_categories);
         btn_see_all_recipes = view.findViewById(R.id.btn_see_all);
         btn_see_all_trendings = view.findViewById(R.id.btn_see_all_trending);
+        btn_notification = view.findViewById(R.id.btn_notification);
+        rlCountNotif = view.findViewById(R.id.rl_count_notif);
+        tvTotalNotif = view.findViewById(R.id.tv_total_notif);
 
         // add tab recipe category item
         tabLayout.addTab(tabLayout.newTab().setText("Vegetables"));
@@ -104,10 +121,17 @@ public class HomeFragment extends Fragment {
         // set username
         tv_username.setText("Hi, "+username);
 
-        // show shimmer recyclerview
-        setShimmerAllRecipe();
-        setShimmerCategoryRecipe();
-        setShimmerTrendingRecipe();
+        // Every 3 second will refresh notification
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                countNotification();
+                handler.postDelayed(this,3000);
+            }
+        }, 1000);
+
+
 
         // saat image profile di klik
         img_profile.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +143,15 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();
                 fragmentTransaction.addToBackStack(null);
             }
+        });
+
+        // when btn notification is clicked
+        btn_notification.setOnClickListener(view2 ->  {
+            readNotification(userid);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, new NotificationFragment());
+            ft.addToBackStack(null);
+            ft.commit();
         });
 
         // when refresh swipe
@@ -134,7 +167,7 @@ public class HomeFragment extends Fragment {
         getCategory("Vegetables", 1);
         getRecipeTranding(1,1);
 
-        // when tabLayout and then excute method get recipe
+        // when tabLayout and then excute method get recipe by category
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -150,7 +183,6 @@ public class HomeFragment extends Fragment {
                     getCategory("Others", 1);
                 } else {
                     getCategory("Meat", 1);
-                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -169,7 +201,7 @@ public class HomeFragment extends Fragment {
         btn_see_all_recipes.setOnClickListener(View ->{
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction().addToBackStack(null);
-            fragmentTransaction.replace(R.id.fragment_container, new AllRecipesFragment());
+            fragmentTransaction.replace(R.id.fragment_container, new RecentRecipesFragment());
             fragmentTransaction.commit();
 
         });
@@ -212,6 +244,9 @@ public class HomeFragment extends Fragment {
 
         // call method get profile image
         getProfileImage(userid);
+
+        // change color swipe for refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
 
 
@@ -261,12 +296,29 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeTrending.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
+
+
+                shimmerRecipeTrending.showShimmer();
+                final Handler handller  = new Handler();
+                handller.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeTrending.hideShimmer();
+                    }
+                },1000);
+
+
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+//                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getRecipeTranding(1, 1);
+
+
             }
 
 
@@ -290,15 +342,39 @@ public class HomeFragment extends Fragment {
                 shimmerRecipeCategoryPopular.setLayoutManager(linearLayoutManager);
                 shimmerRecipeCategoryPopular.setAdapter(recipeCategoryPopular);
                 shimmerRecipeCategoryPopular.setHasFixedSize(true);
-
                 swipeRefreshLayout.setRefreshing(false);
+
+                // show shimmer when get data success
+                shimmerRecipeCategoryPopular.showShimmer();
+                final Handler handller  = new Handler();
+                handller.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeCategoryPopular.hideShimmer();
+                    }
+                },1000);
+
+
+
 
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    getCategory("Vegetables", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getCategory("Meat", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 2) {
+                    getCategory("Drinks", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 3) {
+                    getCategory("Noodle", 1);
+                } else if (tabLayout.getSelectedTabPosition() == 4) {
+                    getCategory("Others", 1);
+                } else {
+                    getCategory("Meat", 1);
+                }
 
             }
 
@@ -324,81 +400,29 @@ public class HomeFragment extends Fragment {
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecipeTrending.showShimmer();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecipeTrending.hideShimmer();
+                    }
+                }, 1000);
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
-
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getAllRecipe();
             }
 
 
         });
     }
 
-    private void setShimmerAllRecipe(){
-        shimmerRecyclerView.setAdapter(recipeAllAdapter);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecyclerView.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_recent
-                            : R.layout.template_list_data_recipe_recent;
 
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_recent
-                            : R.layout.template_list_data_recipe_recent;
-            }
-        });
-        shimmerRecyclerView.showShimmer();     // to start showing shimmer
-
-    }
-
-    private void setShimmerCategoryRecipe(){
-        shimmerRecipeCategoryPopular.setAdapter(recipeCategoryPopular);
-        shimmerRecipeCategoryPopular.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecipeCategoryPopular.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_lits_data_recipe_category
-                            : R.layout.template_lits_data_recipe_category;
-
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_lits_data_recipe_category
-                            : R.layout.template_lits_data_recipe_category;
-            }
-        });
-        shimmerRecipeCategoryPopular.showShimmer();     // to start showing shimmer
-
-    }
-
-    private void setShimmerTrendingRecipe(){
-        shimmerRecipeTrending.setAdapter(recipeTrandingAdapter);
-        shimmerRecipeTrending.setLayoutManager(new LinearLayoutManager(getContext()));
-        shimmerRecipeTrending.setItemViewType((type, position) -> {
-            switch (type) {
-                case ShimmerRecyclerView.LAYOUT_GRID:
-                    return position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
-
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_list_data_recipe_trending
-                            : R.layout.template_list_data_recipe_trending;
-            }
-        });
-        shimmerRecipeTrending.showShimmer();     // to start showing shimmer
-
-    }
 
     // get profile image
     private void getProfileImage(String user_id) {
@@ -416,19 +440,99 @@ public class HomeFragment extends Fragment {
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .dontAnimate()
                             .fitCenter()
+                            .placeholder(R.drawable.template_img)
                             .centerCrop()
                             .override(200, 200)
                             .into(img_profile);
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getProfileImage(userid);
             }
         });
 
 
     }
 
+    // Count total notification status = '1'
+    private void countNotification(){
+        InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+        interfaceNotification.countTotalNotif(userid).enqueue(new Callback<List<NotificationModel>>() {
+            @Override
+            public void onResponse(Call<List<NotificationModel>> call, Response<List<NotificationModel>> response) {
+                if (response.body().size() > 0 ) {
+                    rlCountNotif.setVisibility(View.VISIBLE);
+                    tvTotalNotif.setText(response.body().size() + "");
+                } else  {
+                    rlCountNotif.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    // method to read notification where user click button notification then update status notif
+    // where 1 to
+
+    private void readNotification(String userid) {
+        InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+        interfaceNotification.readNotif(userid).enqueue(new Callback<NotificationModel>() {
+            @Override
+            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+                if (response.body().getStatus().equals("1")) {
+
+
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NotificationModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        shimmerRecyclerView.showShimmer();
+        shimmerRecipeTrending.showShimmer();
+        shimmerRecipeCategoryPopular.showShimmer();
+        checkConnection();
+        countNotification();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        shimmerRecyclerView.hideShimmer();
+        shimmerRecipeTrending.hideShimmer();
+        shimmerRecipeCategoryPopular.hideShimmer();
+        super.onPause();
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

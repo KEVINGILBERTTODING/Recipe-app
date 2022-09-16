@@ -1,6 +1,8 @@
 package com.example.recipe_app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.todkars.shimmer.ShimmerRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,12 +45,7 @@ public class TrendingRecipesFragment extends Fragment {
     RecipeTrandingAdapter2 recipeTrandingAdapter2;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_back;
-
-
-
-    public TrendingRecipesFragment() {
-        // Required empty public constructor
-    }
+    ConnectivityManager conMgr;
 
 
     @Override
@@ -60,8 +59,10 @@ public class TrendingRecipesFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         btn_back = view.findViewById(R.id.btn_back);
 
-        setShimmer();
-        getRecipeTranding(1, 1);
+        // Change color swipe refresh icon
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
+
 
         // when refresh swipe
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -93,19 +94,17 @@ public class TrendingRecipesFragment extends Fragment {
 
     private void setShimmer() {
         shimmerRecyclerView.setAdapter(recipeTrandingAdapter2);
-        shimmerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shimmerRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2), R.layout.template_list_data_recipe_trending);
         shimmerRecyclerView.setItemViewType((type, position) -> {
             switch (type) {
+                default:
                 case ShimmerRecyclerView.LAYOUT_GRID:
                     return position % 2 == 0
                             ? R.layout.template_data_show_all
                             : R.layout.template_data_show_all;
 
-                default:
-                case ShimmerRecyclerView.LAYOUT_LIST:
-                    return position == 0 || position % 2 == 0
-                            ? R.layout.template_data_show_all
-                            : R.layout.template_data_show_all;
+
+
             }
         });
         shimmerRecyclerView.showShimmer();     // to start showing shimmer
@@ -130,12 +129,31 @@ public class TrendingRecipesFragment extends Fragment {
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
+                shimmerRecyclerView.setItemViewType((type, position) -> {
+                    switch (type) {
+                        default:
+                        case ShimmerRecyclerView.LAYOUT_GRID:
+                            return position % 2 == 0
+                                    ? R.layout.template_data_show_all
+                                    : R.layout.template_data_show_all;
+
+                    }
+                });
+                shimmerRecyclerView.showShimmer();     // to start showing shimmer
+
+                final Handler handler =  new Handler();
+                handler.postDelayed((Runnable) () -> {
+                    shimmerRecyclerView.hideShimmer();
+                }, 1000);
+
+
             }
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Periksa koneksi anda", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+                getRecipeTranding(1, 1);
             }
 
 
@@ -179,4 +197,32 @@ public class TrendingRecipesFragment extends Fragment {
 
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        setShimmer();
+        getRecipeTranding(1, 1);
+//        checkConnection();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        shimmerRecyclerView.hideShimmer();
+        super.onPause();
+    }
 }

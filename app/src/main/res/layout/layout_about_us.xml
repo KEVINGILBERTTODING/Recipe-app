@@ -71,6 +71,7 @@
                 android:text="Ok"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_10sdp"
+                android:stateListAnimator="@null"
                 app:cornerRadius="@dimen/_8sdp" />
 
         </LinearLayout>

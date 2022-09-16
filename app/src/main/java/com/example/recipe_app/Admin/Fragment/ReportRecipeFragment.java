@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,25 +30,28 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReportRecipeFragment extends Fragment {
     ImageButton btnBack;
-    RecyclerView rv_recipe;
+    ShimmerRecyclerView rv_recipe;
     List<RecipeReportmodel> recipeReportmodelList;
     ReportRecipeAdapter reportRecipeAdapter;
     TabLayout tabLayout;
     LinearLayoutManager linearLayoutManager;
     SearchView searchView;
     TextView tv_no_data;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -63,7 +68,7 @@ public class ReportRecipeFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tab_layout);
         tv_no_data = root.findViewById(R.id.tv_no_report);
         searchView = root.findViewById(R.id.search_bar);
-
+        swipeRefreshLayout =  root.findViewById(R.id.swipe_refresh);
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.popBackStack();
@@ -83,16 +88,34 @@ public class ReportRecipeFragment extends Fragment {
 
                 //get all report
                 if (tab.getPosition() == 0) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipeReport(1);
+                        }
+                    });
                     getRecipeReport(1);
                 }
 
                 // get accepted report
                 else if  (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipeReport(2);
+                        }
+                    });
                     getRecipeReport(2);
                 }
 
                 // get rejcted report
                 else if(tab.getPosition() == 2) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getRecipeReport(0);
+                        }
+                    });
                     getRecipeReport(0);
                 }
 
@@ -120,6 +143,16 @@ public class ReportRecipeFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 filter(newText);
                 return false;
+            }
+        });
+
+
+        // swipe refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRecipeReport(1);
             }
         });
 
@@ -163,24 +196,56 @@ public class ReportRecipeFragment extends Fragment {
                     tv_no_data.setVisibility(View.GONE);
                     rv_recipe.setVisibility(View.VISIBLE);
 
+                    swipeRefreshLayout.setRefreshing(false);
+                    rv_recipe.showShimmer();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_recipe.hideShimmer();
+                        }
+                    }, 1200);
+
                     
                 } else  {
                     rv_recipe.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
+
 
                 }
             }
 
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_LONG).show();
-                rv_recipe.setVisibility(View.GONE);
-                tv_no_data.setVisibility(View.VISIBLE);
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    swipeRefreshLayout.setRefreshing(true);
+                    getRecipeReport(1);
+                } else if (tabLayout.getSelectedTabPosition() == 1) {
+                    getRecipeReport(2);
+                } else {
+                    getRecipeReport(0);
+                }
+
+
+
+
 
 
             }
         });
     }
 
+    @Override
+    public void onResume() {
+        rv_recipe.showShimmer();
+        super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        rv_recipe.hideShimmer();
+        super.onPause();
+    }
 }

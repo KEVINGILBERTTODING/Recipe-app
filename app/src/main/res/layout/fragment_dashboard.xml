@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/_10sdp"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
     tools:context=".Admin.Fragment.DashboardFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -32,7 +33,6 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@color/black"
                     app:civ_border_color="@color/main"
-
                     app:civ_border_width="@dimen/_2sdp" />
 
                 <LinearLayout
@@ -59,7 +59,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Username"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
 
 
@@ -77,7 +77,7 @@
                 android:text="Overview"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_12sdp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/rl_users"

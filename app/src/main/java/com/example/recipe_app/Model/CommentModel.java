@@ -24,9 +24,13 @@ public class CommentModel implements Serializable {
     String photo_profile;
     @SerializedName("username")
     String username;
+    @SerializedName("success")
+    String success;
+    @SerializedName("edited")
+    String edited;
 
     public CommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
-                        String comment_time, String photo_profile, String username) {
+                        String comment_time, String photo_profile, String username, String success, String edited) {
 
         this.comment_id = comment_id;
         this.user_id = user_id;
@@ -36,6 +40,8 @@ public class CommentModel implements Serializable {
         this.username = username;
         this.comment_time = comment_time;
         this.comment_date = comment_date;
+        this.success = success;
+        this.edited  = edited;
 
 
     }
@@ -103,5 +109,21 @@ public class CommentModel implements Serializable {
 
     public void setComment_time(String comment_time) {
         this.comment_time = comment_time;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(String success) {
+        this.success = success;
+    }
+
+    public String getEdited() {
+        return edited;
+    }
+
+    public void setEdited(String edited) {
+        this.edited = edited;
     }
 }

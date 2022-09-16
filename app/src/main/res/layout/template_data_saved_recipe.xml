@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_180sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/template_img"
+        app:shapeAppearanceOverlay="@style/roundedCorners" />
+
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_recipe"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/popmed"
+        android:background="@color/gray"
+        android:textSize="@dimen/_10sdp" />
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_duration"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/popsem"
+        android:background="@color/gray"
+        android:textColor="#292E35"
+        android:textSize="@dimen/_11sdp" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_below="@id/tv_title">
+
+        <TableRow>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_profile"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@color/gray"
+                android:layout_marginRight="@dimen/_5sdp"/>
+
+            <TextView
+                android:id="@+id/tv_recipe_username"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_recipe"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/popmed"
+                android:background="@color/gray"
+                android:textSize="@dimen/_10sdp" />
+
+        </TableRow>
+    </TableLayout>
+
+
+</RelativeLayout>

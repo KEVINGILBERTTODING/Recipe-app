@@ -92,12 +92,33 @@ public class QrcodeFragment extends Fragment {
         
         setScreenBright();
 
-        btnScan.setOnClickListener(view1 -> {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, new ScannerFragment());
-            fragmentTransaction.commit();
-            fragmentTransaction.addToBackStack(null);
-        });
+        if (getArguments().getString("admin") != null) {
+            btnScan.setOnClickListener(view1 -> {
+                Fragment fragment = new ScannerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("admin", "admin");
+                bundle.putString("recipe", "recipe");
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_admin, fragment);
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            });
+        } else {
+            btnScan.setOnClickListener(view1 -> {
+                Fragment fragment = new ScannerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("admin", "admin");
+                bundle.putString("recipe", "recipe");
+                fragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
+                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null);
+            });
+        }
+
+
 
         return view;
     }

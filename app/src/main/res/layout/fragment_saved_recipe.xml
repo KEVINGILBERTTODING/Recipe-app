@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Saved Recipes"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_14sdp"
             android:fontFamily="@font/popsem"
             android:textColor="@color/black"/>
 
@@ -25,7 +25,7 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_barr"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tab_layout1"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/search_bar2"
@@ -35,12 +35,34 @@
             app:queryHint="Search recipes"
             app:theme="@style/AppSearchView" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_saved_recipe"
+
+        <TextView
+            android:id="@+id/tv_notfound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="@dimen/_15sdp"/>
+            android:text="No recipe found"
+            android:fontFamily="@font/popmed"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:textSize="@dimen/_9sdp"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recycler_saved_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
 
 
 

@@ -25,18 +25,38 @@
                 android:fontFamily="@font/popsem"
                 android:text="Profile"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
 
-            <ImageButton
-                android:id="@+id/btn_setting"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_setting"
-                android:backgroundTint="@color/black"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-                />
+                <ImageButton
+                    android:id="@+id/btn_qrcode"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/ic_qrcode"
+                    android:backgroundTint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/btn_setting"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_setting"
+                    android:backgroundTint="@color/black"
+
+                    />
+
+            </LinearLayout>
+
+
 
         </RelativeLayout>
 
@@ -52,9 +72,9 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:src="@color/black"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:src="@color/gray"
             app:civ_border_color="@color/main"
             app:civ_border_width="@dimen/_3sdp" />
 
@@ -71,6 +91,15 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 
+        <TextView
+            android:id="@+id/tv_biography"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btn_back"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_8sdp" />
+
+
 
 
         <LinearLayout
@@ -83,7 +112,7 @@
             <ImageView
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:src="@drawable/ic_mail" />
 
@@ -94,15 +123,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:text="Email"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -140,15 +169,107 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_biography"
+
+
+        <LinearLayout
+            android:id="@+id/lr_followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_toRightOf="@+id/btn_back"
-            android:fontFamily="@font/popmed"
-            android:text="Biography"
-            android:textSize="@dimen/_8sdp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/lr_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_post"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/popsem"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="wrap_content"
+                    android:text="Post"
+                    android:fontFamily="@font/popmed"
+                    android:textSize="@dimen/_9sdp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@color/gray"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_followers"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/popsem"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tv_2"
+                    android:layout_width="wrap_content"
+                    android:text="Followers"
+                    android:fontFamily="@font/popmed"
+                    android:textSize="@dimen/_9sdp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/gray"
+                android:layout_marginRight="@dimen/_10sdp"/>
+
+            <LinearLayout
+                android:id="@+id/lr_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_following"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/popsem"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tv_3"
+                    android:layout_width="wrap_content"
+                    android:text="Following"
+                    android:fontFamily="@font/popmed"
+                    android:textSize="@dimen/_9sdp"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
 
 
 
@@ -163,6 +284,9 @@
             app:tabMode="fixed"
             app:tabTextAppearance="@style/TabFont">
 
+
+
+
         </com.google.android.material.tabs.TabLayout>
 
         <TextView
@@ -176,14 +300,48 @@
             android:layout_marginTop="@dimen/_40sdp"
             android:textSize="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_recipe"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_notfound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No recipe found"
+                    android:fontFamily="@font/popmed"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:textSize="@dimen/_9sdp"/>
+
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recycler_recipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_recycler_item_count="10"
+                    tools:listitem="@layout/list_my_recipe"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+            </LinearLayout>
+
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
     </LinearLayout>

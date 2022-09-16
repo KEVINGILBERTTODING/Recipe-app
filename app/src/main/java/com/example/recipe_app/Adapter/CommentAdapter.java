@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,12 +33,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.swipe.SwipeLayout;
+import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Model.CommentModel;
+import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.transition.Hold;
 
 import java.util.List;
 
@@ -48,11 +55,9 @@ import retrofit2.Response;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     String username, userid;
-
-
     List<CommentModel> commentModelsList;
     Context context;
-    CommentAdapter commentAdapter;
+    private OnCommentLisstener onCommentLisstener;
 
     public CommentAdapter(Context context, List<CommentModel> commentModelsList) {
         this.commentModelsList = commentModelsList;
@@ -79,8 +84,34 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_comment.setText(commentModelsList.get(position).getComment());
         holder.tv_date.setText(commentModelsList.get(position).getComment_date());
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
-        String comment = commentModelsList.get(position).getComment();
+        String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+        // set agar tv username dan foto profile dapat di klik di detail recipe fragment
+        holder.tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCommentLisstener.onCommentCLick(view, position);
+            }
+        });
+
+        holder.img_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCommentLisstener.onCommentCLick(view, position);
+            }
+        });
+
+
+
+
+        // If comment is edited than show text "edited"
+        if (commentModelsList.get(position).getEdited().equals("1")) {
+            holder.tv_edited.setVisibility(View.VISIBLE);
+        } else{
+            holder.tv_edited.setVisibility(View.GONE);
+        }
 
 
         Glide.with(context)
@@ -95,121 +126,83 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .override(200, 200)
                 .into(holder.img_profile);
 
-
-        // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
-        if (user_id.equals(userid)) {
-
-            // Change text color if user_id == user_id comment
-            holder.tv_username.setTextColor(context.getResources().getColor(R.color.main));
-            holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    //Create popup menu
-                    PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END);
-                    popupMenu.getMenuInflater().inflate(R.menu.comment_menu, popupMenu.getMenu());
-
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()) {
+        holder.swipeLayout.setSwipeEnabled(false);
+        
 
 
-                                case R.id.mnu_delete_comment:
-                                    DataApi.getClient().create(InterfaceComment.class).deleteComment(commentModelsList.get(position).getComment_id()).enqueue(new Callback<CommentModel>() {
-                                        @Override
-                                        public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                            if (response.isSuccessful()) {
+        // Mengambil userid pemilik recipe
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    // if user_id == user_id comment, maka bisa mengubah dan menghapus comment
+                    if (user_id.equals(userid)) {
 
+                        // Change text color if user_id == user_id comment
+                        holder.tv_username.setTextColor(context.getResources().getColor(R.color.blue));
 
-                                                commentModelsList.remove(position);
-                                                notifyItemRemoved(position);
-                                                notifyItemRangeChanged(position, commentModelsList.size());
-
-
-
-                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment deleted", Snackbar.LENGTH_SHORT)
-                                                        .show();
-
-                                            }
-
-                                            else {
-                                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<CommentModel> call, Throwable t) {
-                                            Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                                                    .show();
-                                        }
-                                    });
-
-                                    break;
-                                case R.id.mnu_edit_comment:
-
-                                    Dialog dialog = new Dialog(context);
-                                    dialog.setContentView(R.layout.dialog_edit_comment);
-                                    dialog.setTitle("Edit Comment");
-                                    dialog.show();
-                                    final EditText et_comment = dialog.findViewById(R.id.et_comment);
-                                    final Button btn_edit = dialog.findViewById(R.id.btn_edit);
-
-                                    et_comment.setText(commentModelsList.get(position).getComment());
-
-
-                                    // saat menu edit di pilih
-                                    btn_edit.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            DataApi.getClient().create(InterfaceComment.class)
-                                                    .editComment(commentModelsList.get(position).getComment_id(), et_comment.getText().toString())
-                                                    .enqueue(new Callback<CommentModel>() {
-                                                @Override
-                                                public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
-                                                    if (response.isSuccessful()) {
-
-                                                        // response langsung di refresh
-                                                        commentModelsList.get(position).setComment(et_comment.getText().toString());
-                                                        notifyItemChanged(position);
-                                                        notifyItemRangeChanged(position, commentModelsList.size());
-
-                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Comment edited", Snackbar.LENGTH_SHORT)
-                                                                .show();
-
-                                                    }
-
-                                                    else {
-                                                        Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT)
-                                                                .show();
-                                                    }
-                                                }
-                                                @Override
-                                                public void onFailure(Call<CommentModel> call, Throwable t) {
-                                                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT)
-                                                            .show();
-                                                }
-                                            });
-
-                                            dialog.dismiss();
-                                        }
-                                    });
-
-
-
-                                    break;
+                        // set agar btn edit dapat diklik di detailrecipefragment
+                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
                             }
-                            return false;
-                        }
-                    });
+                        });
 
-                    popupMenu.show();
+                        // set agar btn delete dapat diklik di detailrecipefragment
+                        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
 
-                    return false;
+                        // Jika ingin long click listener
+//                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
+//                            @Override
+//                            public boolean onLongClick(View view) {
+//                                onCommentLisstener.onCommentCLick(view, position);
+//                                return false;
+//                            }
+//                        });
+
+
+                        // active kan swipe layout
+                        holder.swipeLayout.setSwipeEnabled(true);
+
+                    } else if (response.body().get(0).getUser_id().equals(userid)) {
+
+                        // set agar btn delete dapat diklik di detailrecipefragment
+                        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
+
+                        // Hide edit comment button
+                        holder.lrEdit.setVisibility(View.GONE);
+
+
+
+
+                        // active swipe comment to edit or delete option
+                        holder.swipeLayout.setSwipeEnabled(true);
+                    }
+
+
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+
+
 
 
 
@@ -220,10 +213,24 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return commentModelsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnCommentListener(DetailRecipeFragment detailRecipeFragment) {
+        this.onCommentLisstener = detailRecipeFragment;
+
+    }
+
+    public interface OnCommentLisstener {
+        void onCommentCLick(View view, int position);
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile;
-        TextView tv_username, tv_comment, tv_date, tv_time;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited;
         RelativeLayout list_comment;
+        ImageButton btn_edit, btn_delete;
+        SwipeLayout swipeLayout;
+        LinearLayout lrEdit;
+
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -237,7 +244,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_time = itemView.findViewById(R.id.tv_time);
             list_comment = itemView.findViewById(R.id.list_comments);
+            tv_edited = itemView.findViewById(R.id.tv_edited);
+            btn_edit = itemView.findViewById(R.id.btn_edit);
+            btn_delete = itemView.findViewById(R.id.btn_delete);
+            swipeLayout = itemView.findViewById(R.id.swipe_comment);
+            lrEdit = itemView.findViewById(R.id.lr_edit);
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (onCommentLisstener!= null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    onCommentLisstener.onCommentCLick(view, position);
+                }
+            }
 
 
         }
