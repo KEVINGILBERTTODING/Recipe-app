@@ -74,7 +74,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:src="@drawable/template_img"
+            android:src="@color/gray"
             app:civ_border_color="@color/main"
             app:civ_border_width="@dimen/_3sdp" />
 
@@ -97,7 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btn_back"
             android:fontFamily="@font/popmed"
-            android:text="Biography"
             android:textSize="@dimen/_8sdp" />
 
 
@@ -124,7 +123,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:text="Email"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />
 

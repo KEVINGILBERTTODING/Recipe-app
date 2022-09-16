@@ -404,7 +404,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 if (tabLayout.getSelectedTabPosition() == 0) {
                     getRecipe(userid, 1);
@@ -470,6 +470,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getLikeRecipe(userid);
 

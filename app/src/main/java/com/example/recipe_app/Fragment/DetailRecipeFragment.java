@@ -766,6 +766,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getComment(recipe_id);
+
 
 
 
@@ -829,6 +832,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                getPhotoProfile(useridx);
 
             }
         });

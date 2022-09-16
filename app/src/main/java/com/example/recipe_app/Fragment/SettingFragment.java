@@ -413,6 +413,8 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getProfile(userid);
 
             }
         });

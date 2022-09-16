@@ -222,6 +222,7 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                 swipeRefreshLayout.setRefreshing(true);
                 if (tabLayout.getSelectedTabPosition() == 0) {

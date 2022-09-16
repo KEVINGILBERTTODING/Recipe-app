@@ -397,6 +397,7 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getAllRecipe();
 
@@ -456,9 +457,7 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Snackbar snackbar = Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT);
-                snackbar.show();
-                snackbar.setBackgroundTint(getResources().getColor(R.color.main));
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                 swipeRefreshLayout.setRefreshing(false);
 

@@ -642,7 +642,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getProfile(user_id);
             }
@@ -702,6 +701,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getRecipe(user_id, 1);
 
@@ -747,6 +747,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getLikeRecipe(user_id);
             }

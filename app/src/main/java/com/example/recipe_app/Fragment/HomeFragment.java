@@ -415,6 +415,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getAllRecipe();
             }
@@ -422,6 +423,7 @@ public class HomeFragment extends Fragment {
 
         });
     }
+
 
 
     // get profile image
@@ -450,7 +452,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Log.e("Disini Error nyaa", t.getMessage());
                 swipeRefreshLayout.setRefreshing(true);
                 getProfileImage(userid);
             }

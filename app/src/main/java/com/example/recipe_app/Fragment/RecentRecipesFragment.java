@@ -154,7 +154,7 @@ public class RecentRecipesFragment extends Fragment {
                     final Handler handler = new Handler();
                     handler.postDelayed((Runnable) () -> {
                         rv_recipe.hideShimmer(); // to hide shimmer
-                    }, 1000);
+                    }, 1200);
 
                 }
 
@@ -162,6 +162,7 @@ public class RecentRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                getAllRecipe();
                 Toasty.error(getContext(), "Check your connection").show();
 
             }
@@ -171,6 +172,7 @@ public class RecentRecipesFragment extends Fragment {
     // set shimmer
     private void setShimmer(){
         rv_recipe.setAdapter(recipeShowAllAdapter);
+        rv_recipe.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rv_recipe.setHasFixedSize(true);
 
         rv_recipe.setItemViewType((type, position) -> {

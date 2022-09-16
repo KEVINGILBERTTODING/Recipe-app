@@ -50,6 +50,7 @@ public class SavedRecipeFragment extends Fragment {
     TextView tv_notfound;
     SwipeRefreshLayout swipeRefreshLayout;
     ConnectivityManager conMgr;
+    Context context;
 
 
 
@@ -74,6 +75,7 @@ public class SavedRecipeFragment extends Fragment {
         searchView = view.findViewById(R.id.search_barr);
         tv_notfound = view.findViewById(R.id.tv_notfound);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        context = getContext();
 
 
 
@@ -190,7 +192,7 @@ public class SavedRecipeFragment extends Fragment {
                     tv_notfound.setVisibility(View.VISIBLE);
                     tv_notfound.setText("No recipe found");
                     rv_saved_recipe.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(true);
+                    swipeRefreshLayout.setRefreshing(false);
 
 
 
@@ -203,10 +205,9 @@ public class SavedRecipeFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
                 tv_notfound.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(true);
-
                 getSavedRecipe(userid);
 
 

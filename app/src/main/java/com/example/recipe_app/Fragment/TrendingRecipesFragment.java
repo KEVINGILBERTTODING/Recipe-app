@@ -59,6 +59,9 @@ public class TrendingRecipesFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         btn_back = view.findViewById(R.id.btn_back);
 
+        // Change color swipe refresh icon
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
 
 
         // when refresh swipe

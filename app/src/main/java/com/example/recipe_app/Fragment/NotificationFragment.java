@@ -124,6 +124,7 @@ public class NotificationFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 tv_no_notif.setVisibility(View.GONE);
                 getAllNotification();

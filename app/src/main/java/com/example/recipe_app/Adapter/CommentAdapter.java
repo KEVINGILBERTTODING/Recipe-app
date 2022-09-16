@@ -181,14 +181,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             }
                         });
 
-                        // set agar btn edit dapat diklik di detailrecipefragment
-//                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                onCommentLisstener.onCommentCLick(view, position);
-//                            }
-//                        });
 
+                        // Hide edit comment button
                         holder.lrEdit.setVisibility(View.GONE);
 
 

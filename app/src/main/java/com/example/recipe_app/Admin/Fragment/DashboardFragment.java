@@ -226,6 +226,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 getAdminInfo();
 
 
