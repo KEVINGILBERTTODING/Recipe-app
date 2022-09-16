@@ -55,10 +55,7 @@
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="@color/white"
                 android:background="@drawable/ic_trash"/>
-
         </LinearLayout>
-
-
     </LinearLayout>
 
 
