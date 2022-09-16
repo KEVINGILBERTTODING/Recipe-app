@@ -50,7 +50,7 @@
                     android:layout_alignParentRight="true"
                     android:fontFamily="@font/popmed"
                     android:text="Apply"
-                    android:textColor="@color/main"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/_11sdp"
                     android:visibility="gone" />
 
@@ -95,8 +95,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
                     android:text="Email"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_9sdp" />
 
                 <TextView
                     android:id="@+id/tv_photo"

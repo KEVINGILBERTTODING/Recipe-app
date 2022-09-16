@@ -61,10 +61,7 @@ public class DetailBugReportFragment extends Fragment {
         tv_time = root.findViewById(R.id.tv_time);
 
 
-        btnBack.setOnClickListener(view1 -> {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.popBackStack();
-        });
+
 
         // get data from bundle
         reportId    = getArguments().getString("report_id");
@@ -86,6 +83,14 @@ public class DetailBugReportFragment extends Fragment {
         tv_title.setText(title);
         tv_report.setText(report);
         tv_time.setText(time);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
+            }
+        });
 
 
         // load photo profile

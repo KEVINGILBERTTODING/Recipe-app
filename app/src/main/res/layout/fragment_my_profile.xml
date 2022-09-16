@@ -123,9 +123,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@+id/btn_back"
                 android:fontFamily="@font/popmed"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 

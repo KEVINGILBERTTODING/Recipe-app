@@ -11,8 +11,7 @@
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/app_bar"
-        >
+        android:id="@+id/app_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,8 +20,8 @@
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:background="@drawable/ic_back" />
 
         </RelativeLayout>

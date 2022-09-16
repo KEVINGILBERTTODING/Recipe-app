@@ -168,7 +168,6 @@ public class ReportBugFragment extends Fragment {
 
     private void filter(String newText) {
         ArrayList<BugReportModel> filteredList = new ArrayList<>();
-        filteredList = null;
 
 
         for (BugReportModel item : bugReportModelList) {

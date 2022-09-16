@@ -139,7 +139,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_toRightOf="@+id/btn_back"
                     android:fontFamily="@font/popmed"
-                    android:textColor="@color/black"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/_8sdp" />
 
 

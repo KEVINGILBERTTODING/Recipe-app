@@ -66,7 +66,7 @@
                 android:padding="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:maxLength="150"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_11sdp"/>
 
             <EditText
                 android:id="@+id/edt_description"
@@ -85,7 +85,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:maxLength="150"
                 android:scrollbars="vertical"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_11sdp"/>
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
