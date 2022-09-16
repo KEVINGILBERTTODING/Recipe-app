@@ -400,8 +400,6 @@ public class HomeFragment extends Fragment {
                 shimmerRecyclerView.setHasFixedSize(true);
                 swipeRefreshLayout.setRefreshing(false);
 
-
-
                 shimmerRecipeTrending.showShimmer();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

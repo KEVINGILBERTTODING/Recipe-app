@@ -186,8 +186,6 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
 
 
-
-
     }
 
     @Override
@@ -300,15 +298,16 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe saved", Snackbar.LENGTH_SHORT).show();
+
+                    Toasty.success(context, "Recipe saved", Toasty.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                  Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+             Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
     }
@@ -319,15 +318,17 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(context, "Recipe deleted", Toasty.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -386,14 +387,15 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
 
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -432,6 +434,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                getTotalLikes(recipe_id, tv_likes);
 
             }
         });

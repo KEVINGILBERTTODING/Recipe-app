@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:layout_marginRight="@dimen/_10sdp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/_220sdp"
     android:layout_height="wrap_content"
