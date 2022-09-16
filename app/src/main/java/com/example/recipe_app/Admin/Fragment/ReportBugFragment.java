@@ -229,7 +229,6 @@ public class ReportBugFragment extends Fragment {
             @Override
             public void onFailure(Call<List<BugReportModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Error no connection", Toasty.LENGTH_SHORT).show();
-                Log.e("MyApp", t.getMessage());
                 swipeRefreshLayout.setRefreshing(true);
 
                 if (tabLayout.getSelectedTabPosition() == 0) {

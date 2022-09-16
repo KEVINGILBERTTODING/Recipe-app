@@ -252,6 +252,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
+                countAllReport();
 
 
             }
@@ -276,6 +277,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
 
+                countReportRecipe();
 
             }
         });

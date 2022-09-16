@@ -27,6 +27,7 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.google.android.material.snackbar.Snackbar;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,19 +163,19 @@ public class DetailUserReport extends Fragment {
                     public void onResponse(Call<UserReportModel> call, Response<UserReportModel> response) {
                         UserReportModel userReportModel = response.body();
                         if (userReportModel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(),
-                                    "Report deleted successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(),
+                                    "Report deleted successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportUserFragment());
                             ft.commit();
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Failed", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserReportModel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -219,7 +220,7 @@ public class DetailUserReport extends Fragment {
 
                     @Override
                     public void onFailure(Call<UserReportModel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -240,20 +241,20 @@ public class DetailUserReport extends Fragment {
                     public void onResponse(Call<UserReportModel> call, Response<UserReportModel> response) {
                         UserReportModel userReportModel = response.body();
                         if (userReportModel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(),
-                                    "Report rejected successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(),
+                                    "Report rejected successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportUserFragment());
                             ft.commit();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserReportModel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -277,13 +278,13 @@ public class DetailUserReport extends Fragment {
                             enabledUser();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wromh", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserReportModel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -314,14 +315,14 @@ public class DetailUserReport extends Fragment {
                         ft.commit();
 
                     } else{
-                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<AdminModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -335,19 +336,19 @@ public class DetailUserReport extends Fragment {
             public void onResponse(Call<AdminModel> call, Response<AdminModel> response) {
                 AdminModel adminModel = response.body();
                 if (adminModel.getStatus().equals("1")) {
-                    Toast.makeText(getContext(),
-                            "Activated account successfully", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(),
+                            "Activated account successfully", Toasty.LENGTH_SHORT).show();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_admin, new ReportUserFragment());
                     ft.commit();
                 } else  {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AdminModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
