@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -47,6 +49,7 @@ public class NotificationFragment extends Fragment {
     List<NotificationModel> notificationModelList = new ArrayList<>();
     LinearLayoutManager linearLayoutManager;
     TextView tv_no_notif;
+    ConnectivityManager conMgr;
 
 
 
@@ -121,7 +124,6 @@ public class NotificationFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection").show();
                 swipeRefreshLayout.setRefreshing(true);
                 tv_no_notif.setVisibility(View.GONE);
                 getAllNotification();
@@ -159,10 +161,27 @@ public class NotificationFragment extends Fragment {
 
     }
 
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         initShimmer();
         getAllNotification();
+        checkConnection();
         super.onResume();
     }
 

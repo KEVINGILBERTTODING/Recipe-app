@@ -3,11 +3,11 @@ package com.example.recipe_app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.util.BuddhistCalendar;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,6 +58,7 @@ public class AllRecipesFragment extends Fragment {
     AllUserAdapter allUserAdapter;
     Handler handler;
     TextView tv_banner;
+    ConnectivityManager conMgr;
 
     FloatingActionButton btn_scan_recipe, btn_scan_account;
     Context context;
@@ -65,10 +66,6 @@ public class AllRecipesFragment extends Fragment {
 
 
 
-
-    public AllRecipesFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +91,9 @@ public class AllRecipesFragment extends Fragment {
         // Add tab layout
         tabLayout.addTab(tabLayout.newTab().setText("Recipe"));
         tabLayout.addTab(tabLayout.newTab().setText("Account"));
+
+        // Check internet connection
+        checkConnection();
 
 
 
@@ -397,7 +397,6 @@ public class AllRecipesFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getAllRecipe();
 
@@ -446,7 +445,7 @@ public class AllRecipesFragment extends Fragment {
                     }, 1000);
 
                 } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+
                     swipeRefreshLayout.setRefreshing(true);
                     getUser();
 
@@ -494,6 +493,8 @@ public class AllRecipesFragment extends Fragment {
     }
 
 
+
+
     // METHOD SEARCH USER
     private void searchUser(String newText) {
         ArrayList<ProfileModel> searchUser = new ArrayList<>();
@@ -534,6 +535,22 @@ public class AllRecipesFragment extends Fragment {
 
 
 
+    }
+
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

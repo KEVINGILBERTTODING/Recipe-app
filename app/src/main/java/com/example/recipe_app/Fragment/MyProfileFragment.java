@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -62,6 +63,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
     List<RecipeModel> recipeModelList;
     LinearLayout lr_followers;
     SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
 
     // textview to count total post, followers and following
     TextView tv_post, tv_followers, tv_following, tvNotFound;
@@ -344,7 +346,6 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(true);
                 getProfile(userid);
             }
@@ -403,6 +404,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(true);
                 if (tabLayout.getSelectedTabPosition() == 0) {
                     getRecipe(userid, 1);
@@ -541,14 +543,29 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         setShimmer();
         // Mengambil data profile dari API
         getProfile(userid);
-
         // mengambil data recipe dari API
         getRecipe(userid, 1);
-
+        checkConnection();
         // Set shimmer
         setShimmer();
 
         super.onResume();
+    }
+
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

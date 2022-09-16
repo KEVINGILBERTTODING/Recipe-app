@@ -1,6 +1,8 @@
 package com.example.recipe_app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -43,6 +45,7 @@ public class TrendingRecipesFragment extends Fragment {
     RecipeTrandingAdapter2 recipeTrandingAdapter2;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_back;
+    ConnectivityManager conMgr;
 
 
     @Override
@@ -191,10 +194,26 @@ public class TrendingRecipesFragment extends Fragment {
 
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         setShimmer();
         getRecipeTranding(1, 1);
+//        checkConnection();
         super.onResume();
     }
 

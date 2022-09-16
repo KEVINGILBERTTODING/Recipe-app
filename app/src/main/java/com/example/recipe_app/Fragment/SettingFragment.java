@@ -8,10 +8,12 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -69,8 +71,8 @@ public class SettingFragment extends Fragment {
     TextView tv_username, tv_email, tvPhoto, tvApply;
     private final int TAG_GALLERY = 2222;
     Bitmap bitmap;
-    public static final int progress_bar_type = 0;
     ProgressDialog progressDialog;
+    ConnectivityManager conMgr;
 
 
 
@@ -101,6 +103,9 @@ public class SettingFragment extends Fragment {
         addBio = view.findViewById(R.id.add_bio);
 
         progressDialog = new ProgressDialog(getContext());
+
+        // check internet connection
+        checkConnection();
 
 
         // memamnggil method untuk load profile
@@ -462,6 +467,21 @@ public class SettingFragment extends Fragment {
 
             }catch (IOException e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
     }

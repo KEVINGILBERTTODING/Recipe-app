@@ -8,10 +8,12 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -54,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,6 +69,7 @@ public class AdminProfileFragment extends Fragment {
     String userid;
     final Integer TAG_GALLERY = 222;
     Bitmap bitmap;
+    ConnectivityManager conMgr;
 
 
 
@@ -90,6 +94,10 @@ public class AdminProfileFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
         userid = sharedPreferences.getString("user_id", null);
+
+
+        // check connection
+        checkConnection();
 
 
 
@@ -137,18 +145,17 @@ public class AdminProfileFragment extends Fragment {
                    public void onResponse(Call<AppModel> call, Response<AppModel> response) {
                        AppModel appModel = response.body();
                        if (appModel.getSuccess() == 1) {
-                           Toast.makeText(getContext(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                           Toasty.success(getContext(), "Successfully updated", Toasty.LENGTH_SHORT).show();
                            pd.dismiss();
                            dialog.dismiss();
                        } else {
-                           Toast.makeText(getContext(), "Failed to update ", Toast.LENGTH_SHORT).show();
+                           Toasty.error(getContext(), "Failed to update", Toast.LENGTH_SHORT).show();
                            pd.dismiss();
                        }
                    }
 
                    @Override
                    public void onFailure(Call<AppModel> call, Throwable t) {
-                       Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
                        pd.dismiss();
 
                    }
@@ -185,19 +192,19 @@ public class AdminProfileFragment extends Fragment {
                     public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                         ProfileModel profileModel = response.body();
                         if (profileModel.getSuccess().equals("1")) {
-                            Toast.makeText(getContext(), "Username updated", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(), "Username updated", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new AdminProfileFragment());
                             ft.commit();
                             dialog_username.dismiss();
                         } else {
-                            Toast.makeText(getContext(), profileModel.getStatus(), Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), profileModel.getStatus(), Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ProfileModel> call, Throwable t) {
-                        Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                     }
                 });
@@ -237,7 +244,7 @@ public class AdminProfileFragment extends Fragment {
                        edt_app_ver.setText(appModelList.get(0).getApp_version());
                        progressDialog.dismiss();
                    } else {
-                       Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                       Toasty.error(getContext(), "Failed load data", Toasty.LENGTH_SHORT).show();
                        progressDialog.dismiss();
                    }
 
@@ -245,7 +252,7 @@ public class AdminProfileFragment extends Fragment {
 
                @Override
                public void onFailure(Call<List<AppModel>> call, Throwable t) {
-                   Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
+                   Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                    progressDialog.dismiss();
 
 
@@ -265,12 +272,12 @@ public class AdminProfileFragment extends Fragment {
                    public void onResponse(Call<AppModel> call, Response<AppModel> response) {
                        AppModel appModel = response.body();
                        if (appModel.getSuccess() == 1) {
-                           Toast.makeText(getContext(), "Updated Successfully", Toast.LENGTH_SHORT).show();
+                           Toasty.success(getContext(), "Updated Successfully", Toasty.LENGTH_SHORT).show();
                            pd1.dismiss();
                            dialog.dismiss();
 
                        } else {
-                           Toast.makeText(getContext(), "Updated failed", Toast.LENGTH_SHORT).show();
+                           Toasty.error(getContext(), "Failed update data", Toasty.LENGTH_SHORT).show();
                            pd1.dismiss();
                            dialog.dismiss();
 
@@ -366,7 +373,7 @@ public class AdminProfileFragment extends Fragment {
                 builder.show();
 
             } else {
-                Toast.makeText(getContext(), "Please select image", Toast.LENGTH_SHORT).show();
+                Toasty.warning(getContext(), "Please select image", Toasty.LENGTH_SHORT).show();
             }
 
 
@@ -428,12 +435,13 @@ public class AdminProfileFragment extends Fragment {
                     tv_email.setText(adminModelList.get(0).getEmail());
 
                 } else {
-                    Toast.makeText(getContext(), "Failed to load info", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Failed to load info", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
+                getAdminInfo();
 
             }
         });
@@ -449,18 +457,18 @@ public class AdminProfileFragment extends Fragment {
 
                 if (profileModel.getStatus().equals("success")) {
 
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Success", Toasty.LENGTH_SHORT).show();
                     pd.dismiss();
                 } else {
                     pd.dismiss();
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Failed", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
                 pd.dismiss();
-                Toast.makeText(getContext(), "Gagal", Toast.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -479,12 +487,26 @@ public class AdminProfileFragment extends Fragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri_path);
                 iv_profile.setImageBitmap(bitmap);
                 tv_apply.setVisibility(View.VISIBLE);
-                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Successfully load image", Toasty.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Failed load image", Toasty.LENGTH_SHORT).show();
             }catch (IOException e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
     }

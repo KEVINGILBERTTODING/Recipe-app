@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -90,6 +91,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     String image, userid;
     private final int TAG_GALLERY = 200;
     SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
 
     LinearLayout lr_button;
     Context context;
@@ -543,8 +545,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
 
-                Toast.makeText(getContext() , "Error no connection", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -702,7 +702,6 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your internet connection").show();
                 swipeRefreshLayout.setRefreshing(true);
                 getRecipe(user_id, 1);
 
@@ -918,9 +917,26 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
     @Override
     public void onResume() {
         setShimmer();
+        checkConnection();
 
 
         super.onResume();

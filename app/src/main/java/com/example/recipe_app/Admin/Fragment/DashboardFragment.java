@@ -4,8 +4,10 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -56,6 +58,7 @@ public class DashboardFragment extends Fragment {
     String username, userid;
     ImageView iv_profile;
     Calendar calendar;
+    ConnectivityManager conMgr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -179,7 +182,6 @@ public class DashboardFragment extends Fragment {
             public void onResponse(Call<List<AdminModel>> call, Response<List<AdminModel>> response) {
                 if (response.isSuccessful()) {
                     List<AdminModel> adminModelList = response.body();
-                    Log.d("count", "onResponse: " + adminModelList.size());
                     tv_total_users.setText(adminModelList.size() + " Users");
 
                 }else {
@@ -218,13 +220,13 @@ public class DashboardFragment extends Fragment {
                             .into(iv_profile);
 
                 } else {
-                    Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getAdminInfo();
 
 
             }
@@ -243,7 +245,7 @@ public class DashboardFragment extends Fragment {
                   
                     tv_total_report_user.setText(userReportModelList.size() + " Account Report");
                 } else{
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -266,7 +268,7 @@ public class DashboardFragment extends Fragment {
                     tv_total_report_recipe.setText(recipeReportmodelList.size() + " Recipe Report");
 
                 } else{
-                    Toast.makeText(getContext(), "Failed get total report recipe", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -276,6 +278,21 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 
     // count total bug report
@@ -295,8 +312,15 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<BugReportModel>> call, Throwable t) {
+                countBugReport();
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
     }
 }

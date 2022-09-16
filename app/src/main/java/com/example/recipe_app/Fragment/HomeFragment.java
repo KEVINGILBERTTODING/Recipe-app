@@ -5,9 +5,10 @@ import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -40,7 +41,6 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -61,7 +61,6 @@ public class HomeFragment extends Fragment {
     View view1;
 
     private List<ProfileModel> profileModelList;
-    InterfaceProfile interfaceProfile;
     RecipeAllAdapter recipeAllAdapter;
     RelativeLayout layoutHeader, rlCountNotif;
     RecipeCategoryPopular recipeCategoryPopular;
@@ -69,6 +68,7 @@ public class HomeFragment extends Fragment {
     TabLayout tabLayout;
     ImageView img_profile;
     SearchView searchView;
+    ConnectivityManager conMgr;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories, btn_notification;
     Context context;
@@ -315,7 +315,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(true);
-                Toasty.error(context, "Please check your connection", Toasty.LENGTH_LONG).show();
+//                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
                 getRecipeTranding(1, 1);
 
 
@@ -475,7 +475,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<NotificationModel>> call, Throwable t) {
-                Toasty.error(getContext(), "No connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -509,6 +508,7 @@ public class HomeFragment extends Fragment {
         shimmerRecyclerView.showShimmer();
         shimmerRecipeTrending.showShimmer();
         shimmerRecipeCategoryPopular.showShimmer();
+        checkConnection();
         countNotification();
         super.onResume();
     }
@@ -520,5 +520,20 @@ public class HomeFragment extends Fragment {
         shimmerRecipeTrending.hideShimmer();
         shimmerRecipeCategoryPopular.hideShimmer();
         super.onPause();
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 }

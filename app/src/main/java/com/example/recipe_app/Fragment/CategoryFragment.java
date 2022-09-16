@@ -1,6 +1,8 @@
 package com.example.recipe_app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -49,6 +51,7 @@ public class CategoryFragment extends Fragment {
     TabLayout tabLayout;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_back;
+    ConnectivityManager conMgr;
 
 
 
@@ -219,7 +222,7 @@ public class CategoryFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
+
                 swipeRefreshLayout.setRefreshing(true);
                 if (tabLayout.getSelectedTabPosition() == 0) {
 
@@ -310,12 +313,26 @@ public class CategoryFragment extends Fragment {
 
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         setShimmerCategoryRecipe();
-
         getCategory("Vegetables", 1);
-
+        checkConnection();
         super.onResume();
     }
 

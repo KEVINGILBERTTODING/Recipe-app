@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.transition.Hold;
 
 import java.util.List;
 
@@ -180,12 +182,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         });
 
                         // set agar btn edit dapat diklik di detailrecipefragment
-                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                onCommentLisstener.onCommentCLick(view, position);
-                            }
-                        });
+//                        holder.btn_edit.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                onCommentLisstener.onCommentCLick(view, position);
+//                            }
+//                        });
+
+                        holder.lrEdit.setVisibility(View.GONE);
+
+
 
 
                         // active swipe comment to edit or delete option
@@ -229,6 +235,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         RelativeLayout list_comment;
         ImageButton btn_edit, btn_delete;
         SwipeLayout swipeLayout;
+        LinearLayout lrEdit;
 
 
 
@@ -247,7 +254,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
             swipeLayout = itemView.findViewById(R.id.swipe_comment);
-
+            lrEdit = itemView.findViewById(R.id.lr_edit);
 
         }
 

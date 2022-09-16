@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.inputmethodservice.Keyboard;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -96,6 +97,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     private List<ProfileModel> profileModels;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
+    ConnectivityManager connectivityManager;
 
     CommentAdapter commentAdapter;
 
@@ -764,7 +766,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<List<CommentModel>> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
 
 
             }
@@ -787,15 +789,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     Toasty.success(getContext(), "Comment added", Toasty.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(getContext(), "Error something went wrong", Toast.LENGTH_SHORT).show();
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CommentModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                Log.e("MYAppp", t.getMessage());
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
 
         });
@@ -854,7 +854,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -874,7 +873,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
     }
@@ -887,13 +886,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(getView(), "Recipe deleted", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Recipe Deleted!,", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
     }
@@ -917,7 +916,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error no connection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -930,7 +928,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(getView(), "Recipe liked", Snackbar.LENGTH_SHORT).show();
 
                     interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
                         @Override
@@ -969,13 +966,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     });
 
                 } else {
-                    Snackbar.make(getView(), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
     }
@@ -989,7 +986,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(getView(), "Recipe unliked", Snackbar.LENGTH_SHORT).show();
+
 
 
                     interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
@@ -1029,13 +1026,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     });
 
                 } else {
-                    Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
 
@@ -1050,14 +1047,14 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 if (response.isSuccessful()) {
 
                 } else {
-                    Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
                 }
 
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+
 
             }
         });
@@ -1075,17 +1072,18 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     pd.dismiss();
                     FragmentManager fm = getFragmentManager();
                     fm.popBackStack();
-                    Snackbar.make(getView(), "Successfully delete recipe", Snackbar.LENGTH_LONG).show();
+                    Toasty.success(getContext(), "Succesfully delete recipe", Toasty.LENGTH_SHORT).show();
                     fm.popBackStack();
                 } else {
                     pd.dismiss();
                     Snackbar.make(getView(), "Delete recipe failed", Snackbar.LENGTH_LONG).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Check your connection", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -1099,12 +1097,12 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 RecipeModel recipeModel = response.body();
                 if (recipeModel.getStatus().equals("1")) {
-                    Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "User reported!", Toasty.LENGTH_SHORT).show();
                     pd.dismiss();
                     reportForm.dismiss();
 
                 } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                     pd.dismiss();
                 }
 
@@ -1112,8 +1110,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t.getCause());
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 pd.dismiss();
 
             }
@@ -1137,13 +1134,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 lrImagePicker.setVisibility(View.GONE);
 
                 Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Successfuly load image", Toasty.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Failed to load image", Toasty.LENGTH_SHORT).show();
 
             } catch (IOException e) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
-                e.printStackTrace();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
     }
@@ -1192,6 +1189,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
     @Override
     public void onResume() {
+        checkConnection();
         super.onResume();
     }
 
@@ -1456,6 +1454,21 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
             }
         });
+    }
+
+    // method check connection
+    private void checkConnection() {
+        connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (connectivityManager.getActiveNetworkInfo() != null
+                    &&
+                    connectivityManager.getActiveNetworkInfo().isAvailable()
+                    &&
+                    connectivityManager.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

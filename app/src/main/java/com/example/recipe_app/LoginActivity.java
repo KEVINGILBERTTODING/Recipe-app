@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     &&
                     conMgr.getActiveNetworkInfo().isConnected()) {
             } else {
-                Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toasty.error(this, "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
 
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                 conMgr.getActiveNetworkInfo().isConnected()) {
                             checkLogin(username, password);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Please check your connection", Toast.LENGTH_LONG).show();
+                            Toasty.error(LoginActivity.this, "Please check your internet connection", Toasty.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

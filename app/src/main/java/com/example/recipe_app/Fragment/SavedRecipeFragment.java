@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -47,6 +49,7 @@ public class SavedRecipeFragment extends Fragment {
     SearchView searchView;
     TextView tv_notfound;
     SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
 
 
 
@@ -200,7 +203,6 @@ public class SavedRecipeFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_LONG).show();
 
                 tv_notfound.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(true);
@@ -231,9 +233,26 @@ public class SavedRecipeFragment extends Fragment {
 
     }
 
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         getSavedRecipe(userid);
+        checkConnection();
 
         // show shimer
         setShimmer();

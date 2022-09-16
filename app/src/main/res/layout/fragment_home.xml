@@ -157,7 +157,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Trending Recipes"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -182,12 +182,12 @@
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_trending"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
@@ -218,7 +218,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Popular Categories"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <LinearLayout
                         android:id="@+id/layout_see_all_catgories"
@@ -236,12 +236,12 @@
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all_categories"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
@@ -283,7 +283,7 @@
                         android:fontFamily="@font/popsem"
                         android:text="Recent Recipes"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <LinearLayout
                         android:id="@+id/layout_see_all"
@@ -300,12 +300,12 @@
                             android:gravity="right"
                             android:text="See all"
                             android:textColor="@color/main"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <ImageButton
                             android:id="@+id/btn_see_all"
-                            android:layout_width="@dimen/_16sdp"
-                            android:layout_height="@dimen/_14sdp"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_15sdp"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_right" />
 
