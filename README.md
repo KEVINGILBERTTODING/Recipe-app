@@ -58,6 +58,23 @@ There are several features that make this application different from other recip
 <h2>Released history 🐾</h2>
 <ul>
 
+<li><h3>v2.4.0</h3>
+September 17, 2022
+<h6>What's new? 🦄</h6>
+<ul>
+<li>[BETA] added follow and unfollow features 😍.</li>
+<li>[BETA] add notification feature 😁. </li>
+<li>Added a qrcode scan feature to find accounts. </li>
+<li>Added an account search feature. </li>
+<li>Added toasty library.</li>
+<li>Added swipe layout to delete or edit comments. </li>
+<li>Improve app performance. </li>
+<li>Add shimmer effect to whole recycler view. </li>
+<li>Fixed all existing bugs, such as force close when there is no internet connection. </li>
+<li>Redesign the appearance and change the size of the button and text. </li>
+<li>etc. </li>
+</ul>
+
 <li><h3>v2.1.0</h3>
 September 03, 2022
 
