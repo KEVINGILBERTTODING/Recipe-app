@@ -77,6 +77,14 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
         String following_id = profileModelList.get(position).getFollowing_id().toString();
 
+
+        // If user is verified than show verified badge
+        if (profileModelList.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         if (userid.equals(following_id)) {
             holder.btn_unfollow.setVisibility(View.GONE);
             holder.btn_follow.setVisibility(View.GONE);
@@ -184,7 +192,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView iv_profile;
+        ImageView iv_profile, icVerified;
         TextView tv_username;
         Button btn_follow, btn_unfollow;
 
@@ -197,6 +205,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.View
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_unfollow = itemView.findViewById(R.id.btn_unfollow);
             btn_follow = itemView.findViewById(R.id.btn_follow);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
           itemView.setOnClickListener(this);
 

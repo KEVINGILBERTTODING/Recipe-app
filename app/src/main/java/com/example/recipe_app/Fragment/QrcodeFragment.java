@@ -22,12 +22,13 @@ import com.example.recipe_app.R;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import es.dmoral.toasty.Toasty;
 
 public class QrcodeFragment extends Fragment {
     ImageView iv_qrcode;
     ImageButton btnBack;
     TextView tv_recipe_name, tv_username;
-    ImageView iv_recipe_image;
+    ImageView iv_recipe_image, icVerified;
     Button btnScan;
 
     Bitmap bitmap;
@@ -46,6 +47,7 @@ public class QrcodeFragment extends Fragment {
         tv_username = view.findViewById(R.id.tv_username);
         iv_recipe_image = view.findViewById(R.id.iv_recipe);
         btnScan = view.findViewById(R.id.btn_scan);
+        icVerified = view.findViewById(R.id.iv_verified);
 
 
 
@@ -54,6 +56,15 @@ public class QrcodeFragment extends Fragment {
         recipe_name = getArguments().getString("recipe_name");
         img_recipe = getArguments().getString("recipe_image");
         username = getArguments().getString("username");
+
+
+        // if user is verified than show verified badge
+        if (getArguments().getString("verified").equals("1")) {
+            icVerified.setVisibility(View.VISIBLE);
+        } else {
+            icVerified.setVisibility(View.GONE);
+        }
+
 
 
         // Load image recipe
@@ -89,7 +100,7 @@ public class QrcodeFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         setScreenBright();
 
         if (getArguments().getString("admin") != null) {

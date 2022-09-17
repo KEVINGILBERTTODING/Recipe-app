@@ -26,7 +26,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
 
-        // Hide windows background color
+
         <item name="android:windowBackground">@color/main</item>
 <!--        membuat status bar transparent -->
 <!--        <item name="android:windowTranslucentStatus">true</item>-->

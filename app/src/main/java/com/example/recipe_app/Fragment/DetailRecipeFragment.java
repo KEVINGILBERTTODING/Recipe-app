@@ -91,6 +91,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     TextView tvRecipeName, tvRecipeIngredients, tvRecipeSteps, tvDuration,
             tvServings, tvDescription, tvUsername, tvEmail, tvDate, tvTime, tvNotes, tvLikes;
     ImageView ivRecipeImage, ivProfile, ivMyProfile, ivReport, ivProfile2;
+    ImageView ivVerified;
 
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2, btnRefresh;
@@ -170,6 +171,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         rlDummyComment = view.findViewById(R.id.rl_dummy_comment);
         ivProfile2 = view.findViewById(R.id.iv_myProfile2);
         btnRefresh = view.findViewById(R.id.btnRefresh);
+        ivVerified= view.findViewById(R.id.iv_verified);
         // Get data from bundle
 
         recipeName = getArguments().getString("title");
@@ -206,6 +208,14 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvNotes.setText(recipeNOtes);
         getTotalLikes(recipe_id);
 
+
+        // show verified badge if  user is verified
+        if (getArguments().getString("verified").equals("1")) {
+            ivVerified.setVisibility(View.VISIBLE);
+        } else {
+            ivVerified.setVisibility(View.GONE);
+        }
+
         pd = new ProgressDialog(getContext());
         reportForm = new Dialog(getContext());
 
@@ -227,8 +237,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         btnRefresh.setOnClickListener(view1 -> {
             YoYo.with(Techniques.RotateIn)
-                            .duration(700)
-                                    .playOn(view.findViewById(R.id.btnRefresh));
+                    .duration(700)
+                    .playOn(view.findViewById(R.id.btnRefresh));
             getComment(recipe_id);
         });
 
@@ -619,6 +629,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 Bundle bundle = new Bundle();
                 bundle.putString("recipe_id", recipe_id);
                 bundle.putString("recipe_name", recipeName);
+                bundle.putString("verified", getArguments().getString("verified"));
                 bundle.putString("recipe_image", photoRecipe);
                 bundle.putString("username", recipeUsername);
                 bundle.putString("admin", "admin");
@@ -636,6 +647,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 QrcodeFragment qrcodeFragment = new QrcodeFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("recipe_id", recipe_id);
+                bundle.putString("verified", getArguments().getString("verified"));
                 bundle.putString("recipe_name", recipeName);
                 bundle.putString("recipe_image", photoRecipe);
                 bundle.putString("username", recipeUsername);
@@ -688,8 +700,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         // saat button like di klik
         btnLike.setOnClickListener(View -> {
-         
-            
+
+
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (btnLike.getBackground().getConstantState() == getContext().getResources().getDrawable(R.drawable.btn_liked).getConstantState()) {
                 deleteLikeRecipe(recipe_id, useridx, user_id);
@@ -1346,8 +1358,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         }
 
         if (getArguments().getString("admin") != null) {
-        switch (view.getId()) {
-            case R.id.tv_username:
+            switch (view.getId()) {
+                case R.id.tv_username:
 
 
                     Fragment fragment = new ShowProfileFragment();
@@ -1360,19 +1372,19 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     ft.replace(R.id.fragment_admin, fragment);
                     ft.addToBackStack(null);
                     ft.commit();
-                break;
+                    break;
 
-            case R.id.iv_profile:
-                Fragment fragment1 = new ShowProfileFragment();
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("user_id", commentModel.getUser_id());
-                bundle1.putString("admin", "admin");
-                fragment1.setArguments(bundle1);
-                FragmentTransaction sp  = getFragmentManager().beginTransaction();
-                sp.replace(R.id.fragment_admin, fragment1);
-                sp.addToBackStack(null);
-                sp.commit();
-                break;
+                case R.id.iv_profile:
+                    Fragment fragment1 = new ShowProfileFragment();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("user_id", commentModel.getUser_id());
+                    bundle1.putString("admin", "admin");
+                    fragment1.setArguments(bundle1);
+                    FragmentTransaction sp  = getFragmentManager().beginTransaction();
+                    sp.replace(R.id.fragment_admin, fragment1);
+                    sp.addToBackStack(null);
+                    sp.commit();
+                    break;
 
             }
 

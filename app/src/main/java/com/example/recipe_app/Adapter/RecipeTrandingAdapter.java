@@ -71,9 +71,15 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         holder.tv_username.setText(recipeModels.get(position).getUsername());
         holder.tv_like.setText(recipeModels.get(position).getLikes());
         getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
-        Integer like = Integer.parseInt(recipeModels.get(position).getLikes());
 
-        String recipe_idd = recipeModels.get(position).getRecipe_id();
+
+
+        // If user is verifiied than show verified bandage
+        if (recipeModels.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
 
         // set image profile
         Glide.with(context)
@@ -214,7 +220,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_like, tv_duration, tv_title, tv_username;
-        ImageView img_recipe, img_profile;
+        ImageView img_recipe, img_profile, icVerified;
         ImageButton btn_save, btnLike;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
 
@@ -232,6 +238,10 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             likeAnimation = itemView.findViewById(R.id.love_anim);
             disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
             savedAnimation = itemView.findViewById(R.id.saved_anim);
+            icVerified = itemView.findViewById(R.id.img_verified);
+
+
+
 
 
             // saat button save di klik
@@ -276,6 +286,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 Bundle bundle = new Bundle();
                 bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
                 bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
+                bundle.putString("verified", recipeModels.get(getAdapterPosition()).getVerified());
                 bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
                 bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
                 bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());

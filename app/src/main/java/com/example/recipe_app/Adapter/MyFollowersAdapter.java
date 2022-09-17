@@ -68,6 +68,17 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
     public void onBindViewHolder(@NonNull MyFollowersAdapter.ViewHolder holder, int position) {
 
         holder.tv_username.setText(profileModelList.get(position).getUsername());
+
+
+        // if user is verified than show verified badge
+        if (profileModelList.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
+
+        // set image profile
         Glide.with(context)
                 .load(profileModelList.get(position).getPhoto_profile())
                 .thumbnail(0.5f)
@@ -142,7 +153,7 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView iv_profile;
+        ImageView iv_profile, icVerified;
         TextView tv_username;
         Button btn_remove;
 
@@ -153,6 +164,7 @@ public class MyFollowersAdapter extends RecyclerView.Adapter<MyFollowersAdapter.
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_username = itemView.findViewById(R.id.tv_username);
             btn_remove = itemView.findViewById(R.id.btn_remove);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
 
 

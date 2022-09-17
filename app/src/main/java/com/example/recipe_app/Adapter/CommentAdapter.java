@@ -103,6 +103,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
+        // If user is verified than show verified badge
+        if (commentModelsList.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
 
 
 
@@ -224,7 +231,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView img_profile;
+        ImageView img_profile, icVerified;
         TextView tv_username, tv_comment, tv_date, tv_time, tv_edited;
         RelativeLayout list_comment;
         ImageButton btn_edit, btn_delete;
@@ -249,6 +256,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             btn_delete = itemView.findViewById(R.id.btn_delete);
             swipeLayout = itemView.findViewById(R.id.swipe_comment);
             lrEdit = itemView.findViewById(R.id.lr_edit);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
         }
 

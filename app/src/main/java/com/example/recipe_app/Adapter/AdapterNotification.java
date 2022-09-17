@@ -81,6 +81,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         user_id_notif = notificationModelist.get(holder.getAdapterPosition()).getUser_id_notif();
         String user_idx = notificationModelist.get(holder.getAdapterPosition()).getUser_id();
 
+        // if user is verified than show verified badge
+        if (notificationModelist.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else  {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         if (type.equals("like")) {
 
 
@@ -133,6 +140,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                                 .skipMemoryCache(true)
                                 .override(300, 300)
                                 .into(holder.iv_recipe);
+
 
 
                     } else {
@@ -372,7 +380,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView iv_user, iv_recipe;
+        ImageView iv_user, iv_recipe, icVerified;
         TextView tv_username, tv_content, tv_date, tv_time, tv_comment;
         Button btn_follow, btn_unfoll;
         RelativeLayout rl_notification;
@@ -394,6 +402,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             tv_comment = itemView.findViewById(R.id.tv_comment);
             swipeLayout = itemView.findViewById(R.id.swipe_notification);
             btn_delete = itemView.findViewById(R.id.btn_delete);
+            icVerified = itemView.findViewById(R.id.img_verified);
             rl_notification.setOnClickListener(this);
 
 
@@ -428,6 +437,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             Fragment fragment =  new DetailRecipeFragment();
                             Bundle bundle = new Bundle();
                             bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("verified", response.body().get(0).getVerified());
                             bundle.putString("user_id", response.body().get(0).getUser_id_notif());
                             bundle.putString("username", response.body().get(0).getUsername());
                             bundle.putString("title", response.body().get(0).getTitle());
@@ -478,6 +488,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             Bundle bundle = new Bundle();
                             bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
                             bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("verified", response.body().get(0).getVerified());
                             bundle.putString("user_id", response.body().get(0).getUser_id());
                             bundle.putString("username", response.body().get(0).getUsername());
                             bundle.putString("title", response.body().get(0).getTitle());

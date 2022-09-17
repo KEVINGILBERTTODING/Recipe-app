@@ -66,6 +66,13 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         holder.tv_like.setText(recipeModels.get(position).getLikes());
         Integer like = Integer.parseInt(recipeModels.get(position).getLikes());
 
+        // If user is verified than show verified badge
+        if (recipeModels.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         // set image profile
         Glide.with(context)
                 .load(recipeModels.get(position).getPhoto_profile())
@@ -196,7 +203,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_like, tv_duration, tv_title, tv_username;
-        ImageView img_recipe, img_profile;
+        ImageView img_recipe, img_profile, icVerified;
         ImageButton btnFavorite, btnLikes;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
 
@@ -214,6 +221,9 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             likeAnimation = itemView.findViewById(R.id.love_anim);
             disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
             savedAnimation = itemView.findViewById(R.id.saved_anim);
+            icVerified = itemView.findViewById(R.id.img_verified);
+
+
 
 
             // saat button save di klik
@@ -259,6 +269,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
                 bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
                 bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
+                bundle.putString("verified", recipeModels.get(getAdapterPosition()).getVerified());
                 bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
                 bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
                 bundle.putString("category", recipeModels.get(getAdapterPosition()).getCategory());

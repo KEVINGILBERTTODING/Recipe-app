@@ -92,6 +92,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     private final int TAG_GALLERY = 200;
     SwipeRefreshLayout swipeRefreshLayout;
     ConnectivityManager conMgr;
+    ImageView icVerified;
 
     LinearLayout lr_button;
     Context context;
@@ -129,6 +130,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         lr_info = view.findViewById(R.id.lr_info_account);
         btnQrCode = view.findViewById(R.id.btn_qrcode);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        icVerified = view.findViewById(R.id.img_verified);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -619,6 +621,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     profileModel = profileModelList.get(i);
                     tv_username.setText(profileModel.getUsername());
                     tv_email.setText(profileModel.getEmail());
+
+                    // show ic verified if account is verified
+                    if (profileModelList.get(0).getVerified().equals("1")) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
                     tv_biography.setText(profileModel.getBiography());
                     if (profileModel.getBiography().isEmpty()) {
                         tv_biography.setVisibility(View.GONE);
