@@ -29,6 +29,12 @@ There are several features that make this application different from other recip
 
 ![Cover-4](https://user-images.githubusercontent.com/79959818/190845503-d4ea76d6-6cad-4300-ab21-aa5dedafb43e.png)
 
+<h3>* Admin password 👨🏼‍💻</h3>
+<ul>
+<li><h5>Username: Super Admin</h5></li>
+<li><h5>Password: superadmin</h5></li>
+</ul>
+
 <h2> How to run the project </h4>
 <ul>
   <h4><li>Download or clone the api file and database from the api branch https://github.com/KEVINGILBERTTODING/Recipe-App/tree/api</li></h4>
