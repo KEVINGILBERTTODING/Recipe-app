@@ -6,23 +6,28 @@ There are several features that make this application different from other recip
 
 <ul>
 
-<li><h4>Splash screen, home page, register page, and login page 🐥</h4></li>
+<li><h4>Splash screen, login page, register page 🐥</h4></li>
+
+![Cover](https://user-images.githubusercontent.com/79959818/190845314-18c2424f-0777-4866-b262-01bb3b7d7445.png)
 
 
-![cover1](https://user-images.githubusercontent.com/79959818/186108141-b99449a3-70f4-49df-9239-bae24514952b.png)
-
-<li><h4>Search page, qr code page, detail recipe, and profile page 🐥</h4></li>
-
-![cover_v2_1](https://user-images.githubusercontent.com/79959818/188264902-9df08ddb-b7dc-4ada-a35a-4b0a6d485317.png)
+<li><h4>Home page, recipe details, search page, recipes by category 🐥</h4></li>
 
 
-<li><h4>Admin page🐥</h4></li>
+![Cover-1](https://user-images.githubusercontent.com/79959818/190845402-1f99a1dc-d291-406e-b22f-012399a7eacd.png)
 
 
-![cover2_v2_1](https://user-images.githubusercontent.com/79959818/188264929-42848c92-7098-45af-91a9-de12afe8a767.png)
+<li><h4>Detail recipe, notification page, profile page, my profile 🐥</h4></li>
 
+![Cover-2](https://user-images.githubusercontent.com/79959818/190845433-9e344b89-3f2e-4f56-82bc-e7fa5bf5940f.png)
 
+<li><h4>Scanner page, qrcode recipe, account qrcode, setting page 🐥</h4></li>
 
+![Cover-3](https://user-images.githubusercontent.com/79959818/190845471-38a320c2-6d2b-46ac-bf83-7239952edd14.png)
+
+<li><h4>Admin page 🐥</h4></li>
+
+![Cover-4](https://user-images.githubusercontent.com/79959818/190845503-d4ea76d6-6cad-4300-ab21-aa5dedafb43e.png)
 
 <h2> How to run the project </h4>
 <ul>
