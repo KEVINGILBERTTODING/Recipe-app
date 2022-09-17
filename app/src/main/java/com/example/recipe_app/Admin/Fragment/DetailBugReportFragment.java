@@ -212,7 +212,6 @@ public class DetailBugReportFragment extends Fragment {
             builder2.setMessage("Are you sure you want to finish this bug?");
             builder2.setPositiveButton("Yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "3");
-                Toast.makeText(getContext(), "Bug solved", Toast.LENGTH_SHORT).show();
                 Toasty.success(getContext(), "Bug Solved!", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
 
@@ -230,7 +229,7 @@ public class DetailBugReportFragment extends Fragment {
             builder2.setMessage("Are you sure you want to reject this report?");
             builder2.setPositiveButton("Yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "0");
-                Toast.makeText(getContext(), "Report rejected", Toast.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Report rejected", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
 
             }); builder2.setNegativeButton("No", (dialogInterface, i) -> {

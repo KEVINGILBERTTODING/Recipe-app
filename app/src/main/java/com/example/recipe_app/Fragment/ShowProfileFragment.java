@@ -147,6 +147,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         pd = new ProgressDialog(getContext());
         context = getContext();
 
+        // change color swipe refresh icon
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
 

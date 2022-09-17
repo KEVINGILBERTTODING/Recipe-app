@@ -272,20 +272,21 @@ public class DetailRecipeReport extends Fragment{
                     public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
                         RecipeReportmodel userReportModel = response.body();
                         if (userReportModel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(),
-                                    "Report rejected successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(),
+                                    "Report rejected successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
                             ft.commit();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
                     }
                 });

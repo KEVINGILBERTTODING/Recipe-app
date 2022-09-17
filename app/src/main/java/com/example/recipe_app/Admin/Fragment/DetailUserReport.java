@@ -214,7 +214,7 @@ public class DetailUserReport extends Fragment {
                             disableUser();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
@@ -308,8 +308,8 @@ public class DetailUserReport extends Fragment {
                 if (response.isSuccessful()) {
                     AdminModel adminModel = response.body();
                     if (adminModel.getStatus().equals("1")) {
-                        Toast.makeText(getContext(),
-                                "Report accepted successfully", Toast.LENGTH_SHORT).show();
+                        Toasty.success(getContext(),
+                                "Report accepted successfully", Toasty.LENGTH_SHORT).show();
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_admin, new ReportUserFragment());
                         ft.commit();
