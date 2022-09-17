@@ -209,12 +209,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         getTotalLikes(recipe_id);
 
 
-        // show verified badge if  user is verified
-        if (getArguments().getString("verified").equals("1")) {
-            ivVerified.setVisibility(View.VISIBLE);
-        } else {
-            ivVerified.setVisibility(View.GONE);
-        }
 
         pd = new ProgressDialog(getContext());
         reportForm = new Dialog(getContext());
@@ -224,6 +218,9 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             et_comment.requestFocus();
             showKeyboard();
         });
+
+        // get profile
+        getProfile();
 
 
         // jika user id sama dengan user id maka akan muncul button edit dan delete
@@ -816,6 +813,34 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
     }
 
+    // get info user
+    private void getProfile() {
+        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+        interfaceProfile.getProfile(user_id).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0 ) {
+
+                    // IF USER IS VERIFIED THAN SHOW VERIFIED BADGE
+                    if (response.body().get(0).getVerified().equals("1")) {
+                        ivVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        ivVerified.setVisibility(View.GONE);
+
+                    }
+                } else {
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
 
     // get load photo profile
     public void getPhotoProfile(String user_id) {
@@ -831,6 +856,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .skipMemoryCache(true)
                             .into(ivMyProfile);
+
 
 
                     Glide.with(getContext())

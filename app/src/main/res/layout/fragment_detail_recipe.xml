@@ -293,6 +293,7 @@
                         <ImageView
                             android:id="@+id/iv_verified"
                             android:layout_width="@dimen/_13sdp"
+                            android:visibility="gone"
                             android:layout_height="@dimen/_13sdp"
                             android:src="@drawable/ic_verified"/>
 

@@ -777,11 +777,17 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
 
                 case R.id.iv_recipe:
+
+                    Toast.makeText(context, getArguments().getString("verified"), Toast.LENGTH_SHORT).show();
+
+
+
                     Fragment fragment = new DetailRecipeFragment();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("recipe_id", recipeModel.getRecipe_id());
                     bundle.putString("user_id", recipeModel.getUser_id());
+                    bundle.putString("verified", recipeModel.getVerified());
                     bundle.putString("username", recipeModel.getUsername());
                     bundle.putString("title", recipeModel.getTitle());
                     bundle.putString("description", recipeModel.getDescription());
@@ -817,6 +823,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
 
                 case R.id.iv_recipe:
+                    Toast.makeText(context, getArguments().getString("verified"), Toast.LENGTH_SHORT).show();
+
+
                     Fragment fragment = new DetailRecipeFragment();
                     RecipeModel recipeModels = recipeModelList.get(position);
 
@@ -824,6 +833,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     Bundle bundle = new Bundle();
                     bundle.putString("recipe_id", recipeModels.getRecipe_id());
                     bundle.putString("user_id", recipeModels.getUser_id());
+                    bundle.putString("verified", recipeModels.getVerified());
                     bundle.putString("username", recipeModels.getUsername());
                     bundle.putString("title", recipeModels.getTitle());
                     bundle.putString("description", recipeModels.getDescription());
