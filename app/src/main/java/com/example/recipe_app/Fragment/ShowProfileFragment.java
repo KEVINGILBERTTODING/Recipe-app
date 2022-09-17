@@ -862,7 +862,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 RecipeModel recipeModel = response.body();
                 if (recipeModel.getStatus().equals("1")) {
-                    Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Success reported user", Toasty.LENGTH_SHORT).show();
                     pd.dismiss();
                     reportForm.dismiss();
 
@@ -875,8 +875,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t.getCause());
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 pd.dismiss();
 
             }
@@ -900,14 +899,14 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                 rlImagePicker.setVisibility(View.VISIBLE);
                 lrImagePicker.setVisibility(View.GONE);
 
-                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Successfully load image", Toasty.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
 
             }catch (IOException e){
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
-                e.printStackTrace();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -927,6 +926,14 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
         rv_recipe.showShimmer();     // to start showing shimmer
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rv_recipe.hideShimmer();
+            }
+        }, 1200);
 
     }
 
