@@ -12,4 +12,15 @@
         This application will continue to be developed by Kevin Gilbert Toding as a developer.
     </string>
 
+    <string name="title_verification">
+        Apply for Kandean verification
+    </string>
+
+    <string name="header_verification">
+        Verified account have blue checkmarks next to their names to show that Kandean has confirmed they\'re the real
+        presence of the public figures, celebrities, and chef.
+    </string>
+
+
+
 </resources>

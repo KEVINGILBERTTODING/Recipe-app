@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    tools:context=".Admin.Fragment.FragmentReqVerification">
+
+    <RelativeLayout
+        android:id="@+id/rl_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:id="@+id/btn_back"
+                    android:background="@drawable/ic_back"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Request verification"
+                    android:fontFamily="@font/popmed"
+                    android:layout_centerHorizontal="true"
+                    android:scrollbarSize="@dimen/_12sdp"
+                    android:textColor="@color/black"/>
+            </RelativeLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@id/rl_appbar"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply for Kandean verification"
+                android:fontFamily="@font/popsem"
+                android:textSize="@dimen/_13ssp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:textSize="@dimen/_8sdp"
+                android:textAlignment="center"
+                android:text="@string/header_verification"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Step 1: confirm authenticity"
+                android:fontFamily="@font/popsem"
+                android:textSize="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add an official identification document for yourself."
+                android:fontFamily="@font/popmed"
+                android:textSize="@dimen/_8sdp"/>
+
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Username"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Full name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_document_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Document type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_choose_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose file"
+                android:fontFamily="@font/popmed"
+                app:cornerRadius="@dimen/_8sdp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/gray"
+                android:stateListAnimator="@null"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9ssp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Step 2: confirm notability"
+                android:fontFamily="@font/popsem"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show that the public figure, celebrity, or brand your account is in the public interest."
+                android:fontFamily="@font/popmed"
+                android:textSize="@dimen/_8sdp"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_category"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Category"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Country/region"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Links"
+                android:fontFamily="@font/popsem"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_url_type"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="Type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:hint="URL"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp">
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:fontFamily="@font/popmed"
+                app:cornerRadius="@dimen/_8sdp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/blue"
+                android:stateListAnimator="@null"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9ssp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We'll only use the information you submit to determine if your account meets our verification cirteria."
+                android:fontFamily="@font/popmed"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_8sdp"/>
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Fragment.FragmentReqVerification;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.LoginActivity;
 import com.example.recipe_app.Model.AppModel;
@@ -63,7 +64,7 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username, reqVerification;
     ImageButton btnBack;
     ImageView iv_profile;
     private List<ProfileModel> profileModelList = new ArrayList<>();
@@ -101,6 +102,7 @@ public class SettingFragment extends Fragment {
         tvApply = view.findViewById(R.id.tv_apply);
         rl_username = view.findViewById(R.id.rl_username);
         addBio = view.findViewById(R.id.add_bio);
+        reqVerification = view.findViewById(R.id.req_verification);
 
         progressDialog = new ProgressDialog(getContext());
 
@@ -263,6 +265,12 @@ public class SettingFragment extends Fragment {
             fragmentTransaction.addToBackStack(null);
 
 
+        });
+
+        // Request verification
+        reqVerification.setOnClickListener(view1 -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentReqVerification()).addToBackStack(null)
+                    .commit();
         });
 
 
