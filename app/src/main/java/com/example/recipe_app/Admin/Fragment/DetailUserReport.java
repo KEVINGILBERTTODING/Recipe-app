@@ -35,7 +35,7 @@ import retrofit2.Response;
 public class DetailUserReport extends Fragment {
     ImageButton btnDelete, btnBack;
     Button btnAccept, btnReject, btnUnblocked;
-    ImageView imgReport, img_profile;
+    ImageView imgReport, img_profile, icVerified1, icVerified2;
     TextView tv_report, tv_title, tv_date, tv_username1, tv_time, tv_username2;
     private boolean zoomOut =  false;
 
@@ -62,6 +62,9 @@ public class DetailUserReport extends Fragment {
         tv_time = root.findViewById(R.id.tv_time);
         tv_username2 = root.findViewById(R.id.tv_username2);
         btnUnblocked = root.findViewById(R.id.btn_unblock);
+        icVerified1 = root.findViewById(R.id.img_verified);
+        icVerified2 = root.findViewById(R.id.img_verified2);
+
 
 
 
@@ -81,6 +84,23 @@ public class DetailUserReport extends Fragment {
         pp2 = getArguments().getString("photo_profile2");
         report_id = getArguments().getString("report_id");
         status = getArguments().getString("status");
+
+        // Show verified badge if user 1 is verified
+        if (getArguments().getInt("verified1") == 1 )  {
+            icVerified1.setVisibility(View.VISIBLE);
+        } else  {
+            icVerified1.setVisibility(View.GONE);
+        }
+
+//        // Show verified badge if user 2 is verified
+        if (getArguments().getInt("verified2") == 1) {
+            icVerified2.setVisibility(View.VISIBLE);
+        } else {
+            icVerified2.setVisibility(View.GONE);
+        }
+
+
+
 
         // load image report
         Glide.with(getContext())

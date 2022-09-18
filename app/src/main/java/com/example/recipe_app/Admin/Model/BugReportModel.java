@@ -31,9 +31,12 @@ public class BugReportModel implements Serializable {
     String image;
     @SerializedName("success")
     String succes;
+    @SerializedName("verified")
+    Integer verified;
 
     public BugReportModel (String user_id, String report_id, String username, String photo_profile, String email,
-                           String title, String report, String status, String date, String time, String image, String succes) {
+                           String title, String report, String status, String date, String time, String image, String succes,
+                           Integer verified) {
         this.user_id = user_id;
         this.report_id = report_id;
         this.username = username;
@@ -46,6 +49,7 @@ public class BugReportModel implements Serializable {
         this.time = time;
         this.image = image;
         this.succes = succes;
+        this.verified = verified;
     }
 
     public String getUser_id() {
@@ -142,5 +146,13 @@ public class BugReportModel implements Serializable {
 
     public void setSucces(String succes) {
         this.succes = succes;
+    }
+
+    public Integer getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Integer verified) {
+        this.verified = verified;
     }
 }

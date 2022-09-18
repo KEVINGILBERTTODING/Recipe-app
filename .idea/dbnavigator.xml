@@ -78,7 +78,9 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" object-ref="schemas/recipes/tables/users" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="4e2ceb22-21b1-4bc4-a650-41b7582972a7" />

@@ -56,6 +56,13 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
         holder.tv_username.setText(userReportModelList.get(position).getUsername1());
         holder.tv_title.setText(userReportModelList.get(position).getTitle());
 
+        // show verified badge if user 1 is verified
+        if (userReportModelList.get(position).getVerified1() == 1) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         Glide.with(context)
                 .load(userReportModelList.get(position).getPhoto_profile1())
                 .thumbnail(0.5f)
@@ -91,7 +98,7 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener {
 
         TextView tv_username, tv_title, tv_date;
-        ImageView iv_profile;
+        ImageView iv_profile, icVerified;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +108,7 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
             tv_username =  itemView.findViewById(R.id.tv_username);
             iv_profile = itemView.findViewById(R.id.iv_user);
             tv_date = itemView.findViewById(R.id.tv_date);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
             itemView.setOnClickListener(this);
         }
@@ -111,6 +119,8 @@ public class ReportUserAdapter extends RecyclerView.Adapter<ReportUserAdapter.Vi
             Bundle bundle = new Bundle();
             bundle.putString("report_id", userReportModelList.get(getAdapterPosition()).getReport_id());
             bundle.putString("user_id1", userReportModelList.get(getAdapterPosition()).getUser_id());
+            bundle.putInt("verified1", userReportModelList.get(getAdapterPosition()).getVerified1());
+            bundle.putInt("verified2", userReportModelList.get(getAdapterPosition()).getVerified2());
             bundle.putString("user_id2", userReportModelList.get(getAdapterPosition()).getUser_id_report());
             bundle.putString("username1", userReportModelList.get(getAdapterPosition()).getUsername1());
             bundle.putString("username2", userReportModelList.get(getAdapterPosition()).getUsername2());

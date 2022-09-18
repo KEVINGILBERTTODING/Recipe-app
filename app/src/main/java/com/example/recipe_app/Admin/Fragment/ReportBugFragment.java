@@ -72,8 +72,8 @@ public class ReportBugFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
         btnBack.setOnClickListener(view -> {
-            FragmentManager fm = getFragmentManager();
-            fm.popBackStack();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.popBackStack();
         });
 
         tabLayout.addTab(tabLayout.newTab().setText("Bug Reported"));

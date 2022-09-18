@@ -42,7 +42,7 @@ import retrofit2.Response;
 public class DetailRecipeReport extends Fragment{
 
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
-    ImageView img_profile, imgReport;
+    ImageView img_profile, imgReport, icVerified;
     ImageButton btnBack, btnDelete;
     Button btnAccept, btnReject, btnUnBlock, btnShow;
 
@@ -68,6 +68,7 @@ public class DetailRecipeReport extends Fragment{
         btnUnBlock = root.findViewById(R.id.btn_unblock);
         imgReport = root.findViewById(R.id.iv_report);
         btnShow = root.findViewById(R.id.btn_show);
+        icVerified = root.findViewById(R.id.img_verified);
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.popBackStack();
@@ -92,6 +93,13 @@ public class DetailRecipeReport extends Fragment{
         tv_title.setText(title);
         tv_report.setText(report);
         tv_time.setText(time);
+
+        // if user is verified than show verified badge
+        if (getArguments().getInt("verified") == 1) {
+            icVerified.setVisibility(View.VISIBLE);
+        } else {
+            icVerified.setVisibility(View.GONE);
+        }
 
 
         // load photo profile

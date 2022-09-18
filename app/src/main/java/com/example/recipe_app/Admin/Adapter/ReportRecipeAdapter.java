@@ -101,6 +101,7 @@ public class ReportRecipeAdapter extends RecyclerView.Adapter<ReportRecipeAdapte
             Bundle bundle  = new Bundle();
             bundle.putString("report_id", recipeReportmodelList.get(getAdapterPosition()).getReport_id());
             bundle.putString("recipe_id", recipeReportmodelList.get(getAdapterPosition()).getRecipe_id());
+            bundle.putInt("verified", recipeReportmodelList.get(getAdapterPosition()).getVerfied());
             bundle.putString("user_id", recipeReportmodelList.get(getAdapterPosition()).getUser_id());
             bundle.putString("title", recipeReportmodelList.get(getAdapterPosition()).getTitle());
             bundle.putString("report", recipeReportmodelList.get(getAdapterPosition()).getReport());

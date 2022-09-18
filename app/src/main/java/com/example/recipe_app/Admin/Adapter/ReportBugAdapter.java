@@ -49,6 +49,12 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
         holder.tv_date.setText(bugReportModelList.get(position).getDate());
         holder.tv_title.setText(bugReportModelList.get(position).getTitle());
 
+        if (bugReportModelList.get(position).getVerified() == 1 ) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         Glide.with(context)
                 .load(bugReportModelList.get(position).getPhoto_profile())
                 .thumbnail(0.5f)
@@ -77,6 +83,7 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
 
         TextView tv_username, tv_date, tv_title;
+        ImageView icVerified;
         ImageView iv_profile;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,6 +93,7 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
             tv_date = itemView.findViewById(R.id.tv_date);
             tv_title = itemView.findViewById(R.id.tv_title);
             iv_profile = itemView.findViewById(R.id.iv_user);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
             itemView.setOnClickListener(this);
         }
@@ -98,6 +106,7 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
             bundle.putString("report_id", bugReportModelList.get(getAdapterPosition()).getReport_id());
             bundle.putString("user_id", bugReportModelList.get(getAdapterPosition()).getUser_id());
             bundle.putString("title", bugReportModelList.get(getAdapterPosition()).getTitle());
+            bundle.putInt("verified", bugReportModelList.get(getAdapterPosition()).getVerified());
             bundle.putString("report", bugReportModelList.get(getAdapterPosition()).getReport());
             bundle.putString("image", bugReportModelList.get(getAdapterPosition()).getImage());
             bundle.putString("date", bugReportModelList.get(getAdapterPosition()).getDate());

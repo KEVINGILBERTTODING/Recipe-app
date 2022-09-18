@@ -153,7 +153,7 @@ public class UserFragment extends Fragment {
 
 
         if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            Toasty.error(getContext(), "Not found", Toasty.LENGTH_SHORT).show();
         } else {
             listUsersAdapter.filterList(filteredList);
         }

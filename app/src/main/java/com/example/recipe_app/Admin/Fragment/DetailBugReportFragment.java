@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class DetailBugReportFragment extends Fragment {
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
-    ImageView img_profile, imgReport;
+    ImageView img_profile, imgReport, icVerified;
     ImageButton btnBack, btnDelete;
     Button btnAccept, btnReject, btnDone;
 
@@ -59,6 +59,7 @@ public class DetailBugReportFragment extends Fragment {
         btnDone = root.findViewById(R.id.btn_done);
         imgReport = root.findViewById(R.id.iv_report);
         tv_time = root.findViewById(R.id.tv_time);
+        icVerified = root.findViewById(R.id.img_verified);
 
 
 
@@ -91,6 +92,13 @@ public class DetailBugReportFragment extends Fragment {
                 fm.popBackStack();
             }
         });
+
+        // Check if user is verified than show verified badge
+        if (getArguments().getInt("verified") == 1) {
+            icVerified.setVisibility(View.VISIBLE);
+        } else {
+            icVerified.setVisibility(View.GONE);
+        }
 
 
         // load photo profile

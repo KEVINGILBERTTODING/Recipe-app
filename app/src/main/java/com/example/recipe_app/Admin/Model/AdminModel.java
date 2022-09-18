@@ -30,10 +30,12 @@ public class AdminModel implements Serializable {
     String role;
     @SerializedName("active")
     Integer active;
+    @SerializedName("verified")
+    Integer verified;
 
     public AdminModel (String user_id, String username, String photo_profile, String email, String biography,
                         String date, String time, String status, String message, String jumlah, String role,
-                       Integer active) {
+                       Integer active, Integer verified) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
@@ -46,6 +48,7 @@ public class AdminModel implements Serializable {
         this.jumlah = jumlah;
         this.role = role;
         this.active = active;
+        this.verified = verified;
     }
 
     public String getUser_id() {
@@ -142,5 +145,13 @@ public class AdminModel implements Serializable {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    public Integer getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Integer verified) {
+        this.verified = verified;
     }
 }
