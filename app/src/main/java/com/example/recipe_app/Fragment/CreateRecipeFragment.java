@@ -349,7 +349,7 @@ public class CreateRecipeFragment extends Fragment {
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toasty.error(getContext(), "Failed", Toasty.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Failed to load image", Toasty.LENGTH_SHORT).show();
 
 
             }catch (IOException e){
