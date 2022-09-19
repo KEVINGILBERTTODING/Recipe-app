@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Adapter.ReqVerifiedAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.BugReportModel;
@@ -51,7 +52,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug;
+    CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug, rl_req_verified;
     TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe,
                 tv_total_bug_report;
 
@@ -82,6 +83,7 @@ public class DashboardFragment extends Fragment {
         tv_total_report_recipe = view.findViewById(R.id.tv_report_recipe);
         tv_total_bug_report = view.findViewById(R.id.tv_report_bug);
         rl_report_bug = view.findViewById(R.id.rl_report_bug);
+        rl_req_verified = view.findViewById(R.id.rl_verified);
 
 
         // set greeting
@@ -159,6 +161,14 @@ public class DashboardFragment extends Fragment {
             ft.addToBackStack(null);
             ft.commit();
 
+        });
+
+        // Menu request verified
+        rl_req_verified.setOnClickListener(view1 -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_admin, new VerifiedFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
 
 
@@ -309,7 +319,8 @@ public class DashboardFragment extends Fragment {
                     tv_total_bug_report.setText(bugReportModelList.size() + " Bug Report");
 
                 } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                
+                    tv_total_bug_report.setText("0 Bug Report");
                 }
             }
 

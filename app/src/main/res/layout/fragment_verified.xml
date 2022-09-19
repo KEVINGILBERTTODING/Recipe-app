@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main"
+    tools:context=".Admin.Fragment.VerifiedFragment">
+
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/ic_back" />
+
+
+        </RelativeLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@+id/appbar"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/search_bar"
+        android:focusable="false"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@color/transparent"
+        app:queryHint="Search user"
+        app:theme="@style/AppSearchView" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_bar"
+        android:background="@drawable/container_user"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popsem"
+            android:text="Request verified"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="true"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TabFont">
+
+        </com.google.android.material.tabs.TabLayout>
+
+
+        <TextView
+            android:id="@+id/tv_no_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:text="No request verification."
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tab_layout"
+            android:textSize="@dimen/_10sdp" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tab_layout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/rv_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:shimmer_recycler_item_count="10"
+                app:shimmer_recycler_layout="@layout/template_recipe_report" />
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

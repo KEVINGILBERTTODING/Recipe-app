@@ -164,6 +164,7 @@ public class CreateRecipeFragment extends Fragment {
             }
 
             else {
+                // Convert to BASE 64
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();

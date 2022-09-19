@@ -147,6 +147,73 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/rl_verified"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/wave_card"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <LinearLayout
+                            android:id="@+id/ll_verified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+
+                            <TextView
+                                android:id="@+id/tv5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/popmed"
+                                android:text="Total Request Verified"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_verified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/popsem"
+                                android:text="Total Request Verified"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_15sdp" />
+
+
+                        </LinearLayout>
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            app:lottie_autoPlay="true"
+                            app:lottie_loop="false"
+                            app:lottie_rawRes="@raw/user_animation2" />
+
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/rl_report_user"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_100sdp"

@@ -177,6 +177,7 @@ public class FragmentReqVerification extends Fragment {
                 btnChoose.setError("Please select image");
             }
             else {
+                // Commvert to base 64
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
