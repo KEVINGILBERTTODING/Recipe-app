@@ -150,6 +150,7 @@
                 android:id="@+id/rl_verified"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_100sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 app:cardCornerRadius="@dimen/_10sdp">
 
                 <RelativeLayout

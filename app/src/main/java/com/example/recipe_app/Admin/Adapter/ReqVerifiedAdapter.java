@@ -1,20 +1,27 @@
 package com.example.recipe_app.Admin.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
+import com.example.recipe_app.Admin.Fragment.RequestVerifiedDetailFragment;
 import com.example.recipe_app.Admin.Interface.InterfaceVerified;
 import com.example.recipe_app.Admin.Model.VerificationModel;
 import com.example.recipe_app.R;
@@ -109,6 +116,7 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
         TextView tvUsername, tvEmail, tvDate;
         SwipeLayout swipeLayout;
         ImageButton btnDelete;
+        RelativeLayout rlReqVerified;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -120,15 +128,36 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
             tvDate = itemView.findViewById(R.id.tv_date);
             swipeLayout = itemView.findViewById(R.id.swipe_verified);
             btnDelete = itemView.findViewById(R.id.btn_delete);
+            rlReqVerified = itemView.findViewById(R.id.rl_list_request);
 
 
-            itemView.setOnClickListener(this);
+            rlReqVerified.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
 
-            Toast.makeText(context, verificationModelList.get(getAdapterPosition()).getUsername(), Toast.LENGTH_SHORT).show();
+
+            // SEND DATA TO Fragment
+            Fragment fragment = new RequestVerifiedDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("username",verificationModelList.get(getAdapterPosition()).getUsername());
+            bundle.putString("fullname",verificationModelList.get(getAdapterPosition()).getFullname());
+            bundle.putString("doctype",verificationModelList.get(getAdapterPosition()).getDocType());
+            bundle.putString("category",verificationModelList.get(getAdapterPosition()).getCategory());
+            bundle.putString("region",verificationModelList.get(getAdapterPosition()).getRegion());
+            bundle.putString("linktype",verificationModelList.get(getAdapterPosition()).getType());
+            bundle.putString("url",verificationModelList.get(getAdapterPosition()).getUrl());
+            bundle.putString("image",verificationModelList.get(getAdapterPosition()).getImage());
+            bundle.putInt("user_id",verificationModelList.get(getAdapterPosition()).getUser_id());
+            fragment.setArguments(bundle);
+
+            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_admin, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+
 
         }
     }

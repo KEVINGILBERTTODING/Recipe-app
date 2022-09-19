@@ -31,10 +31,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Admin.Adapter.ReqVerifiedAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
+import com.example.recipe_app.Admin.Interface.InterfaceVerified;
 import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
+import com.example.recipe_app.Admin.Model.VerificationModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -54,7 +56,7 @@ import retrofit2.Response;
 public class DashboardFragment extends Fragment {
     CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug, rl_req_verified;
     TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe,
-                tv_total_bug_report;
+                tv_total_bug_report, tv_verified;
 
     String username, userid;
     ImageView iv_profile;
@@ -84,6 +86,7 @@ public class DashboardFragment extends Fragment {
         tv_total_bug_report = view.findViewById(R.id.tv_report_bug);
         rl_report_bug = view.findViewById(R.id.rl_report_bug);
         rl_req_verified = view.findViewById(R.id.rl_verified);
+        tv_verified = view.findViewById(R.id.tv_verified);
 
 
         // set greeting
@@ -124,6 +127,9 @@ public class DashboardFragment extends Fragment {
 
         // count total bug report
         countBugReport();
+
+        // count total request verified
+        countReqVerified();
 
 
 
@@ -264,6 +270,26 @@ public class DashboardFragment extends Fragment {
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
                 countAllReport();
 
+
+            }
+        });
+    }
+
+    // COUNT TOTAL REQUEST VERIFIED
+    private void countReqVerified(){
+        InterfaceVerified iv = DataApi.getClient().create(InterfaceVerified.class);
+        iv.getAllRequest().enqueue(new Callback<List<VerificationModel>>() {
+            @Override
+            public void onResponse(Call<List<VerificationModel>> call, Response<List<VerificationModel>> response) {
+                if (response.body().size() > 0) {
+                    tv_verified.setText(response.body().size() + " Request Verified");
+                } else {
+                    tv_verified.setText("0 Request Verified");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VerificationModel>> call, Throwable t) {
 
             }
         });

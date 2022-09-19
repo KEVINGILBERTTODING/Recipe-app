@@ -205,9 +205,18 @@ public class VerifiedFragment extends Fragment {
 
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    tvNoRequest.setVisibility(View.VISIBLE);
-                        rvUser.setVisibility(View.GONE);
-                        rvUser.hideShimmer();
+                        rvUser.showShimmer();
+
+                        final Handler hd = new Handler();
+                        hd.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                rvUser.hideShimmer();
+                                rvUser.setVisibility(View.GONE);
+                                tvNoRequest.setVisibility(View.VISIBLE);
+                            }
+                        }, 1200);
+
 
                 }
 
@@ -261,9 +270,18 @@ public class VerifiedFragment extends Fragment {
 
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    tvNoRequest.setVisibility(View.VISIBLE);
-                    rvUser.setVisibility(View.GONE);
-                    rvUser.hideShimmer();
+
+                    rvUser.showShimmer();
+
+                    final Handler hd = new Handler();
+                    hd.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvUser.hideShimmer();
+                            rvUser.setVisibility(View.GONE);
+                            tvNoRequest.setVisibility(View.VISIBLE);
+                        }
+                    }, 1200);
 
                 }
 

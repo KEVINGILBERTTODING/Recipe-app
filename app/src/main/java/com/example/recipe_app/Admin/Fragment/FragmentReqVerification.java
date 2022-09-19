@@ -47,6 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class FragmentReqVerification extends Fragment {
     String username, userid;
     EditText etUsername;
@@ -94,7 +95,7 @@ public class FragmentReqVerification extends Fragment {
 
         // Adapter document type
         ArrayAdapter<String> document = new ArrayAdapter<>(
-               getContext(), R.layout.drop_down_item, getResources().getStringArray(R.array.document_type)
+                getContext(), R.layout.drop_down_item, getResources().getStringArray(R.array.document_type)
         );
 
         // Adapter category type
@@ -177,9 +178,8 @@ public class FragmentReqVerification extends Fragment {
                 btnChoose.setError("Please select image");
             }
             else {
-                // Commvert to base 64
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
                 imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
@@ -239,7 +239,7 @@ public class FragmentReqVerification extends Fragment {
                 userid, etFullName.getText().toString(), etUsername.getText().toString(),
                 doc_type.getText().toString(), category_type.getText().toString(), region.getText().toString(),
                 link_type.getText().toString(), etUrl.getText().toString(), imageString
-                ).enqueue(new Callback<ProfileModel>() {
+        ).enqueue(new Callback<ProfileModel>() {
             @Override
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 if (response.body().getMessage().equals("1")){

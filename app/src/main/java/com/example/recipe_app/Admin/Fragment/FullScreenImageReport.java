@@ -41,7 +41,6 @@ public class FullScreenImageReport extends Fragment {
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate()
-                .placeholder(R.drawable.template_img)
                 .into(img_report);
 
         btn_back.setOnClickListener(view -> {
