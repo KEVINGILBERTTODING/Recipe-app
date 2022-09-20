@@ -8,7 +8,7 @@ class user
 
 $status = $_GET['status'];
 
-$query = "SELECT r.*, u.username, u.photo_profile, u.email
+$query = "SELECT r.*, u.username, u.photo_profile, u.email, u.verified
             FROM report_recipe r, users u where r.user_id = u.user_id and status ='$status' order by r.report_id desc";
 
 $result =  mysqli_query($koneksi, $query);

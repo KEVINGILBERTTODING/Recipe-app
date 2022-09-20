@@ -24,7 +24,6 @@ if ($result) {
                     and recipe_id = '$recipe_id' and date = '$date' and time = '$time' ";
 
     $execute2 =  mysqli_query($koneksi, $notification);
-
     $response = new emp();
     $response->success = 1;
     $response->message = "Successfully uploaded";

@@ -7,7 +7,7 @@ class usr
 
 $activate = $_GET['active'];
 
-$query = "SELECT * FROM users where active = '$activate'";
+$query = "SELECT * FROM users where active = '$activate' AND role = 2";
 $result = mysqli_query($koneksi, $query);
 if ($result) {
     $arraydata = array();
