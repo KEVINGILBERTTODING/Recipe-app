@@ -36,14 +36,16 @@ public class VerificationModel  implements Serializable {
     @SerializedName("time")
     String time;
     @SerializedName("status")
-    String status;
+    Integer status;
     @SerializedName("message")
     String message;
     @SerializedName("rejected")
     String rejected;
+    @SerializedName("verified")
+    Integer verified;
 
     public VerificationModel(Integer user_id, Integer id, String username, String fullname, String photo_profile, String docType, String category, String region, String type, String url,
-                             String image, String date, String time, String status, String message, String email, String  rejected) {
+                             String image, String date, String time, Integer status, String message, String email, String  rejected, Integer verified) {
         this.user_id = user_id;
         this.id = id;
         this.username = username;
@@ -61,6 +63,7 @@ public class VerificationModel  implements Serializable {
         this.message = message;
         this.email = email;
         this.rejected = rejected;
+        this.verified = verified;
     }
 
     public Integer getUser_id() {
@@ -167,11 +170,11 @@ public class VerificationModel  implements Serializable {
         this.time = time;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -197,5 +200,9 @@ public class VerificationModel  implements Serializable {
 
     public void setRejected(String rejected) {
         this.rejected = rejected;
+    }
+
+    public Integer getVerified() {
+        return verified;
     }
 }

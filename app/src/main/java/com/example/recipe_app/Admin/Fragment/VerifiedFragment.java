@@ -62,6 +62,7 @@ public class VerifiedFragment extends Fragment {
 
 
         tabLayout.addTab(tabLayout.newTab().setText("All request"));
+        tabLayout.addTab(tabLayout.newTab().setText("Accepted"));
         tabLayout.addTab(tabLayout.newTab().setText("Rejected"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -105,7 +106,15 @@ public class VerifiedFragment extends Fragment {
                         }
                     });
                     getReqVerified();
-                } else if (tabLayout.getSelectedTabPosition() == 1){
+                }  else if (tab.getPosition() == 1) {
+                    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            getAcceptRequest();
+                        }
+                    });
+                    getAcceptRequest();
+                } else if (tabLayout.getSelectedTabPosition() == 2){
                     swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
@@ -293,6 +302,70 @@ public class VerifiedFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(true);
                 Toast.makeText(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
                 getAllRejected();
+
+            }
+        });
+    }
+
+
+
+    // Method GET ALL REQUEST VERIFIED
+    private void getAcceptRequest() {
+        InterfaceVerified interfaceVerified = DataApi.getClient().create(InterfaceVerified.class);
+        interfaceVerified.getAllAccept().enqueue(new Callback<List<VerificationModel>>() {
+            @Override
+            public void onResponse(Call<List<VerificationModel>> call, Response<List<VerificationModel>> response) {
+                verificationModelList = response.body();
+                if (verificationModelList.size() > 0) {
+                    reqVerifiedAdapter = new ReqVerifiedAdapter(getContext(), verificationModelList);
+                    linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                    rvUser.setAdapter(reqVerifiedAdapter);
+                    rvUser.setLayoutManager(linearLayoutManager);
+                    rvUser.setHasFixedSize(true);
+                    swipeRefreshLayout.setRefreshing(false);
+                    rvUser.setVisibility(View.VISIBLE);
+                    tvNoRequest.setVisibility(View.GONE);
+                    reqVerifiedAdapter.notifyDataSetChanged();
+
+
+                    rvUser.showShimmer();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvUser.hideShimmer();
+
+                        }
+                    }, 1200);
+
+
+
+
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    rvUser.showShimmer();
+
+                    final Handler hd = new Handler();
+                    hd.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvUser.hideShimmer();
+                            rvUser.setVisibility(View.GONE);
+                            tvNoRequest.setVisibility(View.VISIBLE);
+                        }
+                    }, 1200);
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<VerificationModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(true);
+                Toast.makeText(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
+                getAcceptRequest();
 
             }
         });

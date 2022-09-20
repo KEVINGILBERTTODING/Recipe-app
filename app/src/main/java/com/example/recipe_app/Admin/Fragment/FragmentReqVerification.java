@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.recipe_app.Fragment.SettingFragment;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -245,7 +246,8 @@ public class FragmentReqVerification extends Fragment {
                 if (response.body().getMessage().equals("1")){
                     pd.dismiss();
                     Toasty.success(getContext(), "Request verification success", Toasty.LENGTH_SHORT).show();
-                    getFragmentManager().popBackStack();
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingFragment())
+                            .commit();
                 } else {
                     pd.dismiss();
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();

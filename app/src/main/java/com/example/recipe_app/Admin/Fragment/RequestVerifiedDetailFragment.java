@@ -15,7 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.recipe_app.Admin.Interface.InterfaceVerified;
+import com.example.recipe_app.Admin.Model.VerificationModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RequestVerifiedDetailFragment extends Fragment {
 
@@ -80,9 +88,76 @@ public class RequestVerifiedDetailFragment extends Fragment {
                     .commit();
         });
 
+        // bnt back listener
+        btnAccept.setOnClickListener(view -> {
+            acceptRequest(getArguments().getInt("user_id"));
+        });
+
+        // btn rejected listener
+        btnReject.setOnClickListener(view -> {
+            rejectRequest(getArguments().getInt("id"), getArguments().getInt("user_id"));
+        });
+
+
+        // if status == 2 than show button rejected only
+        // if status == 0 (REJECTED) than show button accepted only
+        if (getArguments().getInt("status") == 2) {
+            btnAccept.setVisibility(View.GONE);
+            btnReject.setVisibility(View.VISIBLE);
+        } else if (getArguments().getInt("status") == 0) {
+            btnAccept.setVisibility(View.VISIBLE);
+            btnReject.setVisibility(View.GONE);
+        }
+
         return root;
     }
 
+    // Method accept request verified
+    private void acceptRequest(Integer userId){
+        InterfaceVerified iv = DataApi.getClient().create(InterfaceVerified.class);
+        iv.acceptRequest(userId).enqueue(new Callback<VerificationModel>() {
+            @Override
+            public void onResponse(Call<VerificationModel> call, Response<VerificationModel> response) {
+                VerificationModel verificationModel = response.body();
+                if (verificationModel.getStatus() == 1) {
+                    Toasty.success(getContext(), "Success verified user", Toasty.LENGTH_SHORT).show();
+                    getFragmentManager().popBackStack();
+                } else {
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerificationModel> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // METHOD REJECT REQUEST
+    private void rejectRequest (Integer id, Integer user_id) {
+        InterfaceVerified iv = DataApi.getClient().create(InterfaceVerified.class);
+        iv.rejectRequest(id, user_id).enqueue(new Callback<VerificationModel>() {
+            @Override
+            public void onResponse(Call<VerificationModel> call, Response<VerificationModel> response) {
+                if (response.body().getStatus() == 1) {
+                    Toasty.success(getContext(), "Successfully rejected", Toasty.LENGTH_SHORT).show();
+                    getFragmentManager().popBackStack();
+                } else  {
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerificationModel> call, Throwable t) {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+            }
+        });
+    }
 
 
 }

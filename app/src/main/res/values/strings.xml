@@ -21,5 +21,16 @@
         presence of the public figures, celebrities, and chef.
     </string>
 
+    <string name="notif_verified">
+        Your account was verified. You\'ll  now see a blue verified badge next to your username. To keep verified status,
+        you need to have a public account, a profile picture and at least one post.
+
+
+    </string>
+    <string name="reject_verified">
+        Your account wasn\'t verified because it doesn\'t meet the criteria for verification. You can submit
+        onother request.
+    </string>
+
 
 </resources>

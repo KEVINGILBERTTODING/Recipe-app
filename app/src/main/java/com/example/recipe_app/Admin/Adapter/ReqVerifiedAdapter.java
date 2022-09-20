@@ -59,6 +59,12 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
         holder.tvDate.setText(verificationModelList.get(position).getDate());
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
+        if (verificationModelList.get(position).getVerified() == 1) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
 
         // load image profile
         Glide.with(context)
@@ -112,7 +118,7 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView ivProfile;
+        ImageView ivProfile, icVerified;
         TextView tvUsername, tvEmail, tvDate;
         SwipeLayout swipeLayout;
         ImageButton btnDelete;
@@ -129,6 +135,7 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
             swipeLayout = itemView.findViewById(R.id.swipe_verified);
             btnDelete = itemView.findViewById(R.id.btn_delete);
             rlReqVerified = itemView.findViewById(R.id.rl_list_request);
+            icVerified = itemView.findViewById(R.id.img_verified);
 
 
             rlReqVerified.setOnClickListener(this);
@@ -150,6 +157,8 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
             bundle.putString("url",verificationModelList.get(getAdapterPosition()).getUrl());
             bundle.putString("image",verificationModelList.get(getAdapterPosition()).getImage());
             bundle.putInt("user_id",verificationModelList.get(getAdapterPosition()).getUser_id());
+            bundle.putInt("id", verificationModelList.get(getAdapterPosition()).getId());
+            bundle.putInt("status", verificationModelList.get(getAdapterPosition()).getStatus());
             fragment.setArguments(bundle);
 
             FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();

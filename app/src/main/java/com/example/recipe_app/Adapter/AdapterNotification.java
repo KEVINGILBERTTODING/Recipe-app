@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
+import com.example.recipe_app.Admin.Fragment.FragmentReqVerification;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.NotificationModel;
@@ -292,7 +293,89 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 }
             });
 
+        } else if (type.equals("verified")) {
+
+            holder.tv_content.setText(R.string.notif_verified);
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setVisibility(View.GONE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+            Glide.with(context)
+                    .load(R.drawable.ic_verified)
+                    .into(holder.iv_recipe);
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
         }
+        else if (type.equals("reject_verified")) {
+
+            holder.tv_content.setText(R.string.reject_verified);
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setVisibility(View.GONE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+            holder.iv_recipe.setVisibility(View.GONE);
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+        }
+
 
 
         // button follow click listener
@@ -526,6 +609,52 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                     }
                 });
+            } else if (notificationModelist.get(getAdapterPosition()).getType().equals("reject_verified")) {
+
+                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                interfaceProfile.getProfile(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
+                    @Override
+                    public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                        if (response.body().get(0).getVerified().equals("1") ) {
+
+                        } else {
+                            Toast.makeText(context, "USER BUKAN VERIFIED", Toast.LENGTH_SHORT).show();
+                            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                            interfaceProfile.checkVerified(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
+                                @Override
+                                public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                                    if (response.body().size() > 0) {
+                                        Toast.makeText(context, "BERHASIL", Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                                        ft.replace(R.id.fragment_container, new FragmentReqVerification());
+                                        ft.addToBackStack(null);
+                                        ft.commit();
+
+                                        Toast.makeText(context, "GAGAL", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                                    Toast.makeText(context, "NO CONNECTION", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+                    }
+                });
+
+
+
+
             }
             
           

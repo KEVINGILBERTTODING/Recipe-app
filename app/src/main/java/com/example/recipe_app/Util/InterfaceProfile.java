@@ -179,4 +179,16 @@ public interface InterfaceProfile {
  );
 
 
+ // CHECK IF USER ID IS ALREADY REQUEST VERIFIED
+ @GET("check_verified.php")
+ Call<List<ProfileModel>> checkVerified (
+         @Query("user_id") String  user_id
+ );
+
+
+
+
+
+
+
 }

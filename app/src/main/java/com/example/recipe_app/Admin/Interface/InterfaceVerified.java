@@ -32,4 +32,36 @@ public interface InterfaceVerified {
     );
 
 
+
+    // ACCEPT REQUEST
+    @FormUrlEncoded
+    @POST("admin/verified/accept_verification.php")
+    Call<VerificationModel> acceptRequest(
+            @Field("user_id") Integer user_id
+    );
+
+
+    // REJECT REQUEST
+    @FormUrlEncoded
+    @POST("admin/verified/reject_verification.php")
+    Call<VerificationModel> rejectRequest(
+            @Field("id") Integer id,
+            @Field("user_id") Integer user_id
+    );
+
+    // ACCEPT REQUEST
+    @GET("admin/verified/get_all_accept.php")
+    Call<List<VerificationModel>> getAllAccept(
+    );
+
+
+
+
+
+
+
+
+
+
+
 }
