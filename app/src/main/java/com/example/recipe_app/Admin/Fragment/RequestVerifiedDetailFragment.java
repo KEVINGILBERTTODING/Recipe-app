@@ -104,11 +104,7 @@ public class RequestVerifiedDetailFragment extends Fragment {
         if (getArguments().getInt("status") == 2) {
             btnAccept.setVisibility(View.GONE);
             btnReject.setVisibility(View.VISIBLE);
-        } else if (getArguments().getInt("status") == 0) {
-            btnAccept.setVisibility(View.VISIBLE);
-            btnReject.setVisibility(View.GONE);
         }
-
         return root;
     }
 

@@ -618,13 +618,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         if (response.body().get(0).getVerified().equals("1") ) {
 
                         } else {
-                            Toast.makeText(context, "USER BUKAN VERIFIED", Toast.LENGTH_SHORT).show();
+
                             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
                             interfaceProfile.checkVerified(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
                                 @Override
                                 public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                     if (response.body().size() > 0) {
-                                        Toast.makeText(context, "BERHASIL", Toast.LENGTH_SHORT).show();
+                                        Toasty.warning(context, "Your verification is being processed", Toasty.LENGTH_SHORT).show();
 
                                     } else {
                                         FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
@@ -632,14 +632,12 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                                         ft.addToBackStack(null);
                                         ft.commit();
 
-                                        Toast.makeText(context, "GAGAL", Toast.LENGTH_SHORT).show();
-
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                                    Toast.makeText(context, "NO CONNECTION", Toast.LENGTH_SHORT).show();
+                                   Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
                                 }
                             });

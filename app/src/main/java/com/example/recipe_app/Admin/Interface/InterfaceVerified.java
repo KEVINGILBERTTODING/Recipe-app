@@ -49,7 +49,7 @@ public interface InterfaceVerified {
             @Field("user_id") Integer user_id
     );
 
-    // ACCEPT REQUEST
+    // GET ACCEPT REQUEST
     @GET("admin/verified/get_all_accept.php")
     Call<List<VerificationModel>> getAllAccept(
     );

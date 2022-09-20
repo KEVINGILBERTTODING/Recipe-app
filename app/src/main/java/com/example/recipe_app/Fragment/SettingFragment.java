@@ -118,6 +118,7 @@ public class SettingFragment extends Fragment {
         // memamnggil method untuk load profile
         getProfile(userid);
 
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -413,19 +414,21 @@ public class SettingFragment extends Fragment {
                     tv_username.setText(profileModelList.get(0).getUsername());
                     tv_email.setText(profileModelList.get(0).getEmail());
 
+
+
                     // SHOW VERIFIED BADGE WHERE USER IS VERIFIED
 
                     if (profileModelList.get(0).getVerified().equals("1")) {
+
+                        // SHOW VERIFIED BADGE
                         icVerified.setVisibility(View.VISIBLE);
 
-                        // HIDE MENU REQUEST VERIFIED WHEN USER IS ALREADY VERIFIED
-                        reqVerification.setVisibility(View.GONE);
 
                     } else {
+
+                        // SHOW VERIFIED BADGE
                         icVerified.setVisibility(View.GONE);
 
-                        // SHOW MENU REQUEST VERIFIED WHEN USER IS ALREADY VERIFIED
-                        reqVerification.setVisibility(View.VISIBLE);
                     }
 
                     // LOAD IMAGE PROFILE
@@ -452,7 +455,7 @@ public class SettingFragment extends Fragment {
         });
     }
 
-    // method untuk mengirim phoot ke server
+    // method FOR UPDATE IMAGE PROFILE
     private void updateProfile(String user_id, String image) {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
         interfaceProfile.updateImageProfile(user_id, image).enqueue(new Callback<ProfileModel>() {
@@ -460,7 +463,7 @@ public class SettingFragment extends Fragment {
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 ProfileModel profileModel = response.body();
 
-                if(profileModel.getStatus().equals("success")){
+                if (profileModel.getStatus().equals("success")){
 
                     Toasty.success(getContext(), "Success!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -492,10 +495,24 @@ public class SettingFragment extends Fragment {
 
                     // IF USER IS ALREADY SENT REQUEST THAN HIDE MENU REQUEST VERIFICATION
                     reqVerification.setVisibility(View.GONE);
-                    reqVerification.setEnabled(true);
                 } else  {
-                    reqVerification.setVisibility(View.VISIBLE);
-                    reqVerification.setEnabled(false);
+                    // METHOD TO GET IF USER IS VERIFIED THAN HIDE MENU REQ VERIFIED
+                  InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                  interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
+                      @Override
+                      public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                          if (response.body().get(0).getVerified().equals("1")) {
+                              reqVerification.setVisibility(View.GONE);
+                          } else {
+                              reqVerification.setVisibility(View.VISIBLE);
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+                      }
+                  });
 
                 }
             }
