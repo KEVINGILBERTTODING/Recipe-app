@@ -85,8 +85,8 @@
 
         <ImageButton
             android:id="@+id/btn_more"
-            android:layout_width="@dimen/_12sdp"
-            android:layout_height="@dimen/_12sdp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:background="@drawable/ic_more_vertical" />

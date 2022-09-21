@@ -1,5 +1,9 @@
 package com.example.recipe_app.Admin.Fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,9 +16,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.recipe_app.Admin.Fragment.FullScreenImageReport;
 import com.example.recipe_app.Admin.Interface.InterfaceVerified;
 import com.example.recipe_app.Admin.Model.VerificationModel;
 import com.example.recipe_app.R;
@@ -27,11 +33,13 @@ import retrofit2.Response;
 
 public class RequestVerifiedDetailFragment extends Fragment {
 
-    EditText etUsername, etFullName, etDocType, etCategory, etRegion, etLinkType, etUrl;
+    EditText etUsername, etFullName, etDocType, etCategory, etRegion, etLinkType;
     ImageView ivDocument;
     Button btnAccept, btnReject;
     Integer userId;
+    TextView tvUrl;
     ImageButton btnBack;
+    private ConnectivityManager conMgr;
 
 
     @Override
@@ -46,7 +54,7 @@ public class RequestVerifiedDetailFragment extends Fragment {
         etCategory = root.findViewById(R.id.et_category);
         etRegion = root.findViewById(R.id.et_region);
         etLinkType = root.findViewById(R.id.et_link_type);
-        etUrl = root.findViewById(R.id.et_link);
+        tvUrl = root.findViewById(R.id.tv_url);
         btnAccept = root.findViewById(R.id.btn_accept);
         btnReject = root.findViewById(R.id.btn_reject);
         ivDocument = root.findViewById(R.id.iv_document);
@@ -61,7 +69,7 @@ public class RequestVerifiedDetailFragment extends Fragment {
         etCategory.setText(getArguments().getString("category"));
         etRegion.setText(getArguments().getString("region"));
         etLinkType.setText(getArguments().getString("linktype"));
-        etUrl.setText(getArguments().getString("url"));
+        tvUrl.setText(getArguments().getString("url"));
         userId = getArguments().getInt("user_id");
 
 
@@ -96,6 +104,11 @@ public class RequestVerifiedDetailFragment extends Fragment {
         // btn rejected listener
         btnReject.setOnClickListener(view -> {
             rejectRequest(getArguments().getInt("id"), getArguments().getInt("user_id"));
+        });
+
+        // et url click listener
+        tvUrl.setOnClickListener(view -> {
+            openWebsite(getArguments().getString("url"));
         });
 
 
@@ -156,4 +169,35 @@ public class RequestVerifiedDetailFragment extends Fragment {
     }
 
 
+
+    // Method agar link jika di klik akan membuka browser
+    private void openWebsite(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
+    }
 }

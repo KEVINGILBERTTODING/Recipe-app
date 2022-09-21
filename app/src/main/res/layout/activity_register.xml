@@ -215,6 +215,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/popsem"
             android:text="Sign up"
+            android:stateListAnimator="@null"
             app:backgroundTint="@color/main"
             android:textAllCaps="false"
             android:textSize="@dimen/_10sdp"

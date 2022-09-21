@@ -99,10 +99,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
     ConnectivityManager connectivityManager;
-
     CommentAdapter commentAdapter;
-
-
     EditText et_comment;
     Button btnReport;
     LinearLayout lrImagePicker;
@@ -116,7 +113,6 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     String recipe_id, user_id, recipeName, recipeIngredients, recipeSteps, recipeRating, recipeDuration,
             recipeServings, recipeDescription, recipeUsername, recipeEmail, recipeDate, recipeTime, photoProfile,
             photoRecipe, recipeNOtes, usernamex, useridx, totalLikes, recipeStatus, recipeCategory;
-
 
     ShimmerRecyclerView recyclerView;
     private List<CommentModel> commentModelsList;

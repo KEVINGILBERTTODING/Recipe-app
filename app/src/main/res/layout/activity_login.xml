@@ -111,6 +111,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/popmed"
                 android:text="Login"
+                android:stateListAnimator="@null"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_10sdp"
                 app:cornerRadius="@dimen/_10sdp" />

@@ -2,7 +2,6 @@ package com.example.recipe_app.Admin.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -57,7 +55,6 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
         holder.tvUsername.setText(verificationModelList.get(position).getUsername());
         holder.tvEmail.setText(verificationModelList.get(position).getEmail());
         holder.tvDate.setText(verificationModelList.get(position).getDate());
-        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
         if (verificationModelList.get(position).getVerified() == 1) {
             holder.icVerified.setVisibility(View.VISIBLE);
@@ -77,34 +74,6 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
                 .fitCenter()
                 .into(holder.ivProfile);
 
-        holder.btnDelete.setOnClickListener(view -> {
-            InterfaceVerified iv = DataApi.getClient().create(InterfaceVerified.class);
-            iv.deleteRequestVerified(verificationModelList.get(position).getId()).enqueue(new Callback<VerificationModel>() {
-                @Override
-                public void onResponse(Call<VerificationModel> call, Response<VerificationModel> response) {
-
-                    if (response.body().getStatus().equals("1")) {
-                        Toasty.success(context, "Success deleted!", Toasty.LENGTH_SHORT).show();
-                        notifyDataSetChanged();
-                        notifyItemRemoved(position);
-                        notifyItemRangeRemoved(position, verificationModelList.size());
-                        notifyItemChanged(position);
-                        notifyItemChanged(position);
-                        verificationModelList.remove(position);
-                    } else {
-                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<VerificationModel> call, Throwable t) {
-
-                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
-
-                }
-            });
-        });
     }
 
     @Override
@@ -122,7 +91,6 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
         TextView tvUsername, tvEmail, tvDate;
         SwipeLayout swipeLayout;
         ImageButton btnDelete;
-        RelativeLayout rlReqVerified;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -132,13 +100,11 @@ public class ReqVerifiedAdapter extends RecyclerView.Adapter<ReqVerifiedAdapter.
             tvUsername = itemView.findViewById(R.id.tv_username);
             tvEmail = itemView.findViewById(R.id.tv_email);
             tvDate = itemView.findViewById(R.id.tv_date);
-            swipeLayout = itemView.findViewById(R.id.swipe_verified);
             btnDelete = itemView.findViewById(R.id.btn_delete);
-            rlReqVerified = itemView.findViewById(R.id.rl_list_request);
             icVerified = itemView.findViewById(R.id.img_verified);
 
 
-            rlReqVerified.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

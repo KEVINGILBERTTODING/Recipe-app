@@ -146,6 +146,25 @@
                 app:backgroundTint="#EFEFEF"
                 app:cornerRadius="@dimen/_5sdp" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animate_verified"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                app:lottie_autoPlay="true"
+                android:visibility="gone"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/verified_animate"/>
+
+            <ImageView
+                android:id="@+id/iv_verified"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@color/gray" />
+
+
             <ImageView
                 android:id="@+id/iv_recipe"
                 android:layout_width="@dimen/_50sdp"

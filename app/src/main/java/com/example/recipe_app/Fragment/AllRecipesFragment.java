@@ -175,7 +175,7 @@ public class AllRecipesFragment extends Fragment {
                                                 : R.layout.template_data_show_all;
                                 }
                             });
-                            shimmerRecyclerView.showShimmer();     // to start showing shimmer
+                            shimmerRecyclerView.showShimmer();       // to start showing shimmer
 
                             final Handler handler = new Handler();
                             handler.postDelayed((Runnable) () -> {

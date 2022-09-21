@@ -1,4 +1,4 @@
-package com.example.recipe_app.Admin.Fragment;
+package com.example.recipe_app.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -7,11 +7,13 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -61,6 +63,7 @@ public class FragmentReqVerification extends Fragment {
     Bitmap bitmap;
     String imageString;
 
+    ConnectivityManager conMgr;
     ImageButton btnBack;
 
 
@@ -262,5 +265,26 @@ public class FragmentReqVerification extends Fragment {
 
             }
         });
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
     }
 }

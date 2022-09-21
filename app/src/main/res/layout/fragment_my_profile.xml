@@ -70,6 +70,9 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+
+
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="@dimen/_60sdp"
@@ -358,5 +361,7 @@
 
 
     </LinearLayout>
+
+
 
 </RelativeLayout>

@@ -7,17 +7,14 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,11 +22,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
-import com.example.recipe_app.Admin.Fragment.FragmentReqVerification;
+import com.example.recipe_app.Fragment.FragmentReqVerification;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.NotificationModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -39,9 +38,6 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.tabs.TabLayout;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -296,13 +292,14 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         } else if (type.equals("verified")) {
 
             holder.tv_content.setText(R.string.notif_verified);
-            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.iv_recipe.setVisibility(View.GONE);
             holder.tv_comment.setVisibility(View.GONE);
+            holder.animateVerified.setVisibility(View.VISIBLE);
             holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
             Glide.with(context)
                     .load(R.drawable.ic_verified)
-                    .into(holder.iv_recipe);
+                    .into(holder.ivVerified);
 
             // Button delete notification
             holder.btn_delete.setOnClickListener(view -> {
@@ -463,7 +460,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView iv_user, iv_recipe, icVerified;
+        ImageView iv_user, iv_recipe, icVerified, ivVerified;
+        LottieAnimationView animateVerified;
         TextView tv_username, tv_content, tv_date, tv_time, tv_comment;
         Button btn_follow, btn_unfoll;
         RelativeLayout rl_notification;
@@ -486,6 +484,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             swipeLayout = itemView.findViewById(R.id.swipe_notification);
             btn_delete = itemView.findViewById(R.id.btn_delete);
             icVerified = itemView.findViewById(R.id.img_verified);
+            ivVerified = itemView.findViewById(R.id.iv_verified);
+            animateVerified = itemView.findViewById(R.id.animate_verified);
             rl_notification.setOnClickListener(this);
 
 
@@ -609,8 +609,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                     }
                 });
-            } else if (notificationModelist.get(getAdapterPosition()).getType().equals("reject_verified")) {
+            }
 
+            // JIKA TYPE NOTIFIKASI ADALAH REJECT_VERIFIED
+
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("reject_verified")) {
+
+                // GET VERIFIED
                 InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
                 interfaceProfile.getProfile(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
                     @Override
@@ -619,6 +624,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                         } else {
 
+                            // JIKA USER TELAH MENGAJUKAN VERIFIED MAKA NOTIFIKASI JIKA DIKLIK AKAN MUNCUL TOAST
                             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
                             interfaceProfile.checkVerified(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
                                 @Override
@@ -626,7 +632,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                                     if (response.body().size() > 0) {
                                         Toasty.warning(context, "Your verification is being processed", Toasty.LENGTH_SHORT).show();
 
-                                    } else {
+                                    }
+                                    // JIKA REQUEST DITOLAK MAKA USER DAPAT MENGAJUKAN REQUEST LAGI
+                                    else {
                                         FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
                                         ft.replace(R.id.fragment_container, new FragmentReqVerification());
                                         ft.addToBackStack(null);
@@ -652,6 +660,15 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
 
 
+
+            }
+
+            // JIKA TYPE NOTIFIKASI ADALAH VERIFIED
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("verified")) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new MyProfileFragment())
+                        .addToBackStack(null)
+                        .commit();
 
             }
             

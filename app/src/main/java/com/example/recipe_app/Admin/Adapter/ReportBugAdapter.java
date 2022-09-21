@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,13 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Admin.Fragment.DetailBugReportFragment;
 import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
+import com.example.recipe_app.Admin.Fragment.ReportBugFragment;
+import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.ViewHolder> {
 
@@ -67,6 +78,37 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
                 .override(1024, 768)
                 .into(holder.iv_profile);
 
+        // set swipe mode
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+        // btn delete report
+        holder.btnDelete.setOnClickListener(view -> {
+            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
+            interfaceAdmin.deleteBugReport(bugReportModelList.get(position).getReport_id()).enqueue(new Callback<BugReportModel>() {
+                @Override
+                public void onResponse(Call<BugReportModel> call, Response<BugReportModel> response) {
+                    BugReportModel bugReportModel = response.body();
+                    if (bugReportModel.getStatus().equals("1")) {
+                        Toasty.success(context, "Delete report successfully", Toasty.LENGTH_SHORT).show();
+                        notifyItemChanged(position);
+                        notifyItemRangeChanged(position, bugReportModelList.size());
+                        bugReportModelList.remove(position);
+
+                    } else{
+
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BugReportModel> call, Throwable t) {
+                    Toasty.error(context, "Error no connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
+        });
+
 
     }
 
@@ -85,6 +127,9 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
         TextView tv_username, tv_date, tv_title;
         ImageView icVerified;
         ImageView iv_profile;
+        SwipeLayout swipeLayout;
+        ImageButton btnDelete;
+        RelativeLayout rlList;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,8 +139,11 @@ public class ReportBugAdapter extends RecyclerView.Adapter<ReportBugAdapter.View
             tv_title = itemView.findViewById(R.id.tv_title);
             iv_profile = itemView.findViewById(R.id.iv_user);
             icVerified = itemView.findViewById(R.id.img_verified);
+            btnDelete  = itemView.findViewById(R.id.btn_delete);
+            swipeLayout = itemView.findViewById(R.id.swipe_layout);
+            rlList = itemView.findViewById(R.id.rl_list);
 
-            itemView.setOnClickListener(this);
+            rlList.setOnClickListener(this);
         }
 
         @Override

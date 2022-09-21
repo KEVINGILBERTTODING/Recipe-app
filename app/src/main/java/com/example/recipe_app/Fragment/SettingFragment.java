@@ -17,7 +17,6 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.recipe_app.Admin.Fragment.FragmentReqVerification;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.LoginActivity;
 import com.example.recipe_app.Model.AppModel;
@@ -47,14 +45,12 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;

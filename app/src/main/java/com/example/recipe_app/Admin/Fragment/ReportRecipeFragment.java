@@ -1,5 +1,7 @@
 package com.example.recipe_app.Admin.Fragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -52,6 +54,7 @@ public class ReportRecipeFragment extends Fragment {
     SearchView searchView;
     TextView tv_no_data;
     SwipeRefreshLayout swipeRefreshLayout;
+    ConnectivityManager conMgr;
 
 
 
@@ -237,8 +240,27 @@ public class ReportRecipeFragment extends Fragment {
         });
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
     @Override
     public void onResume() {
+        checkConnection();
         rv_recipe.showShimmer();
         super.onResume();
     }

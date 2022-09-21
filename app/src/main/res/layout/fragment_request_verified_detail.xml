@@ -235,17 +235,17 @@
                 android:text="Url"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/popmed"
-                android:textSize="@dimen/_7sdp"/>
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_link"
+                android:textSize="@dimen/_6sdp"/>
+            <TextView
+                android:id="@+id/tv_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/popmed"
-                android:hint="URL"
-                android:editable="false"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_10sdp">
+            </TextView>
 
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp"></com.google.android.material.textfield.TextInputEditText>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_accept"
@@ -274,14 +274,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"/>
-
-
-
-
-
-
-
-
 
         </LinearLayout>
 

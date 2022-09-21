@@ -9,39 +9,6 @@
     android:layout_marginBottom="@dimen/_5sdp"
     android:layout_height="wrap_content">
 
-    <com.daimajia.swipe.SwipeLayout
-        android:id="@+id/swipe_verified"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:leftEdgeSwipeOffset="0dp"
-        app:rightEdgeSwipeOffset="0dp">
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-
-
-        <LinearLayout
-            android:id="@+id/lr_delete"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:background="@color/red"
-            android:gravity="center">
-
-            <ImageButton
-                android:id="@+id/btn_delete"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/ic_trash"/>
-        </LinearLayout>
-    </LinearLayout>
-
 
 
     <RelativeLayout
@@ -127,8 +94,5 @@
 
 
     </RelativeLayout>
-
-    </com.daimajia.swipe.SwipeLayout>
-
 
 </RelativeLayout>

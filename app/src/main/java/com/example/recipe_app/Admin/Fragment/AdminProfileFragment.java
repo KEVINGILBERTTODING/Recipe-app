@@ -64,12 +64,13 @@ import retrofit2.Response;
 public class AdminProfileFragment extends Fragment {
     RelativeLayout rl_version, rl_about, rl_logout,rl_username, rl_email, rl_password;
     ProgressDialog pd;
-    ImageView iv_profile;
+    ImageView iv_profile, icVerified;
     TextView tv_username, tv_email, tv_img_picker, tv_apply;
     String userid;
     final Integer TAG_GALLERY = 222;
     Bitmap bitmap;
     ConnectivityManager conMgr;
+
 
 
 
@@ -89,6 +90,7 @@ public class AdminProfileFragment extends Fragment {
        rl_username = root.findViewById(R.id.rl_username);
        rl_email = root.findViewById(R.id.rl_email);
        rl_password = root.findViewById(R.id.rl_update_pass);
+       icVerified = root.findViewById(R.id.img_verified);
 
        pd = new ProgressDialog(getContext());
 
@@ -432,6 +434,13 @@ public class AdminProfileFragment extends Fragment {
                             .override(200, 200)
                             .into(iv_profile);
 
+
+                    // Show verified badge when user is verified
+                    if (response.body().get(0).getVerified() == 1) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
                     tv_email.setText(adminModelList.get(0).getEmail());
 
                 } else {
