@@ -10,7 +10,7 @@
     <string-array name="document_type">
 
         <item>Passport</item>
-        <item>Driver\'s license</item>
+        <item>Drivers license</item>
         <item>Certificate</item>
         <item>Tax filling</item>
         <item>National identification card</item>
