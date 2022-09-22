@@ -14,16 +14,24 @@ There are several features that make this application different from other recip
 <li><h4>Home page, recipe details, search page, recipes by category 🐥</h4></li>
 
 
-![Cover-1](https://user-images.githubusercontent.com/79959818/190845402-1f99a1dc-d291-406e-b22f-012399a7eacd.png)
+![Cover](https://user-images.githubusercontent.com/79959818/191681762-e9943775-fe8c-4f3f-aa4b-648f0f0a566b.png)
+
 
 
 <li><h4>Detail recipe, notification page, profile page, my profile 🐥</h4></li>
 
-![Cover-2](https://user-images.githubusercontent.com/79959818/190845433-9e344b89-3f2e-4f56-82bc-e7fa5bf5940f.png)
+
+
+![Cover-2](https://user-images.githubusercontent.com/79959818/191682053-afb01c03-c799-4813-a299-3ea66ab26632.png)
+
+
 
 <li><h4>Scanner page, qrcode recipe, account qrcode, setting page 🐥</h4></li>
 
-![Cover-3](https://user-images.githubusercontent.com/79959818/190845471-38a320c2-6d2b-46ac-bf83-7239952edd14.png)
+
+
+![Cover-3](https://user-images.githubusercontent.com/79959818/191682353-ee04e655-2cf1-4431-a293-154b5bd9a683.png)
+
 
 <li><h4>Admin page 🐥</h4></li>
 
@@ -31,7 +39,7 @@ There are several features that make this application different from other recip
 
 <h3>* Admin password 👨🏼‍💻</h3>
 <ul>
-<li><h5>Username: Super Admin</h5></li>
+<li><h5>Username: Kandean</h5></li>
 <li><h5>Password: superadmin</h5></li>
 </ul>
 
