@@ -72,6 +72,21 @@ There are several features that make this application different from other recip
 <h2>Released history 🐾</h2>
 <ul>
 
+<li><h3>v2.5.1</h3></li>
+September 22, 2022
+<h6>What's new? 🦄</h6>
+<ul>
+<li>Added request verified account 😍.</li>
+<li>Show verified badge.</li>
+<li>[Admin] added an admin feature to confirm requests for verified accounts.</li>
+<li>[Stable] follow and unfollow account.</li>
+<li>[Stable] notification.</li>
+<li>Improve app performance.</li>
+<li>[Admin] added swipe layout library for all report menu.</li>
+<li>[Admin] removed the app version update menu.</li>
+<li>fix minor bugs.</li>
+</ul>
+
 <li><h3>v2.4.0</h3>
 September 17, 2022
 <h6>What's new? 🦄</h6>
