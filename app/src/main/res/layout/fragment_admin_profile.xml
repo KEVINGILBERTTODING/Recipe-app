@@ -262,37 +262,7 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_version"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp">
 
-            <ImageView
-                android:id="@+id/iv_version"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/ic_version" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_version"
-                android:fontFamily="@font/popmed"
-                android:text="Check version"
-                android:textSize="@dimen/_10sdp" />
-
-            <ImageView
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:backgroundTint="@color/black"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_right" />
-
-        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_logout"

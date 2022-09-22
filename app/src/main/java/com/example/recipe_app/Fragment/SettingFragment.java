@@ -306,8 +306,6 @@ public class SettingFragment extends Fragment {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
             final TextView tv_app_version = dialog.findViewById(R.id.tv_version);
-            final EditText edt_app = dialog.findViewById(R.id.edt_app_version);
-            edt_app.setVisibility(View.GONE);
 
             InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
             interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
