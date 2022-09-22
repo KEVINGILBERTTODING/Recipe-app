@@ -14,22 +14,17 @@ $upload_date = date("Y-m-d");
 $upload_time = date("H:i:s");
 
 
-$query = "UPDATE req_verification SET status = 0 where id = '$id'";
+$query = "DELETE FROM req_verification where id = '$id'";
 $result = mysqli_query($koneksi, $query);
 
 if ($result) {
 
-    // Delete notification if user is already
-    $notification = "DELETE FROM notification where user_id = 6 and user_id_notif = '$user_id' and type ='verified'";
-    $execute2 = mysqli_query($koneksi, $notification);
 
-    if ($execute2) {
-        // show notification that their request is rejected
-        $notification3 = "INSERT INTO notification
+    $notification3 = "INSERT INTO notification
         (user_id, user_id_notif, type, date, time) VALUES 
         (6, '$user_id', 'reject_verified', '$upload_date', '$upload_time')";
-        $execute3 = mysqli_query($koneksi, $notification3);
-    }
+    $execute3 = mysqli_query($koneksi, $notification3);
+
 
 
     $query2 = "UPDATE users SET verified = 0 where user_id = '$user_id'";
