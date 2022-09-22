@@ -80,14 +80,30 @@
                 android:layout_toRightOf="@id/iv_profile"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/popsem"
-                    android:text="Username"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popsem"
+                        android:text="Username"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <ImageView
+                        android:id="@+id/img_verified"
+                        android:layout_width="@dimen/_13sdp"
+                        android:visibility="gone"
+                        android:layout_height="@dimen/_13sdp"
+                        android:src="@drawable/ic_verified"/>
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/tv_email"
@@ -235,6 +251,39 @@
                 android:layout_toRightOf="@id/iv_bio"
                 android:fontFamily="@font/popmed"
                 android:text="Biography"
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_centerInParent="true"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/ic_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/req_verification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_15sdp">
+
+            <ImageView
+                android:id="@+id/iv_verification"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/ic_verified" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_verification"
+                android:fontFamily="@font/popmed"
+                android:text="Request verification"
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView

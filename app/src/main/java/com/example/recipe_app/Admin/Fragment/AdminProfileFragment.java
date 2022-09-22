@@ -62,9 +62,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AdminProfileFragment extends Fragment {
-    RelativeLayout rl_version, rl_about, rl_logout,rl_username, rl_email, rl_password;
+    RelativeLayout rl_about, rl_logout,rl_username, rl_email, rl_password;
     ProgressDialog pd;
-    ImageView iv_profile;
+    ImageView iv_profile, icVerified;
     TextView tv_username, tv_email, tv_img_picker, tv_apply;
     String userid;
     final Integer TAG_GALLERY = 222;
@@ -73,12 +73,12 @@ public class AdminProfileFragment extends Fragment {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View root =  inflater.inflate(R.layout.fragment_admin_profile, container, false);
-       rl_version = root.findViewById(R.id.rl_version);
        rl_about = root.findViewById(R.id.rl_about_us);
        tv_email = root.findViewById(R.id.tv_email);
        tv_username = root.findViewById(R.id.tv_username);
@@ -89,6 +89,7 @@ public class AdminProfileFragment extends Fragment {
        rl_username = root.findViewById(R.id.rl_username);
        rl_email = root.findViewById(R.id.rl_email);
        rl_password = root.findViewById(R.id.rl_update_pass);
+       icVerified = root.findViewById(R.id.img_verified);
 
        pd = new ProgressDialog(getContext());
 
@@ -101,6 +102,7 @@ public class AdminProfileFragment extends Fragment {
 
 
 
+        // Change about us feature
        rl_about.setOnClickListener(view -> {
            Dialog dialog = new Dialog(getContext());
            dialog.setContentView(R.layout.layout_about_us);
@@ -174,6 +176,7 @@ public class AdminProfileFragment extends Fragment {
 
 
 
+       // Change username feature
         rl_username.setOnClickListener(view1 -> {
             Dialog dialog_username = new Dialog(getContext());
             dialog_username.setContentView(R.layout.layout_update_username);
@@ -210,90 +213,8 @@ public class AdminProfileFragment extends Fragment {
                 });
             });
 
-
-
-
-
-
-
         });
 
-       rl_version.setOnClickListener(view -> {
-           ProgressDialog progressDialog = new ProgressDialog(getContext());
-           progressDialog.setMessage("Load data...");
-           progressDialog.show();
-           progressDialog.setCancelable(false);
-           Dialog dialog = new Dialog(getContext());
-           dialog.setContentView(R.layout.layout_app_version);
-           dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-           final TextView tv_app_ver = dialog.findViewById(R.id.tv_version);
-           final EditText edt_app_ver = dialog.findViewById(R.id.edt_app_version);
-           final Button btnUpdate = dialog.findViewById(R.id.btnOk);
-           btnUpdate.setText("Update");
-           tv_app_ver.setVisibility(View.GONE);
-           dialog.show();
-
-           // get data from API
-           InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
-           interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
-               @Override
-               public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
-                   List<AppModel> appModelList = response.body();
-                   if (appModelList.size() > 0) {
-                       edt_app_ver.setText(appModelList.get(0).getApp_version());
-                       progressDialog.dismiss();
-                   } else {
-                       Toasty.error(getContext(), "Failed load data", Toasty.LENGTH_SHORT).show();
-                       progressDialog.dismiss();
-                   }
-
-               }
-
-               @Override
-               public void onFailure(Call<List<AppModel>> call, Throwable t) {
-                   Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
-                   progressDialog.dismiss();
-
-
-               }
-
-
-           });
-           btnUpdate.setOnClickListener(view1 -> {
-               ProgressDialog pd1 = new ProgressDialog(getContext());
-               pd1.setMessage("Udated...");
-               pd1.setCancelable(false);
-               pd1.show();
-
-               InterfaceAdmin interfaceAdmin1 = DataApi.getClient().create(InterfaceAdmin.class);
-               interfaceAdmin1.updateAppVersion(edt_app_ver.getText().toString()).enqueue(new Callback<AppModel>() {
-                   @Override
-                   public void onResponse(Call<AppModel> call, Response<AppModel> response) {
-                       AppModel appModel = response.body();
-                       if (appModel.getSuccess() == 1) {
-                           Toasty.success(getContext(), "Updated Successfully", Toasty.LENGTH_SHORT).show();
-                           pd1.dismiss();
-                           dialog.dismiss();
-
-                       } else {
-                           Toasty.error(getContext(), "Failed update data", Toasty.LENGTH_SHORT).show();
-                           pd1.dismiss();
-                           dialog.dismiss();
-
-                       }
-                   }
-
-                   @Override
-                   public void onFailure(Call<AppModel> call, Throwable t) {
-                       pd1.dismiss();
-                       dialog.dismiss();
-
-
-                   }
-               });
-           });
-       });
 
        // get username and photo profile
         getAdminInfo();
@@ -331,6 +252,8 @@ public class AdminProfileFragment extends Fragment {
             }
         });
 
+
+        // image picker
         tv_img_picker.setOnClickListener(view -> {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
@@ -432,6 +355,13 @@ public class AdminProfileFragment extends Fragment {
                             .override(200, 200)
                             .into(iv_profile);
 
+
+                    // Show verified badge when user is verified
+                    if (response.body().get(0).getVerified() == 1) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
                     tv_email.setText(adminModelList.get(0).getEmail());
 
                 } else {
@@ -447,7 +377,7 @@ public class AdminProfileFragment extends Fragment {
         });
     }
 
-    // method untuk mengirim phoot ke server
+    // update photo profile
     private void updateProfile(String user_id, String image) {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
         interfaceProfile.updateImageProfile(user_id, image).enqueue(new Callback<ProfileModel>() {

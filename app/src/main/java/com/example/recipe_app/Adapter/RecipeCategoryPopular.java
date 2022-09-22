@@ -107,6 +107,7 @@ public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPo
             Bundle bundle = new Bundle();
             bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
             bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
+            bundle.putString("verified", recipeModels.get(getAdapterPosition()).getVerified());
             bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
             bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
             bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());

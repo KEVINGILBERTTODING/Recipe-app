@@ -34,10 +34,12 @@ public class ProfileModel implements Serializable {
     Integer following_id;
     @SerializedName("followers_id")
     Integer followers_id;
+    @SerializedName("verified")
+    String verified;
 
     public ProfileModel(String user_id, String username, String photo_profile, String email, String biography,
                         String date, String time, String status, String message, String success, Integer following_id,
-                        Integer followers_id, String id) {
+                        Integer followers_id, String id, String verified) {
         this.user_id = user_id;
         this.username = username;
         this.photo_profile = photo_profile;
@@ -51,6 +53,7 @@ public class ProfileModel implements Serializable {
         this.followers_id = followers_id;
         this.following_id = following_id;
         this.id = id;
+        this.verified = verified;
     }
 
     public String getUser_id() {
@@ -155,5 +158,13 @@ public class ProfileModel implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
     }
 }

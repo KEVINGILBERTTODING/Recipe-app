@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +30,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Admin.Adapter.ReqVerifiedAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
+import com.example.recipe_app.Admin.Interface.InterfaceVerified;
 import com.example.recipe_app.Admin.Model.AdminModel;
 import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
+import com.example.recipe_app.Admin.Model.VerificationModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -51,14 +55,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardFragment extends Fragment {
-    CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug;
+    CardView card_user, rl_report_user, rl_report_recipe, rl_report_bug, rl_req_verified;
     TextView tv_total_users, tv_dashboard, tv_username, tv_greeting, tv_total_report_user, tv_total_report_recipe,
-                tv_total_bug_report;
+                tv_total_bug_report, tv_verified;
 
     String username, userid;
-    ImageView iv_profile;
+    ImageView iv_profile, icVerified;
     Calendar calendar;
     ConnectivityManager conMgr;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,9 +87,13 @@ public class DashboardFragment extends Fragment {
         tv_total_report_recipe = view.findViewById(R.id.tv_report_recipe);
         tv_total_bug_report = view.findViewById(R.id.tv_report_bug);
         rl_report_bug = view.findViewById(R.id.rl_report_bug);
+        rl_req_verified = view.findViewById(R.id.rl_verified);
+        tv_verified = view.findViewById(R.id.tv_verified);
+        icVerified = view.findViewById(R.id.img_verified);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_dashboard);
 
 
-        // set greeting
+        // SET UCAPAN SALAM
         calendar = Calendar.getInstance();
         int time_of_day = calendar.get(Calendar.HOUR_OF_DAY);
         if (time_of_day >= 0 && time_of_day < 12) {
@@ -101,6 +110,7 @@ public class DashboardFragment extends Fragment {
 
         }
 
+        // IV PROFILE CLICK LISTENER
         iv_profile.setOnClickListener(view1 -> {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_admin, new AdminProfileFragment());
@@ -108,20 +118,32 @@ public class DashboardFragment extends Fragment {
         });
 
 
-        // count users
-        countUser();
+        // SWIPE REFRESH LISTENER
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // count users
+                countUser();
 
-        // get admin info
-        getAdminInfo();
+                // get admin info
+                getAdminInfo();
 
-        // count all report user
-        countAllReport();
+                // count all report user
+                countAllReport();
 
-        // count all report recipe
-        countReportRecipe();
+                // count all report recipe
+                countReportRecipe();
 
-        // count total bug report
-        countBugReport();
+                // count total bug report
+                countBugReport();
+
+                // count total request verified
+                countReqVerified();
+
+            }
+        });
+
+
 
 
 
@@ -161,6 +183,14 @@ public class DashboardFragment extends Fragment {
 
         });
 
+        // Menu request verified
+        rl_req_verified.setOnClickListener(view1 -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_admin, new VerifiedFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        });
+
 
 
 
@@ -183,14 +213,18 @@ public class DashboardFragment extends Fragment {
                 if (response.isSuccessful()) {
                     List<AdminModel> adminModelList = response.body();
                     tv_total_users.setText(adminModelList.size() + " Users");
+                    swipeRefreshLayout.setRefreshing(false);
 
                 }else {
+                    swipeRefreshLayout.setRefreshing(false);
 
                 }
             }
 
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(true);
+                countUser();
 
             }
         });
@@ -219,7 +253,20 @@ public class DashboardFragment extends Fragment {
                             .override(200, 200)
                             .into(iv_profile);
 
+                    // show verified badge
+                    if (response.body().get(0).getVerified() == 1) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+
+                    }
+
+                    swipeRefreshLayout.setRefreshing(false);
+
+
                 } else {
+                    swipeRefreshLayout.setRefreshing(false);
+
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
@@ -227,6 +274,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onFailure(Call<List<AdminModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(true);
+
                 getAdminInfo();
 
 
@@ -245,15 +294,47 @@ public class DashboardFragment extends Fragment {
                 if (response.isSuccessful()) {
                   
                     tv_total_report_user.setText(userReportModelList.size() + " Account Report");
+                    swipeRefreshLayout.setRefreshing(false);
+
                 } else{
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserReportModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(true);
+
                 countAllReport();
 
+
+            }
+        });
+    }
+
+    // COUNT TOTAL REQUEST VERIFIED
+    private void countReqVerified(){
+        InterfaceVerified iv = DataApi.getClient().create(InterfaceVerified.class);
+        iv.getAllRequest().enqueue(new Callback<List<VerificationModel>>() {
+            @Override
+            public void onResponse(Call<List<VerificationModel>> call, Response<List<VerificationModel>> response) {
+                if (response.body().size() > 0) {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    tv_verified.setText(response.body().size() + " Request Verified");
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    tv_verified.setText("0 Request Verified");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VerificationModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(true);
+                countReqVerified();
 
             }
         });
@@ -267,9 +348,13 @@ public class DashboardFragment extends Fragment {
             public void onResponse(Call<List<RecipeReportmodel>> call, Response<List<RecipeReportmodel>> response) {
                 List<RecipeReportmodel> recipeReportmodelList = response.body();
                 if (response.isSuccessful()) {
+                    swipeRefreshLayout.setRefreshing(false);
+
                     tv_total_report_recipe.setText(recipeReportmodelList.size() + " Recipe Report");
 
                 } else{
+                    swipeRefreshLayout.setRefreshing(false);
+
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
@@ -277,6 +362,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onFailure(Call<List<RecipeReportmodel>> call, Throwable t) {
 
+                swipeRefreshLayout.setRefreshing(true);
                 countReportRecipe();
 
             }
@@ -309,7 +395,8 @@ public class DashboardFragment extends Fragment {
                     tv_total_bug_report.setText(bugReportModelList.size() + " Bug Report");
 
                 } else {
-                    Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                
+                    tv_total_bug_report.setText("0 Bug Report");
                 }
             }
 
@@ -323,6 +410,28 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onResume() {
+        // Change color icon swipe refresh
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
+        // count users
+        countUser();
+
+        // get admin info
+        getAdminInfo();
+
+        // count all report user
+        countAllReport();
+
+        // count all report recipe
+        countReportRecipe();
+
+        // count total bug report
+        countBugReport();
+
+        // count total request verified
+        countReqVerified();
+
+
         checkConnection();
         super.onResume();
     }

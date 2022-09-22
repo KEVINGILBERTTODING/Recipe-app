@@ -13,7 +13,6 @@
         app:leftEdgeSwipeOffset="0dp"
         app:rightEdgeSwipeOffset="0dp">
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -23,9 +22,9 @@
         <LinearLayout
             android:id="@+id/lr_edit"
             android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="match_parent"
+            android:background="@color/main"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@drawable/shape_edit_comment"
             android:padding="@dimen/_5sdp"
             android:gravity="center">
 
@@ -43,9 +42,9 @@
         <LinearLayout
             android:id="@+id/lr_delete"
             android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@drawable/shape_delete_comment"
+            android:background="@color/red"
             android:gravity="center">
 
             <ImageButton
@@ -92,15 +91,33 @@
                 android:orientation="vertical"
                 android:padding="@dimen/_5sdp">
 
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_toRightOf="@id/iv_profile"
-                    android:fontFamily="@font/popmed"
-                    android:text="Username"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/popmed"
+                        android:text="Username"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/img_verified"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:visibility="gone"
+                        android:layout_toRightOf="@+id/tv_username"
+                        android:src="@drawable/ic_verified"/>
+
+
+                </RelativeLayout>
+
+
 
                 <TextView
                     android:id="@+id/tv_comment"

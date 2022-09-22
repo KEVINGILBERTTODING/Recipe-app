@@ -92,6 +92,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
     private final int TAG_GALLERY = 200;
     SwipeRefreshLayout swipeRefreshLayout;
     ConnectivityManager conMgr;
+    ImageView icVerified;
 
     LinearLayout lr_button;
     Context context;
@@ -129,6 +130,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         lr_info = view.findViewById(R.id.lr_info_account);
         btnQrCode = view.findViewById(R.id.btn_qrcode);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        icVerified = view.findViewById(R.id.img_verified);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -144,6 +146,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         reportForm = new Dialog(getContext());
         pd = new ProgressDialog(getContext());
         context = getContext();
+
+        // change color swipe refresh icon
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
 
         // mengambil data dari adapter menggunakan bundle
         user_id = getArguments().getString("user_id");
@@ -619,6 +624,13 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     profileModel = profileModelList.get(i);
                     tv_username.setText(profileModel.getUsername());
                     tv_email.setText(profileModel.getEmail());
+
+                    // show ic verified if account is verified
+                    if (profileModelList.get(0).getVerified().equals("1")) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
                     tv_biography.setText(profileModel.getBiography());
                     if (profileModel.getBiography().isEmpty()) {
                         tv_biography.setVisibility(View.GONE);
@@ -765,11 +777,17 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
 
                 case R.id.iv_recipe:
+
+                    Toast.makeText(context, getArguments().getString("verified"), Toast.LENGTH_SHORT).show();
+
+
+
                     Fragment fragment = new DetailRecipeFragment();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("recipe_id", recipeModel.getRecipe_id());
                     bundle.putString("user_id", recipeModel.getUser_id());
+                    bundle.putString("verified", recipeModel.getVerified());
                     bundle.putString("username", recipeModel.getUsername());
                     bundle.putString("title", recipeModel.getTitle());
                     bundle.putString("description", recipeModel.getDescription());
@@ -805,6 +823,9 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
 
                 case R.id.iv_recipe:
+                    Toast.makeText(context, getArguments().getString("verified"), Toast.LENGTH_SHORT).show();
+
+
                     Fragment fragment = new DetailRecipeFragment();
                     RecipeModel recipeModels = recipeModelList.get(position);
 
@@ -812,6 +833,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                     Bundle bundle = new Bundle();
                     bundle.putString("recipe_id", recipeModels.getRecipe_id());
                     bundle.putString("user_id", recipeModels.getUser_id());
+                    bundle.putString("verified", recipeModels.getVerified());
                     bundle.putString("username", recipeModels.getUsername());
                     bundle.putString("title", recipeModels.getTitle());
                     bundle.putString("description", recipeModels.getDescription());
@@ -850,7 +872,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 RecipeModel recipeModel = response.body();
                 if (recipeModel.getStatus().equals("1")) {
-                    Toast.makeText(getContext(), "Success reported user", Toast.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Success reported user", Toasty.LENGTH_SHORT).show();
                     pd.dismiss();
                     reportForm.dismiss();
 
@@ -863,8 +885,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t.getCause());
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 pd.dismiss();
 
             }
@@ -888,14 +909,14 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                 rlImagePicker.setVisibility(View.VISIBLE);
                 lrImagePicker.setVisibility(View.GONE);
 
-                Snackbar.make(getView(), "Successfully load image", Snackbar.LENGTH_LONG).show();
+                Toasty.success(getContext(), "Successfully load image", Toasty.LENGTH_SHORT).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Snackbar.make(getView(), "Failed to load image", Snackbar.LENGTH_LONG).show();
+                Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
 
             }catch (IOException e){
-                Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_LONG).show();
-                e.printStackTrace();
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -915,6 +936,14 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         });
 
         rv_recipe.showShimmer();     // to start showing shimmer
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rv_recipe.hideShimmer();
+            }
+        }, 1200);
 
     }
 

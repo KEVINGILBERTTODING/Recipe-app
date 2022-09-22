@@ -32,10 +32,13 @@ public class RecipeReportmodel implements Serializable {
     String image;
     @SerializedName("success")
     String succes;
+    @SerializedName("verified")
+    Integer verfied;
 
 
     public RecipeReportmodel (String user_id, String report_id, String recipe_id, String username, String photo_profile, String email,
-                              String title, String report, String status, String date, String time, String image, String succes) {
+                              String title, String report, String status, String date, String time, String image, String succes,
+                              Integer verified) {
         this.user_id = user_id;
         this.report_id = report_id;
         this.recipe_id = recipe_id;
@@ -49,6 +52,7 @@ public class RecipeReportmodel implements Serializable {
         this.time = time;
         this.image = image;
         this.succes = succes;
+        this.verfied = verified;
     }
 
     public String getUser_id() {
@@ -155,6 +159,13 @@ public class RecipeReportmodel implements Serializable {
         this.image = image;
 
 
+    }
 
+    public Integer getVerfied() {
+        return verfied;
+    }
+
+    public void setVerfied(Integer verfied) {
+        this.verfied = verfied;
     }
 }

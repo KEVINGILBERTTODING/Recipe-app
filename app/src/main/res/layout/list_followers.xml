@@ -25,7 +25,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/_10sdp"
-            android:src="@color/black"
+            android:src="@color/gray"
             app:civ_border_color="@color/main"
             app:civ_border_width="@dimen/_2sdp" />
 
@@ -36,19 +36,37 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_toRightOf="@+id/iv_user"
-            android:orientation="vertical">
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_user">
 
-            <TextView
-                android:id="@+id/tv_username"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/popsem"
-                android:text="Username"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/popsem"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+
+                <ImageView
+                    android:id="@+id/img_verified"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:visibility="gone"
+                    android:layout_toRightOf="@+id/tv_username"
+                    android:src="@drawable/ic_verified"/>
+
+
+            </LinearLayout>
 
 
 

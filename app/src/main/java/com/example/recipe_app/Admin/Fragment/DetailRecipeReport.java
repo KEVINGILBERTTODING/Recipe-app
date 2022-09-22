@@ -1,6 +1,8 @@
 package com.example.recipe_app.Admin.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,8 +44,9 @@ import retrofit2.Response;
 public class DetailRecipeReport extends Fragment{
 
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
-    ImageView img_profile, imgReport;
+    ImageView img_profile, imgReport, icVerified;
     ImageButton btnBack, btnDelete;
+    ConnectivityManager conMgr;;
     Button btnAccept, btnReject, btnUnBlock, btnShow;
 
 
@@ -68,6 +71,7 @@ public class DetailRecipeReport extends Fragment{
         btnUnBlock = root.findViewById(R.id.btn_unblock);
         imgReport = root.findViewById(R.id.iv_report);
         btnShow = root.findViewById(R.id.btn_show);
+        icVerified = root.findViewById(R.id.img_verified);
         btnBack.setOnClickListener(view1 -> {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.popBackStack();
@@ -92,6 +96,13 @@ public class DetailRecipeReport extends Fragment{
         tv_title.setText(title);
         tv_report.setText(report);
         tv_time.setText(time);
+
+        // if user is verified than show verified badge
+        if (getArguments().getInt("verified") == 1) {
+            icVerified.setVisibility(View.VISIBLE);
+        } else {
+            icVerified.setVisibility(View.GONE);
+        }
 
 
         // load photo profile
@@ -272,20 +283,21 @@ public class DetailRecipeReport extends Fragment{
                     public void onResponse(Call<RecipeReportmodel> call, Response<RecipeReportmodel> response) {
                         RecipeReportmodel userReportModel = response.body();
                         if (userReportModel.getStatus().equals("1")) {
-                            Toast.makeText(getContext(),
-                                    "Report rejected successfully", Toast.LENGTH_SHORT).show();
+                            Toasty.success(getContext(),
+                                    "Report rejected successfully", Toasty.LENGTH_SHORT).show();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             ft.replace(R.id.fragment_admin, new ReportRecipeFragment());
                             ft.commit();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RecipeReportmodel> call, Throwable t) {
-                        Snackbar.make(getView(), "Error no connection", Snackbar.LENGTH_SHORT).show();
+                        Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
                     }
                 });
@@ -362,4 +374,25 @@ public class DetailRecipeReport extends Fragment{
         });
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
+    }
 }

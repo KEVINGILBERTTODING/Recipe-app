@@ -36,10 +36,15 @@ public class UserReportModel implements Serializable {
     String user_id_report;
     @SerializedName("title")
     String title;
+    @SerializedName("verified1")
+    Integer verified1;
+    @SerializedName("verified2")
+    Integer verified2;
 
     public UserReportModel(String user_id, String username1, String photo_profile1, String email1, String username2,
                            String photo_profile2, String email2, String report, String date, String time,
-                           String image, String status, String user_id_report, String title, String report_id) {
+                           String image, String status, String user_id_report, String title, String report_id,
+                           Integer verified1, Integer verified2) {
         this.user_id = user_id;
         this.username1 = username1;
         this.photo_profile1 = photo_profile1;
@@ -55,6 +60,8 @@ public class UserReportModel implements Serializable {
         this.user_id_report = user_id_report;
         this.title = title;
         this.report_id = report_id;
+        this.verified1   = verified1;
+        this.verified2 = verified2;
     }
 
 
@@ -176,5 +183,21 @@ public class UserReportModel implements Serializable {
 
     public void setReport_id(String report_id) {
         this.report_id = report_id;
+    }
+
+    public Integer getVerified1() {
+        return verified1;
+    }
+
+    public void setVerified1(Integer verified1) {
+        this.verified1 = verified1;
+    }
+
+    public Integer getVerified2() {
+        return verified2;
+    }
+
+    public void setVerified2(Integer verified2) {
+        this.verified2 = verified2;
     }
 }

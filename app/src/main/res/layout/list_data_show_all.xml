@@ -125,6 +125,15 @@
                 android:textColor="@color/main"
                 android:textSize="@dimen/_10sdp" />
 
+            <ImageView
+                android:id="@+id/img_verified"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:layout_below="@id/img_recipe"
+                android:visibility="gone"
+                android:src="@drawable/ic_verified"/>
+
+
         </TableRow>
     </TableLayout>
 

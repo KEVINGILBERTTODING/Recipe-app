@@ -32,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +63,14 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
 
         holder.tv_username.setText(adminModelList.get(position).getUsername());
         holder.tv_email.setText(adminModelList.get(position).getEmail());
+
+        // if user is verified than show verified badge
+        if (adminModelList.get(position).getVerified() == 1) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
 
         Glide.with(context)
                 .load(adminModelList.get(position).getPhoto_profile())
@@ -174,7 +183,7 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView iv_user;
+        ImageView iv_user, icVerified;
         TextView tv_username, tv_email;
         ImageButton btnMore;
         public ViewHolder(@NonNull View itemView) {
@@ -186,6 +195,7 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
             tv_username = itemView.findViewById(R.id.tv_username);
             tv_email = itemView.findViewById(R.id.tv_email);
             btnMore = itemView.findViewById(R.id.btn_more);
+            icVerified = itemView.findViewById(R.id.img_verified);
         }
 
         @Override
@@ -205,9 +215,11 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                 AdminModel adminModel = response.body();
 
                 if (adminModel.getStatus().equals("1")) {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "User is disable", Snackbar.LENGTH_SHORT).show();
+
+                    Toasty.success(context, "User is disabled", Toasty.LENGTH_SHORT).show();
                 } else {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Failed to disable user", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Failed to disable user", Toasty.LENGTH_SHORT).show();
+
                 }
 
 
@@ -232,9 +244,11 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
                 AdminModel adminModel = response.body();
 
                 if (adminModel.getStatus().equals("1")) {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "User is enable", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(context, "User is enabled", Toasty.LENGTH_SHORT).show();
                 } else {
-                    Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Failed to enable user", Snackbar.LENGTH_SHORT).show();
+
+                    Toasty.error(context, "Failed to enable user", Toasty.LENGTH_SHORT).show();
+
                 }
 
 
@@ -244,7 +258,8 @@ public class ListUsersAdapter extends RecyclerView.Adapter<ListUsersAdapter.View
 
             @Override
             public void onFailure(Call<AdminModel> call, Throwable t) {
-                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "No connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
             }
         });

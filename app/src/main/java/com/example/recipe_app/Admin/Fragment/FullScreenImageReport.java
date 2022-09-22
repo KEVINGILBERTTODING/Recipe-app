@@ -1,5 +1,7 @@
 package com.example.recipe_app.Admin.Fragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,10 +20,13 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.example.recipe_app.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
+import es.dmoral.toasty.Toasty;
+
 public class FullScreenImageReport extends Fragment {
     PhotoView img_report;
     ImageButton btn_back;
     String image;
+    private ConnectivityManager conMgr;
 
 
     @Override
@@ -41,7 +46,6 @@ public class FullScreenImageReport extends Fragment {
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate()
-                .placeholder(R.drawable.template_img)
                 .into(img_report);
 
         btn_back.setOnClickListener(view -> {
@@ -50,5 +54,26 @@ public class FullScreenImageReport extends Fragment {
         });
 
         return root;
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
     }
 }

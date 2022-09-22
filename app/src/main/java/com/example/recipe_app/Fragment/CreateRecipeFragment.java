@@ -9,10 +9,12 @@ import static com.example.recipe_app.Util.DataApi.BASE_URL;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -83,6 +85,7 @@ public class CreateRecipeFragment extends Fragment {
     private ProgressDialog pd;
 
     String imageString;
+    ConnectivityManager conMgr;
 
 
     public CreateRecipeFragment() {
@@ -164,6 +167,7 @@ public class CreateRecipeFragment extends Fragment {
             }
 
             else {
+                // Convert to BASE 64
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
@@ -349,12 +353,33 @@ public class CreateRecipeFragment extends Fragment {
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toasty.error(getContext(), "Failed", Toasty.LENGTH_SHORT).show();
+                Toasty.error(getContext(), "Failed to load image", Toasty.LENGTH_SHORT).show();
 
 
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
     }
 }

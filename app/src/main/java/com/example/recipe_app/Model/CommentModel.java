@@ -28,9 +28,12 @@ public class CommentModel implements Serializable {
     String success;
     @SerializedName("edited")
     String edited;
+    @SerializedName("verified")
+    String verified;
 
     public CommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
-                        String comment_time, String photo_profile, String username, String success, String edited) {
+                        String comment_time, String photo_profile, String username, String success, String edited,
+                        String verified) {
 
         this.comment_id = comment_id;
         this.user_id = user_id;
@@ -42,6 +45,7 @@ public class CommentModel implements Serializable {
         this.comment_date = comment_date;
         this.success = success;
         this.edited  = edited;
+        this.verified = verified;
 
 
     }
@@ -125,5 +129,13 @@ public class CommentModel implements Serializable {
 
     public void setEdited(String edited) {
         this.edited = edited;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
     }
 }

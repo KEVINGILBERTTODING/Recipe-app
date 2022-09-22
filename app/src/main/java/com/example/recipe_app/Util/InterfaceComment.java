@@ -17,7 +17,9 @@ public interface InterfaceComment {
 
     // Method for get comment
     @GET("get_comment.php")
-    Call<List<CommentModel>> getComment(@Query("recipe_id") String recipe_id);
+    Call<List<CommentModel>> getComment(
+            @Query("recipe_id") String recipe_id
+    );
 
     // method for add comment
     @FormUrlEncoded

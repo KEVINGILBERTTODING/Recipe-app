@@ -36,12 +36,14 @@ public class NotificationModel implements Serializable {
      String comment;
      @SerializedName("success")
      String success;
+     @SerializedName("verified")
+     String verified;
 
 
 
     public NotificationModel(String notif_id, String user_id, String user_id_notif, String recipe_id, String type, String date,
                              String time, Integer status, String username, String photo_profile,
-                             String title, String image, String comment, String success) {
+                             String title, String image, String comment, String success, String verified) {
         this.notif_id = notif_id;
         this.user_id = user_id;
         this.user_id_notif = user_id_notif;
@@ -56,6 +58,7 @@ public class NotificationModel implements Serializable {
         this.image = image;
         this.comment =comment;
         this.success = success;
+        this.verified = verified;
     }
 
     public String getNotif_id() {
@@ -168,5 +171,13 @@ public class NotificationModel implements Serializable {
 
     public void setSuccess(String success) {
         this.success = success;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
     }
 }

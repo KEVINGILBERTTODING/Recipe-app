@@ -1,6 +1,8 @@
 package com.example.recipe_app.Admin.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,9 +34,10 @@ import retrofit2.Response;
 
 public class DetailBugReportFragment extends Fragment {
     TextView tv_username, tv_date, tv_title, tv_report, tv_time;
-    ImageView img_profile, imgReport;
+    ImageView img_profile, imgReport, icVerified;
     ImageButton btnBack, btnDelete;
     Button btnAccept, btnReject, btnDone;
+    ConnectivityManager conMgr;
 
 
     String userId, username, recipeId, status, time, date, report, image, imgProfile, email,
@@ -59,6 +62,7 @@ public class DetailBugReportFragment extends Fragment {
         btnDone = root.findViewById(R.id.btn_done);
         imgReport = root.findViewById(R.id.iv_report);
         tv_time = root.findViewById(R.id.tv_time);
+        icVerified = root.findViewById(R.id.img_verified);
 
 
 
@@ -91,6 +95,13 @@ public class DetailBugReportFragment extends Fragment {
                 fm.popBackStack();
             }
         });
+
+        // Check if user is verified than show verified badge
+        if (getArguments().getInt("verified") == 1) {
+            icVerified.setVisibility(View.VISIBLE);
+        } else {
+            icVerified.setVisibility(View.GONE);
+        }
 
 
         // load photo profile
@@ -212,7 +223,6 @@ public class DetailBugReportFragment extends Fragment {
             builder2.setMessage("Are you sure you want to finish this bug?");
             builder2.setPositiveButton("Yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "3");
-                Toast.makeText(getContext(), "Bug solved", Toast.LENGTH_SHORT).show();
                 Toasty.success(getContext(), "Bug Solved!", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
 
@@ -230,7 +240,7 @@ public class DetailBugReportFragment extends Fragment {
             builder2.setMessage("Are you sure you want to reject this report?");
             builder2.setPositiveButton("Yes", (dialogInterface, i) -> {
                 actionBugReport(reportId, "0");
-                Toast.makeText(getContext(), "Report rejected", Toast.LENGTH_SHORT).show();
+                Toasty.success(getContext(), "Report rejected", Toasty.LENGTH_SHORT).show();
                 dialogInterface.dismiss();
 
             }); builder2.setNegativeButton("No", (dialogInterface, i) -> {
@@ -269,5 +279,27 @@ public class DetailBugReportFragment extends Fragment {
 
             }
         });
+    }
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
     }
 }

@@ -7,17 +7,14 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,10 +22,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
+import com.example.recipe_app.Fragment.FragmentReqVerification;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.NotificationModel;
 import com.example.recipe_app.Model.ProfileModel;
@@ -38,9 +38,6 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.tabs.TabLayout;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +77,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         String recipe_id = notificationModelist.get(position).getRecipe_id();
         user_id_notif = notificationModelist.get(holder.getAdapterPosition()).getUser_id_notif();
         String user_idx = notificationModelist.get(holder.getAdapterPosition()).getUser_id();
+
+        // if user is verified than show verified badge
+        if (notificationModelist.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else  {
+            holder.icVerified.setVisibility(View.GONE);
+        }
 
         if (type.equals("like")) {
 
@@ -133,6 +137,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                                 .skipMemoryCache(true)
                                 .override(300, 300)
                                 .into(holder.iv_recipe);
+
 
 
                     } else {
@@ -284,7 +289,90 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 }
             });
 
+        } else if (type.equals("verified")) {
+
+            holder.tv_content.setText(R.string.notif_verified);
+            holder.iv_recipe.setVisibility(View.GONE);
+            holder.tv_comment.setVisibility(View.GONE);
+            holder.animateVerified.setVisibility(View.VISIBLE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+            Glide.with(context)
+                    .load(R.drawable.ic_verified)
+                    .into(holder.ivVerified);
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
         }
+        else if (type.equals("reject_verified")) {
+
+            holder.tv_content.setText(R.string.reject_verified);
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setVisibility(View.GONE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+            holder.iv_recipe.setVisibility(View.GONE);
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+        }
+
 
 
         // button follow click listener
@@ -372,7 +460,8 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView iv_user, iv_recipe;
+        ImageView iv_user, iv_recipe, icVerified, ivVerified;
+        LottieAnimationView animateVerified;
         TextView tv_username, tv_content, tv_date, tv_time, tv_comment;
         Button btn_follow, btn_unfoll;
         RelativeLayout rl_notification;
@@ -394,6 +483,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             tv_comment = itemView.findViewById(R.id.tv_comment);
             swipeLayout = itemView.findViewById(R.id.swipe_notification);
             btn_delete = itemView.findViewById(R.id.btn_delete);
+            icVerified = itemView.findViewById(R.id.img_verified);
+            ivVerified = itemView.findViewById(R.id.iv_verified);
+            animateVerified = itemView.findViewById(R.id.animate_verified);
             rl_notification.setOnClickListener(this);
 
 
@@ -428,6 +520,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             Fragment fragment =  new DetailRecipeFragment();
                             Bundle bundle = new Bundle();
                             bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("verified", response.body().get(0).getVerified());
                             bundle.putString("user_id", response.body().get(0).getUser_id_notif());
                             bundle.putString("username", response.body().get(0).getUsername());
                             bundle.putString("title", response.body().get(0).getTitle());
@@ -478,6 +571,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             Bundle bundle = new Bundle();
                             bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
                             bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("verified", response.body().get(0).getVerified());
                             bundle.putString("user_id", response.body().get(0).getUser_id());
                             bundle.putString("username", response.body().get(0).getUsername());
                             bundle.putString("title", response.body().get(0).getTitle());
@@ -515,6 +609,67 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                     }
                 });
+            }
+
+            // JIKA TYPE NOTIFIKASI ADALAH REJECT_VERIFIED
+
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("reject_verified")) {
+
+                // GET VERIFIED
+                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                interfaceProfile.getProfile(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
+                    @Override
+                    public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                        if (response.body().get(0).getVerified().equals("1") ) {
+
+                        } else {
+
+                            // JIKA USER TELAH MENGAJUKAN VERIFIED MAKA NOTIFIKASI JIKA DIKLIK AKAN MUNCUL TOAST
+                            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                            interfaceProfile.checkVerified(user_id_notif).enqueue(new Callback<List<ProfileModel>>() {
+                                @Override
+                                public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                                    if (response.body().size() > 0) {
+                                        Toasty.warning(context, "Your verification is being processed", Toasty.LENGTH_SHORT).show();
+
+                                    }
+                                    // JIKA REQUEST DITOLAK MAKA USER DAPAT MENGAJUKAN REQUEST LAGI
+                                    else {
+                                        FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                                        ft.replace(R.id.fragment_container, new FragmentReqVerification());
+                                        ft.addToBackStack(null);
+                                        ft.commit();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                                   Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+                    }
+                });
+
+
+
+
+            }
+
+            // JIKA TYPE NOTIFIKASI ADALAH VERIFIED
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("verified")) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new MyProfileFragment())
+                        .addToBackStack(null)
+                        .commit();
+
             }
             
           

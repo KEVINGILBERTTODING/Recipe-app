@@ -152,7 +152,7 @@ public interface InterfaceProfile {
  @POST("remove_following.php")
  Call<ProfileModel> removeFollowing(
          @Field("user_id") String user_id,
-            @Field("following_id") Integer following_id
+         @Field("following_id") Integer following_id
 
  );
 
@@ -162,6 +162,33 @@ public interface InterfaceProfile {
  Call<List<ProfileModel>> getAllUser(
          @Query("active") Integer active
  );
+
+ // Request verification
+ @FormUrlEncoded
+ @POST("post_req_verification.php")
+ Call<ProfileModel> postVerification(
+         @Field("user_id") String user_id,
+         @Field("fullname") String fullname,
+         @Field("username") String username,
+         @Field("doc_type") String doc_type,
+         @Field("category") String category,
+         @Field("region") String region,
+         @Field("type") String type,
+         @Field("url") String url,
+         @Field("image") String image
+ );
+
+
+ // CHECK IF USER ID IS ALREADY REQUEST VERIFIED
+ @GET("check_verified.php")
+ Call<List<ProfileModel>> checkVerified (
+         @Query("user_id") String  user_id
+ );
+
+
+
+
+
 
 
 }

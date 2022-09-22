@@ -2,128 +2,175 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_10sdp"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageButton
-        android:id="@+id/btn_more"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_alignParentRight="true"
-        android:backgroundTint="@color/black"
-        android:background="@drawable/ic_more" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/img_recipe"
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_180sdp"
-        android:scaleType="fitXY"
-        android:src="@drawable/sample_food"
-        android:layout_below="@+id/btn_more"
-        app:shapeAppearanceOverlay="@style/roundedCorners" />
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_more"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:background="@drawable/container"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/_3sdp">
-
-        <ImageView
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:src="@drawable/ic_loved" />
-
-        <TextView
-            android:id="@+id/tv_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_1sdp"
-            android:fontFamily="@font/popsem"
-            android:text="20"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:orientation="horizontal">
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <LinearLayout
+            android:id="@+id/lr_delete"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/red"
+            android:gravity="center">
 
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_trash"/>
+        </LinearLayout>
+    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btn_favorite"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_below="@+id/btn_more"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="right"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:background="@drawable/btn_favorite" />
+        <RelativeLayout
+            android:id="@+id/rl_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_recipe"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:scaleType="fitXY"
+                android:src="@drawable/sample_food"
+                app:shapeAppearanceOverlay="@style/roundedCorners" />
 
-    <TextView
-        android:id="@+id/tv_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/img_recipe"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:fontFamily="@font/popmed"
-        android:text="Duration"
-        android:textSize="@dimen/_10sdp" />
-
-    <ImageButton
-        android:id="@+id/btn_like"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_below="@id/img_recipe"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/_7sdp"
-        android:background="@drawable/ic_love" />
-
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_duration"
-        android:layout_marginTop="7dp"
-        android:fontFamily="@font/popsem"
-        android:text="Title"
-        android:textColor="#292E35"
-        android:textSize="@dimen/_11sdp" />
-
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_below="@id/tv_title">
-
-        <TableRow>
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_profile"
+            <ImageButton
+                android:id="@+id/btn_favorite"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:src="@color/black"
-                android:layout_marginRight="@dimen/_5sdp"/>
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/btn_favorite" />
 
-            <TextView
-                android:id="@+id/tv_recipe_username"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_more"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/container"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_3sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:src="@drawable/ic_loved" />
+
+                    <TextView
+                        android:id="@+id/tv_like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:fontFamily="@font/popsem"
+                        android:text="20"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+            </LinearLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_recipe"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/popmed"
-                android:text="Author"
-                android:textSize="@dimen/_10sdp" />
+                android:orientation="vertical">
 
-        </TableRow>
-    </TableLayout>
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/popmed"
+                    android:text="Duration"
+                    android:textSize="@dimen/_10sdp" />
+
+                <ImageButton
+                    android:id="@+id/btn_like"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/ic_love" />
+
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_duration"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/popsem"
+                    android:text="Title"
+                    android:textColor="#292E35"
+                    android:textSize="@dimen/_11sdp" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_below="@id/tv_title">
+
+                    <TableRow>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/img_profile"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@color/black"
+                            android:layout_marginRight="@dimen/_5sdp"/>
+
+                        <TextView
+                            android:id="@+id/tv_recipe_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/img_recipe"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/popmed"
+                            android:text="Author"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </TableRow>
+                </TableLayout>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
 
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.recipe_app.Admin.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -35,9 +37,10 @@ import retrofit2.Response;
 public class DetailUserReport extends Fragment {
     ImageButton btnDelete, btnBack;
     Button btnAccept, btnReject, btnUnblocked;
-    ImageView imgReport, img_profile;
+    ImageView imgReport, img_profile, icVerified1, icVerified2;
     TextView tv_report, tv_title, tv_date, tv_username1, tv_time, tv_username2;
     private boolean zoomOut =  false;
+    ConnectivityManager conMgr;
 
     String image, pp1, pp2, username1, username2, title, report, email1, email2,
             date, time, user_id1, user_id2, report_id, status;
@@ -62,6 +65,9 @@ public class DetailUserReport extends Fragment {
         tv_time = root.findViewById(R.id.tv_time);
         tv_username2 = root.findViewById(R.id.tv_username2);
         btnUnblocked = root.findViewById(R.id.btn_unblock);
+        icVerified1 = root.findViewById(R.id.img_verified);
+        icVerified2 = root.findViewById(R.id.img_verified2);
+
 
 
 
@@ -81,6 +87,23 @@ public class DetailUserReport extends Fragment {
         pp2 = getArguments().getString("photo_profile2");
         report_id = getArguments().getString("report_id");
         status = getArguments().getString("status");
+
+        // Show verified badge if user 1 is verified
+        if (getArguments().getInt("verified1") == 1 )  {
+            icVerified1.setVisibility(View.VISIBLE);
+        } else  {
+            icVerified1.setVisibility(View.GONE);
+        }
+
+//        // Show verified badge if user 2 is verified
+        if (getArguments().getInt("verified2") == 1) {
+            icVerified2.setVisibility(View.VISIBLE);
+        } else {
+            icVerified2.setVisibility(View.GONE);
+        }
+
+
+
 
         // load image report
         Glide.with(getContext())
@@ -214,7 +237,7 @@ public class DetailUserReport extends Fragment {
                             disableUser();
 
                         } else  {
-                            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                         }
                     }
 
@@ -308,8 +331,8 @@ public class DetailUserReport extends Fragment {
                 if (response.isSuccessful()) {
                     AdminModel adminModel = response.body();
                     if (adminModel.getStatus().equals("1")) {
-                        Toast.makeText(getContext(),
-                                "Report accepted successfully", Toast.LENGTH_SHORT).show();
+                        Toasty.success(getContext(),
+                                "Report accepted successfully", Toasty.LENGTH_SHORT).show();
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.fragment_admin, new ReportUserFragment());
                         ft.commit();
@@ -354,4 +377,25 @@ public class DetailUserReport extends Fragment {
         });
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        checkConnection();
+        super.onResume();
+    }
 }

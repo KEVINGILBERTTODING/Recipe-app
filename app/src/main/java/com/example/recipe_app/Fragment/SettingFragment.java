@@ -17,7 +17,6 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -46,14 +45,12 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -63,9 +60,9 @@ import retrofit2.Response;
 
 public class SettingFragment extends Fragment {
 
-    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username;
+    RelativeLayout updte_pass, updt_email, contactUs, logout, appVersion, aboutUs, addBio, rl_username, reqVerification;
     ImageButton btnBack;
-    ImageView iv_profile;
+    ImageView iv_profile, icVerified;
     private List<ProfileModel> profileModelList = new ArrayList<>();
     String username, userid;
     TextView tv_username, tv_email, tvPhoto, tvApply;
@@ -101,6 +98,8 @@ public class SettingFragment extends Fragment {
         tvApply = view.findViewById(R.id.tv_apply);
         rl_username = view.findViewById(R.id.rl_username);
         addBio = view.findViewById(R.id.add_bio);
+        reqVerification = view.findViewById(R.id.req_verification);
+        icVerified = view.findViewById(R.id.img_verified);
 
         progressDialog = new ProgressDialog(getContext());
 
@@ -108,8 +107,13 @@ public class SettingFragment extends Fragment {
         checkConnection();
 
 
+        // check if user alreaddy sent request verified than hide menu req verified
+        checkVerified();
+
+
         // memamnggil method untuk load profile
         getProfile(userid);
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,6 +269,12 @@ public class SettingFragment extends Fragment {
 
         });
 
+        // Request verification
+        reqVerification.setOnClickListener(view1 -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentReqVerification()).addToBackStack(null)
+                    .commit();
+        });
+
 
         tvPhoto.setOnClickListener(view1 -> {
             Intent intent = new Intent();
@@ -296,8 +306,6 @@ public class SettingFragment extends Fragment {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
             final TextView tv_app_version = dialog.findViewById(R.id.tv_version);
-            final EditText edt_app = dialog.findViewById(R.id.edt_app_version);
-            edt_app.setVisibility(View.GONE);
 
             InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
             interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
@@ -381,6 +389,8 @@ public class SettingFragment extends Fragment {
 
 
 
+
+
         });
 
         return view;
@@ -397,6 +407,25 @@ public class SettingFragment extends Fragment {
 
                     tv_username.setText(profileModelList.get(0).getUsername());
                     tv_email.setText(profileModelList.get(0).getEmail());
+
+
+
+                    // SHOW VERIFIED BADGE WHERE USER IS VERIFIED
+
+                    if (profileModelList.get(0).getVerified().equals("1")) {
+
+                        // SHOW VERIFIED BADGE
+                        icVerified.setVisibility(View.VISIBLE);
+
+
+                    } else {
+
+                        // SHOW VERIFIED BADGE
+                        icVerified.setVisibility(View.GONE);
+
+                    }
+
+                    // LOAD IMAGE PROFILE
                     Glide.with(getActivity())
                             .load(profileModelList.get(0).getPhoto_profile())
                             .thumbnail(0.5f)
@@ -420,7 +449,7 @@ public class SettingFragment extends Fragment {
         });
     }
 
-    // method untuk mengirim phoot ke server
+    // method FOR UPDATE IMAGE PROFILE
     private void updateProfile(String user_id, String image) {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
         interfaceProfile.updateImageProfile(user_id, image).enqueue(new Callback<ProfileModel>() {
@@ -428,7 +457,7 @@ public class SettingFragment extends Fragment {
             public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                 ProfileModel profileModel = response.body();
 
-                if(profileModel.getStatus().equals("success")){
+                if (profileModel.getStatus().equals("success")){
 
                     Toasty.success(getContext(), "Success!", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -443,6 +472,47 @@ public class SettingFragment extends Fragment {
             public void onFailure(Call<ProfileModel> call, Throwable t) {
                 progressDialog.dismiss();
 
+
+            }
+        });
+    }
+
+    // CHECK IF USER IS SEND REQUEST VERIFIED
+    // IF YES THAN HIDE MENU REQUEST VERIFIED
+    // IF NO THAN SHOW MENU REQUEST
+    private void checkVerified(){
+        InterfaceProfile ip = DataApi.getClient().create(InterfaceProfile.class);
+        ip.checkVerified(userid).enqueue(new Callback<List<ProfileModel>>() {
+            @Override
+            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                if (response.body().size() > 0) {
+
+                    // IF USER IS ALREADY SENT REQUEST THAN HIDE MENU REQUEST VERIFICATION
+                    reqVerification.setVisibility(View.GONE);
+                } else  {
+                    // METHOD TO GET IF USER IS VERIFIED THAN HIDE MENU REQ VERIFIED
+                  InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+                  interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
+                      @Override
+                      public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                          if (response.body().get(0).getVerified().equals("1")) {
+                              reqVerification.setVisibility(View.GONE);
+                          } else {
+                              reqVerification.setVisibility(View.VISIBLE);
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+
+                      }
+                  });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
 
             }
         });
@@ -486,5 +556,11 @@ public class SettingFragment extends Fragment {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
     }
 }

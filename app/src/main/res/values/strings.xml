@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Recipe-App</string>
+    <string name="app_name">Kandean</string>
     <string name="register">
        I\'m glad to see you again. You can continue where you left off by logging in
     </string>
@@ -11,5 +11,26 @@
         favorite recipes or to share our recipes with others, with a modern design.
         This application will continue to be developed by Kevin Gilbert Toding as a developer.
     </string>
+
+    <string name="title_verification">
+        Apply for Kandean verification
+    </string>
+
+    <string name="header_verification">
+        Verified account have blue checkmarks next to their names to show that Kandean has confirmed they\'re the real
+        presence of the public figures, celebrities, and chef.
+    </string>
+
+    <string name="notif_verified">
+        Your account was verified. You\'ll  now see a blue verified badge next to your username. To keep verified status,
+        you need to have a public account, a profile picture and at least one post.
+
+
+    </string>
+    <string name="reject_verified">
+        Your account wasn\'t verified because it doesn\'t meet the criteria for verification. You can submit
+        onother request.
+    </string>
+
 
 </resources>

@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class AccountQrcode extends Fragment {
 
-    ImageView iv_qrcode, iv_user;
+    ImageView iv_qrcode, iv_user, ivVerified;
     ImageButton btnBack;
     TextView tv_username;
     Button btnScan;
@@ -51,6 +51,7 @@ public class AccountQrcode extends Fragment {
         tv_username = root.findViewById(R.id.tv_username);
         btnScan = root.findViewById(R.id.btn_scan);
         iv_user = root.findViewById(R.id.iv_user);
+        ivVerified = root.findViewById(R.id.iv_verified);
 
 
         // btn back
@@ -83,6 +84,12 @@ public class AccountQrcode extends Fragment {
                             .skipMemoryCache(true)
                             .dontAnimate()
                             .into(iv_user);
+
+                    if (response.body().get(0).getVerified().equals("1")) {
+                        ivVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        ivVerified.setVisibility(View.GONE);
+                    }
 
                 }
             }

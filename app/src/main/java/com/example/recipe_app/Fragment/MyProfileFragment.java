@@ -52,7 +52,7 @@ import retrofit2.Response;
 
 public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRecipeListener {
     String username, userid;
-    ImageView iv_profile;
+    ImageView iv_profile, icVerified;
     TextView tv_username, tv_email, tv_biography, tv_date, tv_time;
     ImageButton btnSetting, btnQrCode;
 
@@ -96,6 +96,7 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         lr_followers = view.findViewById(R.id.lr_followers);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         btnQrCode = view.findViewById(R.id.btn_qrcode);
+        icVerified = view.findViewById(R.id.img_verified);
 
         tv_post = view.findViewById(R.id.tv_post);
         tv_followers = view.findViewById(R.id.tv_followers);
@@ -329,6 +330,15 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
                     tv_biography.setText(profileModel.getBiography());
                     tv_date.setText(profileModel.getDate());
                     tv_time.setText(profileModel.getTime());
+
+                    // if user is verified than show verfied badge
+                    if (profileModelList.get(0).getVerified().equals("1")) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else  {
+                        icVerified.setVisibility(View.GONE);
+                    }
+
+
                     Glide.with(getContext())
                             .load(profileModel.getPhoto_profile())
                             .thumbnail(0.5f)
