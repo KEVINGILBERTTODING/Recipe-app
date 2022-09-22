@@ -48,16 +48,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp" />
 
-            <EditText
-                android:id="@+id/edt_app_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:hint="App version"
-                android:textAlignment="textStart"
-                android:fontFamily="@font/popmed"
-                android:layout_gravity="start"
-                android:textSize="@dimen/_9sdp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOk"
