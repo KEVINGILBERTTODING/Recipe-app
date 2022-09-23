@@ -28,10 +28,18 @@ if ($code == 1) {
         $query2 = "INSERT INTO like_comment (comment_id, user_id) values ($comment_id, $user_id)";
         $execute2 = mysqli_query($koneksi, $query2);
 
-        $notification1 = "INSERT INTO notification (user_id,user_id_notif, type, comment_id, recipe_id, comment, date, time) 
+
+        // IF USERID EQUALS USER_ID NOTIF THAN DONT PUT INTO NOTIFICATION
+        if ($user_id == $user_id_notif) {
+        } else {
+
+            // insert notification
+            $notification1 = "INSERT INTO notification (user_id,user_id_notif, type, comment_id, recipe_id, comment, date, time) 
         values 
         ('$user_id', '$user_id_notif', 'like_comment', '$comment_id', '$recipe_id', '$comment', '$upload_date', '$upload_time')";
-        $hasil  = mysqli_query($koneksi, $notification1);
+            $hasil  = mysqli_query($koneksi, $notification1);
+        }
+
 
 
         // set request
