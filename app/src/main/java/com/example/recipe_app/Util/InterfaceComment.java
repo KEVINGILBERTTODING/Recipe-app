@@ -63,7 +63,10 @@ public interface InterfaceComment {
     Call<CommentModel> actionLikeComment(
             @Field("comment_id") String commentId,
             @Field("user_id") String user_id,
-            @Field("code") Integer code
+            @Field("code") Integer code,
+            @Field("recipe_id") String recipeId,
+            @Field("user_id_notif") String userIdNotif,
+            @Field("comment") String comment
     );
 
 

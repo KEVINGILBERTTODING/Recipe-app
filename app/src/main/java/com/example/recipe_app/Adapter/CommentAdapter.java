@@ -136,12 +136,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.btnLike.setOnClickListener(view -> {
             if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_love).getConstantState()) {
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
-                actionLikeComment(commentModelsList.get(position).getComment_id(), userid, 1, holder.tvLike);
+                actionLikeComment(
+                        commentModelsList.get(position).getComment_id(), userid, 1, commentModelsList.get(position).getRecipe_id(),
+                        commentModelsList.get(position).getUser_id(), commentModelsList.get(position).getComment(), holder.tvLike
+                );
 
 
             } else  if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()){
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
-                actionLikeComment(commentModelsList.get(position).getComment_id(), userid, 0, holder.tvLike);
+                actionLikeComment(
+                        commentModelsList.get(position).getComment_id(), userid, 0, commentModelsList.get(position).getRecipe_id(),
+                        commentModelsList.get(position).getUser_id(), commentModelsList.get(position).getComment(), holder.tvLike
+
+                );
 
 
 
@@ -176,7 +183,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         // set enable swipe layout
 
         holder.swipeLayout.setSwipeEnabled(false);
-        
+
 
 
         // Mengambil userid pemilik recipe
@@ -315,8 +322,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     // Method action like comment
-    private void actionLikeComment(String commentId, String userid, Integer code, TextView tvLikes) {
-        DataApi.getClient().create(InterfaceComment.class).actionLikeComment(commentId, userid, code).enqueue(new Callback<CommentModel>() {
+    private void actionLikeComment(String commentId, String userid, Integer code, String recipeId, String userIdNotif, String comment,TextView tvLikes) {
+        DataApi.getClient().create(InterfaceComment.class).actionLikeComment(
+                commentId, userid, code, recipeId, userIdNotif, comment
+        ).enqueue(new Callback<CommentModel>() {
             @Override
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
                 if (response.body().getStatus() == 1) {
@@ -356,7 +365,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             @Override
             public void onFailure(Call<List<CommentModel>> call, Throwable t) {
-                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -416,5 +425,3 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 }
-
-
