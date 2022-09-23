@@ -7,7 +7,6 @@ class usr
 }
 
 date_default_timezone_set('Asia/Jakarta');
-
 $user_id = $_POST['user_id'];
 $query = "UPDATE users SET verified = 1 where user_id = '$user_id'";
 $upload_date = date("Y-m-d");
