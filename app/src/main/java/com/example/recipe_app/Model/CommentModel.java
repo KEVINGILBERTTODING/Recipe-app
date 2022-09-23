@@ -2,6 +2,8 @@ package com.example.recipe_app.Model;
 
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
+import androidx.annotation.IntegerRes;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -30,10 +32,14 @@ public class CommentModel implements Serializable {
     String edited;
     @SerializedName("verified")
     String verified;
+    @SerializedName("status")
+    Integer status;
+    @SerializedName("likes")
+    Integer likes;
 
     public CommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
                         String comment_time, String photo_profile, String username, String success, String edited,
-                        String verified) {
+                        String verified, Integer status, Integer likes) {
 
         this.comment_id = comment_id;
         this.user_id = user_id;
@@ -46,6 +52,8 @@ public class CommentModel implements Serializable {
         this.success = success;
         this.edited  = edited;
         this.verified = verified;
+        this.status = status;
+        this.likes = likes;
 
 
     }
@@ -137,5 +145,21 @@ public class CommentModel implements Serializable {
 
     public void setVerified(String verified) {
         this.verified = verified;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 }

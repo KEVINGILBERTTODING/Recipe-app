@@ -25,12 +25,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.parser.IntegerParser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
@@ -46,8 +48,12 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.transition.Hold;
 
+import org.w3c.dom.Text;
+
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,7 +92,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
         String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
+
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+        // Check if user already like comment or dont
+        checkLikeComment(commentModelsList.get(position).getComment_id(), userid, holder.btnLike);
+
+
+        // check if total like comment == 0 than hide settext ""
+        if (commentModelsList.get(position).getLikes() == 0) {
+            holder.tvLike.setText("");
+
+        } else {
+            holder.tvLike.setText(commentModelsList.get(position).getLikes() + " Likes");
+        }
+
+
 
         // set agar tv username dan foto profile dapat di klik di detail recipe fragment
         holder.tv_username.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +133,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
 
+        holder.btnLike.setOnClickListener(view -> {
+            if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_love).getConstantState()) {
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+                actionLikeComment(commentModelsList.get(position).getComment_id(), userid, 1, holder.tvLike);
+
+
+            } else  if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()){
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+                actionLikeComment(commentModelsList.get(position).getComment_id(), userid, 0, holder.tvLike);
+
+
+
+
+            }
+        });
+
+
 
 
         // If comment is edited than show text "edited"
@@ -132,6 +171,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .placeholder(R.drawable.template_img)
                 .override(200, 200)
                 .into(holder.img_profile);
+
+
+        // set enable swipe layout
 
         holder.swipeLayout.setSwipeEnabled(false);
         
@@ -192,9 +234,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         // Hide edit comment button
                         holder.lrEdit.setVisibility(View.GONE);
 
-
-
-
                         // active swipe comment to edit or delete option
                         holder.swipeLayout.setSwipeEnabled(true);
                     }
@@ -232,9 +271,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile, icVerified;
-        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike;
         RelativeLayout list_comment;
-        ImageButton btn_edit, btn_delete;
+        ImageButton btn_edit, btn_delete, btnLike;
         SwipeLayout swipeLayout;
         LinearLayout lrEdit;
 
@@ -257,6 +296,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             swipeLayout = itemView.findViewById(R.id.swipe_comment);
             lrEdit = itemView.findViewById(R.id.lr_edit);
             icVerified = itemView.findViewById(R.id.img_verified);
+            tvLike = itemView.findViewById(R.id.tv_like);
+            btnLike = itemView.findViewById(R.id.btnLove);
 
         }
 
@@ -271,6 +312,106 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
         }
+    }
+
+    // Method action like comment
+    private void actionLikeComment(String commentId, String userid, Integer code, TextView tvLikes) {
+        DataApi.getClient().create(InterfaceComment.class).actionLikeComment(commentId, userid, code).enqueue(new Callback<CommentModel>() {
+            @Override
+            public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
+                if (response.body().getStatus() == 1) {
+
+
+                    // count like comment
+                    countLikeComment(commentId, tvLikes);
+
+
+                } else  {
+                    // count like comment
+
+                    countLikeComment(commentId, tvLikes);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentModel> call, Throwable t) {
+                Toasty.error(context, "Check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // method check if user already like comment or dont
+    private void checkLikeComment(String commentId, String userId, ImageButton btnLikes) {
+        DataApi.getClient().create(InterfaceComment.class).checkLikeComment(commentId, userId).enqueue(new Callback<List<CommentModel>>() {
+            @Override
+            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
+                if (response.body().size() > 0) {
+                    btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+                } else {
+                    btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    // Count like comment
+    private void countLikeComment(String commentId, TextView tvLikes) {
+        DataApi.getClient().create(InterfaceComment.class).countLikeComment(commentId).enqueue(new Callback<List<CommentModel>>() {
+            @Override
+            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
+
+                if (response.body().size() > 0) {
+                    Integer totalLikes = response.body().get(0).getLikes();
+
+
+                    if(Math.abs(totalLikes) > 1000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000 + "K" + " Likes");
+                    } else if(Math.abs(totalLikes) > 1001) {
+                        tvLikes.setText(Math.abs(totalLikes)/1001 + "K+" + " Likes");
+                    }
+                    else if(Math.abs(totalLikes) > 1000000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000 + "M" + " Likes");
+                    } else if(Math.abs(totalLikes) > 1000001){
+                        tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+" + " Likes");
+                    }
+
+                    else if (Math.abs(totalLikes) > 1000000000){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B" + " Likes");
+                    } else if (Math.abs(totalLikes) > 1000000001){
+                        tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+" + " Likes");
+                    }
+                    else {
+                        if (totalLikes < 1) {
+                            tvLikes.setText("");
+                        } else {
+                            tvLikes.setText(Math.abs(totalLikes) + " Likes");
+                        }
+
+
+
+                    }
+
+                } else {
+                    tvLikes.setText("");
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+
+            }
+        });
     }
 
 

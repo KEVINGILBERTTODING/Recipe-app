@@ -1,5 +1,7 @@
 package com.example.recipe_app.Util;
 
+import android.media.Ringtone;
+
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.RecipeModel;
 
@@ -52,6 +54,33 @@ public interface InterfaceComment {
             @Field("user_id_notif") String user_id_notif,
             @Field("date") String date,
             @Field("time") String time
+    );
+
+
+    // Action like comment
+    @FormUrlEncoded
+    @POST("action_like_comment.php")
+    Call<CommentModel> actionLikeComment(
+            @Field("comment_id") String commentId,
+            @Field("user_id") String user_id,
+            @Field("code") Integer code
+    );
+
+
+
+    // Count like commment
+    @GET("count_like_comment.php")
+    Call<List<CommentModel>> countLikeComment(
+            @Query("comment_id") String commentId
+    );
+
+
+
+    // Check apakah user telah like comment atau tidak
+    @GET("check_like_comment.php")
+    Call<List<CommentModel>> checkLikeComment(
+            @Query("comment_id") String commentId,
+            @Query("user_id") String userId
     );
 
 
