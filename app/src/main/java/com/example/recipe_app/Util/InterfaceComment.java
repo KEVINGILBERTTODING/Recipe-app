@@ -88,12 +88,7 @@ public interface InterfaceComment {
     );
 
 
-    // Get all comment reply
-    @GET("get_comment_reply.php")
-    Call<List<ReplyCommentModel>> getReplyComment(
-            @Query("comment_id") String commentId
 
-    );
 
 
 

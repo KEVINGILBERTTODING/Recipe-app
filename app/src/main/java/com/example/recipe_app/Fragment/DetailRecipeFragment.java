@@ -65,11 +65,13 @@ import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
+import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.example.recipe_app.Util.InterfaceReplyComment;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -1243,8 +1245,81 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         CommentModel commentModel = commentModelsList.get(position);
         String userid_new = commentModel.getUser_id();
 
+
+
+
+        // saat reply comment di klik
+        switch (view.getId()) {
+            case R.id.tv_reply:
+                relativeLayout.setVisibility(View.VISIBLE);
+                et_comment.requestFocus();
+                showKeyboard();
+
+                btnSend.setOnClickListener(view1 -> {
+
+                    // if field is empty
+                    if (et_comment.getText().toString().isEmpty()) {
+                        Toasty.error(getContext(), "Please fill the field", Toasty.LENGTH_SHORT).show();
+                    } else {
+
+                        InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+                        interfaceReplyComment.postCommentReply(
+                                useridx,
+                                commentModel.getComment_id(),
+                                commentModel.getRecipe_id(),
+                                commentModel.getUser_id(),
+                                et_comment.getText().toString()
+
+                        ).enqueue(new Callback<ReplyCommentModel>() {
+                            @Override
+                            public void onResponse(Call<ReplyCommentModel> call, Response<ReplyCommentModel> response) {
+                                if (response.body().getSuccess().equals("1")) {
+                                    Toasty.success(getContext(), "Success replied", Toasty.LENGTH_SHORT).show();
+                                    et_comment.setText("");
+                                    relativeLayout.setVisibility(View.GONE);
+                                    hideKeyboard();
+
+
+                                    // if btn reply comment is click and success than reset button send to  new comment
+
+                                    btnSend.setOnClickListener(View -> {
+                                        String comment = et_comment.getText().toString();
+                                        if (comment.isEmpty()) {
+                                            Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
+                                        } else {
+                                            postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+                                            hideKeyboard();
+                                        }
+                                    });
+                                } else {
+                                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ReplyCommentModel> call, Throwable t) {
+                                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+                    }
+
+
+
+                });
+
+                break;
+
+        }
+
+
+
         // muncul opsi edit dan delete jika user comment
         if (user_id.equals(userid_new) || useridx.equals(userid_new)) {
+
+
+
 
             switch (view.getId()) {
 
@@ -1336,10 +1411,18 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                     break;
 
+
             }
 
 
+
+
         }
+
+
+
+
+
         // Jika pemilik recipe yang klik maka ada opsi untuk delete comment
         else {
             switch (view.getId()) {

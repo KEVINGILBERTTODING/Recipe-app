@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
@@ -50,6 +52,20 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
         holder.tv_comment.setText(replyCommentModelList.get(position).getComment());
         holder.tv_date.setText(replyCommentModelList.get(position).getComment_date());
         holder.tv_time.setText(replyCommentModelList.get(position).getComment_time());
+
+        // set profile image
+
+        Glide.with(context)
+                .load(replyCommentModelList.get(position).getPhoto_profile())
+                .thumbnail(0.5f)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .fitCenter()
+                .centerCrop()
+                .placeholder(R.drawable.template_img)
+                .override(200, 200)
+                .into(holder.img_profile);
 
 
 

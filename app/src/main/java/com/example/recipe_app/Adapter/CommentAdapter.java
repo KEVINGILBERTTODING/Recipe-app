@@ -48,6 +48,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.example.recipe_app.Util.InterfaceReplyComment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.transition.Hold;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -132,6 +133,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 onCommentLisstener.onCommentCLick(view, position);
             }
         });
+
+
+        // set agar tv reply dapat diklik di detail recipe fragment
+        holder.tvReply.setOnClickListener(view -> {
+            onCommentLisstener.onCommentCLick(view, position);
+        });
+
+
 
         // If user is verified than show verified badge
         if (commentModelsList.get(position).getVerified().equals("1")) {
@@ -263,13 +272,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
-        InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
-        interfaceComment.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
+
+
+        // Count total reply
+        // and hide linear layout reply if thers no reply comment
+
+        InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+        interfaceReplyComment.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
             @Override
             public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
                 if (response.body().size() > 0) {
                     holder.lrReply.setVisibility(View.VISIBLE);
-                    holder.tvReply.setText(response.body().size() + " Reply");
+                    holder.tvCountReply.setText(response.body().size() + " Reply");
 
                 } else {
 
@@ -294,11 +308,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
-        holder.tvReply.setOnClickListener(view -> {
+        holder.tvCountReply.setOnClickListener(view -> {
 
 
 
-            InterfaceComment interfaceComment1 = DataApi.getClient().create(InterfaceComment.class);
+            InterfaceReplyComment interfaceComment1 = DataApi.getClient().create(InterfaceReplyComment.class);
             interfaceComment1.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
                 @Override
                 public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
@@ -333,6 +347,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
+
+
+
     }
 
     @Override
@@ -352,7 +369,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile, icVerified;
-        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike, tvReply;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike, tvCountReply, tvReply;
         RelativeLayout list_comment;
         ImageButton btn_edit, btn_delete, btnLike;
         SwipeLayout swipeLayout;
@@ -381,10 +398,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             tvLike = itemView.findViewById(R.id.tv_like);
             btnLike = itemView.findViewById(R.id.btnLove);
             rvReplyComment = itemView.findViewById(R.id.recycler_reply_comment);
-            tvReply = itemView.findViewById(R.id.tv_count_reply_comment);
+            tvCountReply = itemView.findViewById(R.id.tv_count_reply_comment);
             lrReply = itemView.findViewById(R.id.lr_count_reply);
+            tvReply = itemView.findViewById(R.id.tv_reply);
 
-//             check reply comment
+
+
+
+
 
 
 
