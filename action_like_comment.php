@@ -25,12 +25,14 @@ if ($code == 1) {
     $execute1 = mysqli_query($koneksi, $query);
 
     if ($execute1) {
-        $query2 = "INSERT INTO like_comment (comment_id, user_id) values ($comment_id, $user_id)";
+        $query2 = "INSERT INTO like_comment (comment_id, user_id) values ('$comment_id', '$user_id')";
         $execute2 = mysqli_query($koneksi, $query2);
 
 
         // IF USERID EQUALS USER_ID NOTIF THAN DONT PUT INTO NOTIFICATION
         if ($user_id == $user_id_notif) {
+
+            // Do something here
         } else {
 
             // insert notification
