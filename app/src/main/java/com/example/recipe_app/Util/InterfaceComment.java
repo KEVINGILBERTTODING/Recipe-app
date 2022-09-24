@@ -27,10 +27,12 @@ public interface InterfaceComment {
     // method for add comment
     @FormUrlEncoded
     @POST("post_comment.php")
-    Call<CommentModel> createComment(@Field("user_id") String user_id,
-                                     @Field("recipe_id") String recipe_id,
-                                     @Field("user_id_notif") String user_id_notif,
-                                     @Field("comment") String comment);
+    Call<CommentModel> createComment(
+            @Field("comment_id") String commentId,
+            @Field("user_id") String user_id,
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id_notif") String user_id_notif,
+            @Field("comment") String comment);
 
     // method for edit comment
     @FormUrlEncoded

@@ -104,6 +104,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     private AdapterCommentReply adapterCommentReply;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
+    String commentId = UUID.randomUUID().toString();
     ConnectivityManager connectivityManager;
     CommentAdapter commentAdapter;
     EditText et_comment;
@@ -600,7 +601,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             if (comment.isEmpty()) {
                 Toasty.normal(getContext(), "Please fill the comment", Toasty.LENGTH_SHORT).show();
             } else {
-                postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+
+                postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
                 hideKeyboard();
                 relativeLayout.setVisibility(android.view.View.GONE);
             }
@@ -791,8 +793,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     // Post comment
-    public void postComment(String user_id, String recipe_id, String user_id_notif, String comment) {
-        DataApi.getClient().create(InterfaceComment.class).createComment(user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
+    public void postComment(String commentId,String user_id, String recipe_id, String user_id_notif, String comment) {
+        DataApi.getClient().create(InterfaceComment.class).createComment(commentId, user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
             @Override
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
 
@@ -1296,7 +1298,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                         if (comment.isEmpty()) {
                                             Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
                                         } else {
-                                            postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+                                            postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
                                             hideKeyboard();
                                         }
                                     });
@@ -1368,7 +1370,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                                 if (comment.isEmpty()) {
                                                     Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
                                                 } else {
-                                                    postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+
+                                                    postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
                                                     hideKeyboard();
                                                 }
                                             });
