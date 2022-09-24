@@ -741,6 +741,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     commentAdapter = new CommentAdapter(getContext(), commentModelsList);
                     recyclerView.setAdapter(commentAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setHasFixedSize(false);
 
                     recyclerView.setItemViewType((type, position) -> {
                         switch (type) {

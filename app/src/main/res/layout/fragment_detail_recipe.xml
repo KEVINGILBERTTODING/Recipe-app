@@ -478,7 +478,7 @@
                 <com.todkars.shimmer.ShimmerRecyclerView
                         android:id="@+id/recycler_comment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         app:shimmer_recycler_item_count="3"
                         android:layout_marginTop="@dimen/_10sdp" />
 

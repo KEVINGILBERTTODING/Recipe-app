@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
+import androidx.arch.core.executor.DefaultTaskExecutor;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,12 +42,15 @@ import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.RecipeModel;
+import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
+import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.transition.Hold;
+import com.todkars.shimmer.ShimmerRecyclerView;
 
 import org.w3c.dom.Text;
 
@@ -64,6 +68,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     List<CommentModel> commentModelsList;
     Context context;
     private OnCommentLisstener onCommentLisstener;
+    AdapterCommentReply adapterCommentReply;
+    private LinearLayoutManager linearLayoutManager;
+    List<ReplyCommentModel> replyCommentModelList;
 
     public CommentAdapter(Context context, List<CommentModel> commentModelsList) {
         this.commentModelsList = commentModelsList;
@@ -92,6 +99,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tv_time.setText(commentModelsList.get(position).getComment_time());
         String recipe_id = commentModelsList.get(position).getRecipe_id();
         String user_id = commentModelsList.get(position).getUser_id();
+        String commentId = commentModelsList.get(position).getComment_id();
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
@@ -255,6 +263,72 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
+        InterfaceComment interfaceComment = DataApi.getClient().create(InterfaceComment.class);
+        interfaceComment.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
+            @Override
+            public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+                if (response.body().size() > 0) {
+                    holder.lrReply.setVisibility(View.VISIBLE);
+                    holder.tvReply.setText(response.body().size() + " Reply");
+
+                } else {
+
+                    holder.lrReply.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+                Toasty.error(context, "Please check your conenction", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+        holder.tvReply.setOnClickListener(view -> {
+
+
+
+            InterfaceComment interfaceComment1 = DataApi.getClient().create(InterfaceComment.class);
+            interfaceComment1.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
+                @Override
+                public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+                    replyCommentModelList = response.body();
+                    if (response.body().size() > 0 ) {
+                        adapterCommentReply = new AdapterCommentReply(context, replyCommentModelList);
+                        linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                        holder.rvReplyComment.setAdapter(adapterCommentReply);
+                        holder.rvReplyComment.setLayoutManager(linearLayoutManager);
+                        holder.rvReplyComment.setVisibility(View.VISIBLE);
+
+                    } else {
+                        holder.rvReplyComment.setVisibility(View.GONE);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                }
+            });
+
+
+
+
+
+
+        });
 
 
 
@@ -278,11 +352,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile, icVerified;
-        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike, tvReply;
         RelativeLayout list_comment;
         ImageButton btn_edit, btn_delete, btnLike;
         SwipeLayout swipeLayout;
-        LinearLayout lrEdit;
+        LinearLayout lrEdit, lrReply;
+        ShimmerRecyclerView rvReplyComment;
 
 
 
@@ -305,6 +380,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             icVerified = itemView.findViewById(R.id.img_verified);
             tvLike = itemView.findViewById(R.id.tv_like);
             btnLike = itemView.findViewById(R.id.btnLove);
+            rvReplyComment = itemView.findViewById(R.id.recycler_reply_comment);
+            tvReply = itemView.findViewById(R.id.tv_count_reply_comment);
+            lrReply = itemView.findViewById(R.id.lr_count_reply);
+
+//             check reply comment
+
+
+
+
+
+
 
         }
 
@@ -422,6 +508,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
     }
+
+
 
 
 }

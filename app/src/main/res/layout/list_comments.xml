@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+
     <com.daimajia.swipe.SwipeLayout
         android:id="@+id/swipe_comment"
         android:layout_width="match_parent"
@@ -37,8 +39,6 @@
                 android:background="@drawable/ic_edit"/>
 
         </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/lr_delete"
             android:layout_width="@dimen/_40sdp"
@@ -55,6 +55,9 @@
                 android:backgroundTint="@color/white"
                 android:background="@drawable/ic_trash"/>
         </LinearLayout>
+
+
+
     </LinearLayout>
 
 
@@ -135,6 +138,7 @@
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
+            android:id="@+id/lr_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/cv_comment"
@@ -172,6 +176,16 @@
 
 
             <TextView
+                android:id="@+id/tv_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:text="Reply"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textSize="@dimen/_8sdp" />
+
+
+            <TextView
                 android:id="@+id/tv_edited"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -184,7 +198,45 @@
 
 
 
+
+
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lr_count_reply"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@id/lr_date"
+            android:visibility="gone"
+            android:layout_toRightOf="@id/iv_profile"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tv_count_reply_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:text="Reply"
+                android:textSize="@dimen/_7sdp" />
+        </LinearLayout>
+
+
+        <com.todkars.shimmer.ShimmerRecyclerView
+            android:id="@+id/recycler_reply_comment"
+            android:layout_below="@id/lr_count_reply"
+            android:labelFor="@+id/lr_count_reply"
+            android:visibility="gone"
+
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/iv_profile"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -203,8 +255,15 @@
 
         </LinearLayout>
 
+
+
     </RelativeLayout>
 
+
     </com.daimajia.swipe.SwipeLayout>
+
+
+
+
 
 </RelativeLayout>

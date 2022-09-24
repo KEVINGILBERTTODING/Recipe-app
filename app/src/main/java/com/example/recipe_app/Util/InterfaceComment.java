@@ -4,6 +4,7 @@ import android.media.Ringtone;
 
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.RecipeModel;
+import com.example.recipe_app.Model.ReplyCommentModel;
 
 import java.util.List;
 
@@ -84,6 +85,14 @@ public interface InterfaceComment {
     Call<List<CommentModel>> checkLikeComment(
             @Query("comment_id") String commentId,
             @Query("user_id") String userId
+    );
+
+
+    // Get all comment reply
+    @GET("get_comment_reply.php")
+    Call<List<ReplyCommentModel>> getReplyComment(
+            @Query("comment_id") String commentId
+
     );
 
 
