@@ -35,11 +35,11 @@ public class ReplyCommentModel implements Serializable {
     @SerializedName("likes")
     Integer likes;
     @SerializedName("reply_id")
-    Integer replyId;
+    String replyId;
 
     public ReplyCommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
                              String comment_time, String photo_profile, String username, String success, String edited,
-                             String verified, Integer status, Integer likes, Integer replyId) {
+                             String verified, Integer status, Integer likes, String replyId) {
 
         this.comment_id = comment_id;
         this.user_id = user_id;
@@ -164,11 +164,11 @@ public class ReplyCommentModel implements Serializable {
         this.likes = likes;
     }
 
-    public Integer getReplyId() {
+    public String getReplyId() {
         return replyId;
     }
 
-    public void setReplyId(Integer replyId) {
+    public void setReplyId(String replyId) {
         this.replyId = replyId;
     }
 }

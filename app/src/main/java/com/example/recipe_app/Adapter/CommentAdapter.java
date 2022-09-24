@@ -293,7 +293,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             @Override
             public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
-                Toasty.error(context, "Please check your conenction", Toasty.LENGTH_SHORT).show();
+                Toasty.error(context, "gagal mas brooo", Toasty.LENGTH_SHORT).show();
 
             }
         });

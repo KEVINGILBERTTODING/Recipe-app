@@ -26,6 +26,7 @@ public interface InterfaceReplyComment {
     @FormUrlEncoded
     @POST("post_reply_comment.php")
     Call<ReplyCommentModel> postCommentReply(
+            @Field("reply_id") String reply_id,
             @Field("user_id") String user_id,
             @Field("comment_id") String commentId,
             @Field("recipe_id") String recipe_id,

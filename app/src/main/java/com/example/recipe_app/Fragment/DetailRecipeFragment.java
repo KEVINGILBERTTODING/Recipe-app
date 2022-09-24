@@ -59,6 +59,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.recipe_app.Adapter.AdapterCommentReply;
 import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Admin.Fragment.FullScreenImageReport;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
@@ -82,6 +83,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -98,6 +100,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2, btnRefresh;
     private List<ProfileModel> profileModels;
+    private  List<ReplyCommentModel> replyCommentModelList = new ArrayList<>();
+    private AdapterCommentReply adapterCommentReply;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
     ConnectivityManager connectivityManager;
@@ -1255,6 +1259,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 et_comment.requestFocus();
                 showKeyboard();
 
+                String reply_id = UUID.randomUUID().toString();
+
                 btnSend.setOnClickListener(view1 -> {
 
                     // if field is empty
@@ -1264,6 +1270,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                         InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
                         interfaceReplyComment.postCommentReply(
+                                reply_id,
                                 useridx,
                                 commentModel.getComment_id(),
                                 commentModel.getRecipe_id(),
@@ -1278,6 +1285,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                     et_comment.setText("");
                                     relativeLayout.setVisibility(View.GONE);
                                     hideKeyboard();
+                                    getComment(commentModel.getRecipe_id());
+
 
 
                                     // if btn reply comment is click and success than reset button send to  new comment

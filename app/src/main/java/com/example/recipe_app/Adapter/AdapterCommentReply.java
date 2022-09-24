@@ -1,6 +1,11 @@
 package com.example.recipe_app.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +33,19 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
 
     Context context;
     List<ReplyCommentModel> replyCommentModelList;
+    String username, userid;
 
 
     // Constructor
     public AdapterCommentReply(Context context, List<ReplyCommentModel> replyCommentModelList) {
         this.context = context;
         this.replyCommentModelList = replyCommentModelList;
+
+        // Mengambil username dan user_id menggunakan sharedpreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+        username = sharedPreferences.getString(TAG_USERNAME, null);
+        userid = sharedPreferences.getString("user_id", null);
+
     }
 
 
@@ -67,6 +79,18 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
                 .override(200, 200)
                 .into(holder.img_profile);
 
+
+        // Mengubah warna username jika userid = user id
+
+        if (replyCommentModelList.get(position).getUser_id().equals(userid)) {
+            holder.tv_username.setTextColor(context.getResources().getColor(R.color.blue));
+            holder.swipeLayout.setSwipeEnabled(true);
+
+
+        } else {
+            // Do something here
+            holder.swipeLayout.setSwipeEnabled(false);
+        }
 
 
     }
@@ -104,13 +128,10 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
             tvLike = itemView.findViewById(R.id.tv_like);
             btnLike = itemView.findViewById(R.id.btnLove);
 
-
-            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, replyCommentModelList.get(getAdapterPosition()).getComment_id(), Toast.LENGTH_SHORT).show();
 
         }
     }
