@@ -110,7 +110,7 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
                             public void onResponse(Call<ReplyCommentModel> call, Response<ReplyCommentModel> response) {
                                 if (response.body().getSuccess().equals("1")) {
                                     Toasty.success(context, "Comment deleted", Toasty.LENGTH_SHORT).show();
-                                    notifyItemChanged(position);
+                                    notifyItemRemoved(position);
                                     replyCommentModelList.remove(position);
                                     notifyItemRangeChanged(position, replyCommentModelList.size());
 
