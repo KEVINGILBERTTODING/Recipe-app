@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
@@ -217,8 +221,41 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
         });
 
 
-//        // Check if user already like comment or dont
-//        checkLikeCommentReply(replyID, userid, holder.btnLike);
+        // set agar username dapat diklik dan direct ke show profile
+        holder.tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", replyCommentModelList.get(position).getUser_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
+
+        // set agar photo profile dapat diklik dan direct ke show profile
+        holder.img_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", replyCommentModelList.get(position).getUser_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
 
 
 
