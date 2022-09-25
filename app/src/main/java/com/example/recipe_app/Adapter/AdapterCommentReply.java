@@ -21,11 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceReplyComment;
 
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ import retrofit2.Response;
 public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentReply.ViewHolder> {
 
     Context context;
-    List<ReplyCommentModel> replyCommentModelList;
+    List<ReplyCommentModel> replyCommentModelList = new ArrayList<>();
     String username, userid;
 
 
@@ -71,6 +74,7 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
         holder.tv_comment.setText(replyCommentModelList.get(position).getComment());
         holder.tv_date.setText(replyCommentModelList.get(position).getComment_date());
         holder.tv_time.setText(replyCommentModelList.get(position).getComment_time());
+        String replyID = replyCommentModelList.get(position).getReplyId().toString();
 
         // set profile image
 
@@ -85,6 +89,52 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
                 .placeholder(R.drawable.template_img)
                 .override(200, 200)
                 .into(holder.img_profile);
+
+
+        // chechk if user already like the comment or not
+        InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+        interfaceReplyComment.checkLikeComment(replyID, userid).enqueue(new Callback<List<ReplyCommentModel>>() {
+            @Override
+            public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+
+
+
+                if (response.body().size() > 0) {
+                    holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+                } else {
+                    holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+        // Settext total likes
+        // if total liks == 0 than settext empty
+        if (replyCommentModelList.get(position).getLikes() == 0) {
+            holder.tvLike.setText("");
+
+        } else if (replyCommentModelList.get(position).getLikes() == 1){
+            holder.tvLike.setText(replyCommentModelList.get(position).getLikes() + " Like");
+        }  else{
+            holder.tvLike.setText(replyCommentModelList.get(position).getLikes() + " Likes");
+        }
+
+        // If user is verified than show verified badge
+        if (replyCommentModelList.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
+
 
 
         // Jika userid pemilik comment reply = user id account
@@ -129,6 +179,50 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
         });
 
 
+        // Saat  button like di klik
+        holder.btnLike.setOnClickListener(view -> {
+            if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_love).getConstantState()) {
+
+                // set background image button like
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(3)
+                        .playOn(holder.btnLike);
+
+                // call method action like comment reply
+                actionLikeCommentReply(
+                        replyCommentModelList.get(position).getComment_id(), replyCommentModelList.get(position).getReplyId(),  userid, 1, replyCommentModelList.get(position).getRecipe_id(),
+                        replyCommentModelList.get(position).getUser_id(), replyCommentModelList.get(position).getComment(), holder.tvLike
+                );
+
+
+            } else  if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()){
+                // set background image button like
+                holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+
+                // call method action like comment reply
+                actionLikeCommentReply(
+                        replyCommentModelList.get(position).getComment_id(),replyCommentModelList.get(position).getReplyId(), userid, 0, replyCommentModelList.get(position).getRecipe_id(),
+                        replyCommentModelList.get(position).getUser_id(), replyCommentModelList.get(position).getComment(), holder.tvLike
+
+                );
+
+
+
+
+            }
+        });
+
+
+//        // Check if user already like comment or dont
+//        checkLikeCommentReply(replyID, userid, holder.btnLike);
+
+
+
+
     }
 
     @Override
@@ -171,4 +265,175 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
 
         }
     }
+
+
+    // Method action like comment
+    private void actionLikeCommentReply(String commentId, String replyId, String userid, Integer code, String recipeId, String userIdNotif, String comment,TextView tvLikes) {
+        DataApi.getClient().create(InterfaceReplyComment.class).actionLikeComment(
+                commentId, replyId, userid, code, recipeId, userIdNotif, comment
+        ).enqueue(new Callback<ReplyCommentModel>() {
+            @Override
+            public void onResponse(Call<ReplyCommentModel> call, Response<ReplyCommentModel> response) {
+                if (response.body().getStatus() == 1) {
+
+
+
+//                    // count like comment
+
+                    InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+                    interfaceReplyComment.countLikeCommentReply(replyId).enqueue(new Callback<List<ReplyCommentModel>>() {
+                        @Override
+                        public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+
+                            if (response.body().size() > 0) {
+                                Integer totalLikes = response.body().get(0).getLikes();
+
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K" + " Likes");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+" + " Likes");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M" + " Likes");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+" + " Likes");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B" + " Likes");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+" + " Likes");
+                                }
+                                else {
+                                    if (totalLikes < 1) {
+                                        tvLikes.setText("");
+                                    }  else if (totalLikes == 1) {
+                                        tvLikes.setText(Math.abs(totalLikes) + " Like");
+                                    }
+
+                                    else {
+                                        tvLikes.setText(Math.abs(totalLikes) + " Likes");
+                                    }
+
+
+
+                                }
+
+                            } else {
+                                tvLikes.setText("");
+                                Toasty.error(context, "Gagal", Toasty.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+                            Toast.makeText(context, "No connection", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+
+                } else  {
+                    // count like comment
+
+//
+
+                    InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+                    interfaceReplyComment.countLikeCommentReply(replyId).enqueue(new Callback<List<ReplyCommentModel>>() {
+                        @Override
+                        public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+
+                            if (response.body().size() > 0) {
+                                Integer totalLikes = response.body().get(0).getLikes();
+
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K" + " Likes");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+" + " Likes");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M" + " Likes");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+" + " Likes");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B" + " Likes");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+" + " Likes");
+                                }
+                                else {
+                                    if (totalLikes < 1) {
+                                        tvLikes.setText("");
+                                    }  else if (totalLikes == 1) {
+                                        tvLikes.setText(Math.abs(totalLikes) + " Like");
+                                    }
+
+                                    else {
+                                        tvLikes.setText(Math.abs(totalLikes) + " Likes");
+                                    }
+
+
+
+                                }
+
+                            } else {
+                                tvLikes.setText("");
+                                Toasty.error(context, "Gagal", Toasty.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+                            Toast.makeText(context, "No connection", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReplyCommentModel> call, Throwable t) {
+                Toasty.error(context, "Check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // method check if user already like comment or dont
+    private void checkLikeCommentReply(String replyId, String userId, ImageButton btnLikes) {
+       InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+       interfaceReplyComment.checkLikeComment(replyId, userId).enqueue(new Callback<List<ReplyCommentModel>>() {
+           @Override
+           public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+
+               
+               if (response.body().size() > 0) {
+                   btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+               } else {
+                   btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
+
+               }
+           }
+
+           @Override
+           public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+               Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+           }
+       });
+    }
+
+
+
+
+
+
 }

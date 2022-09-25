@@ -40,4 +40,35 @@ public interface InterfaceReplyComment {
     Call<ReplyCommentModel> deleteCommentReply(
             @Field("reply_id") String replyId
     );
+
+    // Action like comment
+    @FormUrlEncoded
+    @POST("action_like_reply_comment.php")
+    Call<ReplyCommentModel> actionLikeComment(
+            @Field("comment_id") String commentId,
+            @Field("reply_id") String replyId,
+            @Field("user_id") String user_id,
+            @Field("code") Integer code,
+            @Field("recipe_id") String recipeId,
+            @Field("user_id_notif") String userIdNotif,
+            @Field("comment") String comment
+    );
+
+
+
+    // Count like commment
+    @GET("count_like_comment_reply.php")
+    Call<List<ReplyCommentModel>> countLikeCommentReply(
+            @Query("reply_id") String replyId
+    );
+
+
+
+    // Check apakah user telah like comment atau tidak
+    @GET("check_like_reply_comment.php")
+    Call<List<ReplyCommentModel>> checkLikeComment(
+            @Query("reply_id") String replyId,
+            @Query("user_id") String userId
+    );
+
 }

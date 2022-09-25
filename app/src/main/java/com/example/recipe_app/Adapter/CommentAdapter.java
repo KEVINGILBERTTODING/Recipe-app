@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.parser.IntegerParser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
@@ -109,13 +111,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         checkLikeComment(commentModelsList.get(position).getComment_id(), userid, holder.btnLike);
 
 
-        // check if total like comment == 0 than hide settext ""
+        // Settext total likes
+        // if total liks == 0 than settext empty
         if (commentModelsList.get(position).getLikes() == 0) {
             holder.tvLike.setText("");
 
-        } else {
+        } else if (commentModelsList.get(position).getLikes() == 1){
+            holder.tvLike.setText(commentModelsList.get(position).getLikes() + " Like");
+        }  else{
             holder.tvLike.setText(commentModelsList.get(position).getLikes() + " Likes");
         }
+
 
 
 
@@ -135,12 +141,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
 
 
-        // set agar tv reply dapat diklik di detail recipe fragment
-//        holder.tvReply.setOnClickListener(view -> {
-//            onCommentLisstener.onCommentCLick(view, position);
-//        });
-
-
 
         // If user is verified than show verified badge
         if (commentModelsList.get(position).getVerified().equals("1")) {
@@ -150,9 +150,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
 
+
+        // saat button like comment di klik
         holder.btnLike.setOnClickListener(view -> {
             if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_love).getConstantState()) {
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
+
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(3)
+                        .playOn(holder.btnLike);
+
+
                 actionLikeComment(
                         commentModelsList.get(position).getComment_id(), userid, 1, commentModelsList.get(position).getRecipe_id(),
                         commentModelsList.get(position).getUser_id(), commentModelsList.get(position).getComment(), holder.tvLike
@@ -325,7 +335,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             @Override
             public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
-                Toasty.error(context, "gagal mas brooo", Toasty.LENGTH_SHORT).show();
 
             }
         });
@@ -340,8 +349,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
+        // Tv count reply click listener
         holder.tvCountReply.setOnClickListener(view -> {
-
 
 
             InterfaceReplyComment interfaceComment1 = DataApi.getClient().create(InterfaceReplyComment.class);
@@ -542,7 +551,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     else {
                         if (totalLikes < 1) {
                             tvLikes.setText("");
-                        } else {
+                        }  else if (totalLikes == 1) {
+                            tvLikes.setText(Math.abs(totalLikes) + " Like");
+                        }
+
+                        else {
                             tvLikes.setText(Math.abs(totalLikes) + " Likes");
                         }
 
