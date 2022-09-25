@@ -20,24 +20,6 @@
             android:orientation="horizontal">
 
 
-            <LinearLayout
-                android:id="@+id/lr_edit"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="match_parent"
-                android:background="@color/main"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:padding="@dimen/_5sdp"
-                android:gravity="center">
-
-                <ImageButton
-                    android:id="@+id/btn_edit"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/ic_edit"/>
-
-            </LinearLayout>
 
 
             <LinearLayout

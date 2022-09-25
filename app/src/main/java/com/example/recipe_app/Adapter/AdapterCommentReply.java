@@ -25,9 +25,16 @@ import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.InterfaceReplyComment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentReply.ViewHolder> {
 
@@ -80,7 +87,7 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
                 .into(holder.img_profile);
 
 
-        // Mengubah warna username jika userid = user id
+        // Jika userid pemilik comment reply = user id account
 
         if (replyCommentModelList.get(position).getUser_id().equals(userid)) {
             holder.tv_username.setTextColor(context.getResources().getColor(R.color.blue));
@@ -91,6 +98,35 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
             // Do something here
             holder.swipeLayout.setSwipeEnabled(false);
         }
+
+        // Method Button delete comment listener
+        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+                interfaceReplyComment.deleteCommentReply(replyCommentModelList.get(position).getReplyId())
+                        .enqueue(new Callback<ReplyCommentModel>() {
+                            @Override
+                            public void onResponse(Call<ReplyCommentModel> call, Response<ReplyCommentModel> response) {
+                                if (response.body().getSuccess().equals("1")) {
+                                    Toasty.success(context, "Comment deleted", Toasty.LENGTH_SHORT).show();
+                                    notifyItemChanged(position);
+                                    replyCommentModelList.remove(position);
+                                    notifyItemRangeChanged(position, replyCommentModelList.size());
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ReplyCommentModel> call, Throwable t) {
+
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
 
     }
@@ -106,7 +142,7 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
         RelativeLayout list_comment;
         ImageButton btn_edit, btn_delete, btnLike;
         SwipeLayout swipeLayout;
-        LinearLayout lrEdit;
+        LinearLayout  lrDelete;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -123,10 +159,10 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
             btn_edit = itemView.findViewById(R.id.btn_edit);
             btn_delete = itemView.findViewById(R.id.btn_delete);
             swipeLayout = itemView.findViewById(R.id.swipe_comment);
-            lrEdit = itemView.findViewById(R.id.lr_edit);
             icVerified = itemView.findViewById(R.id.img_verified);
             tvLike = itemView.findViewById(R.id.tv_like);
             btnLike = itemView.findViewById(R.id.btnLove);
+            lrDelete = itemView.findViewById(R.id.lr_delete);
 
         }
 

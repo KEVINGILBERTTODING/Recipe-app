@@ -33,4 +33,11 @@ public interface InterfaceReplyComment {
             @Field("user_id_notif") String user_id_notif,
             @Field("comment") String comment
     );
+
+    // Delete comment reply
+    @FormUrlEncoded
+    @POST("delete_comment_reply.php")
+    Call<ReplyCommentModel> deleteCommentReply(
+            @Field("reply_id") String replyId
+    );
 }
