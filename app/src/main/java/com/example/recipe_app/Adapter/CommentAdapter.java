@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -342,13 +343,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
-
-
-
-
-
-
-
         // Tv count reply click listener
         holder.tvCountReply.setOnClickListener(view -> {
 
@@ -364,6 +358,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         holder.rvReplyComment.setAdapter(adapterCommentReply);
                         holder.rvReplyComment.setLayoutManager(linearLayoutManager);
                         holder.rvReplyComment.setVisibility(View.VISIBLE);
+                        holder.rvReplyComment.showShimmer();
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                holder.rvReplyComment.hideShimmer();
+
+                            }
+                        }, 1200);
+
 
                     } else {
                         holder.rvReplyComment.setVisibility(View.GONE);
@@ -576,6 +582,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
     }
+
+
 
 
 

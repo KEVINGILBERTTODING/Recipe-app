@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/list_comments"
+<RelativeLayout android:id="@+id/list_comments"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
 
@@ -244,9 +244,11 @@
             android:layout_below="@id/lr_count_reply"
             android:labelFor="@+id/lr_count_reply"
             android:visibility="gone"
-
+            app:shimmer_recycler_item_count="9"
             android:layout_width="match_parent"
+            tools:listitem="@layout/template_comments"
             android:layout_toRightOf="@id/iv_profile"
+            app:shimmer_recycler_layout="@layout/template_comments"
             android:layout_height="wrap_content"/>
 
         <LinearLayout
