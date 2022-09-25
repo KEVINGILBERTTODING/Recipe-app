@@ -1256,7 +1256,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         // saat reply comment di klik
         switch (view.getId()) {
-            case R.id.tv_reply:
+            case R.id.btn_reply:
                 relativeLayout.setVisibility(View.VISIBLE);
                 et_comment.requestFocus();
                 showKeyboard();

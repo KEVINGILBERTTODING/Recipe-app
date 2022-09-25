@@ -136,9 +136,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
         // set agar tv reply dapat diklik di detail recipe fragment
-        holder.tvReply.setOnClickListener(view -> {
-            onCommentLisstener.onCommentCLick(view, position);
-        });
+//        holder.tvReply.setOnClickListener(view -> {
+//            onCommentLisstener.onCommentCLick(view, position);
+//        });
 
 
 
@@ -199,7 +199,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         // set enable swipe layout
 
-        holder.swipeLayout.setSwipeEnabled(false);
+        holder.swipeLayout.setSwipeEnabled(true);
 
 
 
@@ -231,6 +231,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             }
                         });
 
+
+
+                        // Set agar button reply dapat di klik di detail recipe
+                        holder.btnReply.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
                         // Jika ingin long click listener
 //                        holder.list_comment.setOnLongClickListener(new View.OnLongClickListener() {
 //                            @Override
@@ -244,10 +254,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                         // active kan swipe layout
                         holder.swipeLayout.setSwipeEnabled(true);
 
-                    } else if (response.body().get(0).getUser_id().equals(userid)) {
+                    }
+
+                    else if (response.body().get(0).getUser_id().equals(userid)) {
 
                         // set agar btn delete dapat diklik di detailrecipefragment
                         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
+                        // Set agar button reply dapat di klik di detail recipe
+                        holder.btnReply.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 onCommentLisstener.onCommentCLick(view, position);
@@ -260,6 +280,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
                         // active swipe comment to edit or delete option
                         holder.swipeLayout.setSwipeEnabled(true);
+                    } else {
+                        holder.lrEdit.setVisibility(View.GONE);
+                        holder.lrDelete.setVisibility(View.GONE);
+
+                        // Set agar button reply dapat di klik di detail recipe
+                        holder.btnReply.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onCommentLisstener.onCommentCLick(view, position);
+                            }
+                        });
+
                     }
 
 
@@ -282,12 +314,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
                 if (response.body().size() > 0) {
-                    holder.lrReply.setVisibility(View.VISIBLE);
+                    holder.lrReplyCountReply.setVisibility(View.VISIBLE);
                     holder.tvCountReply.setText(response.body().size() + " Reply");
 
                 } else {
 
-                    holder.lrReply.setVisibility(View.GONE);
+                    holder.lrReplyCountReply.setVisibility(View.GONE);
                 }
             }
 
@@ -369,11 +401,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView img_profile, icVerified;
-        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike, tvCountReply, tvReply;
+        TextView tv_username, tv_comment, tv_date, tv_time, tv_edited, tvLike, tvCountReply;
         RelativeLayout list_comment;
-        ImageButton btn_edit, btn_delete, btnLike;
+        ImageButton btn_edit, btn_delete, btnLike, btnReply;
         SwipeLayout swipeLayout;
-        LinearLayout lrEdit, lrReply;
+        LinearLayout lrEdit, lrReplyCountReply, lrDelete, lrReply;
         ShimmerRecyclerView rvReplyComment;
 
 
@@ -399,8 +431,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             btnLike = itemView.findViewById(R.id.btnLove);
             rvReplyComment = itemView.findViewById(R.id.recycler_reply_comment);
             tvCountReply = itemView.findViewById(R.id.tv_count_reply_comment);
-            lrReply = itemView.findViewById(R.id.lr_count_reply);
-            tvReply = itemView.findViewById(R.id.tv_reply);
+            lrReplyCountReply = itemView.findViewById(R.id.lr_count_reply);
+            lrDelete = itemView.findViewById(R.id.lr_delete);
+            lrReply = itemView.findViewById(R.id.lr_reply);
+            btnReply = itemView.findViewById(R.id.btn_reply);
 
 
 
