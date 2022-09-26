@@ -680,6 +680,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             //jika di klik maka akan menyimpan resep
             else {
 
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(2)
+                        .playOn(btnFav);
+
+
                 if (save_anim.getVisibility() == View.GONE) {
                     save_anim.setVisibility(View.VISIBLE);
                     save_anim.playAnimation();
@@ -715,14 +722,19 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             else {
                 likedRecipe(recipe_id, useridx, user_id);
 
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(2)
+                        .playOn(btnLike);
+
+
                 // method untuk mengambil data like recipe
                 countLike(recipe_id, 1);
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
 
                 anim_love.setVisibility(View.VISIBLE);
                 anim_love.playAnimation();
-
-
 
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
             }
@@ -933,7 +945,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Toasty.error(getContext(), "Recipe Deleted!,", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(getContext(), "Recipe Unsaved!", Toasty.LENGTH_SHORT).show();
                 }
             }
 

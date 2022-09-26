@@ -381,6 +381,46 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
 
                     Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                    // if no connection than auto reload
+                    InterfaceReplyComment interfaceComment1 = DataApi.getClient().create(InterfaceReplyComment.class);
+                    interfaceComment1.getReplyComment(commentId).enqueue(new Callback<List<ReplyCommentModel>>() {
+                        @Override
+                        public void onResponse(Call<List<ReplyCommentModel>> call, Response<List<ReplyCommentModel>> response) {
+                            replyCommentModelList = response.body();
+                            if (response.body().size() > 0 ) {
+                                adapterCommentReply = new AdapterCommentReply(context, replyCommentModelList);
+                                linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                                holder.rvReplyComment.setAdapter(adapterCommentReply);
+                                holder.rvReplyComment.setLayoutManager(linearLayoutManager);
+                                holder.rvReplyComment.setVisibility(View.VISIBLE);
+                                holder.rvReplyComment.showShimmer();
+
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        holder.rvReplyComment.hideShimmer();
+
+                                    }
+                                }, 1200);
+
+
+                            } else {
+                                holder.rvReplyComment.setVisibility(View.GONE);
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ReplyCommentModel>> call, Throwable t) {
+
+                            Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             });
 
