@@ -71,4 +71,10 @@ public interface InterfaceReplyComment {
             @Query("user_id") String userId
     );
 
+    // Get all like comment
+    @GET("check_like_comment_reply.php")
+    Call<List<ReplyCommentModel>> getAllLike(
+            @Query("reply_id") String replyId
+    );
+
 }

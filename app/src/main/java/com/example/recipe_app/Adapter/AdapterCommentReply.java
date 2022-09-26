@@ -28,6 +28,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
@@ -179,6 +180,23 @@ public class AdapterCommentReply extends RecyclerView.Adapter<AdapterCommentRepl
                                 Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
                             }
                         });
+            }
+        });
+
+        // tv like listener
+        holder.tvLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("reply_id", replyID);
+                bundle.putString("like_comment_reply", "like_comment_reply");
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

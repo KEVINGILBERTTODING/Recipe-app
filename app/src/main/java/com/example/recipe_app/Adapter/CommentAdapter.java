@@ -127,6 +127,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
 
+
+
         // set agar tv username dan foto profile dapat di klik di detail recipe fragment
         holder.tv_username.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +161,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 Fragment fragment = new UserLikeFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("comment_id", commentId);
+                bundle.putString("like_comment", "like_comment");
                 fragment.setArguments(bundle);
 
                 ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
