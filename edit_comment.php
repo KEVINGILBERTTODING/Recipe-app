@@ -20,8 +20,7 @@ if ($result) {
 
     // Update notification
     $notification = "UPDATE notification SET comment = '$comment'
-    where user_id = '$user_id' and user_id_notif = '$user_id_notif'
-                    and recipe_id = '$recipe_id' and date = '$date' and time = '$time' ";
+    where comment_id = '$comment_id' AND type = 'comment'";
 
     $execute2 =  mysqli_query($koneksi, $notification);
     $response = new emp();
