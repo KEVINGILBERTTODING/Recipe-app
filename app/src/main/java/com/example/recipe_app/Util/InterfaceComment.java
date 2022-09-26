@@ -90,6 +90,13 @@ public interface InterfaceComment {
     );
 
 
+    // Get all like comment
+    @GET("get_like_comment.php")
+    Call<List<CommentModel>> getLikeComment(
+            @Query("comment_id") String commentId
+    );
+
+
 
 
 

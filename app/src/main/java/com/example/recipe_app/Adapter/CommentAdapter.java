@@ -43,6 +43,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Admin.Fragment.DetailRecipeReport;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
@@ -149,6 +150,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         } else {
             holder.icVerified.setVisibility(View.GONE);
         }
+
+
+        // tv like listener
+        holder.tvLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("comment_id", commentId);
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
 
 

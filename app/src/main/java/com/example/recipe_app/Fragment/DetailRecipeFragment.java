@@ -937,7 +937,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
     }
 
-    //    // method for delete recipe
+
+    //   method for delete recipe
     private void deleteSavedRecipe(String recipe_id, String useridx) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<RecipeModel> call = interfaceRecipe.deleteSavedRecipe(recipe_id, useridx);
