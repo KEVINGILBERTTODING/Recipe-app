@@ -307,25 +307,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.body().size() > 0) {
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_post.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1001) {
-                        tv_post.setText(Math.abs(response.body().size())/1001 + "K+");
-                    }
-                    else if(Math.abs(response.body().size()) > 1000000){
-                        tv_post.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if(Math.abs(response.body().size()) > 1000001){
-                        tv_post.setText(Math.abs(response.body().size())/1000001 + "M+");
-                    }
-
-                    else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_post.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else if (Math.abs(response.body().size()) > 1000000001){
-                        tv_post.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                    }
-                    else {
-                        tv_post.setText(Math.abs(response.body().size()) + "");
-                    }
+                 prettyNumber(response.body().size(), tv_post);
                 } else {
                     tv_post.setText("0");
                 }
@@ -344,15 +326,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
 
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1000000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else {
-                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                    }
+                   prettyNumber(response.body().size(), tv_followers);
 
                 } else {
                     tv_followers.setText("0");
@@ -371,15 +345,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_following.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1000000){
-                        tv_following.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_following.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else {
-                        tv_following.setText(Math.abs(response.body().size()) + "");
-                    }
+                  prettyNumber(response.body().size(), tv_following);
 
                 } else {
                     tv_following.setText("0");
@@ -427,25 +393,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                             @Override
                             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                 if (response.body().size() > 0) {
-                                    if(Math.abs(response.body().size()) > 1000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                                    } else if(Math.abs(response.body().size()) > 1001) {
-                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
-                                    }
-                                    else if(Math.abs(response.body().size()) > 1000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                                    } else if(Math.abs(response.body().size()) > 1000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
-                                    }
-
-                                    else if (Math.abs(response.body().size()) > 1000000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                                    } else if (Math.abs(response.body().size()) > 1000000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                                    }
-                                    else {
-                                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                                    }
+                                    prettyNumber(response.body().size(), tv_followers);
 
                                 } else {
                                     tv_followers.setText("0");
@@ -491,25 +439,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                             @Override
                             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                 if (response.body().size() > 0) {
-                                    if(Math.abs(response.body().size()) > 1000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                                    } else if(Math.abs(response.body().size()) > 1001) {
-                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
-                                    }
-                                    else if(Math.abs(response.body().size()) > 1000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                                    } else if(Math.abs(response.body().size()) > 1000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
-                                    }
-
-                                    else if (Math.abs(response.body().size()) > 1000000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                                    } else if (Math.abs(response.body().size()) > 1000000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                                    }
-                                    else {
-                                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                                    }
+                                   prettyNumber(response.body().size(), tv_followers);
                                 } else {
                                     tv_followers.setText("0");
                                 }
@@ -977,4 +907,18 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         rv_recipe.hideShimmer();
         super.onPause();
     }
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
+    }
+
 }

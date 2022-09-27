@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 
@@ -60,6 +62,24 @@ public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPo
                 .fitCenter()
                 .centerCrop()
                 .into(holder.img_recipe);
+
+
+
+        // tv username jika di klik maka akan menampilkan profile
+        holder.tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", recipeModels.get(position).getUser_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
 
 

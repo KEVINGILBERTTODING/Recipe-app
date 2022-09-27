@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -94,6 +96,19 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         } else {
             holder.icVerified.setVisibility(View.GONE);
         }
+
+        // klil username maka akan mengarahkan ke show profile
+        holder.tlUsername.setOnClickListener(view -> {
+            Fragment f = new ShowProfileFragment();
+            Bundle b = new Bundle();
+            b.putString("user_id", recipeModels.get(position).getUser_id());
+            f.setArguments(b);
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, f)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         // set image profile
         Glide.with(context)
@@ -284,6 +299,8 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         ImageButton btnFavorite, btnLikes;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
         LinearLayout lrLikes;
+        TableLayout tlUsername;
+
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -301,6 +318,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             savedAnimation = itemView.findViewById(R.id.saved_anim);
             icVerified = itemView.findViewById(R.id.img_verified);
             lrLikes = itemView.findViewById(R.id.lr_likes);
+            tlUsername = itemView.findViewById(R.id.tlUsername);
 
 
 

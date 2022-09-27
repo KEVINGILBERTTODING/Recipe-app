@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -84,6 +87,38 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         } else {
             holder.icVerified.setVisibility(View.GONE);
         }
+
+
+        // menampilkan siapa saja yang like
+        holder.lrLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fr = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipeModels.get(position).getRecipe_id());
+                fr.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fr)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        // saat klik username pada recipe maka akan direct ke show profile
+        holder.tblUsername.setOnClickListener(view -> {
+            Fragment ft  = new ShowProfileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", recipeModels.get(position).getUser_id());
+            ft.setArguments(bundle);
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ft)
+                    .addToBackStack(null)
+                    .commit();
+
+        });
+
 
 
 
@@ -236,6 +271,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         ImageButton btn_save, btnLike;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
         LinearLayout lrLikes;
+        TableLayout tblUsername;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -253,6 +289,10 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             savedAnimation = itemView.findViewById(R.id.saved_anim);
             icVerified = itemView.findViewById(R.id.img_verified);
             lrLikes = itemView.findViewById(R.id.lrLikes);
+            tblUsername = itemView.findViewById(R.id.tblProfile);
+
+
+
 
 
 
@@ -424,6 +464,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     }
 
+    // Method untuk menambagkan atau mengurangkan jumlah like pada database
     private void countLike(String recipe_id, Integer code, TextView tvLikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {

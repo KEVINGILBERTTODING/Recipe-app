@@ -379,6 +379,10 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
     }
 
+
+    // Method untuk mengurangi atau  menjumlahkan total like
+    // jika code = 1 maka akan menambah jumlah like
+    // jika code = 0 maka akan mengurangi jumlah like
     private void countLike(String recipe_id, Integer code, TextView tvLikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
@@ -391,6 +395,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                         public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                             if (response.body().size() > 0 ) {
 
+
+                                //Mengambil total like terbaru dari database
                                 getTotalLikes(recipe_id, tvLikes);
 
 
