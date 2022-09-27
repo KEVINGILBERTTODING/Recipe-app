@@ -104,10 +104,11 @@ public class MyProfileFragment extends Fragment implements MyRecipeAdapter.OnRec
         tvNotFound = view.findViewById(R.id.tv_notfound);
 
         btnSetting.setOnClickListener(view1 -> {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, new SettingFragment());
-            fragmentTransaction.commit();
-            fragmentTransaction.addToBackStack(null);
+            Fragment fragment = new SettingFragment();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         context = getContext();

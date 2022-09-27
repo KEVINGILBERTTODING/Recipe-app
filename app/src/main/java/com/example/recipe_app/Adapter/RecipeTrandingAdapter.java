@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -37,6 +39,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -193,6 +196,13 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             else {
                 likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
+
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(1)
+                        .playOn(holder.btnLike);
+
                 // memanggil method untuk menambah likes jika button di like
                 countLike(recipeModels.get(position).getRecipe_id(), 1, holder.tv_like);
 
@@ -325,15 +335,16 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe saved", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(context, "Recipe saved", Toasty.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -345,15 +356,18 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unsave", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(context, "Recipe unsaved", Toasty.LENGTH_SHORT).show();
+
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -366,15 +380,14 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe liked", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+
+
             }
         });
     }
@@ -388,15 +401,16 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unlike", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
 
@@ -447,14 +461,16 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
 
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
             }
         });

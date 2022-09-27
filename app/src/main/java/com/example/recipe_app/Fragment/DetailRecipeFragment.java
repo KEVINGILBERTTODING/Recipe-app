@@ -59,17 +59,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.recipe_app.Adapter.AdapterCommentReply;
 import com.example.recipe_app.Adapter.CommentAdapter;
 import com.example.recipe_app.Admin.Fragment.FullScreenImageReport;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
+import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.example.recipe_app.Util.InterfaceReplyComment;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,6 +83,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -96,8 +100,11 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     Button btnIngredients, btnSteps;
     ImageButton btnBack, btnSend, btnFav, btnLike, btnMore, btnQrcode, btnMore2, btnRefresh;
     private List<ProfileModel> profileModels;
+    private  List<ReplyCommentModel> replyCommentModelList = new ArrayList<>();
+    private AdapterCommentReply adapterCommentReply;
     LottieAnimationView anim_love, save_anim, disslike_anim;
     ProgressDialog pd;
+    String commentId = UUID.randomUUID().toString();
     ConnectivityManager connectivityManager;
     CommentAdapter commentAdapter;
     EditText et_comment;
@@ -217,6 +224,20 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
         // get profile
         getProfile();
+
+
+        // tvLike Listener to show like recipe
+        tvLikes.setOnClickListener(view1 -> {
+            Fragment fragment = new UserLikeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_id", recipe_id);
+            fragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
 
         // jika user id sama dengan user id maka akan muncul button edit dan delete
@@ -594,7 +615,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             if (comment.isEmpty()) {
                 Toasty.normal(getContext(), "Please fill the comment", Toasty.LENGTH_SHORT).show();
             } else {
-                postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+
+                postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
                 hideKeyboard();
                 relativeLayout.setVisibility(android.view.View.GONE);
             }
@@ -672,6 +694,13 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             //jika di klik maka akan menyimpan resep
             else {
 
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(2)
+                        .playOn(btnFav);
+
+
                 if (save_anim.getVisibility() == View.GONE) {
                     save_anim.setVisibility(View.VISIBLE);
                     save_anim.playAnimation();
@@ -707,14 +736,19 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             else {
                 likedRecipe(recipe_id, useridx, user_id);
 
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(2)
+                        .playOn(btnLike);
+
+
                 // method untuk mengambil data like recipe
                 countLike(recipe_id, 1);
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
 
                 anim_love.setVisibility(View.VISIBLE);
                 anim_love.playAnimation();
-
-
 
                 btnLike.setBackground(getContext().getResources().getDrawable(R.drawable.btn_liked));
             }
@@ -741,6 +775,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                     commentAdapter = new CommentAdapter(getContext(), commentModelsList);
                     recyclerView.setAdapter(commentAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setHasFixedSize(false);
 
                     recyclerView.setItemViewType((type, position) -> {
                         switch (type) {
@@ -784,8 +819,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
     }
 
     // Post comment
-    public void postComment(String user_id, String recipe_id, String user_id_notif, String comment) {
-        DataApi.getClient().create(InterfaceComment.class).createComment(user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
+    public void postComment(String commentId,String user_id, String recipe_id, String user_id_notif, String comment) {
+        DataApi.getClient().create(InterfaceComment.class).createComment(commentId, user_id, recipe_id, user_id_notif, comment).enqueue(new Callback<CommentModel>() {
             @Override
             public void onResponse(Call<CommentModel> call, Response<CommentModel> response) {
 
@@ -916,7 +951,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         });
     }
 
-    //    // method for delete recipe
+
+    //   method for delete recipe
     private void deleteSavedRecipe(String recipe_id, String useridx) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         Call<RecipeModel> call = interfaceRecipe.deleteSavedRecipe(recipe_id, useridx);
@@ -924,7 +960,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Toasty.error(getContext(), "Recipe Deleted!,", Toasty.LENGTH_SHORT).show();
+                    Toasty.warning(getContext(), "Recipe Unsaved!", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -1242,8 +1278,86 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         CommentModel commentModel = commentModelsList.get(position);
         String userid_new = commentModel.getUser_id();
 
+
+
+
+        // saat reply comment di klik
+        switch (view.getId()) {
+            case R.id.btn_reply:
+                relativeLayout.setVisibility(View.VISIBLE);
+                et_comment.requestFocus();
+                showKeyboard();
+
+                String reply_id = UUID.randomUUID().toString();
+
+                btnSend.setOnClickListener(view1 -> {
+
+                    // if field is empty
+                    if (et_comment.getText().toString().isEmpty()) {
+                        Toasty.error(getContext(), "Please fill the field", Toasty.LENGTH_SHORT).show();
+                    } else {
+
+                        InterfaceReplyComment interfaceReplyComment = DataApi.getClient().create(InterfaceReplyComment.class);
+                        interfaceReplyComment.postCommentReply(
+                                reply_id,
+                                useridx,
+                                commentModel.getComment_id(),
+                                commentModel.getRecipe_id(),
+                                commentModel.getUser_id(),
+                                et_comment.getText().toString()
+
+                        ).enqueue(new Callback<ReplyCommentModel>() {
+                            @Override
+                            public void onResponse(Call<ReplyCommentModel> call, Response<ReplyCommentModel> response) {
+                                if (response.body().getSuccess().equals("1")) {
+                                    Toasty.success(getContext(), "Success replied", Toasty.LENGTH_SHORT).show();
+                                    et_comment.setText("");
+                                    relativeLayout.setVisibility(View.GONE);
+                                    hideKeyboard();
+                                    getComment(commentModel.getRecipe_id());
+
+
+
+                                    // if btn reply comment is click and success than reset button send to  new comment
+
+                                    btnSend.setOnClickListener(View -> {
+                                        String comment = et_comment.getText().toString();
+                                        if (comment.isEmpty()) {
+                                            Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
+                                        } else {
+                                            postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
+                                            hideKeyboard();
+                                        }
+                                    });
+                                } else {
+                                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ReplyCommentModel> call, Throwable t) {
+                                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+                    }
+
+
+
+                });
+
+                break;
+
+        }
+
+
+
         // muncul opsi edit dan delete jika user comment
         if (user_id.equals(userid_new) || useridx.equals(userid_new)) {
+
+
+
 
             switch (view.getId()) {
 
@@ -1283,7 +1397,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                                                 if (comment.isEmpty()) {
                                                     Toasty.warning(getContext(), "Please fill comment", Toasty.LENGTH_SHORT).show();
                                                 } else {
-                                                    postComment(useridx, recipe_id, user_id, et_comment.getText().toString());
+
+                                                    postComment(commentId, useridx, recipe_id, user_id, et_comment.getText().toString());
                                                     hideKeyboard();
                                                 }
                                             });
@@ -1335,10 +1450,18 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
 
                     break;
 
+
             }
 
 
+
+
         }
+
+
+
+
+
         // Jika pemilik recipe yang klik maka ada opsi untuk delete comment
         else {
             switch (view.getId()) {

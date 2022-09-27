@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -118,7 +120,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(holder.itemView, "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
             }
         });
 
@@ -177,6 +179,12 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             //jika di klik maka akan menambah total like
             else {
                 likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id(), holder.tv_like);
+
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(1)
+                        .playOn(holder.btnLikes);
 
                 // memanggil method untuk menambah likes jika button di like
                 countLike(recipeModels.get(position).getRecipe_id(), 1);

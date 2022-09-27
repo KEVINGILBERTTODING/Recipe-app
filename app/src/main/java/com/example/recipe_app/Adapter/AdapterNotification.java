@@ -371,7 +371,221 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             });
 
 
+        } else if(type.equals("like_comment")) {
+
+
+
+
+            holder.tv_content.setText("like your comment:");
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setText(notificationModelist.get(position).getComment().toString() +"");
+            holder.tv_comment.setVisibility(View.VISIBLE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+            // call api untuk menampilkan gambar berdasarkan recipe id
+            InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+            interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                @Override
+                public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                    if (response.body().size() > 0) {
+                        Glide.with(context)
+                                .load(response.body().get(0).getImage())
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true)
+                                .override(300, 300)
+                                .into(holder.iv_recipe);
+
+
+                    } else {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
+        }  else if(type.equals("comment_reply")) {
+
+
+
+
+            holder.tv_content.setText("Replied your comment:");
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setText(notificationModelist.get(position).getComment().toString() +"");
+            holder.tv_comment.setVisibility(View.VISIBLE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+            // call api untuk menampilkan gambar berdasarkan recipe id
+            InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+            interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                @Override
+                public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                    if (response.body().size() > 0) {
+                        Glide.with(context)
+                                .load(response.body().get(0).getImage())
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true)
+                                .override(300, 300)
+                                .into(holder.iv_recipe);
+
+
+                    } else {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
+        }  else if(type.equals("like_comment_reply")) {
+
+
+
+
+            holder.tv_content.setText("like your comment:");
+            holder.iv_recipe.setVisibility(View.VISIBLE);
+            holder.tv_comment.setText(notificationModelist.get(position).getComment().toString() +"");
+            holder.tv_comment.setVisibility(View.VISIBLE);
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+            // Button delete notification
+            holder.btn_delete.setOnClickListener(view -> {
+                InterfaceNotification interfaceNotification = DataApi.getClient().create(InterfaceNotification.class);
+                interfaceNotification.deleteNotification(notificationModelist.get(position).getNotif_id())
+                        .enqueue(new Callback<NotificationModel>() {
+                            @Override
+                            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+
+                                if (response.body().getSuccess().equals("1")) {
+                                    // remove item dari notification modellist
+                                    Toasty.success(context, "Success delete notification", Toasty.LENGTH_SHORT).show();
+                                    notificationModelist.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, notificationModelist.size());
+
+
+                                } else {
+                                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                            }
+                        });
+            });
+
+
+            // call api untuk menampilkan gambar berdasarkan recipe id
+            InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+            interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                @Override
+                public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                    if (response.body().size() > 0) {
+                        Glide.with(context)
+                                .load(response.body().get(0).getImage())
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(true)
+                                .override(300, 300)
+                                .into(holder.iv_recipe);
+
+
+                    } else {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
         }
+
 
 
 
@@ -671,8 +885,159 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         .commit();
 
             }
-            
-          
+
+            // Jika type comment maka kirim data ke detail recipe dan menagarahkan pada comment
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("like_comment")){
+                InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
+                    @Override
+                    public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                        if (response.body().size() > 0 ) {
+                            Fragment fragment =  new DetailRecipeFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("verified", response.body().get(0).getVerified());
+                            bundle.putString("user_id", response.body().get(0).getUser_id());
+                            bundle.putString("username", response.body().get(0).getUsername());
+                            bundle.putString("title", response.body().get(0).getTitle());
+                            bundle.putString("description", response.body().get(0).getDescription());
+                            bundle.putString("category", response.body().get(0).getCategory());
+                            bundle.putString("servings", response.body().get(0).getServings());
+                            bundle.putString("duration", response.body().get(0).getDuration());
+                            bundle.putString("ingredients", response.body().get(0).getIngredients());
+                            bundle.putString("steps", response.body().get(0).getSteps());
+                            bundle.putString("upload_date", response.body().get(0).getUpload_date());
+                            bundle.putString("upload_time", response.body().get(0).getUpload_time());
+                            bundle.putString("image", response.body().get(0).getImage());
+                            bundle.putString("status", response.body().get(0).getStatus());
+                            bundle.putString("ratings", response.body().get(0).getRatings());
+                            bundle.putString("likes", response.body().get(0).getLikes());
+                            bundle.putString("photo_profile", response.body().get(0).getPhoto_profile());
+                            bundle.putString("email", response.body().get(0).getEmail());
+                            bundle.putString("notes", response.body().get(0).getNote());
+                            fragment.setArguments(bundle);
+
+                            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, fragment);
+                            ft.addToBackStack(null);
+                            ft.commit();
+
+
+                        } else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
+            }  // Jika type comment maka kirim data ke detail recipe dan menagarahkan pada comment
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("comment_reply")){
+                InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
+                    @Override
+                    public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                        if (response.body().size() > 0 ) {
+                            Fragment fragment =  new DetailRecipeFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("verified", response.body().get(0).getVerified());
+                            bundle.putString("user_id", response.body().get(0).getUser_id());
+                            bundle.putString("username", response.body().get(0).getUsername());
+                            bundle.putString("title", response.body().get(0).getTitle());
+                            bundle.putString("description", response.body().get(0).getDescription());
+                            bundle.putString("category", response.body().get(0).getCategory());
+                            bundle.putString("servings", response.body().get(0).getServings());
+                            bundle.putString("duration", response.body().get(0).getDuration());
+                            bundle.putString("ingredients", response.body().get(0).getIngredients());
+                            bundle.putString("steps", response.body().get(0).getSteps());
+                            bundle.putString("upload_date", response.body().get(0).getUpload_date());
+                            bundle.putString("upload_time", response.body().get(0).getUpload_time());
+                            bundle.putString("image", response.body().get(0).getImage());
+                            bundle.putString("status", response.body().get(0).getStatus());
+                            bundle.putString("ratings", response.body().get(0).getRatings());
+                            bundle.putString("likes", response.body().get(0).getLikes());
+                            bundle.putString("photo_profile", response.body().get(0).getPhoto_profile());
+                            bundle.putString("email", response.body().get(0).getEmail());
+                            bundle.putString("notes", response.body().get(0).getNote());
+                            fragment.setArguments(bundle);
+
+                            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, fragment);
+                            ft.addToBackStack(null);
+                            ft.commit();
+
+
+                        } else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+
+            // Jika type comment maka kirim data ke detail recipe dan menagarahkan pada comment
+            else if (notificationModelist.get(getAdapterPosition()).getType().equals("like_comment_reply")){
+                InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe.getRecipe(notificationModelist.get(getAdapterPosition()).getRecipe_id().toString()).enqueue(new Callback<List<RecipeModel>>() {
+                    @Override
+                    public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                        if (response.body().size() > 0 ) {
+                            Fragment fragment =  new DetailRecipeFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("recipe_id", response.body().get(0).getRecipe_id());
+                            bundle.putString("user_id_notif", response.body().get(0).getUser_id_notif());
+                            bundle.putString("verified", response.body().get(0).getVerified());
+                            bundle.putString("user_id", response.body().get(0).getUser_id());
+                            bundle.putString("username", response.body().get(0).getUsername());
+                            bundle.putString("title", response.body().get(0).getTitle());
+                            bundle.putString("description", response.body().get(0).getDescription());
+                            bundle.putString("category", response.body().get(0).getCategory());
+                            bundle.putString("servings", response.body().get(0).getServings());
+                            bundle.putString("duration", response.body().get(0).getDuration());
+                            bundle.putString("ingredients", response.body().get(0).getIngredients());
+                            bundle.putString("steps", response.body().get(0).getSteps());
+                            bundle.putString("upload_date", response.body().get(0).getUpload_date());
+                            bundle.putString("upload_time", response.body().get(0).getUpload_time());
+                            bundle.putString("image", response.body().get(0).getImage());
+                            bundle.putString("status", response.body().get(0).getStatus());
+                            bundle.putString("ratings", response.body().get(0).getRatings());
+                            bundle.putString("likes", response.body().get(0).getLikes());
+                            bundle.putString("photo_profile", response.body().get(0).getPhoto_profile());
+                            bundle.putString("email", response.body().get(0).getEmail());
+                            bundle.putString("notes", response.body().get(0).getNote());
+                            fragment.setArguments(bundle);
+
+                            FragmentTransaction ft = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, fragment);
+                            ft.addToBackStack(null);
+                            ft.commit();
+
+
+                        } else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+
+
         }
     }
 

@@ -2,13 +2,11 @@ package com.example.recipe_app.Model;
 
 import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
 
-import androidx.annotation.IntegerRes;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class CommentModel implements Serializable {
+public class ReplyCommentModel implements Serializable {
 
     @SerializedName("comment_id")
     String comment_id;
@@ -39,9 +37,9 @@ public class CommentModel implements Serializable {
     @SerializedName("reply_id")
     String replyId;
 
-    public CommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
-                        String comment_time, String photo_profile, String username, String success, String edited,
-                        String verified, Integer status, Integer likes, String replyId) {
+    public ReplyCommentModel(String comment_id, String user_id, String recipe_id, String comment, String comment_date,
+                             String comment_time, String photo_profile, String username, String success, String edited,
+                             String verified, Integer status, Integer likes, String replyId) {
 
         this.comment_id = comment_id;
         this.user_id = user_id;

@@ -1,7 +1,10 @@
 package com.example.recipe_app.Util;
 
+import android.media.Ringtone;
+
 import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.RecipeModel;
+import com.example.recipe_app.Model.ReplyCommentModel;
 
 import java.util.List;
 
@@ -24,10 +27,12 @@ public interface InterfaceComment {
     // method for add comment
     @FormUrlEncoded
     @POST("post_comment.php")
-    Call<CommentModel> createComment(@Field("user_id") String user_id,
-                                     @Field("recipe_id") String recipe_id,
-                                     @Field("user_id_notif") String user_id_notif,
-                                     @Field("comment") String comment);
+    Call<CommentModel> createComment(
+            @Field("comment_id") String commentId,
+            @Field("user_id") String user_id,
+            @Field("recipe_id") String recipe_id,
+            @Field("user_id_notif") String user_id_notif,
+            @Field("comment") String comment);
 
     // method for edit comment
     @FormUrlEncoded
@@ -53,6 +58,46 @@ public interface InterfaceComment {
             @Field("date") String date,
             @Field("time") String time
     );
+
+
+    // Action like comment
+    @FormUrlEncoded
+    @POST("action_like_comment.php")
+    Call<CommentModel> actionLikeComment(
+            @Field("comment_id") String commentId,
+            @Field("user_id") String user_id,
+            @Field("code") Integer code,
+            @Field("recipe_id") String recipeId,
+            @Field("user_id_notif") String userIdNotif,
+            @Field("comment") String comment
+    );
+
+
+
+    // Count like commment
+    @GET("count_like_comment.php")
+    Call<List<CommentModel>> countLikeComment(
+            @Query("comment_id") String commentId
+    );
+
+
+
+    // Check apakah user telah like comment atau tidak
+    @GET("check_like_comment.php")
+    Call<List<CommentModel>> checkLikeComment(
+            @Query("comment_id") String commentId,
+            @Query("user_id") String userId
+    );
+
+
+    // Get all like comment
+    @GET("get_like_comment.php")
+    Call<List<CommentModel>> getLikeComment(
+            @Query("comment_id") String commentId
+    );
+
+
+
 
 
 

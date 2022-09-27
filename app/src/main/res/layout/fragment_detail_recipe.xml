@@ -478,7 +478,7 @@
                 <com.todkars.shimmer.ShimmerRecyclerView
                         android:id="@+id/recycler_comment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         app:shimmer_recycler_item_count="3"
                         android:layout_marginTop="@dimen/_10sdp" />
 
@@ -514,9 +514,9 @@
 
         <EditText
             android:id="@+id/et_comment"
-            android:layout_width="@dimen/_210sdp"
+            android:layout_width="@dimen/_220sdp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:layout_toRightOf="@id/iv_myProfile"
             android:background="@drawable/container_comment"
             android:fontFamily="@font/popmed"

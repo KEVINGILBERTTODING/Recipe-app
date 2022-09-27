@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.SavedRecipeFragment;
@@ -188,6 +190,12 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
                 // memanggil method untuk menambah likes jika button di like
                 countLike(recipeModels.get(position).getRecipe_id(), 1);
+
+                // set animation love
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .repeat(1)
+                        .playOn(holder.btnLike);
 
                 // mengubah background button jika di like
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
