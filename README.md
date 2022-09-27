@@ -8,7 +8,8 @@ There are several features that make this application different from other recip
 
 <li><h4>Splash screen, login page, register page 🐥</h4></li>
 
-![Cover](https://user-images.githubusercontent.com/79959818/190845314-18c2424f-0777-4866-b262-01bb3b7d7445.png)
+![dashboard](https://user-images.githubusercontent.com/79959818/192640041-fd4a7579-8ace-4f60-897b-c085f9bc3cd9.png)
+
 
 
 <li><h4>Home page, recipe details, search page, recipes by category 🐥</h4></li>
@@ -22,7 +23,8 @@ There are several features that make this application different from other recip
 
 
 
-![Cover-2](https://user-images.githubusercontent.com/79959818/191682053-afb01c03-c799-4813-a299-3ea66ab26632.png)
+
+![main_mockup](https://user-images.githubusercontent.com/79959818/192636627-eef557da-c111-4c95-b6ea-4e7f72108085.png)
 
 
 
@@ -71,6 +73,24 @@ There are several features that make this application different from other recip
 
 <h2>Released history 🐾</h2>
 <ul>
+
+
+<li><h3>v2.6.1</h3></li>
+September 28, 2022
+<h6>What's new? 🦄</h6>
+<ul>
+<li>Added a comment reply feature 🤩.</li>
+<li>Added the feature like comment 😍.</li>
+<li>Migration primary key comment_id and reply_id from auto increatmen SQL to UUID in java 🔑.</li>
+<li>Now edit comments with just a swipe 🐥.</li>
+<li>Added a feature to see who liked your recipe or comment 😁.</li>
+<li>Add animation when click the like button and save recipe button ❤️.</li>
+<li>Improve app performance 🚀.</li>
+<li>Fixed update biography 👨🏼‍💻.</li>
+<li>fix minor bugs 🪲.</li>
+</ul>
+
+
 
 <li><h3>v2.5.1</h3></li>
 September 22, 2022
