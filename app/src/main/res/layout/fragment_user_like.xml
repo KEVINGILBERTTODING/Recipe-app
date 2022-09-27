@@ -120,6 +120,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_vertical"
+        android:visibility="gone"
         android:textSize="@dimen/_12sdp"/>
 
 

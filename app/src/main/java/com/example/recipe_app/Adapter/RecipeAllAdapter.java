@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,11 +27,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -65,8 +70,23 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
-        holder.tv_like.setText(recipeModels.get(position).getLikes());
-        Integer like = Integer.parseInt(recipeModels.get(position).getLikes());
+        getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+        
+        // jumlah like diklik maka akan menampilkan seluruh account yang like
+        holder.lrLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipeModels.get(position).getRecipe_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         // If user is verified than show verified badge
         if (recipeModels.get(position).getVerified().equals("1")) {
@@ -157,9 +177,6 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             if (holder.btnLikes.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
                 deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id(), holder.tv_like);
 
-                // memanggil method untuk mengurangi likes jika button unlike
-                countLike(recipeModels.get(position).getRecipe_id(), 2);
-
                 // mengubah background button menjadi belum di unlike
                 holder.btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
@@ -173,12 +190,40 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 }, 1500);
 
 
+                InterfaceRecipe interfaceRecipe2 = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe2.countLikeRecipe(recipeModels.get(position).getRecipe_id(), 0).enqueue(new Callback<RecipeModel>() {
+                    @Override
+                    public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                        if (response.isSuccessful()) {
+
+                            getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
+
+
+                        }
+                        else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeModel> call, Throwable t) {
+                        Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+
+
 
             }
 
             //jika di klik maka akan menambah total like
             else {
-                likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id(), holder.tv_like);
+                likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
                 // set animation love
                 YoYo.with(Techniques.Tada)
@@ -186,8 +231,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                         .repeat(1)
                         .playOn(holder.btnLikes);
 
-                // memanggil method untuk menambah likes jika button di like
-                countLike(recipeModels.get(position).getRecipe_id(), 1);
+
 
                 // mengubah background button jika di like
                 holder.btnLikes.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
@@ -195,6 +239,31 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 // menampilkan like animation
                 holder.likeAnimation.setVisibility(View.VISIBLE);
                 holder.likeAnimation.playAnimation();
+
+                InterfaceRecipe interfaceRecipe2 = DataApi.getClient().create(InterfaceRecipe.class);
+                interfaceRecipe2.countLikeRecipe(recipeModels.get(position).getRecipe_id(), 1).enqueue(new Callback<RecipeModel>() {
+                    @Override
+                    public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                        if (response.isSuccessful()) {
+
+                            getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
+
+
+                        }
+                        else {
+                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RecipeModel> call, Throwable t) {
+                        Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
 
             }
         });
@@ -214,6 +283,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         ImageView img_recipe, img_profile, icVerified;
         ImageButton btnFavorite, btnLikes;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
+        LinearLayout lrLikes;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -230,6 +300,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
             disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
             savedAnimation = itemView.findViewById(R.id.saved_anim);
             icVerified = itemView.findViewById(R.id.img_verified);
+            lrLikes = itemView.findViewById(R.id.lr_likes);
 
 
 
@@ -360,14 +431,13 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     // method untuk like recipe
 
-    private void likedRecipe(String recipeid, String useridd, String user_id_notif, TextView tv_likes) {
+    private void likedRecipe(String recipeid, String useridd, String user_id_notif) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.saveLikeRecipe(recipeid, useridd, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     Toasty.success(context, "Recipe Likes", Toasty.LENGTH_SHORT).show();
-                    getTotalLikes(recipeid, tv_likes );
                 }
                 else {
                     Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
@@ -380,7 +450,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         });
     }
 
-    // method untu delete like recipe
+    // method untuk delete like recipe
 
     private void deleteLikeRecipe(String recipeid, String userid, String user_id_notif, TextView tv_likes) {
 
@@ -403,12 +473,16 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
 
     }
 
-    private void countLike(String recipe_id, Integer code) {
+
+    // Mengurangi atau menambahkan jika klik butto
+    private void countLike(String recipe_id, Integer code, TextView tvlikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
+
+
 
                 }
                 else {
@@ -436,21 +510,8 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 if (response.body().size() > 0) {
                     Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
 
-                    if (Math.abs(totalLikes) > 1000) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1000 + "K");
-                    } else if (Math.abs(totalLikes) > 1001) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1001 + "K+");
-                    } else if (Math.abs(totalLikes) > 1000000) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1000000 + "M");
-                    } else if (Math.abs(totalLikes) > 1000001) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1000001 + "M+");
-                    } else if (Math.abs(totalLikes) > 1000000000) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1000000000 + "B");
-                    } else if (Math.abs(totalLikes) > 1000000001) {
-                        tv_likes.setText(Math.abs(totalLikes) / 1000000001 + "B+");
-                    } else {
-                        tv_likes.setText(Math.abs(totalLikes) + "");
-                    }
+                    prettyNumber(totalLikes, tv_likes);
+
 
                 } else {
                     tv_likes.setText("");
@@ -465,6 +526,20 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
         });
 
     }
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
+    }
+
 
 }
 

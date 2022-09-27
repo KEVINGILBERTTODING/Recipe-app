@@ -510,6 +510,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         btnLike.setBackgroundResource(R.drawable.btn_liked);
                         anim_love.setVisibility(View.VISIBLE);
                         anim_love.playAnimation();
+                        getTotalLikes(recipe_id);
 
                         // menambah jumlah like di view
                         tvLikes.setText(String.valueOf(Integer.parseInt(tvLikes.getText().toString()) + 1));
@@ -1009,27 +1010,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         @Override
                         public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                             if (response.body().size() > 0 ) {
-                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
 
-                                if(Math.abs(totalLikes) > 1000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
-                                } else if(Math.abs(totalLikes) > 1001) {
-                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
-                                }
-                                else if(Math.abs(totalLikes) > 1000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
-                                } else if(Math.abs(totalLikes) > 1000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                                }
-
-                                else if (Math.abs(totalLikes) > 1000000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                                } else if (Math.abs(totalLikes) > 1000000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                                }
-                                else {
-                                    tvLikes.setText(Math.abs(totalLikes) + "");
-                                }
                             } else {
                                 tvLikes.setText("0");
                             }
@@ -1069,27 +1050,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         @Override
                         public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                             if (response.body().size() > 0 ) {
-                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
 
-                                if(Math.abs(totalLikes) > 1000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
-                                } else if(Math.abs(totalLikes) > 1001) {
-                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
-                                }
-                                else if(Math.abs(totalLikes) > 1000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
-                                } else if(Math.abs(totalLikes) > 1000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                                }
-
-                                else if (Math.abs(totalLikes) > 1000000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                                } else if (Math.abs(totalLikes) > 1000000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                                }
-                                else {
-                                    tvLikes.setText(Math.abs(totalLikes) + "");
-                                }
                             } else {
                                 tvLikes.setText("0");
                             }
@@ -1121,6 +1082,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
+                    getTotalLikes(recipe_id);
+
 
                 } else {
 
@@ -1587,26 +1550,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                 if (response.body().size() > 0) {
                     Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
 
-                    if(Math.abs(totalLikes) > 1000){
-                        tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
-                    } else if(Math.abs(totalLikes) > 1001) {
-                        tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
-                    }
-                    else if(Math.abs(totalLikes) > 1000000){
-                        tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
-                    } else if(Math.abs(totalLikes) > 1000001){
-                        tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                    }
-
-                    else if (Math.abs(totalLikes) > 1000000000){
-                        tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                    } else if (Math.abs(totalLikes) > 1000000001){
-                        tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                    }
-                    else {
-
-                        tvLikes.setText(Math.abs(totalLikes) + "");
-                    }
+                   prettyNumber(totalLikes, tvLikes);
 
                 } else {
                     tvLikes.setText("");
@@ -1634,6 +1578,20 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             }
         }
     }
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
+    }
+
 
 
 

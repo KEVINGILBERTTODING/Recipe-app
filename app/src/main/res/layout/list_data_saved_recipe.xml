@@ -66,8 +66,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <LinearLayout
                     android:layout_width="wrap_content"
+                    android:id="@+id/lrLikes"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_more"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -94,7 +95,7 @@
                         android:textSize="@dimen/_12sdp" />
 
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                </LinearLayout>
 
 
 

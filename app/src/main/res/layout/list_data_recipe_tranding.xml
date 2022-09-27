@@ -47,7 +47,8 @@
         app:lottie_rawRes="@raw/saved"/>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
+        android:id="@+id/lrLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
@@ -75,7 +76,7 @@
             android:textSize="@dimen/_8sdp" />
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 
 
     <ImageButton

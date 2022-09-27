@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,10 +34,13 @@ import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
 import com.example.recipe_app.Fragment.SavedRecipeFragment;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +112,26 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         holder.tv_recipe_name.setText(recipeModels.get(position).getTitle());
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
-        holder.tv_like.setText(recipeModels.get(position).getLikes());
+
+        getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
+
+
+        // jumlah like diklik maka akan menampilkan seluruh account yang like recipe
+        holder.lrLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipeModels.get(position).getRecipe_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
 
         // set efefect swipe layout
@@ -175,6 +198,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         holder.btnLike.setOnClickListener(view -> {
             // jika di unklik maka akan menghapus resep yang sudah di save
             if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
+
+                // method delete like recipe
                 deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
 
@@ -184,7 +209,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                 // mengubah background button menjadi belum di unlike
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
-                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
+
 
 
 
@@ -206,9 +232,6 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
                 // mengubah background button jika di like
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
-
-
-                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
             }
         });
 
@@ -249,6 +272,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
         });
 
+
+        // saat username di klik
         holder.tv_username.setOnClickListener(view -> {
 
             Fragment fragment= new ShowProfileFragment();
@@ -282,6 +307,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         TextView tv_duration, tv_username, tv_recipe_name, tv_like;
         SwipeLayout swipeLayout;
         RelativeLayout rlList;
+        LinearLayout lrLikes;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -298,6 +324,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             swipeLayout = itemView.findViewById(R.id.swipe_layout);
             rlList = itemView.findViewById(R.id.rl_list);
             btnDelete = itemView.findViewById(R.id.btn_delete);
+            lrLikes = itemView.findViewById(R.id.lrLikes);
         }
 
 
@@ -312,6 +339,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
                     Toasty.success(context, "Recipe liked", Toasty.LENGTH_SHORT).show();
+
                 }
                 else {
 
@@ -362,29 +390,14 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                         @Override
                         public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                             if (response.body().size() > 0 ) {
-                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
 
-                                if(Math.abs(totalLikes) > 1000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
-                                } else if(Math.abs(totalLikes) > 1001) {
-                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
-                                }
-                                else if(Math.abs(totalLikes) > 1000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
-                                } else if(Math.abs(totalLikes) > 1000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                                }
+                                getTotalLikes(recipe_id, tvLikes);
 
-                                else if (Math.abs(totalLikes) > 1000000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                                } else if (Math.abs(totalLikes) > 1000000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                                }
-                                else {
-                                    tvLikes.setText(Math.abs(totalLikes) + "");
-                                }
+
+
                             } else {
                                 tvLikes.setText("0");
+
                             }
                         }
 
@@ -411,7 +424,6 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         });
     }
 
-
     // get recipe id to get total likes
     private void getTotalLikes(String recipe_id, TextView tv_likes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
@@ -419,32 +431,11 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.body().size() > 0) {
-                    Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
-
-                    if(Math.abs(totalLikes) > 1000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000 + "K");
-                    } else if(Math.abs(totalLikes) > 1001) {
-                        tv_likes.setText(Math.abs(totalLikes)/1001 + "K+");
-                    }
-                    else if(Math.abs(totalLikes) > 1000000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000 + "M");
-                    } else if(Math.abs(totalLikes) > 1000001){
-                        tv_likes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                    }
-
-                    else if (Math.abs(totalLikes) > 1000000000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                    } else if (Math.abs(totalLikes) > 1000000001){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                    }
-                    else {
-                        tv_likes.setText(Math.abs(totalLikes) + "");
-                    }
-
-                } else {
-                    tv_likes.setText("0");
+                    prettyNumber(Integer.parseInt(response.body().get(0).getLikes()), tv_likes);
                 }
+
             }
+
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
@@ -452,6 +443,21 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             }
         });
     }
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
+    }
+
+
 
 
 
