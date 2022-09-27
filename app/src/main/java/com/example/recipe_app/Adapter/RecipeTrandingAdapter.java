@@ -264,6 +264,11 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
                 //jika di klik maka akan menyimpan resep
                 else {
+                    // set animation love
+                    YoYo.with(Techniques.Tada)
+                            .duration(700)
+                            .repeat(1)
+                            .playOn(btn_save);
 
                     // show save animation
                     if (savedAnimation.getVisibility() == View.GONE) {

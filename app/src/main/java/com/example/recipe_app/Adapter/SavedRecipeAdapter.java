@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,12 +37,12 @@ import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -107,6 +108,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         holder.tv_recipe_name.setText(recipeModels.get(position).getTitle());
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
+        holder.tv_like.setText(recipeModels.get(position).getLikes());
+
 
         // set efefect swipe layout
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -125,16 +128,16 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, recipeModels.size());
 
-                                Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Recipe deleted", Snackbar.LENGTH_SHORT)
-                                        .show();
+                                Toasty.success(context, "Recipe deleted", Toasty.LENGTH_SHORT).show();
+
 
 
                             }
                         }
                         @Override
                         public void onFailure(retrofit2.Call<RecipeModel> call, Throwable t) {
-                            Snackbar.make(((Activity) context).findViewById(android.R.id.content), "Failed to delete recipe", Snackbar.LENGTH_SHORT)
-                                    .show();
+                            Toasty.error(context, "Failed to delete recipe", Toasty.LENGTH_SHORT).show();
+
                         }
                     });
         });
@@ -162,7 +165,8 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             }
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-                Snackbar.make(holder.itemView, "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
 
@@ -173,14 +177,16 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             if (holder.btnLike.getBackground().getConstantState() == context.getResources().getDrawable(R.drawable.ic_loved).getConstantState()) {
                 deleteLikeRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
+
                 // memanggil method untuk mengurangi likes jika button unlike
-                countLike(recipeModels.get(position).getRecipe_id(), 2);
+                countLike(recipeModels.get(position).getRecipe_id(), 2, holder.tv_like);
 
                 // mengubah background button menjadi belum di unlike
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_love));
 
-                // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) - 1));
+                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
+
+
 
             }
 
@@ -188,8 +194,6 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             else {
                 likedRecipe(recipeModels.get(position).getRecipe_id(), userid, recipeModels.get(position).getUser_id());
 
-                // memanggil method untuk menambah likes jika button di like
-                countLike(recipeModels.get(position).getRecipe_id(), 1);
 
                 // set animation love
                 YoYo.with(Techniques.Tada)
@@ -197,12 +201,14 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                         .repeat(1)
                         .playOn(holder.btnLike);
 
+                // memanggil method untuk menambah likes jika button di like
+                countLike(recipeModels.get(position).getRecipe_id(), 1, holder.tv_like);
+
                 // mengubah background button jika di like
                 holder.btnLike.setBackground(context.getResources().getDrawable(R.drawable.ic_loved));
 
-                // menambah jumlah likes jika button di like
-                // mengurangi jumlah likes jika button di unlike
-                holder.tv_like.setText(String.valueOf(Integer.parseInt(holder.tv_like.getText().toString()) + 1));
+
+                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
             }
         });
 
@@ -305,63 +311,150 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe liked", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(context, "Recipe liked", Toasty.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
     }
 
     // method untu delete like recipe
 
-    private void deleteLikeRecipe(String recipeid, String userid, String user_id_notif) {
+    private void deleteLikeRecipe(String recipeid, String userid , String user_id_notif) {
 
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.deleteLikedRecipe(recipeid, userid, user_id_notif).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Recipe unlike", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
             }
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
             }
         });
 
     }
 
-    private void countLike(String recipe_id, Integer code) {
+    private void countLike(String recipe_id, Integer code, TextView tvLikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
 
+                    interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+                        @Override
+                        public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                            if (response.body().size() > 0 ) {
+                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                                if(Math.abs(totalLikes) > 1000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
+                                } else if(Math.abs(totalLikes) > 1001) {
+                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
+                                }
+                                else if(Math.abs(totalLikes) > 1000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
+                                } else if(Math.abs(totalLikes) > 1000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                                }
+
+                                else if (Math.abs(totalLikes) > 1000000000){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                                } else if (Math.abs(totalLikes) > 1000000001){
+                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                                }
+                                else {
+                                    tvLikes.setText(Math.abs(totalLikes) + "");
+                                }
+                            } else {
+                                tvLikes.setText("0");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+                        }
+                    });
+
                 }
                 else {
-                    Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+
                 }
 
             }
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Snackbar.make(((FragmentActivity) context).findViewById(android.R.id.content), "Cek ur connection", Snackbar.LENGTH_SHORT).show();
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
             }
         });
     }
+
+
+    // get recipe id to get total likes
+    private void getTotalLikes(String recipe_id, TextView tv_likes) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.body().size() > 0) {
+                    Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
+
+                    if(Math.abs(totalLikes) > 1000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000 + "K");
+                    } else if(Math.abs(totalLikes) > 1001) {
+                        tv_likes.setText(Math.abs(totalLikes)/1001 + "K+");
+                    }
+                    else if(Math.abs(totalLikes) > 1000000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000 + "M");
+                    } else if(Math.abs(totalLikes) > 1000001){
+                        tv_likes.setText(Math.abs(totalLikes)/1000001 + "M+");
+                    }
+
+                    else if (Math.abs(totalLikes) > 1000000000){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000000 + "B");
+                    } else if (Math.abs(totalLikes) > 1000000001){
+                        tv_likes.setText(Math.abs(totalLikes)/1000000001 + "B+");
+                    }
+                    else {
+                        tv_likes.setText(Math.abs(totalLikes) + "");
+                    }
+
+                } else {
+                    tv_likes.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
 
 
 

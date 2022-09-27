@@ -209,6 +209,8 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         tvDate.setText(recipeDate);
         tvTime.setText(recipeTime);
         tvNotes.setText(recipeNOtes);
+
+
         getTotalLikes(recipe_id);
 
 
@@ -940,7 +942,7 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(getView(), "Recipe saved", Snackbar.LENGTH_SHORT).show();
+                    Toasty.success(getContext(), "Recipe saved!", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -1602,11 +1604,12 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
                         tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
                     }
                     else {
+
                         tvLikes.setText(Math.abs(totalLikes) + "");
                     }
 
                 } else {
-                    tvLikes.setText("0");
+                    tvLikes.setText("");
                 }
             }
 

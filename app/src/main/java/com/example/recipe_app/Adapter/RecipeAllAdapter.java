@@ -245,6 +245,12 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                 //jika di klik maka akan menyimpan resep
                 else {
 
+                    // set animation love
+                    YoYo.with(Techniques.Tada)
+                            .duration(700)
+                            .repeat(1)
+                            .playOn(btnFavorite);
+
                     // show save animation
                     if (savedAnimation.getVisibility() == View.GONE) {
                         savedAnimation.setVisibility(View.VISIBLE);
@@ -447,7 +453,7 @@ public class RecipeAllAdapter extends RecyclerView.Adapter<RecipeAllAdapter.View
                     }
 
                 } else {
-                    tv_likes.setText("0");
+                    tv_likes.setText("");
                 }
             }
 
