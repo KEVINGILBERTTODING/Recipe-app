@@ -14,14 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.LikeCommentAdapter;
 import com.example.recipe_app.Adapter.LikeCommentReplyAdapter;
+import com.example.recipe_app.Adapter.LikeRecipeAdapter;
 import com.example.recipe_app.Model.CommentModel;
+import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceComment;
+import com.example.recipe_app.Util.InterfaceRecipe;
 import com.example.recipe_app.Util.InterfaceReplyComment;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -38,9 +42,11 @@ public class UserLikeFragment extends Fragment {
     private ImageButton btnBack;
     private ShimmerRecyclerView rvUser;
     SearchView searchView;
-    private String commentId, replyId;
+    private String commentId, replyId, recipeId;
     private List<CommentModel> commentModelList = new ArrayList<>();
     private List<ReplyCommentModel> replyCommentModelList = new ArrayList<>();
+    private List<RecipeModel> recipeModelLis = new ArrayList<>();
+    private LikeRecipeAdapter likeRecipeAdapter;
     private LikeCommentAdapter likeCommentAdapter;
     private LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -64,6 +70,9 @@ public class UserLikeFragment extends Fragment {
         // get string from bundle
         commentId = getArguments().getString("comment_id");
         replyId = getArguments().getString("reply_id");
+        recipeId = getArguments().getString("recipe_id");
+
+        Toast.makeText(getContext(), recipeId + "", Toast.LENGTH_SHORT).show();
 
         if (getArguments().getString("comment_id") != null) {
             getAllUser(commentId);
@@ -129,7 +138,33 @@ public class UserLikeFragment extends Fragment {
                 }
             });
 
+        } else if (getArguments().getString("recipe_id") != null) {
+            getLikeRecipe(recipeId);
+
+            // set searchview to get like comment reply
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    filterLikeRecipe(newText);
+                    return false;
+                }
+            });
+
+            // set swipe refresh
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getLikeRecipe(recipeId);
+                }
+            });
+
         }
+
 
 
 
@@ -142,6 +177,23 @@ public class UserLikeFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void filterLikeRecipe(String newText) {
+        ArrayList<RecipeModel> filterLikeRecipe = new ArrayList<>();
+        for (RecipeModel item : recipeModelLis) {
+            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                filterLikeRecipe.add(item);
+            }
+
+            likeRecipeAdapter.filterRecipeLike(filterLikeRecipe);
+
+            if (filterLikeRecipe.isEmpty()) {
+                Toasty.warning(getContext(), "User not found", Toasty.LENGTH_SHORT).show();
+            } else {
+                likeRecipeAdapter.filterRecipeLike(filterLikeRecipe);
+            }
+        }
     }
 
     private void filterLikeCommentReply(String newText) {
@@ -260,6 +312,48 @@ public class UserLikeFragment extends Fragment {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 getAllLikeCommentReply(replyId);
 
+
+            }
+        });
+    }
+
+    // Method get like recipe
+    private void getLikeRecipe(String  recipeId) {
+        InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
+        interfaceRecipe.getAllLikeRecipe(recipeId).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                recipeModelLis = response.body();
+                if (recipeModelLis.size() > 0) {
+                    likeRecipeAdapter = new LikeRecipeAdapter(getContext(), recipeModelLis);
+                    linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                    rvUser.setAdapter(likeRecipeAdapter);
+                    rvUser.setLayoutManager(linearLayoutManager);
+
+                    rvUser.setHasFixedSize(true);
+
+                    rvUser.showShimmer();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rvUser.hideShimmer();
+                        }
+                    }, 1200);
+
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(true);
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+                getLikeRecipe(recipeId);
 
             }
         });

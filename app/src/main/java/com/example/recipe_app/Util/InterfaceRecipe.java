@@ -174,5 +174,11 @@ public interface InterfaceRecipe {
             @Query("recipe_id") String recipe_id
     );
 
+    // Get all like recipe by recipe_id
+    @GET("get_like_recipe.php")
+    Call<List<RecipeModel>> getAllLikeRecipe(
+            @Query("recipe_id") String recipeId
+    );
+
 
 }

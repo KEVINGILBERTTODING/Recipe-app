@@ -215,10 +215,32 @@ public class SettingFragment extends Fragment {
             dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
             Button btnSave = dialog.findViewById(R.id.btnSave);
             EditText edtBio = dialog.findViewById(R.id.edt_bio);
+
+            // get biography dari database
+            InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
+            interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
+                @Override
+                public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
+                    if (response.body().size() > 0) {
+                        edtBio.setText(response.body().get(0).getBiography().toString());
+                    } else {
+                        Toasty.error(getContext(), "Failed load bography", Toasty.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                    Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                }
+            });
+
+
             btnSave.setOnClickListener(view1 -> {
 
-                InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-                interfaceProfile.updateBio(userid, edtBio.getText().toString()).enqueue(new Callback<ProfileModel>() {
+                // Menyimpan biography
+                InterfaceProfile iP = DataApi.getClient().create(InterfaceProfile.class);
+                iP.updateBio(userid, edtBio.getText().toString()).enqueue(new Callback<ProfileModel>() {
                     @Override
                     public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                         if (response.body().getStatus().equals("success")) {
@@ -306,25 +328,6 @@ public class SettingFragment extends Fragment {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             final Button btnOk= dialog.findViewById(R.id.btnOk);
             final TextView tv_app_version = dialog.findViewById(R.id.tv_version);
-
-            InterfaceAdmin interfaceAdmin = DataApi.getClient().create(InterfaceAdmin.class);
-            interfaceAdmin.viewAbout().enqueue(new Callback<List<AppModel>>() {
-                @Override
-                public void onResponse(Call<List<AppModel>> call, Response<List<AppModel>> response) {
-                    List<AppModel> appModelList = response.body();
-                    if (appModelList.size() > 0 ) {
-                        tv_app_version.setText(appModelList.get(0).getApp_version());
-                    } else {
-                        Toasty.error(getContext(), "Failed load data", Toast.LENGTH_SHORT, true).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<List<AppModel>> call, Throwable t) {
-
-                }
-            });
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });
@@ -360,9 +363,9 @@ public class SettingFragment extends Fragment {
 
                 }
             });
-                    
-                    
-                    
+
+
+
             btnOk.setOnClickListener(view2 -> {
                 dialog.dismiss();
             });

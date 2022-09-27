@@ -226,6 +226,20 @@ public class DetailRecipeFragment extends Fragment implements  GestureDetector.O
         getProfile();
 
 
+        // tvLike Listener to show like recipe
+        tvLikes.setOnClickListener(view1 -> {
+            Fragment fragment = new UserLikeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("recipe_id", recipe_id);
+            fragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
         // jika user id sama dengan user id maka akan muncul button edit dan delete
         if (useridx.equals(user_id)) {
             btnMore.setVisibility(View.VISIBLE);
