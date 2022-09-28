@@ -75,6 +75,14 @@ There are several features that make this application different from other recip
 <ul>
 
 
+<li><h3>v2.6.2</h3></li>
+September 28, 2022
+<h6>What's new? 🦄</h6>
+<ul>
+<li>Fixed pretty count followers, following, like recipe, and like comment 🦊.</li>
+</ul>
+
+
 <li><h3>v2.6.1</h3></li>
 September 28, 2022
 <h6>What's new? 🦄</h6>
