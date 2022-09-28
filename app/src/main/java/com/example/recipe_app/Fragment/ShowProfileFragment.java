@@ -3,11 +3,16 @@ package com.example.recipe_app.Fragment;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +22,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,6 +55,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.MyRecipeAdapter;
+import com.example.recipe_app.MainActivity;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -63,6 +72,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.List;
+import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -307,25 +317,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.body().size() > 0) {
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_post.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1001) {
-                        tv_post.setText(Math.abs(response.body().size())/1001 + "K+");
-                    }
-                    else if(Math.abs(response.body().size()) > 1000000){
-                        tv_post.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if(Math.abs(response.body().size()) > 1000001){
-                        tv_post.setText(Math.abs(response.body().size())/1000001 + "M+");
-                    }
-
-                    else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_post.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else if (Math.abs(response.body().size()) > 1000000001){
-                        tv_post.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                    }
-                    else {
-                        tv_post.setText(Math.abs(response.body().size()) + "");
-                    }
+                 prettyNumber(response.body().size(), tv_post);
                 } else {
                     tv_post.setText("0");
                 }
@@ -344,15 +336,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
 
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1000000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else {
-                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                    }
+                   prettyNumber(response.body().size(), tv_followers);
 
                 } else {
                     tv_followers.setText("0");
@@ -371,15 +355,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
-                    if(Math.abs(response.body().size()) > 1000){
-                        tv_following.setText(Math.abs(response.body().size())/1000 + "K");
-                    } else if(Math.abs(response.body().size()) > 1000000){
-                        tv_following.setText(Math.abs(response.body().size())/1000000 + "M");
-                    } else if (Math.abs(response.body().size()) > 1000000000){
-                        tv_following.setText(Math.abs(response.body().size())/1000000000 + "B");
-                    } else {
-                        tv_following.setText(Math.abs(response.body().size()) + "");
-                    }
+                  prettyNumber(response.body().size(), tv_following);
 
                 } else {
                     tv_following.setText("0");
@@ -427,25 +403,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                             @Override
                             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                 if (response.body().size() > 0) {
-                                    if(Math.abs(response.body().size()) > 1000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                                    } else if(Math.abs(response.body().size()) > 1001) {
-                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
-                                    }
-                                    else if(Math.abs(response.body().size()) > 1000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                                    } else if(Math.abs(response.body().size()) > 1000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
-                                    }
-
-                                    else if (Math.abs(response.body().size()) > 1000000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                                    } else if (Math.abs(response.body().size()) > 1000000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                                    }
-                                    else {
-                                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                                    }
+                                    prettyNumber(response.body().size(), tv_followers);
 
                                 } else {
                                     tv_followers.setText("0");
@@ -491,25 +449,7 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
                             @Override
                             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                 if (response.body().size() > 0) {
-                                    if(Math.abs(response.body().size()) > 1000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000 + "K");
-                                    } else if(Math.abs(response.body().size()) > 1001) {
-                                        tv_followers.setText(Math.abs(response.body().size())/1001 + "K+");
-                                    }
-                                    else if(Math.abs(response.body().size()) > 1000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000 + "M");
-                                    } else if(Math.abs(response.body().size()) > 1000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000001 + "M+");
-                                    }
-
-                                    else if (Math.abs(response.body().size()) > 1000000000){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000000 + "B");
-                                    } else if (Math.abs(response.body().size()) > 1000000001){
-                                        tv_followers.setText(Math.abs(response.body().size())/1000000001 + "B+");
-                                    }
-                                    else {
-                                        tv_followers.setText(Math.abs(response.body().size()) + "");
-                                    }
+                                   prettyNumber(response.body().size(), tv_followers);
                                 } else {
                                     tv_followers.setText("0");
                                 }
@@ -977,4 +917,62 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         rv_recipe.hideShimmer();
         super.onPause();
     }
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
+    }
+
+
+
+
+    // Method create notif
+    private void createNotif()
+    {
+        String id = "my_channel_id_01";
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel =manager.getNotificationChannel(id);
+            if(channel ==null)
+            {
+                channel = new NotificationChannel(id,"Channel Title", NotificationManager.IMPORTANCE_HIGH);
+                //config nofication channel
+                channel.setDescription("[Channel description]");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100,1000,200,340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+        Intent notificationIntent= new Intent(getActivity(), MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(getContext(),0,notificationIntent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),id)
+                .setSmallIcon(R.mipmap.ic_app)
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bg))
+//                .setStyle(new NotificationCompat.BigPictureStyle()
+//                        .bigPicture(BitmapFactory.decodeResource(getResources(),R.drawable.bg))
+//                        .bigLargeIcon(null))
+                .setContentTitle("Title")
+                .setContentText("Your text description")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[]{100,1000,200,340})
+                .setAutoCancel(false)//true touch on notificaiton menu dismissed, but swipe to dismiss
+                .setTicker("Nofiication");
+        builder.setContentIntent(contentIntent);
+        NotificationManagerCompat m = NotificationManagerCompat.from(getActivity().getApplicationContext());
+        //id to generate new notification in list notifications menu
+        m.notify(new Random().nextInt(),builder.build());
+
+    }
+
 }

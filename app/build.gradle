@@ -10,7 +10,7 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "2.6.1"
+        versionName "2.6.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -119,8 +119,6 @@ dependencies {
 
     // Instuit SSP font
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
-
-
 
 
 

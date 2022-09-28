@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_15sdp"
 
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -25,7 +26,6 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_6sdp"
             android:background="@color/red"
             android:gravity="center">
 
@@ -66,8 +66,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <LinearLayout
                     android:layout_width="wrap_content"
+                    android:id="@+id/lrLikes"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/btn_more"
                     android:layout_marginLeft="@dimen/_10sdp"
@@ -89,13 +90,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_1sdp"
                         android:fontFamily="@font/popsem"
-                        android:text="20"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />
 
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                </LinearLayout>
 
 
 

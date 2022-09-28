@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.recipe_app.Adapter.LikeCommentAdapter;
@@ -51,6 +52,7 @@ public class UserLikeFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     ConnectivityManager conMgr;
+    private TextView tvNotFOund;
     private LikeCommentReplyAdapter likeCommentReplyAdapter;
 
 
@@ -66,13 +68,13 @@ public class UserLikeFragment extends Fragment {
         rvUser = root.findViewById(R.id.rv_user);
         searchView = root.findViewById(R.id.search_bar);
         swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        tvNotFOund = root.findViewById(R.id.tv_notfound);
 
         // get string from bundle
         commentId = getArguments().getString("comment_id");
         replyId = getArguments().getString("reply_id");
         recipeId = getArguments().getString("recipe_id");
 
-        Toast.makeText(getContext(), recipeId + "", Toast.LENGTH_SHORT).show();
 
         if (getArguments().getString("comment_id") != null) {
             getAllUser(commentId);
@@ -240,6 +242,7 @@ public class UserLikeFragment extends Fragment {
                     rvUser.setAdapter(likeCommentAdapter);
                     rvUser.setLayoutManager(linearLayoutManager);
                     rvUser.setHasFixedSize(true);
+                    tvNotFOund.setVisibility(View.GONE);
 
                     rvUser.showShimmer();
 
@@ -258,7 +261,9 @@ public class UserLikeFragment extends Fragment {
 
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    tvNotFOund.setVisibility(View.VISIBLE);
+                    rvUser.hideShimmer();
+                    tvNotFOund.setText("No one liked your comment yet.");
 
                 }
 
@@ -290,6 +295,7 @@ public class UserLikeFragment extends Fragment {
                     rvUser.setHasFixedSize(true);
 
                     rvUser.showShimmer();
+                    tvNotFOund.setVisibility(View.GONE);
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -301,8 +307,10 @@ public class UserLikeFragment extends Fragment {
 
                     swipeRefreshLayout.setRefreshing(false);
                 }   else {
+                    rvUser.hideShimmer();
                     swipeRefreshLayout.setRefreshing(false);
-                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    tvNotFOund.setVisibility(View.VISIBLE);
+                    tvNotFOund.setText("No one liked your comment yet.");
                 }
             }
 
@@ -311,6 +319,7 @@ public class UserLikeFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(true);
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
                 getAllLikeCommentReply(replyId);
+                rvUser.hideShimmer();
 
 
             }
@@ -331,6 +340,7 @@ public class UserLikeFragment extends Fragment {
                     rvUser.setLayoutManager(linearLayoutManager);
 
                     rvUser.setHasFixedSize(true);
+                    tvNotFOund.setVisibility(View.GONE);
 
                     rvUser.showShimmer();
 
@@ -345,7 +355,9 @@ public class UserLikeFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    tvNotFOund.setVisibility(View.VISIBLE);
+                    rvUser.hideShimmer();
+                    tvNotFOund.setText("No one liked your recipe yet.");
                 }
             }
 
@@ -382,6 +394,8 @@ public class UserLikeFragment extends Fragment {
             }
         }
     }
+
+
 
 
     @Override

@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Fragment.UserLikeFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -83,6 +87,41 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         } else {
             holder.icVerified.setVisibility(View.GONE);
         }
+
+
+        // menampilkan siapa saja yang like
+        holder.lrLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fr = new UserLikeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("recipe_id", recipeModels.get(position).getRecipe_id());
+                fr.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fr)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        // saat klik username pada recipe maka akan direct ke show profile
+        holder.tblUsername.setOnClickListener(view -> {
+            Fragment ft  = new ShowProfileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", recipeModels.get(position).getUser_id());
+            ft.setArguments(bundle);
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ft)
+                    .addToBackStack(null)
+                    .commit();
+
+        });
+
+
+
+
 
         // set image profile
         Glide.with(context)
@@ -187,7 +226,6 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                     holder.disslikeAnimation.cancelAnimation();
                 }, 1500);
 
-                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
 
 
             }
@@ -214,7 +252,6 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                 holder.likeAnimation.playAnimation();
 
 
-                getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
             }
         });
 
@@ -233,6 +270,8 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         ImageView img_recipe, img_profile, icVerified;
         ImageButton btn_save, btnLike;
         LottieAnimationView likeAnimation, disslikeAnimation, savedAnimation;
+        LinearLayout lrLikes;
+        TableLayout tblUsername;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -249,6 +288,10 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
             disslikeAnimation = itemView.findViewById(R.id.disslike_anim);
             savedAnimation = itemView.findViewById(R.id.saved_anim);
             icVerified = itemView.findViewById(R.id.img_verified);
+            lrLikes = itemView.findViewById(R.id.lrLikes);
+            tblUsername = itemView.findViewById(R.id.tblProfile);
+
+
 
 
 
@@ -264,6 +307,11 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
                 //jika di klik maka akan menyimpan resep
                 else {
+                    // set animation love
+                    YoYo.with(Techniques.Tada)
+                            .duration(700)
+                            .repeat(1)
+                            .playOn(btn_save);
 
                     // show save animation
                     if (savedAnimation.getVisibility() == View.GONE) {
@@ -416,6 +464,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
 
     }
 
+    // Method untuk menambagkan atau mengurangkan jumlah like pada database
     private void countLike(String recipe_id, Integer code, TextView tvLikes) {
         InterfaceRecipe interfaceRecipe = DataApi.getClient().create(InterfaceRecipe.class);
         interfaceRecipe.countLikeRecipe(recipe_id, code).enqueue(new Callback<RecipeModel>() {
@@ -427,27 +476,7 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
                         @Override
                         public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                             if (response.body().size() > 0 ) {
-                                Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
-
-                                if(Math.abs(totalLikes) > 1000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000 + "K");
-                                } else if(Math.abs(totalLikes) > 1001) {
-                                    tvLikes.setText(Math.abs(totalLikes)/1001 + "K+");
-                                }
-                                else if(Math.abs(totalLikes) > 1000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000 + "M");
-                                } else if(Math.abs(totalLikes) > 1000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                                }
-
-                                else if (Math.abs(totalLikes) > 1000000000){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                                } else if (Math.abs(totalLikes) > 1000000001){
-                                    tvLikes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                                }
-                                else {
-                                    tvLikes.setText(Math.abs(totalLikes) + "");
-                                }
+                              getTotalLikes(recipe_id, tvLikes);
                             } else {
                                 tvLikes.setText("0");
                             }
@@ -482,39 +511,30 @@ public class RecipeTrandingAdapter extends RecyclerView.Adapter<RecipeTrandingAd
         interfaceRecipe.getRecipe(recipe_id).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
-                if (response.body().size() > 0) {
-                    Integer totalLikes = Integer.parseInt(response.body().get(0).getLikes());
-
-                    if(Math.abs(totalLikes) > 1000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000 + "K");
-                    } else if(Math.abs(totalLikes) > 1001) {
-                        tv_likes.setText(Math.abs(totalLikes)/1001 + "K+");
-                    }
-                    else if(Math.abs(totalLikes) > 1000000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000 + "M");
-                    } else if(Math.abs(totalLikes) > 1000001){
-                        tv_likes.setText(Math.abs(totalLikes)/1000001 + "M+");
-                    }
-
-                    else if (Math.abs(totalLikes) > 1000000000){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000000 + "B");
-                    } else if (Math.abs(totalLikes) > 1000000001){
-                        tv_likes.setText(Math.abs(totalLikes)/1000000001 + "B+");
-                    }
-                    else {
-                        tv_likes.setText(Math.abs(totalLikes) + "");
-                    }
-
-                } else {
-                    tv_likes.setText("0");
-                }
+            prettyNumber(Integer.parseInt(response.body().get(0).getLikes()), tv_likes);
             }
+
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
 
             }
         });
+    }
+
+
+
+    // Method untuk pretty number
+    private void prettyNumber(Integer number, TextView tv_likes) {
+        if (number < 1000) {
+            tv_likes.setText(number + "");
+        } else if (number < 1000000) {
+            tv_likes.setText(number/1000 + "K");
+        } else if (number < 1000000000) {
+            tv_likes.setText(number/1000000 + "M");
+        } else {
+            tv_likes.setText(number/1000000000 + "B");
+        }
     }
 
 
