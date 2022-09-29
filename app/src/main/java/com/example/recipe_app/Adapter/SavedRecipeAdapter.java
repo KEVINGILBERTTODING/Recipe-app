@@ -113,6 +113,13 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
 
+        // Show verified badge where user id is verified
+        if (recipeModels.get(position).getVerified().equals("1")) {
+            holder.icVerified.setVisibility(View.VISIBLE);
+        } else {
+            holder.icVerified.setVisibility(View.GONE);
+        }
+
         getTotalLikes(recipeModels.get(position).getRecipe_id(), holder.tv_like);
 
 
@@ -302,7 +309,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView iv_recipe, iv_profile;
+        ImageView iv_recipe, iv_profile, icVerified;
         ImageButton btnSaved, btnLike, btnDelete;
         TextView tv_duration, tv_username, tv_recipe_name, tv_like;
         SwipeLayout swipeLayout;
@@ -325,6 +332,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             rlList = itemView.findViewById(R.id.rl_list);
             btnDelete = itemView.findViewById(R.id.btn_delete);
             lrLikes = itemView.findViewById(R.id.lrLikes);
+            icVerified = itemView.findViewById(R.id.img_verified);
         }
 
 

@@ -52,9 +52,17 @@ public class RoomChatFragment extends Fragment {
         rvChat = root.findViewById(R.id.rvChat);
         btnBack = root.findViewById(R.id.btnBack);
 
+        // btn Back listener
+        btnBack.setOnClickListener(view -> {
+            getFragmentManager().popBackStack();
+        });
+
         // call method get chat room
         getRoomChat(userid);
-        Toast.makeText(getContext(), userid + "", Toast.LENGTH_SHORT).show();
+
+
+
+
 
 
 

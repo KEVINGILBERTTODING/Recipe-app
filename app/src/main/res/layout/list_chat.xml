@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/chatsender"
+        android:id="@+id/rlChatsender"
         android:layout_width="wrap_content"
         android:background="@drawable/bubble_chat2"
-        android:layout_alignParentRight="true"
         android:paddingRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_alignParentRight="true"
         android:padding="@dimen/_5sdp"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvChatSender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/about_us"
             android:paddingRight="@dimen/_10sdp"
             android:fontFamily="@font/popmed"
             android:textColor="@color/white"
-            android:textSize="@dimen/_9sdp"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvChatSender"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tvDateSender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:fontFamily="@font/popmed"
-                android:textColor="@color/black"
-                android:layout_marginRight="@dimen/_3sdp"
-                android:textSize="@dimen/_7ssp"/>
-
-            <TextView
-                android:id="@+id/tvTimeSender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Time"
-                android:fontFamily="@font/popmed"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"/>
-
-
-        </LinearLayout>
-
+            android:textSize="@dimen/_10ssp"/>
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/lrChatSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/rlChatsender"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tvDateSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:textSize="@dimen/_5ssp"/>
+
+        <TextView
+            android:id="@+id/tvTimeSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_5ssp"/>
+
+
+    </LinearLayout>
+
+
     <RelativeLayout
-        android:id="@+id/chatreveciver"
+        android:id="@+id/rlChatreceiver"
         android:layout_width="wrap_content"
         android:background="@drawable/bubble_chat"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:paddingRight="@dimen/_10sdp"
         android:padding="@dimen/_5sdp"
+        android:visibility="gone"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_height="wrap_content">
 
@@ -71,45 +73,48 @@
             android:id="@+id/tvChatReceiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/about_us"
             android:paddingRight="@dimen/_10sdp"
             android:fontFamily="@font/popmed"
             android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvChatReceiver"
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tvDateReceviver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:fontFamily="@font/popmed"
-                android:textColor="@color/black"
-                android:layout_marginRight="@dimen/_3sdp"
-                android:textSize="@dimen/_7ssp"/>
-
-            <TextView
-                android:id="@+id/tvTimeReceiver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Time"
-                android:fontFamily="@font/popmed"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_7ssp"/>
-
-
-        </LinearLayout>
+            android:textSize="@dimen/_10ssp"/>
 
 
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lrChatreceiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/rlChatreceiver"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tvDateReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:textSize="@dimen/_5ssp"/>
+
+        <TextView
+            android:id="@+id/tvTimeReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/popmed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_5ssp"/>
+
+
+    </LinearLayout>
+
+
+
+
 
 </RelativeLayout>

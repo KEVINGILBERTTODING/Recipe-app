@@ -8,8 +8,15 @@ import retrofit2.http.Query;
 
 public interface ChatInterface {
 
+    // get list chat
     @GET("get_list_chat.php")
     Call<List<ChatModel>> getRoomChat(
             @Query("user_id") String userId
+    );
+
+    // get message
+    @GET("get_message.php")
+    Call<List<ChatModel>> getMessage(
+            @Query("room_id") Integer roomId
     );
 }

@@ -149,8 +149,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ImageView
             android:id="@+id/img_verified"
-            android:layout_width="@dimen/_13sdp"
-            android:layout_height="@dimen/_13sdp"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
             android:layout_below="@id/img_recipe"
             android:visibility="gone"
             android:layout_gravity="center_vertical"

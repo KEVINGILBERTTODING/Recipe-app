@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.recipe_app.Fragment.ChatFragment;
 import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
@@ -61,9 +65,9 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         // get Username and photo profile
         if (userid.equals(chatModelList.get(position).getUserId1())) {
-            getUser(holder.tvUsername, chatModelList.get(position).getUserId2(), holder.ivUser);
+            getUser(holder.tvUsername, chatModelList.get(position).getUserId2(), holder.ivUser, holder.icVerified);
         } else {
-            getUser(holder.tvUsername, chatModelList.get(position).getUserId1(), holder.ivUser);
+            getUser(holder.tvUsername, chatModelList.get(position).getUserId1(), holder.ivUser, holder.icVerified);
         }
 
 
@@ -75,39 +79,69 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         return chatModelList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvUsername;
-        ImageView ivUser;
+        ImageView ivUser, icVerified;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivUser = itemView.findViewById(R.id.ivUser);
+            icVerified = itemView.findViewById(R.id.img_verified);
+
+            itemView.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Fragment fragment = new ChatFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("room_id", chatModelList.get(getAdapterPosition()).getRoomId());
+            if (userid.equals(chatModelList.get(getAdapterPosition()).getUserId1())) {
+                bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId2());
+            } else {
+                bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId1());
+            }
+            fragment.setArguments(bundle);
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
         }
     }
 
     // Method untuk mencari username dan photoprofile user
-    private void getUser(TextView tvUsername, String userid, ImageView ivUser) {
+    private void getUser(TextView tvUsername, String userid, ImageView ivUser, ImageView icVerified) {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
         interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
             @Override
             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                 if (response.body().size() > 0 ) {
                     tvUsername.setText(response.body().get(0).getUsername());
+
+                    // Load photo profile
                     Glide.with(context)
                             .load(response.body().get(0).getPhoto_profile())
                             .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .skipMemoryCache(true)
-                            .override(500, 600)
+                            .override(200, 200)
                             .into(ivUser);
+
+                    // Show verified badge where user is verified
+                    if (response.body().get(0).getVerified().equals("1")) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
+
                 } else {
                     Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
                 }
-
 
             }
 

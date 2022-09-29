@@ -148,7 +148,7 @@
                             android:id="@+id/img_profile"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@color/black"
+                            android:src="@color/gray"
                             android:layout_marginRight="@dimen/_5sdp"/>
 
                         <TextView
@@ -158,8 +158,18 @@
                             android:layout_below="@id/img_recipe"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/popmed"
+                            android:layout_marginRight="@dimen/_3sdp"
                             android:text="Author"
                             android:textSize="@dimen/_10sdp" />
+
+                        <ImageView
+                            android:id="@+id/img_verified"
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_12sdp"
+                            android:visibility="gone"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:src="@drawable/ic_verified"/>
 
                     </TableRow>
                 </TableLayout>
