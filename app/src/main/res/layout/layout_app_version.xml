@@ -45,7 +45,7 @@
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/popmed"
                 android:gravity="center_horizontal"
-                android:text="v2.6.1"
+                android:text="v2.6.2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp" />
 

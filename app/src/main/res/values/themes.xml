@@ -35,6 +35,20 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+
+    <!-- Style untuk custom fab-->
+
+    <style name="fabCustomeShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerFamilyBottomRight">cut</item>
+        <item name="backgroundColor">@color/main</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+    </style>
+
     <!-- Style for login screen and register -->
     <style name="Theme.login_register" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->

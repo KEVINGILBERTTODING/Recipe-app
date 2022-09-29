@@ -327,6 +327,18 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:id="@+id/fabChat"
+        android:layout_height="wrap_content"
+        app:shapeAppearanceOverlay="@style/fabCustomeShape"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:backgroundTint="@color/main"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        />
 
-    </RelativeLayout>
+
+</RelativeLayout>
 

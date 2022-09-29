@@ -518,6 +518,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_15sdp"
             android:layout_toRightOf="@id/iv_myProfile"
+            android:layout_toLeftOf="@id/btn_send"
             android:background="@drawable/container_comment"
             android:fontFamily="@font/popmed"
             android:hint="Write a comment..."
@@ -530,8 +531,10 @@
             android:id="@+id/btn_send"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/et_comment"
+            android:layout_gravity="right"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_alignParentRight="true"
             android:background="@drawable/ic_send" />
 
 

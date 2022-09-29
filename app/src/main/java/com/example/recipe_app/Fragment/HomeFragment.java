@@ -51,6 +51,7 @@ import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -79,6 +80,7 @@ public class HomeFragment extends Fragment {
     TabLayout tabLayout;
     ImageView img_profile;
     SearchView searchView;
+    FloatingActionButton fabChat;
     ConnectivityManager conMgr;
     SwipeRefreshLayout swipeRefreshLayout;
     ImageButton btn_see_all_recipes, btn_see_all_trendings, btn_see_all_categories, btn_notification;
@@ -120,6 +122,7 @@ public class HomeFragment extends Fragment {
         btn_see_all_trendings = view.findViewById(R.id.btn_see_all_trending);
         btn_notification = view.findViewById(R.id.btn_notification);
         rlCountNotif = view.findViewById(R.id.rl_count_notif);
+        fabChat = view.findViewById(R.id.fabChat);
         tvTotalNotif = view.findViewById(R.id.tv_total_notif);
 
         // add tab recipe category item
@@ -154,6 +157,13 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();
                 fragmentTransaction.addToBackStack(null);
             }
+        });
+
+        // fab chat click listener
+        fabChat.setOnClickListener(view2 -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RoomChatFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
 
         // when btn notification is clicked
