@@ -110,7 +110,11 @@ public class ChatFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (etMessage.getText().toString().equals("")) {
                     btnSend.setVisibility(View.GONE);
-                } else {
+                } else if (etMessage.getText().toString().length() > 0) {
+                    btnSend.setVisibility(View.VISIBLE);
+                }
+
+                else {
                     btnSend.setVisibility(View.VISIBLE);
                 }
 
@@ -171,6 +175,7 @@ public class ChatFragment extends Fragment {
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     rvChat.setAdapter(chatAdapter);
                     rvChat.setLayoutManager(linearLayoutManager);
+                    rvChat.setHasFixedSize(false);
                     rvChat.scrollToPosition(chatModelList.size() -1);
                 } else {
                 }

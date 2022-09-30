@@ -64,7 +64,7 @@
         android:background="@drawable/bubble_chat"
         android:layout_alignParentLeft="true"
         android:paddingRight="@dimen/_10sdp"
-        android:layout_below="@id/lrChatSender"
+        android:layout_below="@id/rlChatsender"
         android:padding="@dimen/_5sdp"
         android:visibility="gone"
         android:layout_marginLeft="@dimen/_5sdp"

@@ -6,6 +6,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.ContentInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 //        // settext
         if (userid.equals(chatModelList.get(position).getUserId())) {
             holder.rlChatSender.setVisibility(View.VISIBLE);
+            holder.rlChatReceiver.setVisibility(View.GONE);
+            holder.lrChatReceiver.setVisibility(View.GONE);
             holder.lrChatSender.setVisibility(View.VISIBLE);
             holder.tvChatSender.setText(chatModelList.get(position).getMessage());
             holder.tvDateSender.setText(chatModelList.get(position).getDate());
@@ -58,6 +61,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         } else {
             holder.rlChatReceiver.setVisibility(View.VISIBLE);
             holder.lrChatReceiver.setVisibility(View.VISIBLE);
+            holder.rlChatSender.setVisibility(View.GONE);
+            holder.lrChatSender.setVisibility(View.GONE);
             holder.tvChatReceiver.setText(chatModelList.get(position).getMessage());
             holder.tvDateReceiver.setText(chatModelList.get(position).getDate());
             holder.tvTimeReceiver.setText(chatModelList.get(position).getTime());
