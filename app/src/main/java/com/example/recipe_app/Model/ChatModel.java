@@ -18,21 +18,21 @@ public class ChatModel implements Serializable {
     String chatImage;
     @SerializedName("message")
     String message;
-    @SerializedName("status")
-    Integer status;
+    @SerializedName("success")
+    Integer success;
     @SerializedName("date")
     String date;
     @SerializedName("time")
     String time;
 
     public ChatModel(
-            Integer roomId, String userId1, String userId2, String chatImage, String message, Integer status,
+            Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
             String date, String time, String userId) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
         this.message = message;
-        this.status = status;
+        this.success = success;
         this.date = date;
         this.time = time;
         this.roomId = roomId;
@@ -71,12 +71,12 @@ public class ChatModel implements Serializable {
         this.message = message;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getSuccess() {
+        return success;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(Integer success) {
+        this.success = success;
     }
 
     public String getDate() {

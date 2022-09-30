@@ -1,11 +1,19 @@
 package com.example.recipe_app.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +52,17 @@ public class ChatFragment extends Fragment {
     ChatAdapter chatAdapter;
     ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
     LinearLayoutManager linearLayoutManager;
+    private  String userid, username;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Mengambil username dan user_id menggunakan sharedpreferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
+        username = sharedPreferences.getString(TAG_USERNAME, null);
+        userid = sharedPreferences.getString("user_id", null);
 
 
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -63,6 +77,8 @@ public class ChatFragment extends Fragment {
         btnBack.setOnClickListener(view -> {
             getFragmentManager().popBackStack();
         });
+
+
 
         // call get message
         getMessage(getArguments().getInt("room_id"));
@@ -81,6 +97,37 @@ public class ChatFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+
+        // Hide btn send when et text is empty
+        etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (etMessage.getText().toString().equals("")) {
+                    btnSend.setVisibility(View.GONE);
+                } else {
+                    btnSend.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // call method post message
+
+        btnSend.setOnClickListener(view -> {
+            postMessage();
+        });
+
 
 
         return root;
@@ -124,9 +171,8 @@ public class ChatFragment extends Fragment {
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     rvChat.setAdapter(chatAdapter);
                     rvChat.setLayoutManager(linearLayoutManager);
-                    rvChat.setHasFixedSize(true);
+                    rvChat.scrollToPosition(chatModelList.size() -1);
                 } else {
-                    Toasty.error(getContext(), "tIDAK ADA DATA", Toasty.LENGTH_SHORT).show();
                 }
             }
 
@@ -136,5 +182,29 @@ public class ChatFragment extends Fragment {
 
             }
         });
+    }
+
+    // Methood post message
+    private void postMessage(){
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.postMessage(getArguments().getInt("room_id"), userid, etMessage.getText().toString())
+                .enqueue(new Callback<ChatModel>() {
+                    @Override
+                    public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                        if (response.body().getSuccess() == 1) {
+                            etMessage.setText("");
+                            getMessage(getArguments().getInt("room_id"));
+
+                        } else {
+                            Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ChatModel> call, Throwable t) {
+                        Toasty.error(getContext(), "Check your connection", Toasty.LENGTH_SHORT).show();
+
+                    }
+                });
     }
 }

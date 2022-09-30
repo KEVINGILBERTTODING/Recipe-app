@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.ChatFragment;
+import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
@@ -71,6 +72,9 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         }
 
 
+        getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat);
+
+
 
     }
 
@@ -81,7 +85,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tvUsername;
+        TextView tvUsername, tvChat;
         ImageView ivUser, icVerified;
 
         public ViewHolder(@NonNull View itemView) {
@@ -90,6 +94,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivUser = itemView.findViewById(R.id.ivUser);
             icVerified = itemView.findViewById(R.id.img_verified);
+            tvChat = itemView.findViewById(R.id.tvChat);
 
             itemView.setOnClickListener(this::onClick);
         }
@@ -147,6 +152,27 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
             @Override
             public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+            }
+        });
+    }
+
+    // Method mengambil chat paling akhir
+    private void getLastChat(Integer roomId, TextView tvChat) {
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
+            @Override
+            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                if (response.body().size() > 0) {
+                    tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
                 Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
 

@@ -101,8 +101,9 @@
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="right"
+                android:visibility="gone"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/ic_send" />
 

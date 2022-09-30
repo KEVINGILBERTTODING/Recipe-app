@@ -53,9 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/popmed"
+            android:maxLength="50"
             android:textSize="@dimen/_9ssp"/>
-
-
 
 
 
