@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +19,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.R;
+import com.example.recipe_app.Util.DataApi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
@@ -58,6 +66,50 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.tvChatSender.setText(chatModelList.get(position).getMessage());
             holder.tvDateSender.setText(chatModelList.get(position).getDate());
             holder.tvTImeSender.setText(chatModelList.get(position).getTime());
+
+
+            // set agar dapat menghapus pesan
+            holder.rlChat.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
+                    popupMenu.inflate(R.menu.chat_menu);
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.delete_chat:
+
+                                ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+                                ci.deleteMessage(chatModelList.get(position).getChatId()).enqueue(new Callback<ChatModel>() {
+                                    @Override
+                                    public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                                        if (response.body().getSuccess() == 1) {
+                                            Toasty.success(context, "Deleted", Toasty.LENGTH_SHORT).show();
+                                            notifyDataSetChanged();
+                                            notifyItemRemoved(chatModelList.size());
+                                            chatModelList.remove(position);
+                                        } else {
+                                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ChatModel> call, Throwable t) {
+                                        Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
+                                Toasty.success(context, "Delete", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return false;
+                    });
+
+                    popupMenu.show();
+
+                    return false;
+                }
+            });
         } else {
             holder.rlChatReceiver.setVisibility(View.VISIBLE);
             holder.lrChatReceiver.setVisibility(View.VISIBLE);
@@ -76,16 +128,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         return chatModelList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvChatSender, tvDateSender, tvTImeSender,
                 tvChatReceiver, tvDateReceiver, tvTimeReceiver;
-        RelativeLayout rlChatSender, rlChatReceiver;
+        RelativeLayout rlChatSender, rlChatReceiver, rlChat;
         LinearLayout lrChatSender, lrChatReceiver;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            rlChat = itemView.findViewById(R.id.rlChat);
 
             // item sender chat
             tvChatSender = itemView.findViewById(R.id.tvChatSender);
@@ -101,6 +155,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             rlChatReceiver = itemView.findViewById(R.id.rlChatreceiver);
             lrChatReceiver = itemView.findViewById(R.id.lrChatreceiver);
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
+                    popupMenu.inflate(R.menu.chat_menu);
+                    popupMenu.show();
+
+
+                    return false;
+                }
+            });
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
 
         }
     }

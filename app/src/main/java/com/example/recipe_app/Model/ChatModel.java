@@ -22,12 +22,14 @@ public class ChatModel implements Serializable {
     Integer success;
     @SerializedName("date")
     String date;
+    @SerializedName("chat_id")
+    String chatId;
     @SerializedName("time")
     String time;
 
     public ChatModel(
             Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
-            String date, String time, String userId) {
+            String date, String time, String userId, String chatId) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
@@ -37,6 +39,7 @@ public class ChatModel implements Serializable {
         this.time = time;
         this.roomId = roomId;
         this.userId = userId;
+        this.chatId = chatId;
     }
 
     public String getUserId1() {
@@ -109,5 +112,17 @@ public class ChatModel implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setSuccess(Integer success) {
+        this.success = success;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 }
