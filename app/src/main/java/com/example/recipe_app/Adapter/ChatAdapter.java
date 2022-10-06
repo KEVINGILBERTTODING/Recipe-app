@@ -66,6 +66,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.rlChatReceiver.setVisibility(View.GONE);
             holder.lrChatReceiver.setVisibility(View.GONE);
             holder.lrChatSender.setVisibility(View.VISIBLE);
+            holder.rlChat.setEnabled(true);
             holder.tvChatSender.setText(chatModelList.get(position).getMessage());
             holder.tvDateSender.setText(chatModelList.get(position).getDate());
             holder.tvTImeSender.setText(chatModelList.get(position).getTime());
@@ -88,6 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                         if (response.body().getSuccess() == 1) {
                                             Toasty.success(context, "Deleted", Toasty.LENGTH_SHORT).show();
                                             notifyDataSetChanged();
+                                            chatModelList.get(position).setRemove(1);
                                             notifyItemChanged(position);
                                             chatModelList.get(position).setMessage("You deleted this message.");
                                             holder.ivBlock.setVisibility(View.VISIBLE);
@@ -115,30 +117,56 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
                     return false;
                 }
+
             });
+
+            // settext kalo message telah dihapus
+            if (chatModelList.get(position).getRemove() == 1) {
+                holder.tvChatSender.setText("You deleted this message.");
+                holder.tvChatReceiver.setText("You deleted this message.");
+                holder.ivBlock.setVisibility(View.VISIBLE);
+
+                final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                holder.tvChatSender.setTypeface(typeface);
+
+                // Disable long click if message was deleted
+                holder.rlChat.setEnabled(false);
+            } else {
+                holder.ivBlock.setVisibility(View.GONE);
+            }
+
+
         } else {
             holder.rlChatReceiver.setVisibility(View.VISIBLE);
             holder.lrChatReceiver.setVisibility(View.VISIBLE);
             holder.rlChatSender.setVisibility(View.GONE);
             holder.lrChatSender.setVisibility(View.GONE);
+            holder.rlChat.setEnabled(false);
             holder.tvChatReceiver.setText(chatModelList.get(position).getMessage());
             holder.tvDateReceiver.setText(chatModelList.get(position).getDate());
             holder.tvTimeReceiver.setText(chatModelList.get(position).getTime());
+
+            // settext kalo message telah dihapus
+            if (chatModelList.get(position).getRemove() == 1) {
+                holder.tvChatSender.setText("he deleted this message.");
+                holder.tvChatReceiver.setText("he deleted this message.");
+                holder.ivBlock2.setVisibility(View.VISIBLE);
+
+                final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                holder.tvChatSender.setTypeface(typeface);
+
+                // Disable long click if message was deleted
+                holder.rlChat.setEnabled(false);
+            } else {
+                holder.ivBlock2.setVisibility(View.GONE);
+
+            }
+
+
         }
 
 
-        // settext kalo message telah dihapus
-        if (chatModelList.get(position).getRemove() == 1) {
-            holder.tvChatSender.setText("You deleted this message.");
-            holder.tvChatReceiver.setText("You deleted this message.");
-            holder.ivBlock.setVisibility(View.VISIBLE);
 
-            final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
-            holder.tvChatSender.setTypeface(typeface);
-
-            // Disable long click if message was deleted
-            holder.rlChat.setEnabled(false);
-        }
 
 
     }
@@ -154,7 +182,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 tvChatReceiver, tvDateReceiver, tvTimeReceiver;
         RelativeLayout rlChatSender, rlChatReceiver, rlChat;
         LinearLayout lrChatSender, lrChatReceiver;
-        ImageView ivBlock;
+        ImageView ivBlock, ivBlock2;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -176,6 +204,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvTimeReceiver = itemView.findViewById(R.id.tvTimeReceiver);
             rlChatReceiver = itemView.findViewById(R.id.rlChatreceiver);
             lrChatReceiver = itemView.findViewById(R.id.lrChatreceiver);
+            ivBlock2 = itemView.findViewById(R.id.imgBlock2);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

@@ -80,10 +80,21 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_height="wrap_content">
 
+
+        <ImageView
+            android:id="@+id/imgBlock2"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:src="@drawable/ic_block2"/>
+
         <TextView
             android:id="@+id/tvChatReceiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgBlock2"
             android:paddingRight="@dimen/_10sdp"
             android:fontFamily="@font/popmed"
             android:textColor="@color/black"
