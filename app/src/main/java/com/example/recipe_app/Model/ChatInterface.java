@@ -36,6 +36,7 @@ public interface ChatInterface {
     @FormUrlEncoded
     @POST("delete_message.php")
     Call<ChatModel> deleteMessage (
-            @Field("chat_id") String chatId
+            @Field("chat_id") String chatId,
+            @Field("code") Integer code
     );
 }

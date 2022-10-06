@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/delete_chat"
+        android:id="@+id/dltForEveryone"
         android:icon="@android:drawable/ic_dialog_map"
-        android:title="Delete" />
+        android:title="Delete for everyone" />
+
+
+    <item
+        android:id="@+id/dltForMe"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Delete for me" />
+
 
 
 </menu>

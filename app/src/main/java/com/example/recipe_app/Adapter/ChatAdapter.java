@@ -80,10 +80,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     popupMenu.inflate(R.menu.chat_menu);
                     popupMenu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
-                            case R.id.delete_chat:
+                            case R.id.dltForEveryone:
 
                                 ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-                                ci.deleteMessage(chatModelList.get(position).getChatId()).enqueue(new Callback<ChatModel>() {
+                                ci.deleteMessage(chatModelList.get(position).getChatId(), 1).enqueue(new Callback<ChatModel>() {
                                     @Override
                                     public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
                                         if (response.body().getSuccess() == 1) {
@@ -93,8 +93,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                             notifyItemChanged(position);
                                             chatModelList.get(position).setMessage("You deleted this message.");
                                             holder.ivBlock.setVisibility(View.VISIBLE);
-
-                                            notifyItemRangeChanged(position, chatModelList.size());
+//
+//                                            notifyItemRangeChanged(position, chatModelList.size());
                                         } else {
                                             Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
                                         }
@@ -109,7 +109,34 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
                                 Toasty.success(context, "Delete", Toast.LENGTH_SHORT).show();
                                 break;
+                            case R.id.dltForMe:
+                                ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
+                                chatInterface.deleteMessage(chatModelList.get(position).getChatId(), 2).enqueue(new Callback<ChatModel>() {
+                                    @Override
+                                    public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                                        if (response.body().getSuccess() == 1) {
+                                            notifyDataSetChanged();
+                                            chatModelList.remove(position);
+//                                            chatModelList.get(position).setRemove(2);
+
+                                            Toasty.success(context, "berhasil", Toasty.LENGTH_SHORT).show();
+
+
+                                        } else {
+                                            Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ChatModel> call, Throwable t) {
+                                        Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                                    }
+                                });
+                                break;
                         }
+
                         return false;
                     });
 
