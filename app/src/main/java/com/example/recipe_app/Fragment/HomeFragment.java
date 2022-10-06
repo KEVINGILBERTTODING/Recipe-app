@@ -140,8 +140,11 @@ public class HomeFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 countNotification();
                 handler.postDelayed(this,3000);
+
+
             }
         }, 1000);
 

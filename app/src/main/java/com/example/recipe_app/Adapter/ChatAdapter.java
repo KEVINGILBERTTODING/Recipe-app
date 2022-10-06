@@ -5,11 +5,13 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.view.ContentInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipe_app.Model.ChatInterface;
@@ -85,8 +88,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                                         if (response.body().getSuccess() == 1) {
                                             Toasty.success(context, "Deleted", Toasty.LENGTH_SHORT).show();
                                             notifyDataSetChanged();
-                                            notifyItemRemoved(chatModelList.size());
-                                            chatModelList.remove(position);
+                                            notifyItemChanged(position);
+                                            chatModelList.get(position).setMessage("You deleted this message.");
+                                            holder.ivBlock.setVisibility(View.VISIBLE);
+
+                                            notifyItemRangeChanged(position, chatModelList.size());
                                         } else {
                                             Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
                                         }
@@ -121,6 +127,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
 
+        // settext kalo message telah dihapus
+        if (chatModelList.get(position).getRemove() == 1) {
+            holder.tvChatSender.setText("You deleted this message.");
+            holder.tvChatReceiver.setText("You deleted this message.");
+            holder.ivBlock.setVisibility(View.VISIBLE);
+
+            final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+            holder.tvChatSender.setTypeface(typeface);
+
+            // Disable long click if message was deleted
+            holder.rlChat.setEnabled(false);
+        }
+
+
     }
 
     @Override
@@ -134,6 +154,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                 tvChatReceiver, tvDateReceiver, tvTimeReceiver;
         RelativeLayout rlChatSender, rlChatReceiver, rlChat;
         LinearLayout lrChatSender, lrChatReceiver;
+        ImageView ivBlock;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -147,6 +168,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             tvTImeSender = itemView.findViewById(R.id.tvTimeSender);
             rlChatSender = itemView.findViewById(R.id.rlChatsender);
             lrChatSender = itemView.findViewById(R.id.lrChatSender);
+            ivBlock = itemView.findViewById(R.id.imgBlock);
 
             // item receiver chat
             tvChatReceiver = itemView.findViewById(R.id.tvChatReceiver);

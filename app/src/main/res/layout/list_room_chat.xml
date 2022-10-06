@@ -46,15 +46,37 @@
                 android:src="@drawable/ic_verified"/>
         </LinearLayout>
 
-
-
-        <TextView
-            android:id="@+id/tvChat"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/popmed"
-            android:maxLength="50"
-            android:textSize="@dimen/_9ssp"/>
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/ivBlock"
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:backgroundTint="@color/black"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/_3sdp"
+                android:src="@drawable/ic_block2"/>
+
+
+            <TextView
+                android:id="@+id/tvChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/popmed"
+                android:maxLength="50"
+                android:layout_toRightOf="@+id/ivBlock"
+                android:textSize="@dimen/_9ssp"/>
+
+
+        </RelativeLayout>
+
+
+
+
 
 
 

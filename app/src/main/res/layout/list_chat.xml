@@ -12,15 +12,24 @@
         android:paddingRight="@dimen/_10sdp"
         android:layout_alignParentRight="true"
         android:padding="@dimen/_5sdp"
-        android:visibility="gone"
         android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgBlock"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:src="@drawable/ic_block"/>
 
         <TextView
             android:id="@+id/tvChatSender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/_10sdp"
-            android:fontFamily="@font/popmed"
+            android:layout_toRightOf="@id/imgBlock"
+            android:fontFamily="@font/popmedit"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"/>
 

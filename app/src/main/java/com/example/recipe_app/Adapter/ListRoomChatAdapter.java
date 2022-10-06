@@ -6,6 +6,9 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,7 +76,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         }
 
 
-        getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat);
+        getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock);
 
 
 
@@ -86,7 +90,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvUsername, tvChat;
-        ImageView ivUser, icVerified;
+        ImageView ivUser, icVerified, ivBlock;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +99,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             ivUser = itemView.findViewById(R.id.ivUser);
             icVerified = itemView.findViewById(R.id.img_verified);
             tvChat = itemView.findViewById(R.id.tvChat);
+            ivBlock = itemView.findViewById(R.id.ivBlock);
 
             itemView.setOnClickListener(this::onClick);
         }
@@ -160,13 +165,26 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     }
 
     // Method mengambil chat paling akhir
-    private void getLastChat(Integer roomId, TextView tvChat) {
+    private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
         ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
             @Override
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 if (response.body().size() > 0) {
-                    tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
+
+
+                    if (response.body().get(response.body().size() - 1).getRemove() == 1) {
+                        ivBlock.setVisibility(View.VISIBLE);
+                        final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                        tvChat.setText("You deleted this message.");
+                        tvChat.setTypeface(typeface);
+                        ivBlock.setBackgroundTintList( ColorStateList.valueOf(Color.parseColor("#FF0000")));
+
+                    } else {
+                        tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
+
+
+                    }
                 } else {
                 }
             }
