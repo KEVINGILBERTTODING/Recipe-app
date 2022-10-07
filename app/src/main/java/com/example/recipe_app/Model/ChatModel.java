@@ -28,10 +28,14 @@ public class ChatModel implements Serializable {
     String time;
     @SerializedName("remove")
     Integer remove;
+    @SerializedName("username1")
+    String username1;
+    @SerializedName("username2")
+    String username2;
 
     public ChatModel(
             Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
-            String date, String time, String userId, String chatId, Integer remove) {
+            String date, String time, String userId, String chatId, Integer remove, String username1, String username2) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
@@ -43,6 +47,8 @@ public class ChatModel implements Serializable {
         this.userId = userId;
         this.chatId = chatId;
         this.remove = remove;
+        this.username1 = username1;
+        this.username2 = username2;
     }
 
     public String getUserId1() {
@@ -135,5 +141,21 @@ public class ChatModel implements Serializable {
 
     public void setRemove(Integer remove) {
         this.remove = remove;
+    }
+
+    public String getUsername1() {
+        return username1;
+    }
+
+    public void setUsername1(String username1) {
+        this.username1 = username1;
+    }
+
+    public String getUsername2() {
+        return username2;
+    }
+
+    public void setUsername2(String username2) {
+        this.username2 = username2;
     }
 }

@@ -72,6 +72,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             holder.tvTImeSender.setText(chatModelList.get(position).getTime());
 
 
+            // menyembunyikan chat jika remove == 2 atau jika user sendiri telah menghapus chat
+            // dengan opsi delete for me
+
+            if (chatModelList.get(position).getRemove() == 2) {
+                holder.rlChatSender.setVisibility(View.GONE);
+                holder.tvDateSender.setVisibility(View.GONE);
+                holder.tvTImeSender.setVisibility(View.GONE);
+            }
+
+
             // set agar dapat menghapus pesan
             holder.rlChat.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

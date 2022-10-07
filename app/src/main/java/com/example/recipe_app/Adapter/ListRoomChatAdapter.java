@@ -87,6 +87,11 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         return chatModelList.size();
     }
 
+    public void filterList(ArrayList<ChatModel> filteredList) {
+        chatModelList = filteredList;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tvUsername, tvChat;
@@ -124,7 +129,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         }
     }
 
-    // Method untuk mencari username dan photoprofile user
+    // Method untuk mencari username dan photo profile user
     private void getUser(TextView tvUsername, String userid, ImageView ivUser, ImageView icVerified) {
         InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
         interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
@@ -172,15 +177,24 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 if (response.body().size() > 0) {
 
+                    if (response.body().get(response.body().size() - 1).getRemove() == 2) {
+                        tvChat.setText("You deleted this chat.");
 
-                    if (response.body().get(response.body().size() - 1).getRemove() == 1) {
+                        final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                        tvChat.setTypeface(typeface);
+                    }
+
+
+                    else if (response.body().get(response.body().size() - 1).getRemove() == 1) {
                         ivBlock.setVisibility(View.VISIBLE);
                         final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
                         tvChat.setText("You deleted this message.");
                         tvChat.setTypeface(typeface);
                         ivBlock.setBackgroundTintList( ColorStateList.valueOf(Color.parseColor("#FF0000")));
 
-                    } else {
+                    }
+
+                    else {
                         tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
 
 

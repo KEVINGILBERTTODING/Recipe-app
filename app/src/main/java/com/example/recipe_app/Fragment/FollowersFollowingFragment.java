@@ -450,7 +450,7 @@ public class FollowersFollowingFragment extends Fragment {
     }
 
     private void filter(String newText) {
-        filteredList =null;
+        filteredList = null;
 
 
 
@@ -463,7 +463,6 @@ public class FollowersFollowingFragment extends Fragment {
             }
 
             followersAdapter.filterList(filteredList);
-            Log.d("filter", "filter: " + filteredList);
             if (filteredList.isEmpty()) {
                 Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
             } else {

@@ -7,6 +7,7 @@ import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.recipe_app.Adapter.ListRoomChatAdapter;
 import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
+import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -36,6 +38,7 @@ public class RoomChatFragment extends Fragment {
     private List<ChatModel> chatModelList = new ArrayList<>();
     private ListRoomChatAdapter listRoomChatAdapter;
     LinearLayoutManager linearLayoutManager;
+    private SearchView searchView;
     private String userid;
     private ImageButton btnBack;
 
@@ -51,6 +54,7 @@ public class RoomChatFragment extends Fragment {
 
         rvChat = root.findViewById(R.id.rvChat);
         btnBack = root.findViewById(R.id.btnBack);
+        searchView = root.findViewById(R.id.searchView);
 
         // btn Back listener
         btnBack.setOnClickListener(view -> {
@@ -59,6 +63,21 @@ public class RoomChatFragment extends Fragment {
 
         // call method get chat room
         getRoomChat(userid);
+
+
+        // fungsi searchview
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return false;
+            }
+        });
 
 
 
@@ -71,6 +90,23 @@ public class RoomChatFragment extends Fragment {
         return root;
 
     }
+
+    private void filter(String newText) {
+       ArrayList<ChatModel>filteredList = new ArrayList<>();
+        for (ChatModel item : chatModelList) {
+            if (item.getUsername2().contains(newText)) {
+                filteredList.add(item);
+            }
+
+            listRoomChatAdapter.filterList(filteredList);
+            if (filteredList.isEmpty()) {
+                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            } else {
+                listRoomChatAdapter.filterList(filteredList);
+            }
+        }
+    }
+
 
 
     // Method get ChatRoom
@@ -87,8 +123,10 @@ public class RoomChatFragment extends Fragment {
                     rvChat.setLayoutManager(linearLayoutManager);
                     rvChat.setHasFixedSize(true);
 
+
+
+
                 } else {
-//                    Toasty.error(getContext(), "GAGAL", Toasty.LENGTH_SHORT).show();
                 }
             }
 
