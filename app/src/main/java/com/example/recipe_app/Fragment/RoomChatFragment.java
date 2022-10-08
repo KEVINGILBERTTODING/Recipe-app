@@ -40,7 +40,7 @@ public class RoomChatFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     private SearchView searchView;
     private String userid;
-    private ImageButton btnBack;
+    private ImageButton btnBack, btnNewMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,14 +55,20 @@ public class RoomChatFragment extends Fragment {
         rvChat = root.findViewById(R.id.rvChat);
         btnBack = root.findViewById(R.id.btnBack);
         searchView = root.findViewById(R.id.searchView);
+        btnNewMessage = root.findViewById(R.id.btnChatNew);
 
         // btn Back listener
         btnBack.setOnClickListener(view -> {
             getFragmentManager().popBackStack();
         });
 
-        // call method get chat room
-        getRoomChat(userid);
+        // new chat
+        btnNewMessage.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new newChatFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
 
         // fungsi searchview
@@ -80,6 +86,12 @@ public class RoomChatFragment extends Fragment {
         });
 
 
+        // call method get chat room
+        getRoomChat(userid);
+
+
+
+
 
 
 
@@ -94,11 +106,12 @@ public class RoomChatFragment extends Fragment {
     private void filter(String newText) {
        ArrayList<ChatModel>filteredList = new ArrayList<>();
         for (ChatModel item : chatModelList) {
-            if (item.getUsername2().contains(newText)) {
+            if (item.getUsername1().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(item);
             }
 
             listRoomChatAdapter.filterList(filteredList);
+
             if (filteredList.isEmpty()) {
                 Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
             } else {
@@ -123,10 +136,8 @@ public class RoomChatFragment extends Fragment {
                     rvChat.setLayoutManager(linearLayoutManager);
                     rvChat.setHasFixedSize(true);
 
-
-
-
                 } else {
+
                 }
             }
 
