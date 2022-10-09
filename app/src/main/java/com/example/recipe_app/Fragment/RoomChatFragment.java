@@ -4,13 +4,17 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +46,9 @@ public class RoomChatFragment extends Fragment {
     private String userid;
     private ImageButton btnBack, btnNewMessage;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ConnectivityManager conMgr;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class RoomChatFragment extends Fragment {
         btnBack = root.findViewById(R.id.btnBack);
         searchView = root.findViewById(R.id.searchView);
         btnNewMessage = root.findViewById(R.id.btnChatNew);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
 
         // btn Back listener
         btnBack.setOnClickListener(view -> {
@@ -89,6 +97,17 @@ public class RoomChatFragment extends Fragment {
         // call method get chat room
         getRoomChat(userid);
 
+        // change swipe refresh layout color
+        swipeRefreshLayout.setColorSchemeResources(R.color.main);
+
+        // set swipe refresh
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRoomChat(userid);
+            }
+        });
+
 
 
 
@@ -104,20 +123,20 @@ public class RoomChatFragment extends Fragment {
     }
 
     private void filter(String newText) {
-       ArrayList<ChatModel>filteredList = new ArrayList<>();
-        for (ChatModel item : chatModelList) {
-            if (item.getUsername1().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
-            }
-
-            listRoomChatAdapter.filterList(filteredList);
-
-            if (filteredList.isEmpty()) {
-                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-            } else {
-                listRoomChatAdapter.filterList(filteredList);
-            }
-        }
+//       ArrayList<ChatModel>filteredList = new ArrayList<>();
+//        for (ChatModel item : chatModelList) {
+//            if (item.getUsername1().toLowerCase().contains(newText.toLowerCase())) {
+//                filteredList.add(item);
+//            }
+//
+//            listRoomChatAdapter.filterList(filteredList);
+//
+//            if (filteredList.isEmpty()) {
+//                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+//            } else {
+//                listRoomChatAdapter.filterList(filteredList);
+//            }
+//        }
     }
 
 
@@ -135,19 +154,62 @@ public class RoomChatFragment extends Fragment {
                     rvChat.setAdapter(listRoomChatAdapter);
                     rvChat.setLayoutManager(linearLayoutManager);
                     rvChat.setHasFixedSize(true);
+                    swipeRefreshLayout.setRefreshing(false);
+
+
+                    // show shimmer
+                    rvChat.showShimmer();
+                    final Handler handler = new Handler();
+                    handler.postAtTime(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            rvChat.hideShimmer();
+
+                        }
+                    }, 1200);
 
                 } else {
 
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                getRoomChat(userId);
+                swipeRefreshLayout.setRefreshing(true);
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
 
 
             }
+
+
         });
     }
 
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        rvChat.showShimmer();
+        checkConnection();
+
+    }
 }

@@ -86,6 +86,8 @@
                         android:layout_width="match_parent"
                         android:padding="@dimen/_10sdp"
                         android:id="@+id/rvChat"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:shimmer_recycler_layout="@layout/template_list_user_search"
                         android:layout_below="@id/searchView"
                         android:layout_height="match_parent">
 

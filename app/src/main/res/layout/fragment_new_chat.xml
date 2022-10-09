@@ -81,6 +81,7 @@
                         android:padding="@dimen/_10sdp"
 
                         android:id="@+id/rvUser"
+                        app:shimmer_recycler_layout="@layout/template_list_user_search"
                         android:layout_below="@id/searchView"
                         android:layout_height="match_parent">
 

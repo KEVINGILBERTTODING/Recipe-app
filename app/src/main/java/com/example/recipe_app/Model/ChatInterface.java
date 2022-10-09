@@ -39,4 +39,11 @@ public interface ChatInterface {
             @Field("chat_id") String chatId,
             @Field("code") Integer code
     );
+
+    // Get new message
+    @GET("new_message.php")
+    Call<List<ChatModel>> getNewMessage(
+            @Query("user_id1") String userId1,
+            @Query("user_id2") String userId2
+    );
 }

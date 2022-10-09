@@ -4,7 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
 import static com.example.recipe_app.LoginActivity.my_shared_preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -53,6 +55,7 @@ public class ChatFragment extends Fragment {
     ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
     LinearLayoutManager linearLayoutManager;
     private  String userid, username;
+    private ConnectivityManager conMgr;
 
 
     @Override
@@ -211,5 +214,21 @@ public class ChatFragment extends Fragment {
 
                     }
                 });
+    }
+
+
+    // method check connection
+    private void checkConnection() {
+        conMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null
+                    &&
+                    conMgr.getActiveNetworkInfo().isAvailable()
+                    &&
+                    conMgr.getActiveNetworkInfo().isConnected()) {
+            } else {
+                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+            }
+        }
     }
 }
