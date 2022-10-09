@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,17 +77,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             getUser(holder.tvUsername, chatModelList.get(position).getUserId1(), holder.ivUser, holder.icVerified);
         }
 
-
-
-
-
-
-
-
-
-
-
-        getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate);
+        getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
 
 
 
@@ -106,6 +97,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         TextView tvUsername, tvChat, tvDate;
         ImageView ivUser, icVerified, ivBlock;
+        RelativeLayout relativeLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +108,9 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             tvChat = itemView.findViewById(R.id.tvChat);
             ivBlock = itemView.findViewById(R.id.ivBlock);
             tvDate = itemView.findViewById(R.id.tvDate);
+            relativeLayout = itemView.findViewById(R.id.rlChat);
+
+//
 
             itemView.setOnClickListener(this::onClick);
         }
@@ -181,18 +176,18 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     }
 
     // Method mengambil chat paling akhir
-    private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate) {
+        private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
         ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
             @Override
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 if (response.body().size() > 0) {
 
+
                     tvDate.setText(response.body().get(response.body().size() -1).getDate().toString());
 
                     if (response.body().get(response.body().size() - 1).getRemove() == 2) {
-                        tvChat.setText("You deleted this chat.");
-
+                        tvChat.setText("You deleted this message.");
                         final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
                         tvChat.setTypeface(typeface);
                     }
@@ -209,15 +204,11 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
                     else {
                         tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
-//                        tvDate.setText(response.body().get(response.body().size() -1).getDate());
-//                        Toasty.info(context, response.body().get(response.body().size() -1).getDate()).show();
-                            Toast.makeText(context, response.body().get(response.body().size() - 1).getDate(), Toast.LENGTH_LONG).show();
-
-
-
+//
 
                     }
                 } else {
+                    rlChat.setVisibility(View.GONE);
                 }
             }
 
