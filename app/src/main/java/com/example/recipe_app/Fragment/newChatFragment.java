@@ -71,6 +71,7 @@ public class newChatFragment extends Fragment {
         });
 
         // call method get all user
+        rvUser.setVisibility(View.GONE);
         getAllUser();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -81,6 +82,18 @@ public class newChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                rvUser.showShimmer();
+                final Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        rvUser.hideShimmer();
+                        rvUser.setVisibility(View.VISIBLE);
+
+
+                    }
+                }, 1200);
                 filter(newText);
                 return false;
             }
@@ -99,7 +112,7 @@ public class newChatFragment extends Fragment {
 
             newChatAdapter.filterList(filteredList);
 
-            if (filteredList.size() > 0) {
+            if (filteredList.size() < 0) {
                 Toasty.info(getContext(), "User not found", Toasty.LENGTH_SHORT).show();
             } else {
                 newChatAdapter.filterList(filteredList);

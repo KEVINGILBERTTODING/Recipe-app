@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/_10sdp"
             android:layout_toRightOf="@id/imgBlock"
-            android:fontFamily="@font/popmedit"
+            android:fontFamily="@font/popmed"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"/>
 
