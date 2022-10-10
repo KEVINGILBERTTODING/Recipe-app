@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -56,6 +57,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Adapter.MyRecipeAdapter;
 import com.example.recipe_app.MainActivity;
+import com.example.recipe_app.Model.ChatInterface;
+import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -174,9 +177,12 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
         if (user_id.equals(userid)) {
             btnMore.setVisibility(View.GONE);
             lr_button.setVisibility(View.GONE);
+            btn_message.setVisibility(View.GONE);
+            btn_follow.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
         } else{
             btnMore.setVisibility(View.VISIBLE);
             lr_button.setVisibility(View.VISIBLE);
+            btn_message.setVisibility(View.VISIBLE);
         }
 
         // show dialog saat klik button more
@@ -547,6 +553,45 @@ public class ShowProfileFragment extends Fragment implements MyRecipeAdapter.OnR
             });
 
         }
+
+        // Button message click
+        btn_message.setOnClickListener(view1 -> {
+            ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+            ci.getNewMessage(userid, user_id).enqueue(new Callback<List<ChatModel>>() {
+                @Override
+                public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                    if (response.body().size() > 0) {
+                        Fragment fragment = new ChatFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("room_id", response.body().get(0).getRoomId());
+
+                        // send user id where user id pemilik tidak sama dengan
+                        // user id
+                        if (userid.equals(response.body().get(0).getUserId1())) {
+                            bundle.putString("user_id", response.body().get(0).getUserId2());
+                        } else {
+                            bundle.putString("user_id", response.body().get(0).getUserId1());
+                        }
+
+                        fragment.setArguments(bundle);
+
+                        ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit();
+                    } else {
+                        Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                }
+            });
+
+        });
 
 
 

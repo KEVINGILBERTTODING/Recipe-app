@@ -183,10 +183,8 @@ public class newChatFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         rvUser.showShimmer();
         checkConnection();
-
         super.onResume();
 
 

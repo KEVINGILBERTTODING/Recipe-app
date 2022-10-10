@@ -311,15 +311,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:orientation="horizontal">
 
+
+
+
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_unfollow"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
+
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:stateListAnimator="@null"
                     android:text="Following"
                     android:textAllCaps="false"
@@ -331,10 +338,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_follow"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
                     android:stateListAnimator="@null"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:text="Follow"
                     app:backgroundTint="@color/blue"
                     android:textAllCaps="false"
@@ -349,11 +357,13 @@
                     android:fontFamily="@font/popmed"
                     android:stateListAnimator="@null"
                     android:text="Message"
-                    android:visibility="gone"
                     android:textAllCaps="false"
+                    android:visibility="gone"
                     android:textSize="@dimen/_10sdp"
                     app:cornerRadius="@dimen/_5sdp"
                     app:elevation="0dp" />
+
+
 
             </LinearLayout>
 
