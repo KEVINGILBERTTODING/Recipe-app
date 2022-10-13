@@ -98,6 +98,8 @@ public class RoomChatFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
 
+                filter(newText);
+
                 return false;
             }
         });
@@ -122,6 +124,23 @@ public class RoomChatFragment extends Fragment {
 
         return root;
 
+    }
+
+    private void filter(String newText) {
+        ArrayList<ChatModel> filteredList = new ArrayList<>();
+        for (ChatModel item : chatModelList){
+            if (item.getUsername2().toLowerCase().contains(newText.toLowerCase())) {
+                filteredList.add(item);
+            }
+
+            listRoomChatAdapter.filterList(filteredList);
+
+            if (filteredList.isEmpty()) {
+                Toast.makeText(getContext(), "Username not found", Toast.LENGTH_SHORT).show();
+            } else {
+                listRoomChatAdapter.filterList(filteredList);
+            }
+        }
     }
 
     private void getListRoom() {

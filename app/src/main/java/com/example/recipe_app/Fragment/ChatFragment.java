@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,6 +82,25 @@ public class ChatFragment extends Fragment {
             getFragmentManager().popBackStack();
         });
 
+
+        rvChat.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    Toast.makeText(getContext(), "Bawah", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    Toast.makeText(getContext(), "ATas", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+
+        });
 
 
         // call get message
@@ -187,6 +207,37 @@ public class ChatFragment extends Fragment {
             @Override
             public void onFailure(Call<List<ChatModel>> call, Throwable t) {
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+    
+    // get message without scrolling
+    private void refreshChat(Integer roomId) {
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
+            @Override
+            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                
+                if (response.body().size()> 0) {
+                    chatModelList = response.body();
+                    chatAdapter= new ChatAdapter(getContext(), chatModelList);
+                    linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+                    rvChat.setAdapter(chatAdapter);
+                    rvChat.setLayoutManager(linearLayoutManager);
+                    rvChat.setHasFixedSize(true);
+                    Toast.makeText(getContext(), "Berhasil", Toast.LENGTH_SHORT).show();
+                    
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+               
+                
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                Toast.makeText(getContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
 
             }
         });

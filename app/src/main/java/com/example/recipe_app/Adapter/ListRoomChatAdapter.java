@@ -159,6 +159,8 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             }
             fragment.setArguments(bundle);
 
+            actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId());
+
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
@@ -210,6 +212,27 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             public void onFailure(Call<List<ChatModel>> call, Throwable t) {
                 Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
+
+            }
+        });
+    }
+
+    // method action read message
+    private void actionReadMessage(Integer roomId) {
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.actionReadMessage(roomId).enqueue(new Callback<ChatModel>() {
+            @Override
+            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                if (response.body().getSuccess() == 1) {
+                    Toast.makeText(context, "Terhapus semua", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatModel> call, Throwable t) {
+                Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
 
             }
         });

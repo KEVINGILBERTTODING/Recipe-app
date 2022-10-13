@@ -52,4 +52,11 @@ public interface ChatInterface {
             @Query("user_id1") String userId1,
             @Query("user_id2") String userId2
     );
+
+    @FormUrlEncoded
+    @POST("action_read_message.php")
+    Call<ChatModel> actionReadMessage(
+            @Field("room_id") Integer roomId
+    );
+
 }
