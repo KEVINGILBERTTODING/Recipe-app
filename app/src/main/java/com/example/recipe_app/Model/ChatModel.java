@@ -46,10 +46,15 @@ public class ChatModel implements Serializable {
     String getPhotoProfile2;
     List<ChatModel> chatModelList;
     String chatModel;
+    @SerializedName("verified1")
+    String verified1;
+    @SerializedName("verified2")
+    String verified2;
     public ChatModel(
             Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
             String date, String time, String userId, String chatId, Integer remove, String username1, String username2,
-            String photoProfile, String userName, String verified, String photoProfile1, String getPhotoProfile2, String chatModel) {
+            String photoProfile, String userName, String verified, String photoProfile1, String getPhotoProfile2, String chatModel,
+            String verified1, String verified2) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
@@ -69,6 +74,8 @@ public class ChatModel implements Serializable {
         this.photoProfile1 = photoProfile1;
         this.getPhotoProfile2 = getPhotoProfile2;
         this.chatModel = chatModel;
+        this.verified1 = verified1;
+        this.verified2 = verified2;
     }
 
     public String getUserId1() {
@@ -205,7 +212,7 @@ public class ChatModel implements Serializable {
     }
 
     public String getPhotoProfile1() {
-        return DataApi.BASE_URL +"photo_profile/" + photoProfile;
+        return DataApi.BASE_URL +"photo_profile/" + photoProfile1;
     }
 
     public void setPhotoProfile1(String photoProfile1) {
@@ -213,7 +220,7 @@ public class ChatModel implements Serializable {
     }
 
     public String getGetPhotoProfile2() {
-        return DataApi.BASE_URL +"photo_profile/" + photoProfile;
+        return DataApi.BASE_URL +"photo_profile/" + getPhotoProfile2;
     }
 
     public void setGetPhotoProfile2(String getPhotoProfile2) {
@@ -234,4 +241,23 @@ public class ChatModel implements Serializable {
         return chatModel;
     }
 
+    public void setChatModel(String chatModel) {
+        this.chatModel = chatModel;
+    }
+
+    public String getVerified1() {
+        return verified1;
+    }
+
+    public void setVerified1(String verified1) {
+        this.verified1 = verified1;
+    }
+
+    public String getVerified2() {
+        return verified2;
+    }
+
+    public void setVerified2(String verified2) {
+        this.verified2 = verified2;
+    }
 }

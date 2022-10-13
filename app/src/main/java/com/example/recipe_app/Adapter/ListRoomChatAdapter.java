@@ -74,15 +74,44 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         // get Username and photo profile
         if (userid.equals(chatModelList.get(position).getUserId1())) {
-            getUser(holder.tvUsername, chatModelList.get(position).getUserId2(), holder.ivUser, holder.icVerified);
+
+            holder.tvUsername.setText(chatModelList.get(position).getUsername2());
+            Glide.with(context)
+                    .load(chatModelList.get(position).getGetPhotoProfile2())
+                    .override(300,300)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .into(holder.ivUser);
+            if (chatModelList.get(position).getVerified2().equals("1")) {
+                holder.icVerified.setVisibility(View.VISIBLE);
+            } else{
+                holder.icVerified.setVisibility(View.GONE);
+            }
+
         } else {
-            getUser(holder.tvUsername, chatModelList.get(position).getUserId1(), holder.ivUser, holder.icVerified);
+
+            holder.tvUsername.setText(chatModelList.get(position).getUsername1());
+            Glide.with(context)
+                    .load(chatModelList.get(position).getPhotoProfile1())
+                    .override(300,300)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(true)
+                    .into(holder.ivUser);
+
+            if (chatModelList.get(position).getVerified1().equals("1")) {
+                holder.icVerified.setVisibility(View.VISIBLE);
+            } else{
+                holder.icVerified.setVisibility(View.GONE);
+            }
+
+
         }
 
         getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
 
 
-        holder.tvUsername.setText(chatModelList.get(position).getUserName());
 
     }
 
@@ -138,45 +167,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         }
     }
 
-    // Method untuk mencari username dan photo profile user
-    private void getUser(TextView tvUsername, String userid, ImageView ivUser, ImageView icVerified) {
-        InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-        interfaceProfile.getProfile(userid).enqueue(new Callback<List<ProfileModel>>() {
-            @Override
-            public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
-                if (response.body().size() > 0 ) {
-                    tvUsername.setText(response.body().get(0).getUsername());
 
-                    // Load photo profile
-                    Glide.with(context)
-                            .load(response.body().get(0).getPhoto_profile())
-                            .dontAnimate()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .skipMemoryCache(true)
-                            .override(200, 200)
-                            .into(ivUser);
-
-                    // Show verified badge where user is verified
-                    if (response.body().get(0).getVerified().equals("1")) {
-                        icVerified.setVisibility(View.VISIBLE);
-                    } else {
-                        icVerified.setVisibility(View.GONE);
-                    }
-
-                } else {
-                    Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ProfileModel>> call, Throwable t) {
-                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
-
-
-            }
-        });
-    }
 
     // Method mengambil chat paling akhir
     private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {

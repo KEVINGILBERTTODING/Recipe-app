@@ -47,7 +47,7 @@ import retrofit2.Response;
 
 public class RoomChatFragment extends Fragment {
     private ShimmerRecyclerView rvChat;
-   List<ChatModel> chatModelList = new ArrayList<>();
+    List<ChatModel> chatModelList = new ArrayList<>();
     private ListRoomChatAdapter listRoomChatAdapter;
     LinearLayoutManager linearLayoutManager;
     private SearchView searchView;
