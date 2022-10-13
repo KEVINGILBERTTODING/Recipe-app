@@ -1,8 +1,10 @@
 package com.example.recipe_app.Model;
 
+import com.example.recipe_app.Util.DataApi;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ChatModel implements Serializable {
 
@@ -32,10 +34,22 @@ public class ChatModel implements Serializable {
     String username1;
     @SerializedName("username2")
     String username2;
-
+    @SerializedName("photo_profile")
+    String photoProfile;
+    @SerializedName("username")
+    String userName;
+    @SerializedName(("verified"))
+    String verified;
+    @SerializedName("photo_profile1")
+    String photoProfile1;
+    @SerializedName("photo_profile2")
+    String getPhotoProfile2;
+    List<ChatModel> chatModelList;
+    String chatModel;
     public ChatModel(
             Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
-            String date, String time, String userId, String chatId, Integer remove, String username1, String username2) {
+            String date, String time, String userId, String chatId, Integer remove, String username1, String username2,
+            String photoProfile, String userName, String verified, String photoProfile1, String getPhotoProfile2, String chatModel) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
@@ -49,6 +63,12 @@ public class ChatModel implements Serializable {
         this.remove = remove;
         this.username1 = username1;
         this.username2 = username2;
+        this.userName = userName;
+        this.photoProfile = photoProfile;
+        this.verified = verified;
+        this.photoProfile1 = photoProfile1;
+        this.getPhotoProfile2 = getPhotoProfile2;
+        this.chatModel = chatModel;
     }
 
     public String getUserId1() {
@@ -158,4 +178,60 @@ public class ChatModel implements Serializable {
     public void setUsername2(String username2) {
         this.username2 = username2;
     }
+
+
+    public String getPhotoProfile() {
+        return DataApi.BASE_URL +"photo_profile/" + photoProfile;
+    }
+
+    public void setPhotoProfile(String photoProfile) {
+        this.photoProfile = photoProfile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
+
+    public void setVerified(String verified) {
+        this.verified = verified;
+    }
+
+    public String getPhotoProfile1() {
+        return DataApi.BASE_URL +"photo_profile/" + photoProfile;
+    }
+
+    public void setPhotoProfile1(String photoProfile1) {
+        this.photoProfile1 = photoProfile1;
+    }
+
+    public String getGetPhotoProfile2() {
+        return DataApi.BASE_URL +"photo_profile/" + photoProfile;
+    }
+
+    public void setGetPhotoProfile2(String getPhotoProfile2) {
+        this.getPhotoProfile2 = getPhotoProfile2;
+
+
+    }
+
+    public List<ChatModel> getChatModelList() {
+        return chatModelList;
+    }
+
+    public void setChatModelList(List<ChatModel> chatModelList) {
+        this.chatModelList = chatModelList;
+    }
+
+    public String getChatModel() {
+        return chatModel;
+    }
+
 }

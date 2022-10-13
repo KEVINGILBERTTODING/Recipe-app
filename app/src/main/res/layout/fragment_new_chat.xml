@@ -73,7 +73,7 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@color/transparent"
-                        app:queryHint="Search user"
+                        app:queryHint="Search username"
                         app:theme="@style/AppSearchView" />
 
                     <com.todkars.shimmer.ShimmerRecyclerView
@@ -86,6 +86,9 @@
                         android:layout_height="match_parent">
 
                     </com.todkars.shimmer.ShimmerRecyclerView>
+
+
+
 
                 </RelativeLayout>
 
@@ -107,7 +110,31 @@
 
 
 
+    <LinearLayout
+        android:id="@+id/rlSearchUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:src="@drawable/ic_search2"/>
+
+        <TextView
+            android:id="@+id/tvSearhUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type a username to search"
+            android:fontFamily="@font/popmed"
+            android:textSize="@dimen/_10sdp"/>
+
+
+    </LinearLayout>
 
 
 

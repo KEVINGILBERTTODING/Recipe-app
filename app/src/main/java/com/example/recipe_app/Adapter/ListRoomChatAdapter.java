@@ -34,6 +34,8 @@ import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
 
 
+        holder.tvUsername.setText(chatModelList.get(position).getUserName());
 
     }
 
@@ -176,7 +179,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     }
 
     // Method mengambil chat paling akhir
-        private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {
+    private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
         ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
             @Override

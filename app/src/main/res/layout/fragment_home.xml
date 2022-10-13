@@ -334,9 +334,12 @@
         app:shapeAppearanceOverlay="@style/fabCustomeShape"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        app:backgroundTint="@color/main"
+        app:backgroundTint="@color/white"
+        app:fabSize="normal"
+        app:tint="@null"
+        android:src="@drawable/ic_message3"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
         />
 
 

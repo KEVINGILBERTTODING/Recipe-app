@@ -16,6 +16,12 @@ public interface ChatInterface {
     Call<List<ChatModel>> getRoomChat(
             @Query("user_id") String userId
     );
+@GET("get_list_chat.php")
+    Call<ChatModel> getRoomChat2(
+            @Query("user_id") String userId
+    );
+
+
 
     // get message
     @GET("get_message.php")

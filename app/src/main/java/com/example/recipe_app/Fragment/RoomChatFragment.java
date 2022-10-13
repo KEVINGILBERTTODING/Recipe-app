@@ -15,22 +15,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.recipe_app.Adapter.ListRoomChatAdapter;
 import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
+import com.example.recipe_app.Util.ServerAPI;
 import com.todkars.shimmer.ShimmerRecyclerView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.security.auth.x500.X500Principal;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -39,10 +47,11 @@ import retrofit2.Response;
 
 public class RoomChatFragment extends Fragment {
     private ShimmerRecyclerView rvChat;
-    private List<ChatModel> chatModelList = new ArrayList<>();
+   List<ChatModel> chatModelList = new ArrayList<>();
     private ListRoomChatAdapter listRoomChatAdapter;
     LinearLayoutManager linearLayoutManager;
     private SearchView searchView;
+    ChatModel chatModel;
     private String userid;
     private ImageButton btnBack, btnNewMessage;
 
@@ -88,7 +97,7 @@ public class RoomChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filter(newText);
+
                 return false;
             }
         });
@@ -96,6 +105,7 @@ public class RoomChatFragment extends Fragment {
 
         // call method get chat room
         getRoomChat(userid);
+//        getListRoom();
 
         // change swipe refresh layout color
         swipeRefreshLayout.setColorSchemeResources(R.color.main);
@@ -110,34 +120,29 @@ public class RoomChatFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
         return root;
 
     }
 
-    private void filter(String newText) {
-//       ArrayList<ChatModel>filteredList = new ArrayList<>();
-//        for (ChatModel item : chatModelList) {
-//            if (item.getUsername1().toLowerCase().contains(newText.toLowerCase())) {
-//                filteredList.add(item);
-//            }
-//
-//            listRoomChatAdapter.filterList(filteredList);
-//
-//            if (filteredList.isEmpty()) {
-//                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-//            } else {
-//                listRoomChatAdapter.filterList(filteredList);
-//            }
-//        }
+    private void getListRoom() {
+        ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
+        chatInterface.getRoomChat2(userid).enqueue(new Callback<ChatModel>() {
+            @Override
+            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                if (response.isSuccessful()) {
+                    chatModel = response.body();
+                    Toast.makeText(getContext(), chatModel.getUserId(), Toast.LENGTH_SHORT).show();
+                    chatModel.setRoomId(chatModel.getRoomId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatModel> call, Throwable t) {
+
+            }
+        });
     }
+
 
 
 
@@ -180,7 +185,6 @@ public class RoomChatFragment extends Fragment {
                 getRoomChat(userId);
                 swipeRefreshLayout.setRefreshing(true);
                 Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
-
 
             }
 

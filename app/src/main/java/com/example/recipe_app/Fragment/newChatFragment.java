@@ -14,6 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.recipe_app.Adapter.NewChatAdapter;
 import com.example.recipe_app.Model.ProfileModel;
@@ -39,6 +42,8 @@ public class newChatFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     SearchView searchView;
+    TextView tvSearchUsername;
+    private LinearLayout rlSearchUser;
 
     private ConnectivityManager conMgr;
 
@@ -53,6 +58,8 @@ public class newChatFragment extends Fragment {
         rvUser = root.findViewById(R.id.rvUser);
         searchView = root.findViewById(R.id.searchView);
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        tvSearchUsername = root.findViewById(R.id.tvSearhUsername);
+        rlSearchUser = root.findViewById(R.id.rlSearchUser);
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,6 +77,11 @@ public class newChatFragment extends Fragment {
             getFragmentManager().popBackStack();
         });
 
+
+
+
+
+
         // call method get all user
         rvUser.setVisibility(View.GONE);
         getAllUser();
@@ -82,6 +94,10 @@ public class newChatFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                rlSearchUser.setVisibility(View.GONE);
+
+
 
                 rvUser.showShimmer();
                 final Handler h = new Handler();
@@ -112,10 +128,13 @@ public class newChatFragment extends Fragment {
 
             newChatAdapter.filterList(filteredList);
 
-            if (filteredList.size() < 0) {
-                Toasty.info(getContext(), "User not found", Toasty.LENGTH_SHORT).show();
+            if (filteredList.isEmpty()) {
+                rlSearchUser.setVisibility(View.VISIBLE);
+                tvSearchUsername.setText("Username not found...");
+
             } else {
                 newChatAdapter.filterList(filteredList);
+                rlSearchUser.setVisibility(View.GONE);
             }
         }
 
@@ -135,7 +154,6 @@ public class newChatFragment extends Fragment {
                     rvUser.setAdapter(newChatAdapter);
                     rvUser.setLayoutManager(linearLayoutManager);
                     rvUser.setHasFixedSize(true);
-
                     swipeRefreshLayout.setRefreshing(false);
 
                     rvUser.showShimmer();
@@ -152,6 +170,7 @@ public class newChatFragment extends Fragment {
                 } else {
                     Toasty.error(getContext(), "Something went wrong", Toasty.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
+                    tvSearchUsername.setVisibility(View.VISIBLE);
                 }
             }
 
