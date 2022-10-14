@@ -110,10 +110,51 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlCountNewMessage"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fabDown"
+            android:background="@drawable/container_count_total_message"
+            android:layout_toLeftOf="@+id/fabDown"
+            android:padding="@dimen/_5sdp"
+            >
+            <TextView
+                android:id="@+id/tvTotalNewMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                android:fontFamily="@font/popmed"/>
+
+        </RelativeLayout>
+
+
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/_10sdp"
+            app:backgroundTint="@color/white"
+            android:layout_above="@+id/rl_chat"
+            android:src="@drawable/ic_double_arrow"
+            android:layout_alignParentRight="true"
+            />
+
+
+
 
 
 
     </RelativeLayout>
+
+
 
 
 

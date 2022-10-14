@@ -59,4 +59,10 @@ public interface ChatInterface {
             @Field("room_id") Integer roomId
     );
 
+    // get new message
+    @GET("get_new_message.php")
+    Call<List<ChatModel>> getNewMessage(
+            @Query("room_id") Integer rooomId
+    );
+
 }
