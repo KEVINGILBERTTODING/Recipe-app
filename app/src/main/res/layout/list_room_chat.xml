@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/popmed"
-                    android:maxLength="50"
+                    android:maxLength="30"
                     android:layout_toRightOf="@+id/ivBlock"
                     android:textSize="@dimen/_9ssp"/>
 

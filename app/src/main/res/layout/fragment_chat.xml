@@ -64,13 +64,19 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChat"
-            android:layout_width="match_parent"
-            android:padding="@dimen/_10sdp"
-            android:layout_below="@id/appBar"
-            android:layout_above="@+id/rl_chat"
-            android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvChat"
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_below="@+id/appBar"
+                    android:layout_above="@id/rl_chat"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_height="wrap_content"/>
+
+
+
+
 
         <RelativeLayout
             android:id="@+id/rl_chat"
@@ -110,28 +116,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlCountNewMessage"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/fabDown"
-            android:background="@drawable/container_count_total_message"
-            android:layout_toLeftOf="@+id/fabDown"
-            android:padding="@dimen/_5sdp"
-            >
-            <TextView
-                android:id="@+id/tvTotalNewMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                android:fontFamily="@font/popmed"/>
-
-        </RelativeLayout>
-
-
-
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -141,11 +125,37 @@
             app:fabSize="mini"
             android:visibility="gone"
             android:layout_marginRight="@dimen/_10sdp"
-            app:backgroundTint="@color/white"
-            android:layout_above="@+id/rl_chat"
+            android:backgroundTint="@color/white"
+            android:layout_above="@+id/btnCountTotalNotif"
             android:src="@drawable/ic_double_arrow"
+            app:backgroundTint="@color/gray"
+            app:tint="@color/blue"
             android:layout_alignParentRight="true"
             />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCountTotalNotif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rl_chat"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="1 new message"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="@dimen/_10sdp"
+            app:elevation="@dimen/_10sdp"
+            app:icon="@drawable/ic_message3"
+            app:iconSize="@dimen/_20sdp"
+            app:iconTint="@null" />
+
+
 
 
 

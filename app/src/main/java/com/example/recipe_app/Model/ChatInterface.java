@@ -56,13 +56,17 @@ public interface ChatInterface {
     @FormUrlEncoded
     @POST("action_read_message.php")
     Call<ChatModel> actionReadMessage(
-            @Field("room_id") Integer roomId
+            @Field("room_id") Integer roomId,
+            @Field("user_id") String userId
+
     );
 
     // get new message
     @GET("get_new_message.php")
     Call<List<ChatModel>> getNewMessage(
-            @Query("room_id") Integer rooomId
+            @Query("room_id") Integer rooomId,
+            @Query("user_id") String userId
     );
+
 
 }

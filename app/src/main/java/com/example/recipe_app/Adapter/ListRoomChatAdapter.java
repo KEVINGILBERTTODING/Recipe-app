@@ -154,12 +154,16 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             bundle.putInt("room_id", chatModelList.get(getAdapterPosition()).getRoomId());
             if (userid.equals(chatModelList.get(getAdapterPosition()).getUserId1())) {
                 bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId2());
+                actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(),
+                        chatModelList.get(getAdapterPosition()).getUserId2());
             } else {
                 bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId1());
+                actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(),
+                        chatModelList.get(getAdapterPosition()).getUserId1());
             }
             fragment.setArguments(bundle);
 
-            actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId());
+
 
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
@@ -218,13 +222,12 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     }
 
     // method action read message
-    private void actionReadMessage(Integer roomId) {
+    private void actionReadMessage(Integer roomId, String user_id) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.actionReadMessage(roomId).enqueue(new Callback<ChatModel>() {
+        ci.actionReadMessage(roomId, user_id).enqueue(new Callback<ChatModel>() {
             @Override
             public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
                 if (response.body().getSuccess() == 1) {
-                    Toast.makeText(context, "Terhapus semua", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }

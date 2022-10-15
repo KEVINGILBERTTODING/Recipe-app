@@ -48,6 +48,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = context.getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
         userid = sharedPreferences.getString("user_id", null);
+        notifyDataSetChanged();
     }
 
 
@@ -266,4 +267,5 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         }
     }
+
 }
