@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +56,7 @@ public class ChatFragment extends Fragment {
     ImageView ivUser;
     RecyclerView rvChat;
     EditText etMessage;
-    TextView tvUsername, tvTotalNewMessage;
+    TextView tvUsername;
     private List<ChatModel> chatModelList = new ArrayList<>();
     ChatAdapter chatAdapter;
     ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
@@ -65,6 +66,7 @@ public class ChatFragment extends Fragment {
     private Button btnCountTotalNewMessage;
 
     private FloatingActionButton fabArrowDown;
+
 
 
 
@@ -97,62 +99,36 @@ public class ChatFragment extends Fragment {
 
 
 
-
         // Kondisi saat recyclerview chat is scroll down or top
         rvChat.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                // Jika scroll paling bawah chat
+                if (!recyclerView.canScrollVertically(1)) {
+                    Toast.makeText(getContext(), "Bottom", Toast.LENGTH_SHORT).show();
+                    fabArrowDown.hide();
 
-
-
-                if (!recyclerView.canScrollVertically(1) && dy > 0)
-                {
-
-                    fabArrowDown.setVisibility(View.GONE);
-
-//                    rvChat.smoothScrollToPosition(chatModelList.size() - 1);
-
-
-                    // Every 1 second will refresh new message than show
-                    // total new message in badge
-                    final Handler handler1 = new Handler();
-                    handler1.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            handler1.postDelayed(this,1000);
-
-
-                        }
-                    }, 1000);
 
                 }
-                else if (dy < 0){
 
-                    fabArrowDown.setVisibility(View.VISIBLE);
-
-
-                    // Every 1 second will refresh new message than show
-                    // total new message in badge
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            notifNewMessage(getArguments().getInt("room_id"));
-                            handler.postDelayed(this,1000);
+                // Jika scroll paling atas chat
+                else if (!recyclerView.canScrollVertically(-1)) {
+                    Toast.makeText(getContext(), "Top", Toast.LENGTH_SHORT).show();
+                    fabArrowDown.show();
 
 
-                        }
-                    }, 1000);
+                    // notif if new message
+                    notifNewMessage(getArguments().getInt("room_id"));
 
-                } else if (dy > 0) {
-                    fabArrowDown.setVisibility(View.GONE);
+                } else {
 
 
+                    fabArrowDown.show();
+
+                    // notif if new message
+                    notifNewMessage(getArguments().getInt("room_id"));
 
                 }
 
@@ -164,10 +140,10 @@ public class ChatFragment extends Fragment {
 
 
 
-        // call get message
+        // call get message and set recyclerview scroll down
         getMessage(getArguments().getInt("room_id"));
 
-        // call get profile
+        // call get profile to load username, userid and photoprofile
         getProfile();
 
         // saat username di klik maka akan show profile
@@ -214,8 +190,6 @@ public class ChatFragment extends Fragment {
 
         btnSend.setOnClickListener(view -> {
             postMessage();
-
-
         });
 
 
@@ -262,7 +236,9 @@ public class ChatFragment extends Fragment {
                     rvChat.setAdapter(chatAdapter);
                     rvChat.setLayoutManager(linearLayoutManager);
                     rvChat.scrollToPosition(chatModelList.size() -1);
-                    rvChat.setNestedScrollingEnabled(false);
+                    chatAdapter.notifyDataSetChanged();
+
+
 
                     fabArrowDown.setOnClickListener(view -> {
                         rvChat.scrollToPosition(chatModelList.size() - 1);
@@ -289,33 +265,11 @@ public class ChatFragment extends Fragment {
         });
     }
 
-    // refresh chat
-    // method get message
-    private void refreshMessage(Integer roomId) {
-        chatInterface.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
-            @Override
-            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
-                chatModelList = response.body();
-                if (chatModelList.size() > 0 ){
-                    chatAdapter = new ChatAdapter(getContext(), chatModelList);
-                    chatAdapter.notifyItemRangeChanged(0, chatAdapter.getItemCount());
-                    chatAdapter.notifyDataSetChanged();
 
 
-                } else {
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
-//                Toasty.error(getContext(), "Please check your connection", Toasty.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
-
-    // l
+    // method check apakah ada pesan baru atau tidak
+    // jika ada tampilkan notification
     private void notifNewMessage(Integer roomId) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
         ci.getNewMessage(roomId, userid).enqueue(new Callback<List<ChatModel>>() {
@@ -413,8 +367,6 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ChatModel> call, Throwable t) {
-//                Toasty.error(getContext(), "Please check your conection", Toasty.LENGTH_SHORT).show();
-
 
             }
         });
@@ -422,18 +374,22 @@ public class ChatFragment extends Fragment {
 
 
 
+
     @Override
     public void onResume() {
         super.onResume();
 
-        // Every 1 second will refresh new message than show
-        // total new message in badge
+        // check connection
+        checkConnection();
+
+//        // Every 1 second will refresh new message than show
+//        // total new message in badge
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                refreshMessage(getArguments().getInt("room_id"));
+                 notifNewMessage(getArguments().getInt("room_id"));
                 handler.postDelayed(this,1000);
 
 
