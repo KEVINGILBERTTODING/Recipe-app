@@ -88,7 +88,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textSize="@dimen/_7ssp"
+            android:visibility="visible"
             android:padding="@dimen/_7sdp"/>
+
+        <TextView
+            android:id="@+id/tvCountNewMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/_8ssp"
+            android:layout_below="@id/tvDate"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:background="@drawable/container_count_total_message"
+            android:padding="@dimen/_2sdp"/>
 
         <View
             android:layout_width="match_parent"

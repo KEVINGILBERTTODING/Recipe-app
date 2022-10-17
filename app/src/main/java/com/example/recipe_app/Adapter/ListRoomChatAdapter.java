@@ -10,6 +10,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,8 +110,23 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         }
 
+        // call method to get latest message
         getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
 
+        // call method to show bubble count total new message
+        getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
+
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
+                getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
+                handler.postDelayed(this, 1000);
+
+            }
+        }, 4000);
 
 
     }
@@ -127,7 +143,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tvUsername, tvChat, tvDate;
+        TextView tvUsername, tvChat, tvDate, tvCountNewMessage;
         ImageView ivUser, icVerified, ivBlock;
         RelativeLayout relativeLayout;
 
@@ -141,25 +157,31 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             ivBlock = itemView.findViewById(R.id.ivBlock);
             tvDate = itemView.findViewById(R.id.tvDate);
             relativeLayout = itemView.findViewById(R.id.rlChat);
+            tvCountNewMessage = itemView.findViewById(R.id.tvCountNewMessage);
 
-//
 
             itemView.setOnClickListener(this::onClick);
         }
 
         @Override
         public void onClick(View view) {
+
+
+
             Fragment fragment = new ChatFragment();
             Bundle bundle = new Bundle();
+
+
+            // call read all message when item view is clicked
+            actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(), userid);
+
             bundle.putInt("room_id", chatModelList.get(getAdapterPosition()).getRoomId());
             if (userid.equals(chatModelList.get(getAdapterPosition()).getUserId1())) {
                 bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId2());
-                actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(),
-                        chatModelList.get(getAdapterPosition()).getUserId2());
+
             } else {
                 bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId1());
-                actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(),
-                        chatModelList.get(getAdapterPosition()).getUserId1());
+
             }
             fragment.setArguments(bundle);
 
@@ -228,6 +250,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             @Override
             public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
                 if (response.body().getSuccess() == 1) {
+
                 } else {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
@@ -236,6 +259,29 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             @Override
             public void onFailure(Call<ChatModel> call, Throwable t) {
                 Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    // method untuk menampilkan total pesan yang belum
+    // dibaca
+    private void getCountNewMessage(Integer roomId, String userId, TextView tvCountNewMessage) {
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.getNewMessage(roomId, userId).enqueue(new Callback<List<ChatModel>>() {
+            @Override
+            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                if (response.body().size() > 0 ) {
+                    tvCountNewMessage.setVisibility(View.VISIBLE);
+                    tvCountNewMessage.setText(response.body().size() + "");
+                } else {
+                    tvCountNewMessage.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                Toasty.error(context, "Please check your connection", Toast.LENGTH_SHORT).show();
 
             }
         });
