@@ -75,6 +75,12 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         // get Username and photo profile
         if (userid.equals(chatModelList.get(position).getUserId1())) {
+            if(chatModelList.get(position).getVerified2().equals("1")) {
+                holder.icVerified.setVisibility(View.VISIBLE);
+            } else {
+                holder.icVerified.setVisibility(View.GONE);
+            }
+
 
             holder.tvUsername.setText(chatModelList.get(position).getUsername2());
             Glide.with(context)
@@ -84,13 +90,18 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
                     .into(holder.ivUser);
-            if (chatModelList.get(position).getVerified2().equals("1")) {
+
+
+        } else {
+
+            if(chatModelList.get(position).getVerified1().equals("1")) {
                 holder.icVerified.setVisibility(View.VISIBLE);
-            } else{
+            } else {
                 holder.icVerified.setVisibility(View.GONE);
             }
 
-        } else {
+
+
 
             holder.tvUsername.setText(chatModelList.get(position).getUsername1());
             Glide.with(context)
@@ -100,12 +111,6 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
                     .into(holder.ivUser);
-
-            if (chatModelList.get(position).getVerified1().equals("1")) {
-                holder.icVerified.setVisibility(View.VISIBLE);
-            } else{
-                holder.icVerified.setVisibility(View.GONE);
-            }
 
 
         }
@@ -286,5 +291,40 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             }
         });
     }
+
+//    // get photo verified
+    private void getProfile(String userId, ImageView icVerified) {
+        ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
+        chatInterface.getRoomChat(userId).enqueue(new Callback<List<ChatModel>>() {
+            @Override
+            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                if (response.body().size() > 0 ) {
+                    Toast.makeText(context, "berhasil", Toast.LENGTH_SHORT).show();
+                    if (response.body().get(0).getVerified().equals("1")) {
+                        icVerified.setVisibility(View.VISIBLE);
+                    } else {
+                        icVerified.setVisibility(View.GONE);
+                    }
+
+//                    if (response.body().get(0).getVerified().equals("1")) {
+//                        icVerified.setVisibility(View.VISIBLE);
+//                    } else {
+//                        icVerified.setVisibility(View.GONE);
+//                    }
+
+                } else {
+                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 
 }

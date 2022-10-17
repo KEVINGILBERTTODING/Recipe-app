@@ -143,24 +143,6 @@ public class RoomChatFragment extends Fragment {
         }
     }
 
-    private void getListRoom() {
-        ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
-        chatInterface.getRoomChat2(userid).enqueue(new Callback<ChatModel>() {
-            @Override
-            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
-                if (response.isSuccessful()) {
-                    chatModel = response.body();
-                    Toast.makeText(getContext(), chatModel.getUserId(), Toast.LENGTH_SHORT).show();
-                    chatModel.setRoomId(chatModel.getRoomId());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ChatModel> call, Throwable t) {
-
-            }
-        });
-    }
 
 
 

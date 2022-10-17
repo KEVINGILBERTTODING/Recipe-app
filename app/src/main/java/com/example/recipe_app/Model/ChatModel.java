@@ -38,7 +38,7 @@ public class ChatModel implements Serializable {
     String photoProfile;
     @SerializedName("username")
     String userName;
-    @SerializedName(("verified"))
+    @SerializedName("verified")
     String verified;
     @SerializedName("photo_profile1")
     String photoProfile1;
