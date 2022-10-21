@@ -50,11 +50,20 @@ public class ChatModel implements Serializable {
     String verified1;
     @SerializedName("verified2")
     String verified2;
+    @SerializedName("status")
+    String status;
+    @SerializedName("archieve_1")
+    Integer archieved1;
+    @SerializedName("archieve_2")
+    Integer Archieved2;
+
+
+
     public ChatModel(
             Integer roomId, String userId1, String userId2, String chatImage, String message, Integer success,
             String date, String time, String userId, String chatId, Integer remove, String username1, String username2,
             String photoProfile, String userName, String verified, String photoProfile1, String getPhotoProfile2, String chatModel,
-            String verified1, String verified2) {
+            String verified1, String verified2, String status, Integer archieved1, Integer archieved2) {
         this.userId1 = userId1;
         this.userId2 = userId2;
         this.chatImage = chatImage;
@@ -76,6 +85,9 @@ public class ChatModel implements Serializable {
         this.chatModel = chatModel;
         this.verified1 = verified1;
         this.verified2 = verified2;
+        this.status = status;
+        archieved1 = archieved1;
+        archieved2 = archieved2;
     }
 
     public String getUserId1() {
@@ -259,5 +271,29 @@ public class ChatModel implements Serializable {
 
     public void setVerified2(String verified2) {
         this.verified2 = verified2;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getArchieved1() {
+        return archieved1;
+    }
+
+    public void setArchieved1(Integer archieved1) {
+        this.archieved1 = archieved1;
+    }
+
+    public Integer getArchieved2() {
+        return Archieved2;
+    }
+
+    public void setArchieved2(Integer archieved2) {
+        Archieved2 = archieved2;
     }
 }

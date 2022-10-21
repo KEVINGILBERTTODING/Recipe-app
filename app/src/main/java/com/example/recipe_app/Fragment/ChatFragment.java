@@ -399,6 +399,8 @@ public class ChatFragment extends Fragment {
 
     }
 
+    // method action archieved message
+
 
 
 

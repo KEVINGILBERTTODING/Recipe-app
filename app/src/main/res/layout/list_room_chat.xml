@@ -6,6 +6,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipeChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/lr_delete"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:background="@color/dark_grey"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnArchieve"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_archieve"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/rlChat"
@@ -114,6 +148,7 @@
 
 
     </RelativeLayout>
+    </com.daimajia.swipe.SwipeLayout>
 
 
 </RelativeLayout>

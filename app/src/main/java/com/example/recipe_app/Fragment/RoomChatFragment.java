@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -57,6 +59,8 @@ public class RoomChatFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ConnectivityManager conMgr;
+    private RelativeLayout rlArchieved;
+    private TextView tvNoChat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +77,8 @@ public class RoomChatFragment extends Fragment {
         searchView = root.findViewById(R.id.searchView);
         btnNewMessage = root.findViewById(R.id.btnChatNew);
         swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        rlArchieved = root.findViewById(R.id.rlArchieved);
+        tvNoChat = root.findViewById(R.id.tvNoMessage);
 
         // btn Back listener
         btnBack.setOnClickListener(view -> {
@@ -107,7 +113,7 @@ public class RoomChatFragment extends Fragment {
 
         // call method get chat room
         getRoomChat(userid);
-//        getListRoom();
+
 
         // change swipe refresh layout color
         swipeRefreshLayout.setColorSchemeResources(R.color.main);
@@ -118,6 +124,14 @@ public class RoomChatFragment extends Fragment {
             public void onRefresh() {
                 getRoomChat(userid);
             }
+        });
+
+        rlArchieved.setOnClickListener(view -> {
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new ArchieveRoomChat())
+                    .addToBackStack(null)
+                    .commit();
         });
 
 
@@ -150,7 +164,7 @@ public class RoomChatFragment extends Fragment {
     // Method get ChatRoom
     private void getRoomChat(String userId) {
         ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.getRoomChat(userId).enqueue(new Callback<List<ChatModel>>() {
+        ci.getRoomChat(userId, 0).enqueue(new Callback<List<ChatModel>>() {
             @Override
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 chatModelList = response.body();
@@ -161,6 +175,8 @@ public class RoomChatFragment extends Fragment {
                     rvChat.setLayoutManager(linearLayoutManager);
                     rvChat.setHasFixedSize(true);
                     swipeRefreshLayout.setRefreshing(false);
+                    tvNoChat.setVisibility(View.GONE);
+                    rvChat.setVisibility(View.VISIBLE);
 
 
                     // show shimmer
@@ -176,6 +192,8 @@ public class RoomChatFragment extends Fragment {
                     }, 1200);
 
                 } else {
+                    rvChat.setVisibility(View.GONE);
+                    tvNoChat.setVisibility(View.VISIBLE);
 
                     swipeRefreshLayout.setRefreshing(false);
                 }

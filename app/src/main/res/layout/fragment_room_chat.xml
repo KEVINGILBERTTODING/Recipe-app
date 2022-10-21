@@ -67,6 +67,8 @@
                     android:orientation="vertical"
                     android:layout_height="match_parent">
 
+
+
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/searchView"
                         android:layout_width="match_parent"
@@ -81,6 +83,48 @@
                         app:queryBackground="@color/transparent"
                         app:queryHint="Search user"
                         app:theme="@style/AppSearchView" />
+
+                    <RelativeLayout
+                        android:id="@+id/rlArchieved"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_13sdp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/ivArchieve"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_archieve"
+                            android:tint="@color/blue"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_height="@dimen/_18sdp">
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/tvArcvieve"
+                            android:layout_width="match_parent"
+                            android:layout_toRightOf="@+id/ivArchieve"
+                            android:layout_height="wrap_content"
+                            android:text="Archieved"
+                            android:fontFamily="@font/popmed"
+                            android:textSize="@dimen/_10ssp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/_10sdp"/>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_below="@id/tvArcvieve"
+                            android:layout_toRightOf="@id/ivArchieve"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:background="@color/gray"/>
+
+                    </RelativeLayout>
 
                     <com.todkars.shimmer.ShimmerRecyclerView
                         android:layout_width="match_parent"
@@ -107,6 +151,7 @@
 
 
         <TextView
+            android:id="@+id/tvNoMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="No messages."

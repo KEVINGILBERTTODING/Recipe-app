@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.ChatFragment;
 import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
@@ -73,12 +75,85 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
     @Override
     public void onBindViewHolder(@NonNull ListRoomChatAdapter.ViewHolder holder, int position) {
 
-        // get Username and photo profile
+        // check if user is equals user_id
         if (userid.equals(chatModelList.get(position).getUserId1())) {
-            if(chatModelList.get(position).getVerified2().equals("1")) {
+            if(chatModelList.get(position).getVerified1().equals("1")) {
+                holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
                 holder.icVerified.setVisibility(View.VISIBLE);
+
+                // Menyembunyikan chat
+
+                if (chatModelList.get(position).getArchieved1() == 1 ) {
+                    holder.relativeLayout.setVisibility(View.GONE);
+
+                } else {
+                    holder.relativeLayout.setVisibility(View.VISIBLE);
+                }
+
+                // hide if status chat i archieved
+
+                holder.btnArchieve.setOnClickListener(view -> {
+                    // call archieved room chat
+                    ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+                    ci.archievedRoom(chatModelList.get(position).getRoomId(), 1).enqueue(new Callback<ChatModel>() {
+                        @Override
+                        public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                            if (response.body().getSuccess() == 1) {
+                                Toasty.normal(context, "Archieved", Toasty.LENGTH_SHORT).show();
+                                chatModelList.remove(position);
+                                notifyDataSetChanged();
+
+                            } else {
+                                Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChatModel> call, Throwable t) {
+                            Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+                });
             } else {
                 holder.icVerified.setVisibility(View.GONE);
+                holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+
+
+                if (chatModelList.get(position).getArchieved2() == 2 ) {
+                    holder.relativeLayout.setVisibility(View.GONE);
+
+                } else {
+                    holder.relativeLayout.setVisibility(View.VISIBLE);
+                }
+
+                holder.btnArchieve.setOnClickListener(view -> {
+                    // call archieved room chat
+                    // call archieved room chat
+                    ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+                    ci.archievedRoom(chatModelList.get(position).getRoomId(), 2).enqueue(new Callback<ChatModel>() {
+                        @Override
+                        public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                            if (response.body().getSuccess() == 1) {
+                                Toasty.normal(context, "Archieved", Toasty.LENGTH_SHORT).show();
+                                chatModelList.remove(position);
+                                notifyDataSetChanged();
+
+
+                            } else {
+                                Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChatModel> call, Throwable t) {
+                            Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+                });
             }
 
 
@@ -121,17 +196,17 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         // call method to show bubble count total new message
         getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
 
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
-                getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
-                handler.postDelayed(this, 1000);
-
-            }
-        }, 4000);
+//
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
+//                getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
+//                handler.postDelayed(this, 1000);
+//
+//            }
+//        }, 4000);
 
 
     }
@@ -151,6 +226,8 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         TextView tvUsername, tvChat, tvDate, tvCountNewMessage;
         ImageView ivUser, icVerified, ivBlock;
         RelativeLayout relativeLayout;
+        SwipeLayout swipeLayout;
+        private ImageButton btnArchieve;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -163,6 +240,8 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             tvDate = itemView.findViewById(R.id.tvDate);
             relativeLayout = itemView.findViewById(R.id.rlChat);
             tvCountNewMessage = itemView.findViewById(R.id.tvCountNewMessage);
+            swipeLayout = itemView.findViewById(R.id.swipeChat);
+            btnArchieve = itemView.findViewById(R.id.btnArchieve);
 
 
             itemView.setOnClickListener(this::onClick);
@@ -231,7 +310,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
                     else {
                         tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
-//
+
 
                     }
                 } else {
@@ -255,6 +334,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             @Override
             public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
                 if (response.body().getSuccess() == 1) {
+
 
                 } else {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -292,39 +372,32 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         });
     }
 
-//    // get photo verified
-    private void getProfile(String userId, ImageView icVerified) {
-        ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
-        chatInterface.getRoomChat(userId).enqueue(new Callback<List<ChatModel>>() {
+    // Method archieved room chat
+    private void archieveRoomChat(Integer roomId, Integer code, Integer postion) {
+        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+        ci.archievedRoom(roomId, code).enqueue(new Callback<ChatModel>() {
             @Override
-            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
-                if (response.body().size() > 0 ) {
-                    Toast.makeText(context, "berhasil", Toast.LENGTH_SHORT).show();
-                    if (response.body().get(0).getVerified().equals("1")) {
-                        icVerified.setVisibility(View.VISIBLE);
-                    } else {
-                        icVerified.setVisibility(View.GONE);
-                    }
-
-//                    if (response.body().get(0).getVerified().equals("1")) {
-//                        icVerified.setVisibility(View.VISIBLE);
-//                    } else {
-//                        icVerified.setVisibility(View.GONE);
-//                    }
+            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                if (response.body().getSuccess() == 1) {
+                    Toasty.normal(context, "Archieved", Toasty.LENGTH_SHORT).show();
+                    notifyItemRemoved(postion);
+                    notifyDataSetChanged();
+                    notifyItemChanged(postion, chatModelList.size());
 
                 } else {
-                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show();
+                    Toasty.error(context, "Something went wring", Toasty.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
-                Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ChatModel> call, Throwable t) {
+                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+
 
             }
         });
-
     }
+
 
 
 }

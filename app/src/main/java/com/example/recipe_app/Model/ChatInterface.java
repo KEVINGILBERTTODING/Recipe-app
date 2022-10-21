@@ -14,13 +14,9 @@ public interface ChatInterface {
     // get list chat
     @GET("get_list_chat.php")
     Call<List<ChatModel>> getRoomChat(
-            @Query("user_id") String userId
+            @Query("user_id") String userId,
+            @Query("archieve") Integer archieve
     );
-@GET("get_list_chat.php")
-    Call<ChatModel> getRoomChat2(
-            @Query("user_id") String userId
-    );
-
 
 
     // get message
@@ -66,6 +62,14 @@ public interface ChatInterface {
     Call<List<ChatModel>> getNewMessage(
             @Query("room_id") Integer rooomId,
             @Query("user_id") String userId
+    );
+
+    // archieved room chat
+    @FormUrlEncoded
+    @POST("action_archieve_room.php")
+    Call<ChatModel> archievedRoom(
+            @Field("room_id") Integer roomId,
+            @Field("code") Integer code
     );
 
 
