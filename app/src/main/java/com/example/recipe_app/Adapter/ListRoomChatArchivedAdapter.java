@@ -10,7 +10,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +31,8 @@ import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.ChatFragment;
 import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
-import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
-import com.example.recipe_app.Util.InterfaceProfile;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +42,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapter.ViewHolder> {
+public class ListRoomChatArchivedAdapter extends RecyclerView.Adapter<ListRoomChatArchivedAdapter.ViewHolder> {
 
     Context context;
     List<ChatModel> chatModelList = new ArrayList<>();
     String username, userid;
 
-    public ListRoomChatAdapter(Context context, List<ChatModel> chatModelList) {
+    public ListRoomChatArchivedAdapter(Context context, List<ChatModel> chatModelList) {
         this.context = context;
         this.chatModelList = chatModelList;
 
@@ -66,14 +61,14 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
     @NonNull
     @Override
-    public ListRoomChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListRoomChatArchivedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View root = LayoutInflater.from(context).inflate(R.layout.list_room_chat, parent, false);
         return new ViewHolder(root);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListRoomChatAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ListRoomChatArchivedAdapter.ViewHolder holder, int position) {
 
         // check if user is equals user_id
         if (userid.equals(chatModelList.get(position).getUserId1())) {
@@ -81,15 +76,14 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
                 holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
                 holder.icVerified.setVisibility(View.VISIBLE);
 
-                // Menyembunyikan chat
-
-                if (chatModelList.get(position).getArchieved1() == 1 ) {
-                    holder.relativeLayout.setVisibility(View.GONE);
-//                    chatModelList.remove(position);
-
-                } else {
-                    holder.relativeLayout.setVisibility(View.VISIBLE);
-                }
+//                // Menyembunyikan chat
+//
+//                if (chatModelList.get(position).getArchieved1() == 1 ) {
+//                    holder.relativeLayout.setVisibility(View.GONE);
+//
+//                } else {
+//                    holder.relativeLayout.setVisibility(View.VISIBLE);
+//                }
 
                 // hide if status chat i archieved
 
@@ -120,16 +114,14 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             } else {
                 holder.icVerified.setVisibility(View.GONE);
                 holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-
-
-                if (chatModelList.get(position).getArchieved2() == 2 ) {
-                    holder.relativeLayout.setVisibility(View.GONE);
-
-
-
-                } else {
-                    holder.relativeLayout.setVisibility(View.VISIBLE);
-                }
+//
+//
+//                if (chatModelList.get(position).getArchieved2() == 2 ) {
+//                    holder.relativeLayout.setVisibility(View.GONE);
+//
+//                } else {
+//                    holder.relativeLayout.setVisibility(View.VISIBLE);
+//                }
 
                 holder.btnArchieve.setOnClickListener(view -> {
                     // call archieved room chat

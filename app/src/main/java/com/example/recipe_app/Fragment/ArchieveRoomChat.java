@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.recipe_app.Adapter.ListRoomChatAdapter;
+import com.example.recipe_app.Adapter.ListRoomChatArchivedAdapter;
 import com.example.recipe_app.Model.ChatInterface;
 import com.example.recipe_app.Model.ChatModel;
 import com.example.recipe_app.R;
@@ -41,7 +42,7 @@ public class ArchieveRoomChat extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     String userid;
     private List<ChatModel> chatModelList = new ArrayList<>();
-    ListRoomChatAdapter listRoomChatAdapter;
+    ListRoomChatArchivedAdapter listRoomChatAdapter;
     private LinearLayoutManager linearLayoutManager;
     private ConnectivityManager conMgr;
     private TextView tvNoChat;
@@ -99,7 +100,7 @@ public class ArchieveRoomChat extends Fragment {
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 chatModelList = response.body();
                 if (chatModelList.size() > 0) {
-                    listRoomChatAdapter = new ListRoomChatAdapter(getContext(), chatModelList);
+                    listRoomChatAdapter = new ListRoomChatArchivedAdapter(getContext(), chatModelList);
                     linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
                     rvArchieverRoom.setAdapter(listRoomChatAdapter);
                     rvArchieverRoom.setLayoutManager(linearLayoutManager);
