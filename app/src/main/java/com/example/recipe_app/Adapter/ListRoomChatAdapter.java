@@ -125,8 +125,6 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
                 if (chatModelList.get(position).getArchieved2() == 2 ) {
                     holder.relativeLayout.setVisibility(View.GONE);
 
-
-
                 } else {
                     holder.relativeLayout.setVisibility(View.VISIBLE);
                 }

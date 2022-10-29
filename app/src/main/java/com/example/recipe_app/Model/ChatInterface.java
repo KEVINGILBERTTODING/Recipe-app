@@ -72,5 +72,10 @@ public interface ChatInterface {
             @Field("code") Integer code
     );
 
+    @GET("get_list_chat_archieve.php")
+    Call<List<ChatModel>> getRoomChatArchieved(
+            @Query("user_id") String userId
+    );
+
 
 }

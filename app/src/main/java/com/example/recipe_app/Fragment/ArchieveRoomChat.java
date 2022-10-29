@@ -68,7 +68,6 @@ public class ArchieveRoomChat extends Fragment {
 
         // change color swipe refresh
         swipeRefreshLayout.setColorSchemeResources(R.color.main);
-
         btnBack.setOnClickListener(view -> {
             getFragmentManager().popBackStack();
         });
@@ -95,7 +94,7 @@ public class ArchieveRoomChat extends Fragment {
     // Get archieved message
     private void getArchievedMessage() {
         ChatInterface chatInterface = DataApi.getClient().create(ChatInterface.class);
-        chatInterface.getRoomChat(userid, 1).enqueue(new Callback<List<ChatModel>>() {
+        chatInterface.getRoomChatArchieved(userid).enqueue(new Callback<List<ChatModel>>() {
             @Override
             public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
                 chatModelList = response.body();
@@ -142,6 +141,8 @@ public class ArchieveRoomChat extends Fragment {
 
         rvArchieverRoom.showShimmer();
         checkConnection();
+
+
     }
 
 
