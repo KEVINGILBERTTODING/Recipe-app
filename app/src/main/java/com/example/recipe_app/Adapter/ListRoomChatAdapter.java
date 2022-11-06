@@ -77,13 +77,13 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         // check if user is equals user_id
         if (userid.equals(chatModelList.get(position).getUserId1())) {
-            if(chatModelList.get(position).getVerified1().equals("1")) {
+            if (chatModelList.get(position).getVerified1().equals("1")) {
                 holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
                 holder.icVerified.setVisibility(View.VISIBLE);
 
                 // Menyembunyikan chat
 
-                if (chatModelList.get(position).getArchieved1() == 1 ) {
+                if (chatModelList.get(position).getArchieved1() == 1) {
                     holder.relativeLayout.setVisibility(View.GONE);
 //                    chatModelList.remove(position);
 
@@ -122,7 +122,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
                 holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
 
 
-                if (chatModelList.get(position).getArchieved2() == 2 ) {
+                if (chatModelList.get(position).getArchieved2() == 2) {
                     holder.relativeLayout.setVisibility(View.GONE);
 
                 } else {
@@ -161,7 +161,7 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             holder.tvUsername.setText(chatModelList.get(position).getUsername2());
             Glide.with(context)
                     .load(chatModelList.get(position).getGetPhotoProfile2())
-                    .override(300,300)
+                    .override(300, 300)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
@@ -170,19 +170,17 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
 
         } else {
 
-            if(chatModelList.get(position).getVerified1().equals("1")) {
+            if (chatModelList.get(position).getVerified1().equals("1")) {
                 holder.icVerified.setVisibility(View.VISIBLE);
             } else {
                 holder.icVerified.setVisibility(View.GONE);
             }
 
 
-
-
             holder.tvUsername.setText(chatModelList.get(position).getUsername1());
             Glide.with(context)
                     .load(chatModelList.get(position).getPhotoProfile1())
-                    .override(300,300)
+                    .override(300, 300)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .skipMemoryCache(true)
@@ -197,20 +195,40 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         // call method to show bubble count total new message
         getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
 
-//
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                getCountNewMessage(chatModelList.get(position).getRoomId(), userid, holder.tvCountNewMessage);
-//                getLastChat(chatModelList.get(position).getRoomId(), holder.tvChat, holder.ivBlock, holder.tvDate, holder.relativeLayout);
-//                handler.postDelayed(this, 1000);
-//
-//            }
-//        }, 4000);
 
+
+
+        // saat itemview room chat di klik
+
+        holder.rl2.setOnClickListener(view -> {
+
+            Fragment fragment = new ChatFragment();
+            Bundle bundle = new Bundle();
+
+
+            // call read all message when item view is clicked
+            actionReadMessage(chatModelList.get(position).getRoomId(), userid);
+
+            bundle.putInt("room_id", chatModelList.get(position).getRoomId());
+            if (userid.equals(chatModelList.get(position).getUserId1())) {
+                bundle.putString("user_id", chatModelList.get(position).getUserId2());
+
+            } else {
+                bundle.putString("user_id", chatModelList.get(position).getUserId1());
+
+            }
+            fragment.setArguments(bundle);
+
+
+            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+        });
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -222,11 +240,11 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvUsername, tvChat, tvDate, tvCountNewMessage;
         ImageView ivUser, icVerified, ivBlock;
-        RelativeLayout relativeLayout;
+        RelativeLayout relativeLayout, rl1, rl2;
         SwipeLayout swipeLayout;
         private ImageButton btnArchieve;
 
@@ -243,162 +261,123 @@ public class ListRoomChatAdapter extends RecyclerView.Adapter<ListRoomChatAdapte
             tvCountNewMessage = itemView.findViewById(R.id.tvCountNewMessage);
             swipeLayout = itemView.findViewById(R.id.swipeChat);
             btnArchieve = itemView.findViewById(R.id.btnArchieve);
-
-
-            itemView.setOnClickListener(this::onClick);
-        }
-
-        @Override
-        public void onClick(View view) {
-
-
-
-            Fragment fragment = new ChatFragment();
-            Bundle bundle = new Bundle();
-
-
-            // call read all message when item view is clicked
-            actionReadMessage(chatModelList.get(getAdapterPosition()).getRoomId(), userid);
-
-            bundle.putInt("room_id", chatModelList.get(getAdapterPosition()).getRoomId());
-            if (userid.equals(chatModelList.get(getAdapterPosition()).getUserId1())) {
-                bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId2());
-
-            } else {
-                bundle.putString("user_id", chatModelList.get(getAdapterPosition()).getUserId1());
-
-            }
-            fragment.setArguments(bundle);
-
-
-
-            ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            rl2 = itemView.findViewById(R.id.relative2);
 
         }
     }
 
 
+        // Method mengambil chat paling akhir
+        private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {
+            ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+            ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
+                @Override
+                public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                    if (response.body().size() > 0) {
 
-    // Method mengambil chat paling akhir
-    private void getLastChat(Integer roomId, TextView tvChat, ImageView ivBlock, TextView tvDate, RelativeLayout rlChat) {
-        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.getMessage(roomId).enqueue(new Callback<List<ChatModel>>() {
-            @Override
-            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
-                if (response.body().size() > 0) {
+
+                        tvDate.setText(response.body().get(response.body().size() - 1).getDate().toString());
+
+                        if (response.body().get(response.body().size() - 1).getRemove() == 2) {
+                            tvChat.setText("You deleted this message.");
+                            final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                            tvChat.setTypeface(typeface);
+                        } else if (response.body().get(response.body().size() - 1).getRemove() == 1) {
+                            ivBlock.setVisibility(View.VISIBLE);
+                            final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
+                            tvChat.setText("You deleted this message.");
+                            tvChat.setTypeface(typeface);
+                            ivBlock.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
+
+                        } else {
+                            tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
 
 
-                    tvDate.setText(response.body().get(response.body().size() -1).getDate().toString());
-
-                    if (response.body().get(response.body().size() - 1).getRemove() == 2) {
-                        tvChat.setText("You deleted this message.");
-                        final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
-                        tvChat.setTypeface(typeface);
+                        }
+                    } else {
+                        rlChat.setVisibility(View.GONE);
                     }
+                }
+
+                @Override
+                public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
 
-                    else if (response.body().get(response.body().size() - 1).getRemove() == 1) {
-                        ivBlock.setVisibility(View.VISIBLE);
-                        final Typeface typeface = ResourcesCompat.getFont(context, R.font.popmedit);
-                        tvChat.setText("You deleted this message.");
-                        tvChat.setTypeface(typeface);
-                        ivBlock.setBackgroundTintList( ColorStateList.valueOf(Color.parseColor("#FF0000")));
+                }
+            });
+        }
 
+        // method action read message
+        private void actionReadMessage(Integer roomId, String user_id) {
+            ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+            ci.actionReadMessage(roomId, user_id).enqueue(new Callback<ChatModel>() {
+                @Override
+                public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                    if (response.body().getSuccess() == 1) {
+
+
+                    } else {
+                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
+                }
 
-                    else {
-                        tvChat.setText(response.body().get(response.body().size() - 1).getMessage());
+                @Override
+                public void onFailure(Call<ChatModel> call, Throwable t) {
+                    Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
 
+                }
+            });
+        }
 
+        // method untuk menampilkan total pesan yang belum
+        // dibaca
+        private void getCountNewMessage(Integer roomId, String userId, TextView tvCountNewMessage) {
+            ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+            ci.getNewMessage(roomId, userId).enqueue(new Callback<List<ChatModel>>() {
+                @Override
+                public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
+                    if (response.body().size() > 0) {
+                        tvCountNewMessage.setVisibility(View.VISIBLE);
+                        tvCountNewMessage.setText(response.body().size() + "");
+                    } else {
+                        tvCountNewMessage.setVisibility(View.GONE);
                     }
-                } else {
-                    rlChat.setVisibility(View.GONE);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
-                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<List<ChatModel>> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toast.LENGTH_SHORT).show();
 
-
-            }
-        });
-    }
-
-    // method action read message
-    private void actionReadMessage(Integer roomId, String user_id) {
-        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.actionReadMessage(roomId, user_id).enqueue(new Callback<ChatModel>() {
-            @Override
-            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
-                if (response.body().getSuccess() == 1) {
-
-
-                } else {
-                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<ChatModel> call, Throwable t) {
-                Toast.makeText(context, "Please check your connection", Toast.LENGTH_SHORT).show();
+        // Method archieved room chat
+        private void archieveRoomChat(Integer roomId, Integer code, Integer postion) {
+            ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
+            ci.archievedRoom(roomId, code).enqueue(new Callback<ChatModel>() {
+                @Override
+                public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
+                    if (response.body().getSuccess() == 1) {
+                        Toasty.normal(context, "Archieved", Toasty.LENGTH_SHORT).show();
+                        notifyItemRemoved(postion);
+                        notifyDataSetChanged();
+                        notifyItemChanged(postion, chatModelList.size());
 
-            }
-        });
-    }
-
-    // method untuk menampilkan total pesan yang belum
-    // dibaca
-    private void getCountNewMessage(Integer roomId, String userId, TextView tvCountNewMessage) {
-        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.getNewMessage(roomId, userId).enqueue(new Callback<List<ChatModel>>() {
-            @Override
-            public void onResponse(Call<List<ChatModel>> call, Response<List<ChatModel>> response) {
-                if (response.body().size() > 0 ) {
-                    tvCountNewMessage.setVisibility(View.VISIBLE);
-                    tvCountNewMessage.setText(response.body().size() + "");
-                } else {
-                    tvCountNewMessage.setVisibility(View.GONE);
+                    } else {
+                        Toasty.error(context, "Something went wring", Toasty.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<ChatModel>> call, Throwable t) {
-                Toasty.error(context, "Please check your connection", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<ChatModel> call, Throwable t) {
+                    Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
 
-            }
-        });
-    }
 
-    // Method archieved room chat
-    private void archieveRoomChat(Integer roomId, Integer code, Integer postion) {
-        ChatInterface ci = DataApi.getClient().create(ChatInterface.class);
-        ci.archievedRoom(roomId, code).enqueue(new Callback<ChatModel>() {
-            @Override
-            public void onResponse(Call<ChatModel> call, Response<ChatModel> response) {
-                if (response.body().getSuccess() == 1) {
-                    Toasty.normal(context, "Archieved", Toasty.LENGTH_SHORT).show();
-                    notifyItemRemoved(postion);
-                    notifyDataSetChanged();
-                    notifyItemChanged(postion, chatModelList.size());
-
-                } else {
-                    Toasty.error(context, "Something went wring", Toasty.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<ChatModel> call, Throwable t) {
-                Toasty.error(context, "Please check your connection", Toasty.LENGTH_SHORT).show();
+            });
+        }
 
 
-            }
-        });
     }
-
-
-
-}
