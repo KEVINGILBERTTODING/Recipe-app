@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.recipe_app"
         minSdk 21
-        targetSdk 32
+        targetSdk 34
         versionCode 1
         versionName "2.6.2"
 
@@ -25,6 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.example.recipe_app'
 }
 
 dependencies {
@@ -53,7 +54,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
     // Dependencies for lottie animation
-    implementation "com.airbnb.android:lottie:3.7.0"
+    implementation "com.airbnb.android:lottie:6.1.0"
 
     // Dependencies for volley
     implementation 'com.android.volley:volley:1.2.1@aar'
@@ -64,8 +65,8 @@ dependencies {
 
     // Dependencies for converter GSON
 
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Dependencies for circleImageView
 
@@ -73,7 +74,7 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
 
     // Dependencies for Glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'jp.wasabeef:fresco-processors:2.1.0'
 
     // Implementation for custom recycler view

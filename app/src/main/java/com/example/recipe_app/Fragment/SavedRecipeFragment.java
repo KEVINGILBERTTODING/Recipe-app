@@ -130,24 +130,27 @@ public class SavedRecipeFragment extends Fragment {
     }
 
     private void filter(String newText) {
-        ArrayList<RecipeModel> filteredList = new ArrayList<>();
+        if (recipeModelList != null && recipeModelList.size() >0 ) {
+            ArrayList<RecipeModel> filteredList = new ArrayList<>();
 
-        for (RecipeModel item : recipeModelList) {
-            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
+            for (RecipeModel item : recipeModelList) {
+                if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                    filteredList.add(item);
 
+                }
+            }
+
+
+            savedRecipeAdapter.filterList(filteredList);
+
+
+            if (filteredList.isEmpty()) {
+                Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+            } else {
+                savedRecipeAdapter.filterList(filteredList);
             }
         }
 
-
-        savedRecipeAdapter.filterList(filteredList);
-
-
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            savedRecipeAdapter.filterList(filteredList);
-        }
     }
 
     private void getSavedRecipe(String user_id) {

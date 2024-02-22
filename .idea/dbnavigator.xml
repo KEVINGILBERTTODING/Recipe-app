@@ -77,6 +77,9 @@
     }).catch(err => {]]></console>
     </connection>
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
@@ -137,13 +140,15 @@
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
           <database-version value="5.5" />
-          <driver-source value="BUILTIN" />
+          <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="3306" />
           <database value="recipes" />
+          <tns-folder value="" />
+          <tns-profile value="" />
           <type value="USER" />
           <user value="root" />
           <deprecated-pwd value="" />

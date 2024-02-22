@@ -200,6 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Check for error node in json
                     else if (success == 1) {
 
+                        Toasty.success(LoginActivity.this, "Berhasil", Toasty.LENGTH_SHORT).show();
 
 
                         if (role == 1){
@@ -239,6 +240,8 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
+                    Toasty.error(LoginActivity.this, e.getMessage(), Toasty.LENGTH_SHORT).show();
+
                     // JSON error
                     e.printStackTrace();
                 }
