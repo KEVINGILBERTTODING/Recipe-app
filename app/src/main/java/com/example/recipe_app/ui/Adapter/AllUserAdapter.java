@@ -1,4 +1,4 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,8 +19,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

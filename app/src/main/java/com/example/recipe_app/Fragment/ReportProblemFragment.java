@@ -3,8 +3,7 @@ package com.example.recipe_app.Fragment;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -33,10 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;

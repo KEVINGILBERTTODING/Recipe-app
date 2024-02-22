@@ -1,15 +1,14 @@
 package com.example.recipe_app.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,14 +21,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.recipe_app.Adapter.AdapterNotification;
+import com.example.recipe_app.ui.Adapter.AdapterNotification;
 import com.example.recipe_app.Model.NotificationModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceNotification;
 import com.todkars.shimmer.ShimmerRecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,11 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.view.ContentInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;

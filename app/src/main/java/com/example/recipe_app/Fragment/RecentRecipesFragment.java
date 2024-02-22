@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
+import com.example.recipe_app.ui.Adapter.RecipeShowAllAdapter;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
@@ -23,7 +22,6 @@ import com.example.recipe_app.Util.InterfaceRecipe;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;

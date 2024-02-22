@@ -1,7 +1,7 @@
-package com.example.recipe_app;
+package com.example.recipe_app.ui.activities;
 
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.session_status;
+import static com.example.recipe_app.ui.activities.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.ui.activities.LoginActivity.session_status;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.recipe_app.R;
 import com.example.recipe_app.Util.AppController;
 import com.example.recipe_app.Util.ServerAPI;
 import com.google.android.material.textfield.TextInputEditText;

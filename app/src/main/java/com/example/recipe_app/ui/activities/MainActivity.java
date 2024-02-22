@@ -1,4 +1,4 @@
-package com.example.recipe_app;
+package com.example.recipe_app.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,6 +13,7 @@ import com.example.recipe_app.Fragment.CreateRecipeFragment;
 import com.example.recipe_app.Fragment.HomeFragment;
 import com.example.recipe_app.Fragment.MyProfileFragment;
 import com.example.recipe_app.Fragment.SavedRecipeFragment;
+import com.example.recipe_app.R;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;

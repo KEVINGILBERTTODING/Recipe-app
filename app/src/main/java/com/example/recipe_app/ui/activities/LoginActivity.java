@@ -1,4 +1,4 @@
-package com.example.recipe_app;
+package com.example.recipe_app.ui.activities;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,9 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.recipe_app.Admin.DashboardActivity;
+import com.example.recipe_app.R;
 import com.example.recipe_app.Util.AppController;
-import com.example.recipe_app.Util.DataApi;
-import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.ServerAPI;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;

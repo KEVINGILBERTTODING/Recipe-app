@@ -1,12 +1,11 @@
 package com.example.recipe_app.Admin.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -14,23 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.recipe_app.Admin.Adapter.ReqVerifiedAdapter;
 import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
 import com.example.recipe_app.Admin.Interface.InterfaceVerified;
 import com.example.recipe_app.Admin.Model.AdminModel;
@@ -38,13 +31,8 @@ import com.example.recipe_app.Admin.Model.BugReportModel;
 import com.example.recipe_app.Admin.Model.RecipeReportmodel;
 import com.example.recipe_app.Admin.Model.UserReportModel;
 import com.example.recipe_app.Admin.Model.VerificationModel;
-import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
-import com.example.recipe_app.Util.InterfaceProfile;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-import com.kosalgeek.android.photoutil.GalleryPhoto;
 
 import java.util.Calendar;
 import java.util.List;

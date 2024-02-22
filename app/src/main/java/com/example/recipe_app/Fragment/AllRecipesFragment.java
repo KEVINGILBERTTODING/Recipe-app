@@ -1,8 +1,6 @@
 package com.example.recipe_app.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.icu.util.BuddhistCalendar;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -17,13 +15,11 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.AllUserAdapter;
-import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
-import com.example.recipe_app.MainActivity;
+import com.example.recipe_app.ui.Adapter.AllUserAdapter;
+import com.example.recipe_app.ui.Adapter.RecipeShowAllAdapter;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
@@ -32,7 +28,6 @@ import com.example.recipe_app.Util.InterfaceProfile;
 import com.example.recipe_app.Util.InterfaceRecipe;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 

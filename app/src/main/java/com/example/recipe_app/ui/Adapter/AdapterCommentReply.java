@@ -1,8 +1,8 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.TAG_USERNAME;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.TAG_USERNAME;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,11 +29,9 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Fragment.UserLikeFragment;
-import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
-import com.example.recipe_app.Util.InterfaceComment;
 import com.example.recipe_app.Util.InterfaceReplyComment;
 
 import java.util.ArrayList;

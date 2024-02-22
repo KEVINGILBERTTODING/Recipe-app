@@ -1,7 +1,6 @@
 package com.example.recipe_app.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -9,7 +8,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
@@ -19,18 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.RecipeCategoryPopular;
-import com.example.recipe_app.Adapter.RecipeShowAllAdapter;
-import com.example.recipe_app.MainActivity;
+import com.example.recipe_app.ui.Adapter.RecipeCategoryPopular;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceRecipe;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 

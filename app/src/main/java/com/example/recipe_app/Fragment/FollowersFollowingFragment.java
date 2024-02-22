@@ -1,20 +1,14 @@
 package com.example.recipe_app.Fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +16,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.recipe_app.Adapter.FollowersAdapter;
-import com.example.recipe_app.Adapter.FollowingAdapter;
-import com.example.recipe_app.Adapter.MyFollowersAdapter;
+import com.example.recipe_app.ui.Adapter.FollowersAdapter;
+import com.example.recipe_app.ui.Adapter.FollowingAdapter;
+import com.example.recipe_app.ui.Adapter.MyFollowersAdapter;
 import com.example.recipe_app.Model.ProfileModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;

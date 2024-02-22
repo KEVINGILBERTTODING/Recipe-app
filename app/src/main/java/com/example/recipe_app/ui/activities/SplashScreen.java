@@ -1,4 +1,4 @@
-package com.example.recipe_app;
+package com.example.recipe_app.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,17 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.recipe_app.Admin.Interface.InterfaceAdmin;
-import com.example.recipe_app.Model.AppModel;
-import com.example.recipe_app.Util.DataApi;
-
-import org.w3c.dom.Text;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.recipe_app.R;
 
 public class SplashScreen extends AppCompatActivity {
 

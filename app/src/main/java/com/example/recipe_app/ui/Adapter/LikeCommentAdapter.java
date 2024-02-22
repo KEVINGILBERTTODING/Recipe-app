@@ -1,7 +1,7 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.example.recipe_app.LoginActivity.my_shared_preferences;
+import static com.example.recipe_app.ui.activities.LoginActivity.my_shared_preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.ShowProfileFragment;
+import com.example.recipe_app.Model.CommentModel;
 import com.example.recipe_app.Model.ProfileModel;
-import com.example.recipe_app.Model.ReplyCommentModel;
 import com.example.recipe_app.R;
 import com.example.recipe_app.Util.DataApi;
 import com.example.recipe_app.Util.InterfaceProfile;
@@ -35,15 +35,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentReplyAdapter.ViewHolder> {
+public class LikeCommentAdapter extends RecyclerView.Adapter<LikeCommentAdapter.ViewHolder> {
 
     Context context;
-    List<ReplyCommentModel> replyCommentModelList = new ArrayList<>();
+    List<CommentModel> commentModelList = new ArrayList<>();
     String userid;
 
-    public LikeCommentReplyAdapter(Context context, List<ReplyCommentModel> replyCommentModelList) {
+    public LikeCommentAdapter(Context context, List<CommentModel> commentModelList) {
         this.context = context;
-        this.replyCommentModelList = replyCommentModelList;
+        this.commentModelList = commentModelList;
 
         // Mengambil username dan user_id menggunakan sharedpreferences
         SharedPreferences sharedPreferences = context.getSharedPreferences(my_shared_preferences, MODE_PRIVATE);
@@ -52,20 +52,20 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
 
     @NonNull
     @Override
-    public LikeCommentReplyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LikeCommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(context).inflate(R.layout.list_like_comment, parent, false);
         return new ViewHolder(root);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LikeCommentReplyAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LikeCommentAdapter.ViewHolder holder, int position) {
 
-        holder.tvUsername.setText(replyCommentModelList.get(position).getUsername());
-        String useIdx = replyCommentModelList.get(position).getUser_id();
+        holder.tvUsername.setText(commentModelList.get(position).getUsername());
+        String useIdx = commentModelList.get(position).getUser_id();
 
         // load photo profile
         Glide.with(context)
-                .load(replyCommentModelList.get(position).getPhoto_profile())
+                .load(commentModelList.get(position).getPhoto_profile())
                 .override(300, 300)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -73,7 +73,7 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
                 .into(holder.ivProfile);
 
         // show badge verified if user is verified
-        if (replyCommentModelList.get(position).getVerified().equals("1")) {
+        if (commentModelList.get(position).getVerified().equals("1")) {
             holder.icVerified.setVisibility(View.VISIBLE);
         } else {
             holder.icVerified.setVisibility(View.GONE);
@@ -81,7 +81,7 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
 
 
         // Check if user id == user id
-        if (userid.equals(replyCommentModelList.get(position).getUser_id())) {
+        if (userid.equals(commentModelList.get(position).getUser_id())) {
             holder.btnFollow.setVisibility(View.GONE);
             holder.btnUnfollow.setVisibility(View.GONE);
         } else {
@@ -89,7 +89,7 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
             // Check following is user alerady follow
             // if yes than show button unfollow and hide btn follow
             InterfaceProfile interfaceProfile = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile.checkFollowing(userid, replyCommentModelList.get(position).getUser_id()).enqueue(new Callback<List<ProfileModel>>() {
+            interfaceProfile.checkFollowing(userid, commentModelList.get(position).getUser_id()).enqueue(new Callback<List<ProfileModel>>() {
                 @Override
                 public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                     if (response.body().size() > 0) {
@@ -106,7 +106,7 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
 
                         // Check follow account than show button follow back
                         InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
-                        interfaceProfile1.checkFollowers(userid, replyCommentModelList.get(position).getUser_id()).enqueue(new Callback<List<ProfileModel>>() {
+                        interfaceProfile1.checkFollowers(userid, commentModelList.get(position).getUser_id()).enqueue(new Callback<List<ProfileModel>>() {
                             @Override
                             public void onResponse(Call<List<ProfileModel>> call, Response<List<ProfileModel>> response) {
                                 if (response.body().size() > 0) {
@@ -150,14 +150,14 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
             @Override
             public void onClick(View view) {
                 InterfaceProfile interfaceProfile1 = DataApi.getClient().create(InterfaceProfile.class);
-                interfaceProfile1.followAccount(userid, replyCommentModelList.get(position).getUser_id()).enqueue(new Callback<ProfileModel>() {
+                interfaceProfile1.followAccount(userid, commentModelList.get(position).getUser_id()).enqueue(new Callback<ProfileModel>() {
                     @Override
                     public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
 
                         if (response.body().getSuccess().equals("1")) {
                             holder.btnUnfollow.setVisibility(View.VISIBLE);
                             holder.btnFollow.setVisibility(View.GONE);
-                            Toasty.success(context, "Followed " + replyCommentModelList.get(position).getUsername().toString()).show();
+                            Toasty.success(context, "Followed " + commentModelList.get(position).getUsername().toString()).show();
 
                         } else {
                             Toasty.error(context, "Something went wrong", Toasty.LENGTH_SHORT).show();
@@ -180,13 +180,13 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
         holder.btnUnfollow.setOnClickListener(view -> {
 
             InterfaceProfile interfaceProfile2 = DataApi.getClient().create(InterfaceProfile.class);
-            interfaceProfile2.unfollAccount(userid, replyCommentModelList.get(position).getUser_id()).enqueue(new Callback<ProfileModel>() {
+            interfaceProfile2.unfollAccount(userid, commentModelList.get(position).getUser_id()).enqueue(new Callback<ProfileModel>() {
                 @Override
                 public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
                     if (response.body().getSuccess().equals("1")) {
                         holder.btnFollow.setVisibility(View.VISIBLE);
                         holder.btnUnfollow.setVisibility(View.GONE);
-                        Toasty.warning(context, "Unfollowed " + replyCommentModelList.get(position).getUsername().toString()).show();
+                        Toasty.warning(context, "Unfollowed " + commentModelList.get(position).getUsername().toString()).show();
 
 
                     } else  {
@@ -210,14 +210,13 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
 
     @Override
     public int getItemCount() {
-        return replyCommentModelList.size();
+        return commentModelList.size();
     }
 
-    public void filterData(ArrayList<ReplyCommentModel> filterdLikeCommentReply) {
-        replyCommentModelList = filterdLikeCommentReply;
+    public void filterlist(ArrayList<CommentModel> filtered) {
+        commentModelList = filtered;
         notifyDataSetChanged();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -243,7 +242,7 @@ public class LikeCommentReplyAdapter extends RecyclerView.Adapter<LikeCommentRep
         public void onClick(View view) {
             Fragment fragment = new ShowProfileFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("user_id", replyCommentModelList.get(getAdapterPosition()).getUser_id());
+            bundle.putString("user_id", commentModelList.get(getAdapterPosition()).getUser_id());
             fragment.setArguments(bundle);
 
             ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()

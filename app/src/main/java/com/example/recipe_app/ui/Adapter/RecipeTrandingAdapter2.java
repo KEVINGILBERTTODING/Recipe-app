@@ -1,4 +1,4 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,12 +22,12 @@ import com.example.recipe_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeShowAllAdapter extends RecyclerView.Adapter<RecipeShowAllAdapter.ViewHolder> {
+public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingAdapter2.ViewHolder> {
 
     Context context;
     List<RecipeModel> recipeModels;
 
-    public RecipeShowAllAdapter(Context context, List<RecipeModel> recipeModels) {
+    public RecipeTrandingAdapter2(Context context, List<RecipeModel> recipeModels) {
         this.context = context;
         this.recipeModels = recipeModels;
     }
@@ -35,13 +35,13 @@ public class RecipeShowAllAdapter extends RecyclerView.Adapter<RecipeShowAllAdap
 
     @NonNull
     @Override
-    public RecipeShowAllAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecipeTrandingAdapter2.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_data_show_all, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeShowAllAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeTrandingAdapter2.ViewHolder holder, int position) {
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
@@ -54,13 +54,11 @@ public class RecipeShowAllAdapter extends RecyclerView.Adapter<RecipeShowAllAdap
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .dontAnimate()
-                .fitCenter()
-                .centerCrop()
                 .placeholder(R.drawable.template_img)
                 .override(1024, 768)
                 .into(holder.img_profile);
 
-        // set recipe image
+        // Set recipe image
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())
                 .thumbnail(0.5f)
@@ -72,7 +70,6 @@ public class RecipeShowAllAdapter extends RecyclerView.Adapter<RecipeShowAllAdap
                 .fitCenter()
                 .centerCrop()
                 .into(holder.img_recipe);
-
 
 
     }

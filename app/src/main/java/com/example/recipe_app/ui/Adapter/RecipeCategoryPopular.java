@@ -1,4 +1,4 @@
-package com.example.recipe_app.Adapter;
+package com.example.recipe_app.ui.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,18 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.recipe_app.Fragment.DetailRecipeFragment;
+import com.example.recipe_app.Fragment.ShowProfileFragment;
 import com.example.recipe_app.Model.RecipeModel;
 import com.example.recipe_app.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingAdapter2.ViewHolder> {
+public class RecipeCategoryPopular extends RecyclerView.Adapter<RecipeCategoryPopular.ViewHolder> {
 
     Context context;
     List<RecipeModel> recipeModels;
 
-    public RecipeTrandingAdapter2(Context context, List<RecipeModel> recipeModels) {
+    public RecipeCategoryPopular(Context context, List<RecipeModel> recipeModels) {
         this.context = context;
         this.recipeModels = recipeModels;
     }
@@ -35,41 +36,50 @@ public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingA
 
     @NonNull
     @Override
-    public RecipeTrandingAdapter2.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_data_show_all, parent, false);
+    public RecipeCategoryPopular.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_data_recipe_category, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeTrandingAdapter2.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeCategoryPopular.ViewHolder holder, int position) {
         holder.tv_duration.setText(recipeModels.get(position).getDuration());
         holder.tv_title.setText(recipeModels.get(position).getTitle());
         holder.tv_username.setText(recipeModels.get(position).getUsername());
-        holder.tv_rating.setText(recipeModels.get(position).getRatings());
 
-        // set image profile
-        Glide.with(context)
-                .load(recipeModels.get(position).getPhoto_profile())
-                .thumbnail(0.5f)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .dontAnimate()
-                .placeholder(R.drawable.template_img)
-                .override(1024, 768)
-                .into(holder.img_profile);
 
-        // Set recipe image
+
+        // set image recipe
         Glide.with(context)
                 .load(recipeModels.get(position).getImage())
                 .thumbnail(0.5f)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .dontAnimate()
                 .placeholder(R.drawable.template_img)
+                .dontAnimate()
                 .override(1024, 768)
                 .fitCenter()
                 .centerCrop()
                 .into(holder.img_recipe);
+
+
+
+        // tv username jika di klik maka akan menampilkan profile
+        holder.tv_username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new ShowProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", recipeModels.get(position).getUser_id());
+                fragment.setArguments(bundle);
+
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
 
 
     }
@@ -79,7 +89,7 @@ public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingA
         return recipeModels.size();
     }
 
-
+    // Method from searchview
     public void filterList(ArrayList<RecipeModel> filteredList) {
 
         recipeModels = filteredList;
@@ -88,20 +98,20 @@ public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingA
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_rating, tv_duration, tv_title, tv_username;
-        ImageView img_recipe, img_profile;
+        ImageView img_recipe;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_recipe = itemView.findViewById(R.id.img_recipe);
-            img_profile = itemView.findViewById(R.id.img_profile);
-
-            tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_duration = itemView.findViewById(R.id.tv_duration);
-            tv_title = itemView.findViewById(R.id.tv_title);
-            tv_username = itemView.findViewById(R.id.tv_recipe_username);
+            tv_title = itemView.findViewById(R.id.tv_recipe_name);
+            tv_username = itemView.findViewById(R.id.tv_username);
 
             itemView.setOnClickListener(this);
+
+
+
 
         }
 
@@ -116,6 +126,7 @@ public class RecipeTrandingAdapter2 extends RecyclerView.Adapter<RecipeTrandingA
             Bundle bundle = new Bundle();
             bundle.putString("recipe_id", recipeModels.get(getAdapterPosition()).getRecipe_id());
             bundle.putString("user_id", recipeModels.get(getAdapterPosition()).getUser_id());
+            bundle.putString("verified", recipeModels.get(getAdapterPosition()).getVerified());
             bundle.putString("username", recipeModels.get(getAdapterPosition()).getUsername());
             bundle.putString("title", recipeModels.get(getAdapterPosition()).getTitle());
             bundle.putString("description", recipeModels.get(getAdapterPosition()).getDescription());
