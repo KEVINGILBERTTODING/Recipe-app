@@ -9,7 +9,7 @@
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_60sdp"
     android:layout_marginTop="@dimen/_10sdp"
-    tools:context=".Fragment.EditMyRecipeFragment">
+    tools:context=".ui.user.Fragment.EditMyRecipeFragment">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/app_bar"

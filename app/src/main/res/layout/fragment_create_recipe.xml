@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/_10sdp"
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp"
-    tools:context=".Fragment.CreateRecipeFragment">
+    tools:context=".ui.user.Fragment.CreateRecipeFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

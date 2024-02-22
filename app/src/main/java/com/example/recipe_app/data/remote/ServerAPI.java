@@ -1,0 +1,8 @@
+package com.example.recipe_app.data.remote;
+
+public class ServerAPI {
+    public static final String BASE_URL = "http://192.168.100.54/recipe/";
+
+    public static final String URL_LOGIN =  BASE_URL + "login.php";
+    public static final String URL_REGISTER =  BASE_URL + "register.php";
+}

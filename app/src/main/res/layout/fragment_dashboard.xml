@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
-    tools:context=".Admin.Fragment.DashboardFragment">
+    tools:context=".ui.Admin.Fragment.DashboardFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_dashboard"

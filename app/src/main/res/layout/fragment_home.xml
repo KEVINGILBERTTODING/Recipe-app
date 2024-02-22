@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp"
-    tools:context=".Fragment.HomeFragment">
+    tools:context=".ui.user.Fragment.HomeFragment">
 
         <RelativeLayout
             android:id="@+id/layout_header"

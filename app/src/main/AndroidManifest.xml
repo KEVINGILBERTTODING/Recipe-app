@@ -24,22 +24,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.RegisterActivity"
+            android:name=".ui.activities.auth.RegisterActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.login_register" />
         <activity
-            android:name=".ui.activities.LoginActivity"
+            android:name=".ui.activities.auth.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.login_register" />
 
         <activity
-            android:name=".Admin.DashboardActivity"
+            android:name=".ui.Admin.DashboardActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.SplashScreen"
+            android:name=".ui.activities.splash.SplashScreen"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SplashScreen">
@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.activities.main.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true" />
     </application>

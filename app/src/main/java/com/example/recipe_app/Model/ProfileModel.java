@@ -1,8 +1,6 @@
 package com.example.recipe_app.Model;
 
-import static com.example.recipe_app.Util.DataApi.BASE_URL;
-
-import com.example.recipe_app.Util.ServerAPI;
+import com.example.recipe_app.data.remote.ServerAPI;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

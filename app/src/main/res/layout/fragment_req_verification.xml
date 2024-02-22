@@ -9,7 +9,7 @@
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
-    tools:context=".Fragment.FragmentReqVerification">
+    tools:context=".ui.user.Fragment.FragmentReqVerification">
 
     <RelativeLayout
         android:id="@+id/rl_appbar"

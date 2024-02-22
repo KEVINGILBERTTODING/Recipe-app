@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/wave"
 
-    tools:context=".Admin.Fragment.ReportRecipeFragment">
+    tools:context=".ui.Admin.Fragment.ReportRecipeFragment">
 
 
     <com.google.android.material.appbar.CollapsingToolbarLayout

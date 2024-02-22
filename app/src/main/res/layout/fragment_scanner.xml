@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/main"
-    tools:context=".Fragment.ScannerFragment">
+    tools:context=".ui.user.Fragment.ScannerFragment">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"

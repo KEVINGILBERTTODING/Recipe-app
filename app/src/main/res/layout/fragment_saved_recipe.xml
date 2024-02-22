@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/_10sdp"
-    tools:context=".Fragment.SavedRecipeFragment">
+    tools:context=".ui.user.Fragment.SavedRecipeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

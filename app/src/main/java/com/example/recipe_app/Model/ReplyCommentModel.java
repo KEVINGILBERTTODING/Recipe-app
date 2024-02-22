@@ -1,6 +1,6 @@
 package com.example.recipe_app.Model;
 
-import static com.example.recipe_app.Util.ServerAPI.BASE_URL;
+import static com.example.recipe_app.data.remote.ServerAPI.BASE_URL;
 
 import com.google.gson.annotations.SerializedName;
 
