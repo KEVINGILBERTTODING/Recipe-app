@@ -469,25 +469,27 @@ public class AllRecipesFragment extends Fragment {
     // METHOD SEARCH RECIPE
     private void filter(String newText) {
 
-        ArrayList<RecipeModel> filteredList = new ArrayList<>();
+       if (recipeModelList != null && recipeModelList.size() > 0) {
+           ArrayList<RecipeModel> filteredList = new ArrayList<>();
 
-        for (RecipeModel item : recipeModelList) {
-            if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                filteredList.add(item);
+           for (RecipeModel item : recipeModelList) {
+               if (item.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                   filteredList.add(item);
 
-            }
-        }
-
-
-        recipeShowAllAdapter.filterList(filteredList);
+               }
+           }
 
 
-        if (filteredList.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            recipeShowAllAdapter.filterList(filteredList);
-        }
+           recipeShowAllAdapter.filterList(filteredList);
 
+
+           if (filteredList.isEmpty()) {
+               Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+           } else {
+               recipeShowAllAdapter.filterList(filteredList);
+           }
+
+       }
 
     }
 
@@ -496,20 +498,22 @@ public class AllRecipesFragment extends Fragment {
 
     // METHOD SEARCH USER
     private void searchUser(String newText) {
-        ArrayList<ProfileModel> searchUser = new ArrayList<>();
-        for (ProfileModel item : profileModelList) {
-            if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
-                searchUser.add(item);
-            }
-        }
+      if (profileModelList != null && profileModelList.size() > 0) {
+          ArrayList<ProfileModel> searchUser = new ArrayList<>();
+          for (ProfileModel item : profileModelList) {
+              if (item.getUsername().toLowerCase().contains(newText.toLowerCase())) {
+                  searchUser.add(item);
+              }
+          }
 
-        allUserAdapter.filter(searchUser);
+          allUserAdapter.filter(searchUser);
 
-        if (searchUser.isEmpty()) {
-            Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
-        } else {
-            allUserAdapter.filter(searchUser);
-        }
+          if (searchUser.isEmpty()) {
+              Toast.makeText(getContext(), "Not found", Toast.LENGTH_SHORT).show();
+          } else {
+              allUserAdapter.filter(searchUser);
+          }
+      }
     }
 
     // show shimmer get recipe
